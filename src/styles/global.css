@@ -103,15 +103,26 @@ body {
 
 /* Glass Card Base */
 .glass-card {
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
   box-shadow: var(--inner-glow), 0 8px 32px rgba(0, 0, 0, 0.3);
   border-radius: 20px;
-  overflow: hidden;
   position: relative;
-  transition: transform 0.3s var(--ease-apple), background 0.3s var(--ease-apple), border-color 0.3s var(--ease-apple);
+  isolation: isolate;
+  transition: transform 0.3s var(--ease-apple), border-color 0.3s var(--ease-apple);
+}
+
+.glass-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  filter: url(#glass-distortion);
+  border-radius: inherit;
+  pointer-events: none;
+  transition: background 0.3s var(--ease-apple);
 }
 
 /* Shimmer Effect */
@@ -137,6 +148,9 @@ body {
 
 .glass-card:active {
   transform: scale(0.98);
+}
+
+.glass-card:active::after {
   background: var(--glass-bg-hover);
 }
 
@@ -270,11 +284,12 @@ body {
 
 /* Main Content */
 .main-content {
-  margin-left: 260px;
   flex: 1;
   min-height: 100vh;
-  padding: 2rem;
-  padding-bottom: 6rem; /* Space for bottom nav */
+  padding: 2rem 1rem 6rem;
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 /* Page Header */
@@ -319,14 +334,27 @@ body {
 /* Pill Toggle (Liquid style) */
 .pill-toggle-container {
   display: flex;
-  background: rgba(0, 0, 0, 0.3);
   border: 1px solid var(--glass-border);
   border-radius: 50px;
   padding: 4px;
   position: relative;
+  isolation: isolate;
   box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
   margin-bottom: 1.5rem;
   animation: slideUpFade 0.6s var(--ease-apple) 0.1s both;
+}
+
+.pill-toggle-container::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  filter: url(#glass-distortion);
+  border-radius: inherit;
+  pointer-events: none;
 }
 
 .pill-indicator {
@@ -447,13 +475,25 @@ body {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
   border: 1px solid var(--glass-border);
   box-shadow: var(--inner-glow), 0 4px 10px rgba(0,0,0,0.3);
   padding: 0.4rem 1rem;
   border-radius: 50px;
+  position: relative;
+  isolation: isolate;
+}
+
+.mobile-topbar-content::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  filter: url(#glass-distortion);
+  border-radius: inherit;
+  pointer-events: none;
 }
 
 /* Animations */
@@ -500,16 +540,28 @@ body {
 }
 
 .modal-content {
-  background: rgba(15, 20, 35, 0.8);
   border: 1px solid var(--glass-border-light);
   box-shadow: var(--inner-glow-strong), 0 20px 40px rgba(0, 0, 0, 0.5);
   border-radius: 24px;
   padding: 2rem;
   max-width: 400px;
   width: 100%;
+  animation: modalSlideUp 0.4s var(--ease-spring);
+  position: relative;
+  isolation: isolate;
+}
+
+.modal-content::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgba(15, 20, 35, 0.8);
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
-  animation: modalSlideUp 0.4s var(--ease-spring);
+  filter: url(#glass-distortion);
+  border-radius: inherit;
+  pointer-events: none;
 }
 
 @keyframes modalFadeIn {
@@ -599,3 +651,15 @@ body {
 .badge-done { background: rgba(100, 116, 139, 0.15); color: #94a3b8; border: 1px solid rgba(100, 116, 139, 0.2); }
 .badge-next { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
 .badge-round { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+.badge-live { 
+  background: rgba(239, 68, 68, 0.15); 
+  color: #f87171; 
+  border: 1px solid rgba(239, 68, 68, 0.4); 
+  animation: pulse-live 2s infinite;
+}
+
+@keyframes pulse-live {
+  0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  70% { box-shadow: 0 0 0 4px rgba(239, 68, 68, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}

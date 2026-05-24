@@ -2,18 +2,13 @@
 import { ClientRouter } from 'astro:transitions';
 import LiquidNav from '../components/LiquidNav';
 import '../styles/global.css';
+
 interface Props {
   title: string;
   activePage: string;
 }
 
 const { title, activePage } = Astro.props;
-
-const navItems = [
-  { href: '/', label: 'Hub', icon: '🏠', id: 'hub' },
-  { href: '/calendario', label: 'Calendario', icon: '📅', id: 'calendario' },
-  { href: '/classifica', label: 'Classifica', icon: '🏆', id: 'classifica' },
-];
 ---
 
 <!doctype html>
@@ -21,7 +16,7 @@ const navItems = [
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Memorial Gerry The Cage - Torneo di calcio a 5. Squadre, calendario, classifica e marcatori." />
+    <meta name="description" content="Live Match - Memorial Gerry The Cage." />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title} | Memorial Gerry The Cage</title>
     <ClientRouter />
@@ -52,26 +47,12 @@ const navItems = [
       <div class="blob blob-3"></div>
     </div>
 
-    <div class="app-layout">
-      <!-- Main -->
-      <main class="main-content">
-        <!-- Mobile topbar -->
-        <div class="mobile-topbar">
-          <div class="mobile-topbar-content">
-            <div class="sidebar-logo-icon" style="width:28px;height:28px;font-size:0.8rem;">⚽</div>
-            <div style="font-size:0.85rem;font-weight:700;color:var(--text-primary);letter-spacing:-0.02em;">Memorial Gerry The Cage</div>
-          </div>
-        </div>
-
-        <slot />
-      </main>
-    </div>
+    <!-- Main Content without padding for full bleed -->
+    <main class="w-full min-h-screen pb-24">
+      <slot />
+    </main>
 
     <!-- Liquid Glass Bottom Nav (mobile) -->
     <LiquidNav client:load activePage={activePage} />
-
-    <script>
-      // Non ci serve piu il menu laterale o l'hamburger
-    </script>
   </body>
 </html>

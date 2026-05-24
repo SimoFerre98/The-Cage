@@ -92,30 +92,29 @@ export default function HubIsland() {
         <div className="glass-card animate-stagger">
           {TEAMS.map((team, i) => (
             <div key={i}>
-              <div className="team-row" onClick={() => toggle(i)}>
+              <div className="flex items-center gap-4 p-3 cursor-pointer hover:bg-[rgba(255,255,255,0.05)] transition-colors border-b border-[var(--glass-border)]" onClick={() => toggle(i)}>
                 <div className={`team-avatar avatar-${i}`} style={{ width: 42, height: 42, borderRadius: 14 }}>
                   {AVATAR_INITIALS(team.name)}
                 </div>
                 <div style={{ flex: 1 }}>
-                  <div className="team-name" style={{ fontSize: '0.95rem' }}>{team.name}</div>
-                  <div className="team-meta">{team.players.length} giocatori</div>
+                  <div className="font-bold text-[0.95rem] text-[var(--text-primary)] leading-tight">{team.name}</div>
+                  <div className="text-xs font-medium text-[var(--text-muted)] mt-0.5">{team.players.length} giocatori</div>
                 </div>
-                <div className={`chevron ${expanded === i ? 'open' : ''}`}>▼</div>
+                <div className="text-[var(--text-muted)] text-sm transition-transform duration-300" style={{ transform: expanded === i ? 'rotate(180deg)' : 'rotate(0)' }}>▼</div>
               </div>
 
               {/* Player list */}
               <div
-                className="player-list"
+                className="transition-all duration-300 ease-[var(--ease-apple)] bg-[rgba(0,0,0,0.2)] shadow-[inset_0_2px_10px_rgba(0,0,0,0.2)]"
                 style={{
+                  overflow: 'hidden',
                   maxHeight: expanded === i ? `${team.players.length * 48}px` : '0px',
-                  background: 'rgba(0,0,0,0.2)',
-                  boxShadow: 'inset 0 2px 10px rgba(0,0,0,0.2)',
                 }}
               >
                 {team.players.map((player, j) => (
-                  <div key={j} className="player-item" style={{ padding: '0.7rem 1.2rem 0.7rem 2.2rem' }}>
-                    <div className="player-number">{j + 1}</div>
-                    <span style={{ fontWeight: 500 }}>{player}</span>
+                  <div key={j} className="flex items-center gap-4 px-8 py-3 text-[0.9rem] border-b border-[var(--glass-border)] last:border-b-0">
+                    <div className="text-[var(--text-muted)] font-mono text-xs w-4 text-center">{j + 1}</div>
+                    <span className="font-medium text-[var(--text-secondary)]">{player}</span>
                   </div>
                 ))}
               </div>
@@ -124,11 +123,10 @@ export default function HubIsland() {
         </div>
       )}
 
-      {/* Giocatori */}
       {tab === 'giocatori' && (
         <div className="glass-card animate-stagger">
           {PLAYERS_ALL.map((p, i) => (
-            <div key={i} className="player-item" style={{ padding: '0.85rem 1.2rem', borderBottom: '1px solid var(--border)' }}>
+            <div key={i} className="flex items-center gap-4 p-4 border-b border-[var(--glass-border)] last:border-b-0">
               <div className={`team-avatar avatar-${p.idx}`} style={{ width: 32, height: 32, borderRadius: 10, fontSize: '0.7rem' }}>
                 {AVATAR_INITIALS(p.team)}
               </div>

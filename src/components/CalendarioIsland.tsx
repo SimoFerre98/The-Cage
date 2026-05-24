@@ -7,9 +7,9 @@ const MATCHES = [
   // Girone B - Terminati
   { date: 'gio 22 mag, 21:00', round: 'Girone B', status: 'TERMINATA', home: 'Samu Betti', away: 'chainz Andrea Robbiano', score: '5 - 2' },
   { date: 'gio 22 mag, 21:30', round: 'Girone B', status: 'TERMINATA', home: 'Martino Gonzalez', away: 'Montarsolo', score: '0 - 2' },
-  // Prossime
+  // Prossime / Live
   { date: 'lun 26 mag, 21:00', round: 'Girone A', status: 'PROSSIMA', home: 'Tama', away: 'Corsi', score: null },
-  { date: 'lun 26 mag, 21:30', round: 'Girone A', status: 'PROSSIMA', home: 'Montarsolo', away: 'Amatori Calcio Genova', score: null },
+  { date: 'OGGI, 21:30', round: 'Girone A', status: 'LIVE', home: 'Amatori Calcio Genova', away: 'Montarsolo', score: '2 - 1' },
   { date: 'mer 28 mag, 21:00', round: 'Girone B', status: 'PROSSIMA', home: 'UCG (Bairon)', away: 'Samu Betti', score: null },
   { date: 'mer 28 mag, 21:30', round: 'Girone B', status: 'PROSSIMA', home: 'chainz Andrea Robbiano', away: 'Mario', score: null },
   { date: 'ven 30 mag, 21:00', round: 'Semifinale', status: 'PROSSIMA', home: '1° Girone A', away: '2° Girone B', score: null },
@@ -39,14 +39,20 @@ const TEAM_IDX: Record<string, number> = {
 export default function CalendarioIsland() {
   return (
     <div className="animate-stagger">
-      {MATCHES.map((m, i) => (
-        <div key={i} className="glass-card" style={{ marginBottom: '1rem', padding: '1.2rem 1.25rem' }}>
+      {MATCHES.map((m, i) => {
+        const CardTag = m.status === 'LIVE' ? 'a' : 'div';
+        const cardProps = m.status === 'LIVE' ? { href: '/live', style: { display: 'block', textDecoration: 'none', cursor: 'pointer', marginBottom: '1rem', padding: '1.2rem 1.25rem' } } : { style: { marginBottom: '1rem', padding: '1.2rem 1.25rem' } };
+
+        return (
+        <CardTag key={i} className={`glass-card ${m.status === 'LIVE' ? 'ring-2 ring-[rgba(239,68,68,0.5)] shadow-[0_0_20px_rgba(239,68,68,0.3)]' : ''}`} {...cardProps}>
           <div className="flex items-center justify-between mb-4">
-            <span className="text-xs font-medium text-[var(--text-muted)]">📅 {m.date}</span>
+            <span className={`text-xs font-medium ${m.status === 'LIVE' ? 'text-red-400 font-bold' : 'text-[var(--text-muted)]'}`}>
+              {m.status === 'LIVE' ? '🔴 IN DIRETTA' : `📅 ${m.date}`}
+            </span>
             <div className="flex gap-1.5 items-center">
               <span className="badge badge-round">{m.round}</span>
-              <span className={`badge ${m.status === 'TERMINATA' ? 'badge-done' : 'badge-next'}`}>
-                {m.status === 'TERMINATA' ? '✓' : '⚡'} {m.status}
+              <span className={`badge ${m.status === 'TERMINATA' ? 'badge-done' : m.status === 'LIVE' ? 'badge-live' : 'badge-next'}`}>
+                {m.status === 'TERMINATA' ? '✓' : m.status === 'LIVE' ? '⚡' : '⚡'} {m.status}
               </span>
             </div>
           </div>
@@ -79,8 +85,9 @@ export default function CalendarioIsland() {
               <span className="text-[0.875rem] font-bold text-[var(--text-primary)] leading-tight">{m.away}</span>
             </div>
           </div>
-        </div>
-      ))}
+        </CardTag>
+        );
+      })}
     </div>
   );
 }
