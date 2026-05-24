@@ -1,0 +1,20 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HubIsland from '../components/HubIsland.tsx';
+
+const totalPlayers = 11 * 9;
+---
+
+<Layout title="Hub" activePage="hub">
+  <div class="page-header">
+    <h1 class="page-title">Hub</h1>
+    <p class="page-subtitle">Squadre e giocatori del torneo</p>
+    <div class="accent-line"></div>
+    <div class="player-count-badge" style="margin-top: 0.85rem;">
+      <span>👥</span>
+      <span>{totalPlayers} giocatori</span>
+    </div>
+  </div>
+
+  <HubIsland client:load />
+</Layout>

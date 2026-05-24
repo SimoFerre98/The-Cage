@@ -1,0 +1,154 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  activePage: string;
+}
+
+const { title, activePage } = Astro.props;
+
+const navItems = [
+  { href: '/', label: 'Hub', icon: '🏠', id: 'hub' },
+  { href: '/calendario', label: 'Calendario', icon: '📅', id: 'calendario' },
+  { href: '/classifica', label: 'Classifica', icon: '🏆', id: 'classifica' },
+];
+---
+
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Memorial Gerry The Cage - Torneo di calcio a 5. Squadre, calendario, classifica e marcatori." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title} | Memorial Gerry The Cage</title>
+    <ClientRouter />
+  </head>
+
+  <body>
+    <!-- Liquid Glass Background Blobs -->
+    <div class="bg-blobs">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+    </div>
+
+    <div class="app-layout">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+          <div class="sidebar-logo-icon">⚽</div>
+          <div class="sidebar-logo-text">
+            Memorial Gerry
+            <span>The Cage</span>
+          </div>
+        </div>
+
+        <a href="#" class="install-btn">
+          <span>📱</span>
+          <span>Installa App</span>
+        </a>
+
+        <p class="nav-section-title">Menù</p>
+
+        {navItems.map(item => (
+          <a
+            href={item.href}
+            class={`nav-item ${activePage === item.id ? 'active' : ''}`}
+          >
+            <span class="nav-item-icon">{item.icon}</span>
+            <span>{item.label}</span>
+          </a>
+        ))}
+      </aside>
+
+      <!-- Hamburger (mobile) -->
+      <button class="hamburger" id="hamburger" aria-label="Apri menu">☰</button>
+
+      <!-- Main -->
+      <main class="main-content">
+        <!-- Mobile topbar -->
+        <div class="mobile-topbar">
+          <div class="mobile-topbar-content">
+            <div class="sidebar-logo-icon" style="width:28px;height:28px;font-size:0.8rem;">⚽</div>
+            <div style="font-size:0.85rem;font-weight:700;color:var(--text-primary);letter-spacing:-0.02em;">Memorial Gerry The Cage</div>
+          </div>
+        </div>
+
+        <slot />
+      </main>
+    </div>
+
+    <!-- Bottom nav (mobile) -->
+    <nav class="bottom-nav" id="bottom-nav">
+      <div class="bottom-nav-inner">
+        <div class="bottom-nav-indicator" id="nav-indicator"></div>
+        {navItems.map((item, index) => (
+          <a
+            href={item.href}
+            class={`bottom-nav-item ${activePage === item.id ? 'active' : ''}`}
+            data-index={index}
+          >
+            <span class="bottom-nav-icon">{item.icon}</span>
+            <span>{item.label}</span>
+          </a>
+        ))}
+      </div>
+    </nav>
+
+    <script>
+      const hamburger = document.getElementById('hamburger');
+      const sidebar = document.getElementById('sidebar');
+
+      hamburger?.addEventListener('click', () => {
+        sidebar?.classList.toggle('open');
+      });
+
+      // Close sidebar clicking outside
+      document.addEventListener('click', (e) => {
+        if (
+          sidebar?.classList.contains('open') &&
+          !sidebar.contains(e.target as Node) &&
+          e.target !== hamburger
+        ) {
+          sidebar.classList.remove('open');
+        }
+      });
+
+      // Liquid Bottom Nav Indicator Logic
+      const updateIndicator = () => {
+        const activeItem = document.querySelector('.bottom-nav-item.active');
+        const indicator = document.getElementById('nav-indicator');
+        const container = document.querySelector('.bottom-nav-inner');
+        
+        if (activeItem && indicator && container) {
+          const itemRect = activeItem.getBoundingClientRect();
+          const containerRect = container.getBoundingClientRect();
+          
+          indicator.style.width = `${itemRect.width}px`;
+          indicator.style.transform = `translateX(${itemRect.left - containerRect.left}px)`;
+        }
+      };
+
+      // Run on load and resize
+      window.addEventListener('load', updateIndicator);
+      window.addEventListener('resize', updateIndicator);
+      
+      // Also setup click listeners to animate before navigation happens
+      document.querySelectorAll('.bottom-nav-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+          document.querySelectorAll('.bottom-nav-item').forEach(i => i.classList.remove('active'));
+          item.classList.add('active');
+          updateIndicator();
+          // Let the browser handle the actual navigation slightly delayed
+          // wait a tiny bit to see the animation if needed, but Astro ViewTransitions handles it well.
+        });
+      });
+
+      // Initial setup
+      setTimeout(updateIndicator, 50);
+      document.addEventListener('astro:page-load', updateIndicator);
+    </script>
+  </body>
+</html>

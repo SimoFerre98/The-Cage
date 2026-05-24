@@ -1,0 +1,14 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CalendarioIsland from '../components/CalendarioIsland.tsx';
+---
+
+<Layout title="Calendario" activePage="calendario">
+  <div class="page-header">
+    <h1 class="page-title">Calendario</h1>
+    <p class="page-subtitle">Partite e risultati del torneo</p>
+    <div class="accent-line"></div>
+  </div>
+
+  <CalendarioIsland client:visible />
+</Layout>

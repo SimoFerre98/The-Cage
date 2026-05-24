@@ -1,0 +1,14 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ClassificaIsland from '../components/ClassificaIsland.tsx';
+---
+
+<Layout title="Classifica" activePage="classifica">
+  <div class="page-header">
+    <h1 class="page-title">Classifica</h1>
+    <p class="page-subtitle">Vista classifica e marcatori</p>
+    <div class="accent-line"></div>
+  </div>
+
+  <ClassificaIsland client:load />
+</Layout>
