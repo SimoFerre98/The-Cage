@@ -65,15 +65,15 @@ export default function LiquidNav({ activePage }: { activePage: string }) {
       <div className="fixed bottom-4 left-0 right-0 z-[200] flex justify-center pointer-events-none px-4">
         <div className="pointer-events-auto">
           <GlassEffect className="rounded-[2.5rem] p-2.5 hover:p-3 transition-all duration-700">
-            <div className="flex items-center justify-center gap-2 rounded-[2.5rem] px-1 overflow-hidden">
+            <div className="relative flex items-center justify-center gap-2 rounded-[2.5rem] px-1 overflow-hidden">
               {NAV_ITEMS.map((item, index) => {
                 const isActive = activePage === item.id;
                 return (
                   <a
                     key={index}
                     href={item.href}
-                    className={`flex flex-col items-center justify-center w-[4.5rem] h-[4.5rem] rounded-[1.8rem] transition-all duration-700 hover:scale-110 cursor-pointer ${
-                      isActive ? 'bg-[rgba(59,130,246,0.3)] shadow-[inset_0_1px_4px_rgba(255,255,255,0.4)]' : 'hover:bg-[rgba(255,255,255,0.1)]'
+                    className={`relative flex flex-col items-center justify-center w-[4.5rem] h-[4.5rem] rounded-[1.8rem] transition-all duration-700 cursor-pointer ${
+                      !isActive ? 'hover:bg-[rgba(255,255,255,0.1)] hover:scale-110' : ''
                     }`}
                     style={{
                       transformOrigin: "center center",
@@ -81,10 +81,16 @@ export default function LiquidNav({ activePage }: { activePage: string }) {
                       textDecoration: "none"
                     }}
                   >
-                    <span className="text-[1.8rem] drop-shadow-md" style={{ filter: isActive ? 'drop-shadow(0 0 8px rgba(255,255,255,0.6))' : 'none' }}>
+                    {isActive && (
+                      <div 
+                        className="absolute inset-0 bg-[rgba(59,130,246,0.3)] shadow-[inset_0_1px_4px_rgba(255,255,255,0.4)] rounded-[1.8rem] pointer-events-none"
+                        style={{ viewTransitionName: 'nav-active-bubble' } as React.CSSProperties}
+                      />
+                    )}
+                    <span className="relative z-10 text-[1.8rem] drop-shadow-md" style={{ filter: isActive ? 'drop-shadow(0 0 8px rgba(255,255,255,0.6))' : 'none' }}>
                       {item.icon}
                     </span>
-                    <span className={`text-[0.65rem] mt-1 font-bold tracking-wide ${isActive ? 'text-white drop-shadow-md' : 'text-white/70'}`}>
+                    <span className={`relative z-10 text-[0.65rem] mt-1 font-bold tracking-wide ${isActive ? 'text-white drop-shadow-md' : 'text-white/70'}`}>
                       {item.label}
                     </span>
                   </a>
