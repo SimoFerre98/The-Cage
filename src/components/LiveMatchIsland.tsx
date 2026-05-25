@@ -9,7 +9,7 @@ const EVENTS = [
 
 export default function LiveMatchIsland() {
   return (
-    <div className="flex flex-col w-full text-white bg-[#0f1423] min-h-screen">
+    <div className="flex flex-col w-full text-white min-h-screen">
       {/* Header 3D */}
       <div 
         className="relative w-full bg-cover bg-bottom bg-no-repeat overflow-hidden border-b-[3px] border-[#382613]"

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import GlassEffect from './GlassEffect';
 
 const STANDINGS = [
   { team: 'Montarsolo',             g: 3, v: 3, n: 0, p: 0, gf: 10, gs: 3, pt: 9 },
@@ -63,49 +64,45 @@ export default function ClassificaIsland() {
 
   return (
     <div>
-      {/* Controls */}
-      <div className="section-header" style={{ justifyContent: 'center', position: 'relative' }}>
-        <div className="pill-toggle-container" style={{ width: '100%', maxWidth: '300px' }}>
-          <div 
-            className="pill-indicator" 
-            style={{ transform: tab === 'squadre' ? 'translateX(0)' : 'translateX(100%)' }}
-          ></div>
-          <button
-            className={`pill-btn ${tab === 'squadre' ? 'active' : ''}`}
-            onClick={() => setTab('squadre')}
-          >
-            Squadre
-          </button>
-          <button
-            className={`pill-btn ${tab === 'marcatori' ? 'active' : ''}`}
-            onClick={() => setTab('marcatori')}
-          >
-            Marcatori
-          </button>
+      {/* Controls Container */}
+      <div className="flex items-center justify-center gap-4 w-full mb-6 px-4 max-w-[420px] mx-auto relative z-10">
+        
+        {/* Pill Toggle */}
+        <div className="flex-1 w-full max-w-[320px]">
+          <GlassEffect className="w-full rounded-[50px] p-1.5 cursor-pointer">
+            <div className="relative flex w-full">
+              <div 
+                className="absolute top-0 bottom-0 w-1/2 bg-[rgba(59,130,246,0.3)] shadow-[inset_0_1px_4px_rgba(255,255,255,0.4)] rounded-[50px]" 
+                style={{ 
+                  transform: tab === 'squadre' ? 'translateX(0)' : 'translateX(100%)',
+                  transition: 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)'
+                }}
+              ></div>
+              <button
+                className={`flex-1 relative z-10 py-4 text-[0.95rem] font-bold transition-all duration-300 tracking-wide outline-none ${tab === 'squadre' ? 'text-white drop-shadow-md' : 'text-white/50 hover:text-white/80'}`}
+                onClick={() => setTab('squadre')}
+              >
+                Squadre
+              </button>
+              <button
+                className={`flex-1 relative z-10 py-4 text-[0.95rem] font-bold transition-all duration-300 tracking-wide outline-none ${tab === 'marcatori' ? 'text-white drop-shadow-md' : 'text-white/50 hover:text-white/80'}`}
+                onClick={() => setTab('marcatori')}
+              >
+                Marcatori
+              </button>
+            </div>
+          </GlassEffect>
         </div>
 
-        <button
-          onClick={() => setShowLegend(true)}
-          style={{
-            position: 'absolute',
-            right: 0,
-            background: 'var(--glass-bg)',
-            border: '1px solid var(--glass-border)',
-            borderRadius: '50px',
-            padding: '0.4rem 0.85rem',
-            fontSize: '0.75rem',
-            fontWeight: 600,
-            color: 'var(--text-secondary)',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.3rem',
-            transition: 'all 0.3s var(--ease-apple)',
-            boxShadow: 'var(--inner-glow)',
-          }}
-        >
-          <span>ℹ️</span> Legenda
-        </button>
+        {/* Legend Button */}
+        <GlassEffect className="w-12 h-12 rounded-full flex items-center justify-center cursor-pointer flex-shrink-0">
+          <button
+            onClick={() => setShowLegend(true)}
+            className="w-full h-full flex items-center justify-center text-xl opacity-80 hover:opacity-100 transition-opacity outline-none"
+          >
+            ℹ️
+          </button>
+        </GlassEffect>
       </div>
 
       {/* Classifica Squadre */}

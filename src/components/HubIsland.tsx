@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import GlassEffect from './GlassEffect';
 
 const TEAMS = [
   {
@@ -66,25 +67,30 @@ export default function HubIsland() {
   return (
     <div>
       {/* Pill Toggle */}
-      <div className="section-header" style={{ justifyContent: 'center' }}>
-        <div className="pill-toggle-container" style={{ width: '100%', maxWidth: '300px' }}>
-          <div 
-            className="pill-indicator" 
-            style={{ transform: tab === 'squadre' ? 'translateX(0)' : 'translateX(100%)' }}
-          ></div>
-          <button
-            className={`pill-btn ${tab === 'squadre' ? 'active' : ''}`}
-            onClick={() => setTab('squadre')}
-          >
-            Squadre
-          </button>
-          <button
-            className={`pill-btn ${tab === 'giocatori' ? 'active' : ''}`}
-            onClick={() => setTab('giocatori')}
-          >
-            Giocatori
-          </button>
-        </div>
+      <div className="flex justify-center w-full mb-6 relative z-10 px-4">
+        <GlassEffect className="w-full max-w-[320px] rounded-[50px] p-1.5 cursor-pointer">
+          <div className="relative flex w-full">
+            <div 
+              className="absolute top-0 bottom-0 w-1/2 bg-[rgba(59,130,246,0.3)] shadow-[inset_0_1px_4px_rgba(255,255,255,0.4)] rounded-[50px]" 
+              style={{ 
+                transform: tab === 'squadre' ? 'translateX(0)' : 'translateX(100%)',
+                transition: 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)'
+              }}
+            ></div>
+            <button
+              className={`flex-1 relative z-10 py-4 text-[0.95rem] font-bold transition-all duration-300 tracking-wide outline-none ${tab === 'squadre' ? 'text-white drop-shadow-md' : 'text-white/50 hover:text-white/80'}`}
+              onClick={() => setTab('squadre')}
+            >
+              Squadre
+            </button>
+            <button
+              className={`flex-1 relative z-10 py-4 text-[0.95rem] font-bold transition-all duration-300 tracking-wide outline-none ${tab === 'giocatori' ? 'text-white drop-shadow-md' : 'text-white/50 hover:text-white/80'}`}
+              onClick={() => setTab('giocatori')}
+            >
+              Giocatori
+            </button>
+          </div>
+        </GlassEffect>
       </div>
 
       {/* Squadre */}

@@ -37,69 +37,30 @@
 
 html {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background-color: var(--bg-deep);
   color: var(--text-primary);
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-deep);
 }
 
 body {
   min-height: 100vh;
-  background: var(--bg-deep);
-  overflow-x: hidden;
-  position: relative;
+  background-color: transparent;
 }
 
-/* Background Blobs for Liquid Glass Effect */
+/* Background Container */
 .bg-blobs {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh; /* Fixed height prevents jumping when mobile URL bar hides */
   z-index: -1;
-  overflow: hidden;
-  background: var(--bg-deep);
+  background: linear-gradient(rgba(3, 5, 10, 0.4), rgba(3, 5, 10, 0.7)), url('/sfondo.jpg') center/cover no-repeat;
+  view-transition-name: fixed-background;
 }
 
-.blob {
-  position: absolute;
-  filter: blur(80px);
-  opacity: 0.5;
-  animation: float 20s infinite ease-in-out alternate;
-  will-change: transform;
-}
-
-.blob-1 {
-  top: -10%;
-  left: -10%;
-  width: 50vw;
-  height: 50vw;
-  background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, rgba(59, 130, 246, 0) 70%);
-  animation-delay: 0s;
-}
-
-.blob-2 {
-  bottom: -10%;
-  right: -10%;
-  width: 60vw;
-  height: 60vw;
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.25) 0%, rgba(139, 92, 246, 0) 70%);
-  animation-delay: -5s;
-}
-
-.blob-3 {
-  top: 40%;
-  left: 40%;
-  width: 40vw;
-  height: 40vw;
-  background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0) 70%);
-  animation-delay: -10s;
-}
-
-@keyframes float {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(5%, 10%) scale(1.1); }
-  100% { transform: translate(-5%, -5%) scale(0.9); }
-}
 
 /* Glass Card Base */
 .glass-card {
@@ -119,7 +80,6 @@ body {
   background: var(--glass-bg);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
-  filter: url(#glass-distortion);
   border-radius: inherit;
   pointer-events: none;
   transition: background 0.3s var(--ease-apple);
@@ -157,6 +117,7 @@ body {
 /* Layout */
 .app-layout {
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
 }
 
@@ -334,14 +295,31 @@ body {
 /* Pill Toggle (Liquid style) */
 .pill-toggle-container {
   display: flex;
-  border: 1px solid var(--glass-border);
   border-radius: 50px;
   padding: 4px;
   position: relative;
   isolation: isolate;
-  box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
   margin-bottom: 1.5rem;
   animation: slideUpFade 0.6s var(--ease-apple) 0.1s both;
+  
+  /* Liquid Glass Outer & Inner styling */
+  box-shadow: 
+    0 6px 6px rgba(0, 0, 0, 0.2), 
+    0 0 20px rgba(0, 0, 0, 0.1),
+    inset 2px 2px 1px 0 rgba(255, 255, 255, 0.3), 
+    inset -1px -1px 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+.pill-toggle-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  filter: url(#glass-distortion);
+  border-radius: inherit;
+  pointer-events: none;
 }
 
 .pill-toggle-container::after {
@@ -349,10 +327,7 @@ body {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  filter: url(#glass-distortion);
+  background: rgba(255, 255, 255, 0.15);
   border-radius: inherit;
   pointer-events: none;
 }
@@ -491,7 +466,6 @@ body {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
-  filter: url(#glass-distortion);
   border-radius: inherit;
   pointer-events: none;
 }
@@ -559,7 +533,6 @@ body {
   background: rgba(15, 20, 35, 0.8);
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
-  filter: url(#glass-distortion);
   border-radius: inherit;
   pointer-events: none;
 }
