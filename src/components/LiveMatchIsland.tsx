@@ -1,4 +1,5 @@
 import React from 'react';
+import GlassEffect from './GlassEffect';
 
 const EVENTS = [
   { minute: 5, type: 'Carta Attivata', player: 'Amatori Calcio Genova', team: 'home', detail: 'starplayer' },
@@ -24,9 +25,24 @@ export default function LiveMatchIsland() {
         
         {/* Top Navbar */}
         <div className="absolute top-0 left-0 w-full flex items-center justify-between p-6 z-20">
-           <a href="/calendario" className="text-white text-3xl drop-shadow-md leading-none transition-transform active:scale-95 text-decoration-none">‹</a>
+           <a href="/calendario" className="group" style={{ textDecoration: 'none' }}>
+             <GlassEffect className="w-10 h-10 rounded-full flex items-center justify-center hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer">
+               <svg 
+                 xmlns="http://www.w3.org/2000/svg" 
+                 viewBox="0 0 24 24" 
+                 fill="none" 
+                 stroke="currentColor" 
+                 strokeWidth="3" 
+                 strokeLinecap="round" 
+                 strokeLinejoin="round" 
+                 className="w-4 h-4 text-white opacity-85 group-hover:opacity-100 transition-opacity"
+               >
+                 <polyline points="15 18 9 12 15 6" />
+               </svg>
+             </GlassEffect>
+           </a>
            <span className="font-bold tracking-widest text-lg text-white drop-shadow-md uppercase">Live</span>
-           <div className="w-6"></div> {/* Spacer for centering */}
+           <div className="w-10"></div> {/* Spacer for perfect centering */}
         </div>
 
         {/* Score */}
