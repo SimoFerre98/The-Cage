@@ -95,12 +95,17 @@ export default function ClassificaIsland() {
         </div>
 
         {/* Legend Button */}
-        <GlassEffect className="w-12 h-12 rounded-full flex items-center justify-center cursor-pointer flex-shrink-0">
+        <GlassEffect className="w-12 h-12 rounded-full flex items-center justify-center cursor-pointer flex-shrink-0 hover:scale-105 active:scale-95 transition-all duration-300">
           <button
             onClick={() => setShowLegend(true)}
-            className="w-full h-full flex items-center justify-center text-xl opacity-80 hover:opacity-100 transition-opacity outline-none"
+            className="w-full h-full flex items-center justify-center text-white outline-none cursor-pointer"
+            aria-label="Info legenda"
           >
-            ℹ️
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-5 h-5 opacity-70 hover:opacity-100 transition-opacity">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="16" x2="12" y2="12" />
+              <line x1="12" y1="8" x2="12.01" y2="8" />
+            </svg>
           </button>
         </GlassEffect>
       </div>
@@ -183,22 +188,58 @@ export default function ClassificaIsland() {
       {/* Legend Modal */}
       {showLegend && (
         <div className="modal-overlay" onClick={() => setShowLegend(false)}>
-          <div className="modal-content" onClick={e => e.stopPropagation()}>
-            <div className="text-lg font-bold text-white mb-5 flex justify-between items-center">
-              Legenda
+          <div className="modal-content relative overflow-hidden" onClick={e => e.stopPropagation()}>
+            {/* Ambient background glows */}
+            <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-[rgba(59,130,246,0.3)] blur-[40px] pointer-events-none z-[-1]" />
+            <div className="absolute -bottom-10 -left-10 w-32 h-32 rounded-full bg-[rgba(139,92,246,0.25)] blur-[40px] pointer-events-none z-[-1]" />
+
+            <div className="flex justify-between items-center mb-6">
+              <div>
+                <h3 className="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-white to-white/70 bg-clip-text text-transparent">
+                  Legenda Classifica
+                </h3>
+                <div className="h-[2px] w-12 mt-1 rounded bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)]" />
+              </div>
               <button 
-                className="w-8 h-8 flex items-center justify-center rounded-lg bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-muted)] hover:text-white hover:bg-[rgba(255,255,255,0.1)] transition-colors"
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.15)] border border-[rgba(255,255,255,0.08)] text-white/70 hover:text-white transition-all duration-300 hover:rotate-90 active:scale-95 cursor-pointer outline-none"
                 onClick={() => setShowLegend(false)}
+                aria-label="Chiudi"
               >
-                ✕
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
               </button>
             </div>
-            {LEGEND.map((l, i) => (
-              <div key={i} className="flex items-center gap-3 py-2 border-b border-[rgba(255,255,255,0.05)] last:border-0 text-sm">
-                <span className="w-8 text-center font-black text-[var(--accent-primary)]">{l.label}</span>
-                <span className="text-[var(--text-secondary)]">{l.desc}</span>
-              </div>
-            ))}
+
+            <div className="flex flex-col gap-3">
+              {LEGEND.map((l, i) => (
+                <div 
+                  key={i} 
+                  className="flex items-center gap-4 p-2.5 rounded-xl bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.03)] transition-all duration-300"
+                >
+                  <div 
+                    className="w-10 h-8 flex items-center justify-center rounded-lg font-black text-xs border"
+                    style={{
+                      background: l.label === 'PT' 
+                        ? 'rgba(59, 130, 246, 0.15)' 
+                        : 'rgba(255, 255, 255, 0.05)',
+                      borderColor: l.label === 'PT' 
+                        ? 'rgba(59, 130, 246, 0.3)' 
+                        : 'rgba(255, 255, 255, 0.08)',
+                      color: l.label === 'PT' 
+                        ? '#60a5fa' 
+                        : 'var(--text-secondary)'
+                    }}
+                  >
+                    {l.label}
+                  </div>
+                  <span className="text-sm font-semibold text-white/80">
+                    {l.desc}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}
