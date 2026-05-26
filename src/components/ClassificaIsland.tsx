@@ -188,58 +188,60 @@ export default function ClassificaIsland() {
       {/* Legend Modal */}
       {showLegend && (
         <div className="modal-overlay" onClick={() => setShowLegend(false)}>
-          <div className="modal-content relative overflow-hidden" onClick={e => e.stopPropagation()}>
-            {/* Ambient background glows */}
-            <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-[rgba(59,130,246,0.3)] blur-[40px] pointer-events-none z-[-1]" />
-            <div className="absolute -bottom-10 -left-10 w-32 h-32 rounded-full bg-[rgba(139,92,246,0.25)] blur-[40px] pointer-events-none z-[-1]" />
+          <div onClick={e => e.stopPropagation()} className="w-full max-w-[400px] animate-[modalSlideUp_0.4s_var(--ease-spring)] px-4">
+            <GlassEffect className="w-full rounded-[24px] p-6 md:p-8 relative overflow-hidden" style={{ display: 'block' }}>
+              {/* Ambient background glows */}
+              <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-[rgba(59,130,246,0.35)] blur-[40px] pointer-events-none" />
+              <div className="absolute -bottom-10 -left-10 w-32 h-32 rounded-full bg-[rgba(139,92,246,0.3)] blur-[40px] pointer-events-none" />
 
-            <div className="flex justify-between items-center mb-6">
-              <div>
-                <h3 className="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-white to-white/70 bg-clip-text text-transparent">
-                  Legenda Classifica
-                </h3>
-                <div className="h-[2px] w-12 mt-1 rounded bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)]" />
-              </div>
-              <button 
-                className="w-8 h-8 flex items-center justify-center rounded-full bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.15)] border border-[rgba(255,255,255,0.08)] text-white/70 hover:text-white transition-all duration-300 hover:rotate-90 active:scale-95 cursor-pointer outline-none"
-                onClick={() => setShowLegend(false)}
-                aria-label="Chiudi"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-              </button>
-            </div>
-
-            <div className="flex flex-col gap-3">
-              {LEGEND.map((l, i) => (
-                <div 
-                  key={i} 
-                  className="flex items-center gap-4 p-2.5 rounded-xl bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.03)] transition-all duration-300"
-                >
-                  <div 
-                    className="w-10 h-8 flex items-center justify-center rounded-lg font-black text-xs border"
-                    style={{
-                      background: l.label === 'PT' 
-                        ? 'rgba(59, 130, 246, 0.15)' 
-                        : 'rgba(255, 255, 255, 0.05)',
-                      borderColor: l.label === 'PT' 
-                        ? 'rgba(59, 130, 246, 0.3)' 
-                        : 'rgba(255, 255, 255, 0.08)',
-                      color: l.label === 'PT' 
-                        ? '#60a5fa' 
-                        : 'var(--text-secondary)'
-                    }}
-                  >
-                    {l.label}
+              <div className="relative">
+                <div className="flex justify-between items-center mb-6">
+                  <div>
+                    <h3 className="text-xl font-extrabold tracking-tight text-white drop-shadow">
+                      Legenda Classifica
+                    </h3>
+                    <div className="h-[2px] w-12 mt-1.5 rounded bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)]" />
                   </div>
-                  <span className="text-sm font-semibold text-white/80">
-                    {l.desc}
-                  </span>
+                  <button 
+                    className="w-8 h-8 flex items-center justify-center rounded-full bg-[rgba(255,255,255,0.08)] hover:bg-[rgba(255,255,255,0.2)] border border-[rgba(255,255,255,0.12)] text-white hover:text-white transition-all duration-300 hover:rotate-90 active:scale-95 cursor-pointer outline-none"
+                    onClick={() => setShowLegend(false)}
+                    aria-label="Chiudi"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="18" y1="6" x2="6" y2="18"></line>
+                      <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                  </button>
                 </div>
-              ))}
-            </div>
+
+                <div className="flex flex-col gap-3">
+                  {LEGEND.map((l, i) => (
+                    <div 
+                      key={i} 
+                      className="flex items-center gap-4 p-2.5 rounded-xl bg-[rgba(255,255,255,0.04)] hover:bg-[rgba(255,255,255,0.08)] border border-[rgba(255,255,255,0.06)] transition-all duration-300"
+                    >
+                      <div 
+                        className="w-10 h-8 flex items-center justify-center rounded-lg font-black text-xs border"
+                        style={{
+                          background: l.label === 'PT' 
+                            ? 'rgba(59, 130, 246, 0.25)' 
+                            : 'rgba(255, 255, 255, 0.08)',
+                          borderColor: l.label === 'PT' 
+                            ? 'rgba(59, 130, 246, 0.4)' 
+                            : 'rgba(255, 255, 255, 0.15)',
+                          color: '#ffffff'
+                        }}
+                      >
+                        {l.label}
+                      </div>
+                      <span className="text-sm font-semibold text-white/90">
+                        {l.desc}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </GlassEffect>
           </div>
         </div>
       )}
