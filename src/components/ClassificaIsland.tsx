@@ -65,11 +65,11 @@ export default function ClassificaIsland() {
   return (
     <div>
       {/* Controls Container */}
-      <div className="flex items-center justify-center gap-4 w-full mb-6 px-4 max-w-[420px] mx-auto relative z-10">
+      <div className="flex items-center justify-center gap-4 w-full mb-14 px-4 max-w-[460px] mx-auto sticky top-[85px] md:top-8 z-[120] transition-all duration-300">
         
         {/* Pill Toggle */}
-        <div className="flex-1 w-full max-w-[320px]">
-          <GlassEffect className="w-full rounded-[50px] p-1.5 cursor-pointer">
+        <div className="flex-1 w-full max-w-[360px]">
+          <GlassEffect className="w-full rounded-[50px] p-2 cursor-pointer">
             <div className="relative flex w-full">
               <div 
                 className="absolute top-0 bottom-0 w-1/2 bg-[rgba(59,130,246,0.3)] shadow-[inset_0_1px_4px_rgba(255,255,255,0.4)] rounded-[50px]" 
@@ -79,13 +79,13 @@ export default function ClassificaIsland() {
                 }}
               ></div>
               <button
-                className={`flex-1 relative z-10 py-4 text-[0.95rem] font-bold transition-all duration-300 tracking-wide outline-none ${tab === 'squadre' ? 'text-white drop-shadow-md' : 'text-white/50 hover:text-white/80'}`}
+                className={`flex-1 relative z-10 py-5 text-[1rem] font-bold transition-all duration-300 tracking-wide outline-none ${tab === 'squadre' ? 'text-white drop-shadow-md' : 'text-white/50 hover:text-white/80'}`}
                 onClick={() => setTab('squadre')}
               >
                 Squadre
               </button>
               <button
-                className={`flex-1 relative z-10 py-4 text-[0.95rem] font-bold transition-all duration-300 tracking-wide outline-none ${tab === 'marcatori' ? 'text-white drop-shadow-md' : 'text-white/50 hover:text-white/80'}`}
+                className={`flex-1 relative z-10 py-5 text-[1rem] font-bold transition-all duration-300 tracking-wide outline-none ${tab === 'marcatori' ? 'text-white drop-shadow-md' : 'text-white/50 hover:text-white/80'}`}
                 onClick={() => setTab('marcatori')}
               >
                 Marcatori
@@ -107,7 +107,7 @@ export default function ClassificaIsland() {
 
       {/* Classifica Squadre */}
       {tab === 'squadre' && (
-        <div className="glass-card animate-stagger" style={{ padding: '0.5rem 0', overflowX: 'auto' }}>
+        <div className="glass-card animate-stagger" style={{ padding: '0.5rem 0', overflowX: 'auto', marginTop: '2.5rem' }}>
           <table className="w-full border-collapse" style={{ borderSpacing: '0 4px' }}>
             <thead>
               <tr>
@@ -154,7 +154,7 @@ export default function ClassificaIsland() {
 
       {/* Marcatori */}
       {tab === 'marcatori' && (
-        <div className="glass-card animate-stagger">
+        <div className="glass-card animate-stagger" style={{ marginTop: '2.5rem' }}>
           {SCORERS.map((s, i) => (
             <div key={i} className="flex items-center gap-3 px-4 py-3.5 border-b border-[var(--glass-border)] hover:bg-[rgba(255,255,255,0.05)] transition-colors duration-300">
               <div 

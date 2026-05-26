@@ -1,0 +1,14 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CarteIsland from '../components/CarteIsland.tsx';
+---
+
+<Layout title="Carte Speciali" activePage="carte">
+  <div class="page-header">
+    <h1 class="page-title">Carte Speciali</h1>
+    <p class="page-subtitle">I poteri utilizzabili nel torneo in stile Kings League</p>
+    <div class="accent-line"></div>
+  </div>
+
+  <CarteIsland client:load />
+</Layout>

@@ -67,8 +67,8 @@ export default function HubIsland() {
   return (
     <div>
       {/* Pill Toggle */}
-      <div className="flex justify-center w-full mb-6 relative z-10 px-4">
-        <GlassEffect className="w-full max-w-[320px] rounded-[50px] p-1.5 cursor-pointer">
+      <div className="flex justify-center w-full mb-14 sticky top-[85px] md:top-8 z-[120] px-4 transition-all duration-300">
+        <GlassEffect className="w-full max-w-[360px] rounded-[50px] p-2 cursor-pointer">
           <div className="relative flex w-full">
             <div 
               className="absolute top-0 bottom-0 w-1/2 bg-[rgba(59,130,246,0.3)] shadow-[inset_0_1px_4px_rgba(255,255,255,0.4)] rounded-[50px]" 
@@ -78,13 +78,13 @@ export default function HubIsland() {
               }}
             ></div>
             <button
-              className={`flex-1 relative z-10 py-4 text-[0.95rem] font-bold transition-all duration-300 tracking-wide outline-none ${tab === 'squadre' ? 'text-white drop-shadow-md' : 'text-white/50 hover:text-white/80'}`}
+              className={`flex-1 relative z-10 py-5 text-[1rem] font-bold transition-all duration-300 tracking-wide outline-none ${tab === 'squadre' ? 'text-white drop-shadow-md' : 'text-white/50 hover:text-white/80'}`}
               onClick={() => setTab('squadre')}
             >
               Squadre
             </button>
             <button
-              className={`flex-1 relative z-10 py-4 text-[0.95rem] font-bold transition-all duration-300 tracking-wide outline-none ${tab === 'giocatori' ? 'text-white drop-shadow-md' : 'text-white/50 hover:text-white/80'}`}
+              className={`flex-1 relative z-10 py-5 text-[1rem] font-bold transition-all duration-300 tracking-wide outline-none ${tab === 'giocatori' ? 'text-white drop-shadow-md' : 'text-white/50 hover:text-white/80'}`}
               onClick={() => setTab('giocatori')}
             >
               Giocatori
@@ -95,7 +95,7 @@ export default function HubIsland() {
 
       {/* Squadre */}
       {tab === 'squadre' && (
-        <div className="glass-card animate-stagger">
+        <div className="glass-card animate-stagger" style={{ marginTop: '2.5rem' }}>
           {TEAMS.map((team, i) => (
             <div key={i}>
               <div className="flex items-center gap-4 p-3 cursor-pointer hover:bg-[rgba(255,255,255,0.05)] transition-colors border-b border-[var(--glass-border)]" onClick={() => toggle(i)}>
@@ -130,7 +130,7 @@ export default function HubIsland() {
       )}
 
       {tab === 'giocatori' && (
-        <div className="glass-card animate-stagger">
+        <div className="glass-card animate-stagger" style={{ marginTop: '2.5rem' }}>
           {PLAYERS_ALL.map((p, i) => (
             <div key={i} className="flex items-center gap-4 p-4 border-b border-[var(--glass-border)] last:border-b-0">
               <div className={`team-avatar avatar-${p.idx}`} style={{ width: 32, height: 32, borderRadius: 10, fontSize: '0.7rem' }}>

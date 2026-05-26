@@ -6,12 +6,13 @@ const NAV_ITEMS = [
   { href: '/', label: 'Hub', icon: '🏠', id: 'hub' },
   { href: '/calendario', label: 'Calendario', icon: '📅', id: 'calendario' },
   { href: '/classifica', label: 'Classifica', icon: '🏆', id: 'classifica' },
+  { href: '/carte', label: 'Carte', icon: '🃏', id: 'carte' },
 ];
 
 export default function LiquidNav({ activePage }: { activePage: string }) {
   return (
     <>
-      <div className="sticky bottom-6 w-full z-[200] flex justify-center pointer-events-none px-4 mb-4 mt-auto">
+      <div className="fixed bottom-6 left-0 right-0 w-full z-[200] flex justify-center pointer-events-none px-4">
         <div className="pointer-events-auto">
           <GlassEffect className="rounded-[2.5rem] p-2.5 hover:p-3 transition-all duration-700">
             <div className="relative flex items-center justify-center gap-2 rounded-[2.5rem] px-1 overflow-hidden">
