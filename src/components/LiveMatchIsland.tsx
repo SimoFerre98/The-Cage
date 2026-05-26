@@ -24,7 +24,7 @@ export default function LiveMatchIsland() {
         <div className="absolute inset-0 bg-gradient-to-b from-[rgba(0,0,0,0.8)] via-[rgba(0,0,0,0.2)] to-transparent"></div>
         
         {/* Top Navbar */}
-        <div className="absolute top-4 left-0 w-full flex items-center justify-between px-8 z-20">
+        <div className="absolute top-5 left-6 right-6 flex items-center justify-between z-20">
            <GlassEffect className="w-10 h-10 rounded-full hover:scale-105 active:scale-95 transition-all duration-300">
              <a 
                href="/calendario" 
@@ -46,7 +46,18 @@ export default function LiveMatchIsland() {
                </svg>
              </a>
            </GlassEffect>
-           <span className="font-bold tracking-widest text-lg text-white drop-shadow-md uppercase">Live</span>
+
+           {/* Glowing Animated LIVE title */}
+           <div className="flex items-center gap-2 bg-black/35 backdrop-blur-md py-1.5 px-4 rounded-full border border-white/5 shadow-lg select-none">
+             <span className="relative flex h-2 w-2">
+               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+               <span className="relative inline-flex rounded-full h-2 w-2 bg-red-600 shadow-[0_0_8px_rgba(239,68,68,0.8)]"></span>
+             </span>
+             <span className="font-black tracking-widest text-xs md:text-sm text-white drop-shadow-[0_2px_4px_rgba(255,255,255,0.2)] uppercase">
+               Live
+             </span>
+           </div>
+
            <div className="w-10"></div> {/* Spacer for perfect centering */}
         </div>
 
