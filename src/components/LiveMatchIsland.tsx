@@ -25,22 +25,27 @@ export default function LiveMatchIsland() {
         
         {/* Top Navbar */}
         <div className="absolute top-0 left-0 w-full flex items-center justify-between p-6 z-20">
-           <a href="/calendario" className="group" style={{ textDecoration: 'none' }}>
-             <GlassEffect className="w-10 h-10 rounded-full flex items-center justify-center hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer">
+           <GlassEffect className="w-10 h-10 rounded-full hover:scale-105 active:scale-95 transition-all duration-300">
+             <a 
+               href="/calendario" 
+               className="w-full h-full flex items-center justify-center text-white" 
+               style={{ textDecoration: 'none' }}
+               aria-label="Torna al calendario"
+             >
                <svg 
                  xmlns="http://www.w3.org/2000/svg" 
                  viewBox="0 0 24 24" 
                  fill="none" 
                  stroke="currentColor" 
-                 strokeWidth="3" 
+                 strokeWidth="3.5" 
                  strokeLinecap="round" 
                  strokeLinejoin="round" 
-                 className="w-4 h-4 text-white opacity-85 group-hover:opacity-100 transition-opacity"
+                 className="w-5 h-5 text-white opacity-85 hover:opacity-100 transition-opacity -translate-x-[1px]"
                >
                  <polyline points="15 18 9 12 15 6" />
                </svg>
-             </GlassEffect>
-           </a>
+             </a>
+           </GlassEffect>
            <span className="font-bold tracking-widest text-lg text-white drop-shadow-md uppercase">Live</span>
            <div className="w-10"></div> {/* Spacer for perfect centering */}
         </div>
