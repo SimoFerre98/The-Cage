@@ -1058,3 +1058,14 @@ body {
 .poll-vote-btn:active {
   transform: scale(0.95);
 }
+
+/* 3D Parallax Soccer Field Floating Animation */
+@keyframes liveFieldFloat {
+  0% { transform: rotateX(3deg) rotateY(-3deg); }
+  50% { transform: rotateX(-3deg) rotateY(3deg); }
+  100% { transform: rotateX(3deg) rotateY(-3deg); }
+}
+
+.live-field-float {
+  animation: liveFieldFloat 8s ease-in-out infinite;
+}

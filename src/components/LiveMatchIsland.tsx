@@ -14,17 +14,47 @@ const EVENTS = [
 ];
 
 export default function LiveMatchIsland() {
+  const [tilt, setTilt] = React.useState({ x: 0, y: 0 });
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left - width / 2;
+    const mouseY = e.clientY - rect.top - height / 2;
+    
+    // Tilt limit to +/- 10 degrees.
+    const degX = -(mouseY / (height / 2)) * 10;
+    const degY = (mouseX / (width / 2)) * 10;
+    
+    setTilt({ x: degX, y: degY });
+  };
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
+  };
+
+  const isTilting = tilt.x !== 0 || tilt.y !== 0;
+
   return (
     <div className="flex flex-col w-full text-white min-h-screen">
-      {/* Header 3D */}
+      {/* Header 3D Container with Perspective */}
       <div 
-        className="relative w-full bg-cover bg-bottom bg-no-repeat overflow-hidden border-b-[3px] border-[#382613]"
-        style={{ height: '320px', backgroundImage: `url('/3d-field.png')`, boxShadow: '0 20px 50px rgba(0,0,0,0.9)' }}
+        ref={containerRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        className="relative w-full overflow-hidden border-b-[3px] border-[#382613]"
+        style={{ 
+          height: '320px', 
+          perspective: '1000px', 
+          boxShadow: '0 20px 50px rgba(0,0,0,0.9)',
+          transformStyle: 'preserve-3d',
+        }}
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-[rgba(0,0,0,0.8)] via-[rgba(0,0,0,0.2)] to-transparent"></div>
-        
-        {/* Top Navbar */}
-        <div className="absolute top-5 left-6 right-6 flex items-center justify-between z-20">
+        {/* Top Navbar - STATIC & CLICKABLE (Always flat and on top of tilted layers) */}
+        <div className="absolute top-5 left-6 right-6 flex items-center justify-between z-30">
            <GlassEffect className="w-10 h-10 rounded-full hover:scale-105 active:scale-95 transition-all duration-300">
              <a 
                href="/calendario" 
@@ -61,40 +91,107 @@ export default function LiveMatchIsland() {
            <div className="w-10"></div> {/* Spacer for perfect centering */}
         </div>
 
-        {/* Score */}
-        <div className="absolute top-16 left-0 w-full flex justify-center z-20">
-           <div className="flex items-center gap-6 text-6xl font-light drop-shadow-lg tracking-widest tabular-nums">
-             <span>3</span>
-             <span className="text-white/60 text-4xl -translate-y-1">:</span>
-             <span>2</span>
-           </div>
-        </div>
+        {/* Tilted Parallax Container */}
+        <div
+          className={`relative w-full h-full ${!isTilting ? 'live-field-float' : ''}`}
+          style={{
+            transform: isTilting ? `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)` : undefined,
+            transformStyle: 'preserve-3d',
+            transition: isTilting ? 'transform 0.1s ease-out' : 'transform 0.6s ease-out',
+          }}
+        >
+          {/* Layer 1: Background Field Image (scaled to avoid edges) */}
+          <div 
+            className="absolute inset-0 bg-cover bg-bottom bg-no-repeat scale-[1.2]"
+            style={{ 
+              backgroundImage: `url('/3d-field.png')`,
+              transform: 'translateZ(0px)',
+            }}
+          />
+          
+          {/* Layer 2: Gradient overlay */}
+          <div 
+            className="absolute inset-0 bg-gradient-to-b from-[rgba(0,0,0,0.8)] via-[rgba(0,0,0,0.2)] to-transparent scale-[1.2]"
+            style={{
+              transform: 'translateZ(15px)',
+            }}
+          />
 
-        {/* Logos on the field */}
-        <div className="absolute bottom-12 left-0 w-full flex items-end justify-center z-20">
-           <div className="relative flex items-center justify-between w-full max-w-[360px] px-10">
-              
-              {/* Home Team */}
-              <div className="relative flex flex-col items-center">
-                 {/* Shadow on the grass */}
-                 <div className="absolute -bottom-3 w-16 h-3 bg-black/60 blur-[4px] rounded-[100%]"></div>
-                 {/* Logo */}
-                 <div className="relative w-[4.5rem] h-[5.5rem] rounded-b-full bg-gradient-to-b from-red-600 to-red-800 border-[2px] border-yellow-400/80 shadow-2xl flex flex-col items-center justify-center font-black text-2xl text-white">
-                   <span className="text-xs uppercase tracking-widest text-yellow-300 mt-2">ACG</span>
-                 </div>
-              </div>
-              
-              {/* Away Team */}
-              <div className="relative flex flex-col items-center">
-                 {/* Shadow on the grass */}
-                 <div className="absolute -bottom-3 w-16 h-3 bg-black/60 blur-[4px] rounded-[100%]"></div>
-                 {/* Logo */}
-                 <div className="relative w-[4.5rem] h-[5.5rem] rounded-b-full bg-gradient-to-b from-blue-600 to-blue-900 border-[2px] border-yellow-400/80 shadow-2xl flex flex-col items-center justify-center font-black text-2xl text-white">
-                   <span className="text-[0.6rem] uppercase tracking-widest text-yellow-300 mt-2 text-center leading-tight">FC<br/>MON</span>
-                 </div>
-              </div>
+          {/* Layer 3: Scoreboard (strongly extruded) */}
+          <div 
+            className="absolute top-16 left-0 w-full flex justify-center"
+            style={{
+              transform: 'translateZ(75px)',
+            }}
+          >
+             <div className="flex items-center gap-6 text-6xl font-light drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)] tracking-widest tabular-nums select-none">
+               <span className="font-semibold text-white">3</span>
+               <span className="text-white/60 text-4xl -translate-y-1">:</span>
+               <span className="font-semibold text-white">2</span>
+             </div>
+          </div>
 
-           </div>
+          {/* Layer 4: Logos (extruded, with shadows projected back onto the field) */}
+          <div 
+            className="absolute bottom-12 left-0 w-full flex items-end justify-center"
+            style={{
+              transform: 'translateZ(55px)',
+              transformStyle: 'preserve-3d',
+            }}
+          >
+             <div 
+               className="relative flex items-center justify-between w-full max-w-[360px] px-10"
+               style={{ transformStyle: 'preserve-3d' }}
+             >
+                
+                {/* Home Team */}
+                <div 
+                  className="relative flex flex-col items-center"
+                  style={{ transformStyle: 'preserve-3d' }}
+                >
+                   {/* Shadow on the grass */}
+                   <div 
+                     className="absolute -bottom-3 w-16 h-3 bg-black/60 blur-[4px] rounded-[100%]"
+                     style={{
+                       transform: 'translateZ(-45px)',
+                     }}
+                   />
+                   {/* Logo */}
+                   <div 
+                     className="relative w-[4.5rem] h-[5.5rem] rounded-b-full bg-gradient-to-b from-red-600 to-red-800 border-[2px] border-yellow-400/80 shadow-2xl flex flex-col items-center justify-center font-black text-2xl text-white"
+                     style={{
+                       transform: 'translateZ(10px)',
+                     }}
+                   >
+                     <span className="text-xs uppercase tracking-widest text-yellow-300 mt-2">ACG</span>
+                   </div>
+                </div>
+                
+                {/* Away Team */}
+                <div 
+                  className="relative flex flex-col items-center"
+                  style={{ transformStyle: 'preserve-3d' }}
+                >
+                   {/* Shadow on the grass */}
+                   <div 
+                     className="absolute -bottom-3 w-16 h-3 bg-black/60 blur-[4px] rounded-[100%]"
+                     style={{
+                       transform: 'translateZ(-45px)',
+                     }}
+                   />
+                   {/* Logo */}
+                   <div 
+                     className="relative w-[4.5rem] h-[5.5rem] rounded-b-full bg-gradient-to-b from-blue-600 to-blue-900 border-[2px] border-yellow-400/80 shadow-2xl flex flex-col items-center justify-center font-black text-2xl text-white"
+                     style={{
+                       transform: 'translateZ(10px)',
+                     }}
+                   >
+                     <span className="text-[0.6rem] uppercase tracking-widest text-yellow-300 mt-2 text-center leading-tight">FC<br/>MON</span>
+                   </div>
+                </div>
+
+             </div>
+          </div>
         </div>
       </div>
 
