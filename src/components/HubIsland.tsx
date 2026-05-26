@@ -75,10 +75,11 @@ const BASE_VOTES: Record<string, number> = {
 };
 
 export default function HubIsland() {
-  const [tab, setTab] = useState<'squadre' | 'giocatori' | 'voto'>('squadre');
+  const [tab, setTab] = useState<'squadre' | 'giocatori'>('squadre');
   const [expanded, setExpanded] = useState<number | null>(null);
   const [votedId, setVotedId] = useState<string | null>(null);
   const [votes, setVotes] = useState<Record<string, number>>(BASE_VOTES);
+  const [showVoteModal, setShowVoteModal] = useState(false);
 
   useEffect(() => {
     const savedVote = localStorage.getItem('cage-mvp-vote');
@@ -118,15 +119,36 @@ export default function HubIsland() {
 
   return (
     <div>
+      {/* Page Header integrated dynamically */}
+      <div className="page-header">
+        <h1 className="page-title">Hub</h1>
+        <p className="page-subtitle">Squadre e giocatori del torneo</p>
+        <div className="accent-line"></div>
+        <div className="flex gap-2 flex-wrap items-center mt-3.5">
+          <div className="player-count-badge" style={{ marginTop: 0 }}>
+            <span>👥</span>
+            <span>{PLAYERS_ALL.length} giocatori</span>
+          </div>
+          <button 
+            onClick={() => setShowVoteModal(true)}
+            className="player-count-badge hover:bg-[rgba(59,130,246,0.2)] active:scale-95 transition-all cursor-pointer font-bold border border-[rgba(59,130,246,0.4)] bg-[rgba(59,130,246,0.1)] text-[#60a5fa] hover:text-white"
+            style={{ marginTop: 0 }}
+          >
+            <span>🗳️</span>
+            <span>Vota MVP</span>
+          </button>
+        </div>
+      </div>
+
       {/* Pill Toggle */}
       <div className="flex justify-center w-full mb-14 sticky top-[85px] md:top-8 z-[120] px-4 transition-all duration-300">
-        <GlassEffect className="w-full max-w-[420px] rounded-[50px] p-2 cursor-pointer">
+        <GlassEffect className="w-full max-w-[360px] rounded-[50px] p-2 cursor-pointer">
           <div className="relative flex w-full">
             <div 
-              className="absolute top-0 bottom-0 w-1/3 bg-[rgba(59,130,246,0.3)] shadow-[inset_0_1px_4px_rgba(255,255,255,0.4)] rounded-[50px]" 
+              className="absolute top-0 bottom-0 bg-[rgba(59,130,246,0.3)] shadow-[inset_0_1px_4px_rgba(255,255,255,0.4)] rounded-[50px]" 
               style={{ 
-                width: '33.333%',
-                transform: tab === 'squadre' ? 'translateX(0)' : tab === 'giocatori' ? 'translateX(100%)' : 'translateX(200%)',
+                width: '50%',
+                transform: tab === 'squadre' ? 'translateX(0)' : 'translateX(100%)',
                 transition: 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)'
               }}
             ></div>
@@ -141,12 +163,6 @@ export default function HubIsland() {
               onClick={() => setTab('giocatori')}
             >
               Giocatori
-            </button>
-            <button
-              className={`flex-1 relative z-10 py-5 text-[0.9rem] md:text-[1rem] font-bold transition-all duration-300 tracking-wide outline-none ${tab === 'voto' ? 'text-white drop-shadow-md' : 'text-white/50 hover:text-white/80'}`}
-              onClick={() => setTab('voto')}
-            >
-              Vota MVP
             </button>
           </div>
         </GlassEffect>
@@ -205,95 +221,122 @@ export default function HubIsland() {
         </div>
       )}
 
-      {/* Votazione MVP */}
-      {tab === 'voto' && (
-        <div className="glass-card animate-stagger" style={{ marginTop: '2.5rem' }}>
-          <div className="p-5 border-b border-[var(--glass-border)] bg-[rgba(255,255,255,0.01)]">
-            <h3 className="text-[1.1rem] font-black text-white mb-1.5 uppercase tracking-wide flex items-center gap-2">
-              Miglior Giocatore del Turno 🗳️
-            </h3>
-            <p className="text-xs font-semibold text-[var(--text-muted)] leading-relaxed">
-              Chi è stato l'MVP dell'ultima giornata di gare? Esprimi la tua preferenza. Puoi modificare la tua scelta in qualsiasi momento.
-            </p>
-          </div>
+      {/* MVP Voting Modal Overlay */}
+      {showVoteModal && (
+        <div className="modal-overlay" onClick={() => setShowVoteModal(false)} style={{ zIndex: 99999 }}>
+          <div onClick={e => e.stopPropagation()} className="w-full max-w-[450px] animate-[modalSlideUp_0.4s_var(--ease-spring)] px-4">
+            <GlassEffect className="w-full rounded-[24px] p-6 md:p-8 relative overflow-hidden" style={{ display: 'block' }}>
+              {/* Ambient background glows */}
+              <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-[rgba(59,130,246,0.35)] blur-[40px] pointer-events-none" />
+              <div className="absolute -bottom-10 -left-10 w-32 h-32 rounded-full bg-[rgba(139,92,246,0.3)] blur-[40px] pointer-events-none" />
 
-          <div>
-            {CANDIDATES.map((c) => {
-              const voteCount = votes[c.id] || 0;
-              const percentage = totalVotes > 0 ? Math.round((voteCount / totalVotes) * 100) : 0;
-              const hasVotedThis = votedId === c.id;
-
-              return (
-                <div 
-                  key={c.id} 
-                  className={`poll-option-card ${votedId && hasVotedThis ? 'poll-option-voted' : ''}`}
-                >
-                  <div className="flex items-center gap-4">
-                    {/* Avatar */}
-                    <div className={`team-avatar avatar-${c.avatarIdx}`} style={{ width: 38, height: 38, borderRadius: 12, fontSize: '0.65rem', flexShrink: 0, fontWeight: 800 }}>
-                      {AVATAR_INITIALS(c.team)}
-                    </div>
-
-                    {/* Candidate Info */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-baseline gap-2 justify-between">
-                        <span className="font-bold text-[0.95rem] text-white truncate">{c.name}</span>
-                        <span className="text-[0.7rem] font-bold text-[var(--text-muted)] truncate">{c.team}</span>
-                      </div>
-                      <div className="text-xs text-[var(--text-muted)] mt-0.5 truncate">{c.highlight}</div>
-                    </div>
-
-                    {/* Action or Percentage */}
-                    <div className="flex-shrink-0 ml-2">
-                      {!votedId ? (
-                        <button 
-                          onClick={() => handleVote(c.id)}
-                          className="poll-vote-btn"
-                        >
-                          Vota
-                        </button>
-                      ) : (
-                        <div className="flex flex-col items-end gap-1">
-                          <span className={`poll-percentage ${hasVotedThis ? 'poll-voted-percentage' : ''}`}>
-                            {percentage}%
-                          </span>
-                          {hasVotedThis && (
-                            <span className="poll-voted-badge">Votato</span>
-                          )}
-                        </div>
-                      )}
-                    </div>
+              <div className="relative">
+                {/* Header */}
+                <div className="flex justify-between items-center mb-6">
+                  <div>
+                    <h3 className="text-xl font-extrabold tracking-tight text-white drop-shadow flex items-center gap-2">
+                      Vota MVP del Turno 🗳️
+                    </h3>
+                    <div className="h-[2px] w-12 mt-1.5 rounded bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)]" />
                   </div>
-
-                  {/* Progress Bar */}
-                  {votedId && (
-                    <div className="poll-progress-container">
-                      <div 
-                        className={`poll-progress-fill ${hasVotedThis ? 'poll-voted-fill' : ''}`}
-                        style={{ width: `${percentage}%` }}
-                      />
-                    </div>
-                  )}
+                  <button 
+                    className="w-8 h-8 flex items-center justify-center rounded-full bg-[rgba(255,255,255,0.08)] hover:bg-[rgba(255,255,255,0.2)] border border-[rgba(255,255,255,0.12)] text-white transition-all duration-300 hover:rotate-90 active:scale-95 cursor-pointer outline-none"
+                    onClick={() => setShowVoteModal(false)}
+                    aria-label="Chiudi"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="18" y1="6" x2="6" y2="18"></line>
+                      <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                  </button>
                 </div>
-              );
-            })}
-          </div>
 
-          {/* Reset button at footer if voted */}
-          {votedId && (
-            <div className="p-4 bg-[rgba(0,0,0,0.1)] border-t border-[var(--glass-border)] flex justify-between items-center">
-              <span className="text-xs font-semibold text-[var(--text-muted)]">
-                Voti totali: <strong className="text-white">{totalVotes}</strong>
-              </span>
-              <button 
-                onClick={handleReset}
-                className="install-btn"
-                style={{ margin: 0, padding: '0.45rem 1rem', background: 'rgba(255, 255, 255, 0.03)', fontSize: '0.75rem' }}
-              >
-                🔄 Cambia voto
-              </button>
-            </div>
-          )}
+                <p className="text-xs font-semibold text-[var(--text-muted)] leading-relaxed mb-5">
+                  Chi è stato l'MVP dell'ultima giornata di gare? Esprimi la tua preferenza. Puoi modificare la tua scelta in qualsiasi momento.
+                </p>
+
+                {/* Candidates List */}
+                <div className="flex flex-col gap-2.5 max-h-[50vh] overflow-y-auto pr-1">
+                  {CANDIDATES.map((c) => {
+                    const voteCount = votes[c.id] || 0;
+                    const percentage = totalVotes > 0 ? Math.round((voteCount / totalVotes) * 100) : 0;
+                    const hasVotedThis = votedId === c.id;
+
+                    return (
+                      <div 
+                        key={c.id} 
+                        className={`poll-option-card rounded-xl border border-[rgba(255,255,255,0.05)] bg-[rgba(255,255,255,0.02)] p-4 ${votedId && hasVotedThis ? 'poll-option-voted' : ''}`}
+                      >
+                        <div className="flex items-center gap-3">
+                          {/* Avatar */}
+                          <div className={`team-avatar avatar-${c.avatarIdx}`} style={{ width: 34, height: 34, borderRadius: 10, fontSize: '0.6rem', flexShrink: 0, fontWeight: 800 }}>
+                            {AVATAR_INITIALS(c.team)}
+                          </div>
+
+                          {/* Candidate Info */}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-baseline gap-2 justify-between">
+                              <span className="font-bold text-sm text-white truncate">{c.name}</span>
+                              <span className="text-[0.65rem] font-bold text-[var(--text-muted)] truncate">{c.team}</span>
+                            </div>
+                            <div className="text-[0.7rem] text-[var(--text-muted)] mt-0.5 truncate">{c.highlight}</div>
+                          </div>
+
+                          {/* Action or Percentage */}
+                          <div className="flex-shrink-0 ml-2">
+                            {!votedId ? (
+                              <button 
+                                onClick={() => handleVote(c.id)}
+                                className="poll-vote-btn"
+                                style={{ padding: '0.35rem 0.8rem', fontSize: '0.7rem' }}
+                              >
+                                Vota
+                              </button>
+                            ) : (
+                              <div className="flex flex-col items-end gap-0.5">
+                                <span className={`poll-percentage text-sm ${hasVotedThis ? 'poll-voted-percentage' : ''}`}>
+                                  {percentage}%
+                                </span>
+                                {hasVotedThis && (
+                                  <span className="poll-voted-badge" style={{ padding: '0.15rem 0.4rem', fontSize: '0.55rem' }}>Votato</span>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Progress Bar */}
+                        {votedId && (
+                          <div className="poll-progress-container" style={{ height: 6, marginTop: '0.5rem' }}>
+                            <div 
+                              className={`poll-progress-fill ${hasVotedThis ? 'poll-voted-fill' : ''}`}
+                              style={{ width: `${percentage}%` }}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Reset button at footer if voted */}
+                {votedId && (
+                  <div className="mt-4 pt-4 border-t border-[var(--glass-border)] flex justify-between items-center">
+                    <span className="text-xs font-semibold text-[var(--text-muted)]">
+                      Voti totali: <strong className="text-white">{totalVotes}</strong>
+                    </span>
+                    <button 
+                      onClick={handleReset}
+                      className="install-btn"
+                      style={{ margin: 0, padding: '0.4rem 0.9rem', background: 'rgba(255, 255, 255, 0.03)', fontSize: '0.7rem' }}
+                    >
+                      🔄 Cambia voto
+                    </button>
+                  </div>
+                )}
+              </div>
+            </GlassEffect>
+          </div>
         </div>
       )}
     </div>
