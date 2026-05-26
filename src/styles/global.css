@@ -816,3 +816,145 @@ body {
     padding: 0.6rem 0.8rem;
   }
 }
+
+/* Bracket (Tabellone) Styles */
+.bracket-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.bracket-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 1.5rem;
+}
+
+@media (max-width: 480px) {
+  .bracket-row {
+    gap: 0.75rem;
+  }
+}
+
+.bracket-card-wrapper {
+  flex: 1;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bracket-round-title {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
+
+.bracket-card {
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  background: var(--glass-bg);
+}
+
+.bracket-team {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+}
+
+.bracket-team-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 480px) {
+  .bracket-team-name {
+    font-size: 0.75rem;
+  }
+}
+
+.bracket-divider {
+  height: 1px;
+  background: var(--glass-border);
+  width: 100%;
+}
+
+.bracket-time {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 0.2rem;
+}
+
+/* Connector SVG */
+.bracket-connector-container {
+  width: 100%;
+  height: 48px;
+  position: relative;
+  margin: 0.5rem 0;
+}
+
+.bracket-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Centered Row for Final */
+.bracket-row-center {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.final-wrapper {
+  max-width: 340px;
+}
+
+.final-title {
+  color: #fbbf24; /* Golden */
+  font-size: 0.95rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+}
+
+/* Gold Theme for Final Card */
+.final-card-gold {
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  box-shadow: 
+    inset 0 1px 1px rgba(255, 255, 255, 0.1),
+    0 10px 40px rgba(245, 158, 11, 0.15),
+    0 0 20px rgba(245, 158, 11, 0.05);
+  background: linear-gradient(135deg, rgba(20, 25, 40, 0.5) 0%, rgba(30, 25, 20, 0.6) 100%);
+  transform: scale(1.02);
+  transition: transform 0.4s var(--ease-spring), border-color 0.4s var(--ease-spring), box-shadow 0.4s var(--ease-spring);
+}
+
+.final-card-gold:hover {
+  transform: scale(1.05) translateY(-2px);
+  border-color: rgba(245, 158, 11, 0.4);
+  box-shadow: 
+    inset 0 1px 2px rgba(255, 255, 255, 0.2),
+    0 15px 45px rgba(245, 158, 11, 0.25),
+    0 0 25px rgba(245, 158, 11, 0.1);
+}
+
+.final-time {
+  color: rgba(251, 191, 36, 0.8);
+}
