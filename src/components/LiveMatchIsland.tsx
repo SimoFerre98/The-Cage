@@ -102,8 +102,8 @@ export default function LiveMatchIsland() {
                   </div>
                   
                   {/* Center Dot (Minute) */}
-                  <div className="flex-shrink-0 z-10 px-1">
-                     <div className="w-8 h-8 rounded-full flex items-center justify-center text-[0.75rem] font-bold text-white/95 border border-[var(--glass-border)] bg-[#0d111d]/90 shadow-[0_0_10px_rgba(0,0,0,0.5)]">
+                  <div className="flex-shrink-0 z-10 px-1.5">
+                     <div className="w-10 h-10 rounded-full flex items-center justify-center text-[0.85rem] font-bold text-white border border-white/45 bg-white/10 backdrop-blur-md shadow-[0_0_15px_rgba(0,0,0,0.5)]">
                        {ev.minute}'
                      </div>
                   </div>
