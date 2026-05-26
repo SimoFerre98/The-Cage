@@ -24,7 +24,7 @@ export default function LiveMatchIsland() {
         <div className="absolute inset-0 bg-gradient-to-b from-[rgba(0,0,0,0.8)] via-[rgba(0,0,0,0.2)] to-transparent"></div>
         
         {/* Top Navbar */}
-        <div className="absolute top-0 left-0 w-full flex items-center justify-between p-6 z-20">
+        <div className="absolute top-4 left-0 w-full flex items-center justify-between px-8 z-20">
            <GlassEffect className="w-10 h-10 rounded-full hover:scale-105 active:scale-95 transition-all duration-300">
              <a 
                href="/calendario" 
