@@ -53,6 +53,17 @@ export default function LiveMatchIsland() {
           transformStyle: 'preserve-3d',
         }}
       >
+        {/* Layer 1: Background Field Image (STATIC - not scaled, sits behind parallax elements) */}
+        <div 
+          className="absolute inset-0 bg-cover bg-bottom bg-no-repeat"
+          style={{ 
+            backgroundImage: `url('/3d-field.png')`,
+          }}
+        />
+        
+        {/* Layer 2: Ambient Lighting Overlay (STATIC) */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[rgba(0,0,0,0.8)] via-[rgba(0,0,0,0.2)] to-transparent" />
+
         {/* Top Navbar - STATIC & CLICKABLE (Always flat and on top of tilted layers) */}
         <div className="absolute top-5 left-6 right-6 flex items-center justify-between z-30">
            <GlassEffect className="w-10 h-10 rounded-full hover:scale-105 active:scale-95 transition-all duration-300">
@@ -91,32 +102,15 @@ export default function LiveMatchIsland() {
            <div className="w-10"></div> {/* Spacer for perfect centering */}
         </div>
 
-        {/* Tilted Parallax Container */}
+        {/* Tilted Parallax Container (Only scoreboard and logos tilt/float in 3D) */}
         <div
-          className={`relative w-full h-full ${!isTilting ? 'live-field-float' : ''}`}
+          className={`absolute inset-0 w-full h-full z-20 ${!isTilting ? 'live-field-float' : ''}`}
           style={{
             transform: isTilting ? `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)` : undefined,
             transformStyle: 'preserve-3d',
             transition: isTilting ? 'transform 0.1s ease-out' : 'transform 0.6s ease-out',
           }}
         >
-          {/* Layer 1: Background Field Image (scaled to avoid edges) */}
-          <div 
-            className="absolute inset-0 bg-cover bg-bottom bg-no-repeat scale-[1.2]"
-            style={{ 
-              backgroundImage: `url('/3d-field.png')`,
-              transform: 'translateZ(0px)',
-            }}
-          />
-          
-          {/* Layer 2: Gradient overlay */}
-          <div 
-            className="absolute inset-0 bg-gradient-to-b from-[rgba(0,0,0,0.8)] via-[rgba(0,0,0,0.2)] to-transparent scale-[1.2]"
-            style={{
-              transform: 'translateZ(15px)',
-            }}
-          />
-
           {/* Layer 3: Scoreboard (strongly extruded) */}
           <div 
             className="absolute top-16 left-0 w-full flex justify-center"
