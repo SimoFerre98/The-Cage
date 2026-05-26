@@ -42,11 +42,13 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--bg-deep);
+  overflow-x: hidden;
 }
 
 body {
   min-height: 100vh;
   background-color: transparent;
+  overflow-x: hidden;
 }
 
 /* Background Container */

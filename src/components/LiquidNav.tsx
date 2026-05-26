@@ -11,11 +11,9 @@ const NAV_ITEMS = [
 
 export default function LiquidNav({ activePage }: { activePage: string }) {
   return (
-    <>
-      <div className="fixed bottom-6 left-0 right-0 w-full z-[200] flex justify-center pointer-events-none px-4">
-        <div className="pointer-events-auto">
-          <GlassEffect className="rounded-[2.5rem] p-2.5 hover:p-3 transition-all duration-700">
-            <div className="relative flex items-center justify-center gap-2 rounded-[2.5rem] px-1 overflow-hidden">
+    <div className="pointer-events-auto">
+      <GlassEffect className="rounded-[2.5rem] p-2.5 hover:p-3 transition-all duration-700">
+        <div className="relative flex items-center justify-center gap-2 rounded-[2.5rem] px-1 overflow-hidden">
               {NAV_ITEMS.map((item, index) => {
                 const isActive = activePage === item.id;
                 return (
@@ -48,8 +46,6 @@ export default function LiquidNav({ activePage }: { activePage: string }) {
               })}
             </div>
           </GlassEffect>
-        </div>
-      </div>
-    </>
+    </div>
   );
 }
