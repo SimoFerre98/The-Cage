@@ -1,0 +1,10 @@
+---
+import Layout from '../layouts/Layout.astro';
+import AdminApp from '../components/admin/AdminApp';
+---
+
+<Layout title="The Cage - Amministrazione">
+  <main class="min-h-screen text-white pt-6 pb-24 px-4 w-full">
+    <AdminApp client:only="react" />
+  </main>
+</Layout>
