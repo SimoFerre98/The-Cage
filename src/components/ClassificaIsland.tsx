@@ -1,32 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import GlassEffect from './GlassEffect';
-
-const STANDINGS = [
-  { team: 'Montarsolo',             g: 3, v: 3, n: 0, p: 0, gf: 10, gs: 3, pt: 9 },
-  { team: 'Amatori Calcio Genova',  g: 3, v: 2, n: 0, p: 1, gf: 7,  gs: 4, pt: 6 },
-  { team: 'Samu Betti',             g: 2, v: 2, n: 0, p: 0, gf: 9,  gs: 4, pt: 6 },
-  { team: 'Mario',                  g: 2, v: 2, n: 0, p: 0, gf: 6,  gs: 2, pt: 6 },
-  { team: 'Tama',                   g: 2, v: 1, n: 0, p: 1, gf: 4,  gs: 5, pt: 3 },
-  { team: 'UCG (Bairon)',           g: 2, v: 0, n: 2, p: 0, gf: 3,  gs: 3, pt: 2 },
-  { team: 'Dario',                  g: 2, v: 0, n: 2, p: 0, gf: 3,  gs: 3, pt: 2 },
-  { team: 'Corsi',                  g: 2, v: 0, n: 0, p: 2, gf: 2,  gs: 6, pt: 0 },
-  { team: 'Taverna',                g: 1, v: 0, n: 0, p: 1, gf: 1,  gs: 3, pt: 0 },
-  { team: 'Martino Gonzalez',       g: 1, v: 0, n: 0, p: 1, gf: 0,  gs: 2, pt: 0 },
-  { team: 'chainz Andrea Robbiano', g: 1, v: 0, n: 0, p: 1, gf: 2,  gs: 5, pt: 0 },
-];
-
-const SCORERS = [
-  { name: 'De Luca E.',   team: 'Tama',                   goals: 7 },
-  { name: 'Amato C.',     team: 'Montarsolo',              goals: 6 },
-  { name: 'Betti S.',     team: 'Samu Betti',              goals: 5 },
-  { name: 'Rossi L.',     team: 'Amatori Calcio Genova',   goals: 4 },
-  { name: 'Fontana C.',   team: 'Mario',                   goals: 3 },
-  { name: 'Robbiano A.',  team: 'chainz Andrea Robbiano',  goals: 3 },
-  { name: 'Vitale P.',    team: 'Corsi',                   goals: 2 },
-  { name: 'Greco N.',     team: 'Tama',                    goals: 2 },
-  { name: 'Ferrari M.',   team: 'Amatori Calcio Genova',   goals: 2 },
-  { name: 'Ruggiero M.',  team: 'UCG (Bairon)',            goals: 1 },
-];
+import { supabase } from '../lib/supabase';
 
 const LEGEND = [
   { label: 'PT', desc: 'Punti totali' },
@@ -61,6 +35,28 @@ const AVATAR_IDX: Record<string, number> = {
 export default function ClassificaIsland() {
   const [tab, setTab] = useState<'squadre' | 'marcatori'>('squadre');
   const [showLegend, setShowLegend] = useState(false);
+  const [standings, setStandings] = useState<any[]>([]);
+  const [scorers, setScorers] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadData() {
+      setLoading(true);
+      const [standingsRes, scorersRes] = await Promise.all([
+        supabase.from('standings').select('*'),
+        supabase.from('top_scorers').select('*')
+      ]);
+
+      if (standingsRes.data) {
+        setStandings(standingsRes.data);
+      }
+      if (scorersRes.data) {
+        setScorers(scorersRes.data);
+      }
+      setLoading(false);
+    }
+    loadData();
+  }, []);
 
   return (
     <div>
@@ -128,7 +124,7 @@ export default function ClassificaIsland() {
               </tr>
             </thead>
             <tbody>
-              {STANDINGS.map((row, i) => (
+              {standings.map((row, i) => (
                 <tr key={i} className="hover:bg-[rgba(255,255,255,0.05)] transition-colors duration-300">
                   <td className="px-2 py-3 text-center">
                     <span className={`text-[0.8rem] font-bold ${i < 3 ? 'text-[var(--accent-primary)]' : 'text-[var(--text-muted)]'}`}>
@@ -137,10 +133,10 @@ export default function ClassificaIsland() {
                   </td>
                   <td className="px-2 py-3">
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                      <div className={`team-avatar avatar-${AVATAR_IDX[row.team] ?? 0}`} style={{ width: 26, height: 26, borderRadius: 7, fontSize: '0.55rem', flexShrink: 0 }}>
-                        {AVATAR_INITIALS(row.team)}
+                      <div className={`team-avatar avatar-${AVATAR_IDX[row.team_name] ?? 0}`} style={{ width: 26, height: 26, borderRadius: 7, fontSize: '0.55rem', flexShrink: 0 }}>
+                        {AVATAR_INITIALS(row.team_name)}
                       </div>
-                      <span className="text-[0.85rem] font-bold text-[var(--text-primary)]">{row.team}</span>
+                      <span className="text-[0.85rem] font-bold text-[var(--text-primary)]">{row.team_name}</span>
                     </div>
                   </td>
                   <td className="px-1 py-3 text-center text-sm text-[var(--text-secondary)]">{row.g}</td>
@@ -160,7 +156,7 @@ export default function ClassificaIsland() {
       {/* Marcatori */}
       {tab === 'marcatori' && (
         <div className="glass-card animate-stagger" style={{ marginTop: '2.5rem' }}>
-          {SCORERS.map((s, i) => (
+          {scorers.map((s, i) => (
             <div key={i} className="flex items-center gap-3 px-4 py-3.5 border-b border-[var(--glass-border)] hover:bg-[rgba(255,255,255,0.05)] transition-colors duration-300">
               <div 
                 className="flex items-center justify-center w-8 h-8 rounded-lg text-xs font-bold shrink-0 border"
@@ -173,8 +169,8 @@ export default function ClassificaIsland() {
                 {i < 3 ? (i === 0 ? '🏅' : i === 1 ? '2' : '3') : i + 1}
               </div>
               <div className="flex-1">
-                <div className="text-[0.9rem] font-bold text-[var(--text-primary)]">{s.name}</div>
-                <div className="text-[0.75rem] text-[var(--text-muted)]">{s.team}</div>
+                <div className="text-[0.9rem] font-bold text-[var(--text-primary)]">{s.player_name}</div>
+                <div className="text-[0.75rem] text-[var(--text-muted)]">{s.team_name}</div>
               </div>
               <div className="flex items-center gap-1.5 font-black text-lg text-[var(--accent-primary)]">
                 <span className="text-sm">⚽</span>
@@ -195,15 +191,19 @@ export default function ClassificaIsland() {
               <div className="absolute -bottom-10 -left-10 w-32 h-32 rounded-full bg-[rgba(139,92,246,0.3)] blur-[40px] pointer-events-none" />
 
               <div className="relative">
-                <div className="flex justify-between items-center mb-6">
-                  <div>
-                    <h3 className="text-xl font-extrabold tracking-tight text-white drop-shadow">
+                <div className="grid grid-cols-[32px_1fr_32px] gap-3 items-start mb-6 pt-1 px-1 md:px-3">
+                  {/* Spacer to perfectly center the title */}
+                  <div className="w-8 h-8 pointer-events-none"></div>
+
+                  <div className="flex flex-col items-center justify-center">
+                    <h3 className="text-xl font-extrabold tracking-tight text-white drop-shadow text-center">
                       Legenda Classifica
                     </h3>
-                    <div className="h-[2px] w-12 mt-1.5 rounded bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)]" />
+                    <div className="h-[2px] w-12 mt-2 rounded bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)] mx-auto" />
                   </div>
+
                   <button 
-                    className="w-8 h-8 flex items-center justify-center rounded-full bg-[rgba(255,255,255,0.08)] hover:bg-[rgba(255,255,255,0.2)] border border-[rgba(255,255,255,0.12)] text-white hover:text-white transition-all duration-300 hover:rotate-90 active:scale-95 cursor-pointer outline-none"
+                    className="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-full bg-gradient-to-br from-red-500/20 to-red-600/40 hover:from-red-500/40 hover:to-red-600/60 border border-red-500/30 text-red-100 transition-all duration-300 hover:rotate-90 active:scale-95 cursor-pointer outline-none shadow-[0_0_10px_rgba(239,68,68,0.2)] justify-self-end"
                     onClick={() => setShowLegend(false)}
                     aria-label="Chiudi"
                   >

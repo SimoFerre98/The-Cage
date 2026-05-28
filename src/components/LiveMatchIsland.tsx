@@ -1,21 +1,53 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import GlassEffect from './GlassEffect';
+import { supabase } from '../lib/supabase';
 
-const EVENTS = [
-  { minute: 5, type: 'Carta Attivata', player: 'Amatori Calcio Genova', team: 'home', detail: 'starplayer' },
-  { minute: 12, type: 'Goal (Stella)', player: 'Rossi L.', team: 'home' },
-  { minute: 18, type: 'Yellow Card', player: 'Bruno T.', team: 'away' },
-  { minute: 26, type: 'Carta Attivata', player: 'Montarsolo', team: 'away', detail: 'goalx2' },
-  { minute: 28, type: 'Goal (Raddoppiato)', player: 'Amato C.', team: 'away' },
-  { minute: 34, type: 'Carta Attivata', player: 'Amatori Calcio Genova', team: 'home', detail: 'penalty' },
-  { minute: 35, type: 'Goal (Penalty)', player: 'Rossi L.', team: 'home' },
-  { minute: 42, type: 'Red Card', player: 'Ferrari M.', team: 'home' },
-  { minute: 45, type: 'Carta Attivata', player: 'Montarsolo', team: 'away', detail: 'joker' },
-];
+const AVATAR_INITIALS = (name: string) => {
+  const parts = name.split(' ');
+  if (parts.length >= 2) return (parts[0][0] + (parts[1][0] || '')).toUpperCase();
+  return name.slice(0, 2).toUpperCase();
+};
 
 export default function LiveMatchIsland() {
-  const [tilt, setTilt] = React.useState({ x: 0, y: 0 });
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const [liveMatch, setLiveMatch] = useState<any>(null);
+  const [events, setEvents] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadData() {
+      const { data: match } = await supabase
+        .from('matches')
+        .select('*, home_team:teams!home_team_id(name), away_team:teams!away_team_id(name)')
+        .eq('status', 'LIVE')
+        .single();
+      
+      if (match) {
+        setLiveMatch(match);
+        const { data: evts } = await supabase
+          .from('match_events')
+          .select('*, player:players!player_id(name, team_id)')
+          .eq('match_id', match.id)
+          .order('minute', { ascending: false });
+        
+        if (evts) setEvents(evts);
+      }
+      setLoading(false);
+    }
+    loadData();
+
+    const channel = supabase.channel('live_match_updates')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'matches' }, (payload) => {
+        loadData();
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'match_events' }, (payload) => {
+        loadData();
+      })
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
@@ -37,6 +69,24 @@ export default function LiveMatchIsland() {
   };
 
   const isTilting = tilt.x !== 0 || tilt.y !== 0;
+
+  if (loading) return <div className="p-8 text-center text-white">Caricamento diretta...</div>;
+  
+  if (!liveMatch) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[50vh] text-white">
+        <div className="text-4xl mb-4">📺</div>
+        <h2 className="text-xl font-bold mb-2">Nessuna partita in diretta</h2>
+        <p className="text-white/60 mb-6">Non ci sono match attualmente in corso.</p>
+        <a href="/calendario" className="install-btn px-6 py-2">Torna al Calendario</a>
+      </div>
+    );
+  }
+
+  const homeName = liveMatch.home_team?.name || 'Home';
+  const awayName = liveMatch.away_team?.name || 'Away';
+  const homeScore = liveMatch.home_score || 0;
+  const awayScore = liveMatch.away_score || 0;
 
   return (
     <div className="flex flex-col w-full text-white min-h-screen">
@@ -119,9 +169,9 @@ export default function LiveMatchIsland() {
             }}
           >
              <div className="flex items-center gap-6 text-6xl font-light drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)] tracking-widest tabular-nums select-none">
-               <span className="font-semibold text-white">3</span>
+               <span className="font-semibold text-white">{homeScore}</span>
                <span className="text-white/60 text-4xl -translate-y-1">:</span>
-               <span className="font-semibold text-white">2</span>
+               <span className="font-semibold text-white">{awayScore}</span>
              </div>
           </div>
 
@@ -138,51 +188,51 @@ export default function LiveMatchIsland() {
                style={{ transformStyle: 'preserve-3d' }}
              >
                 
-                {/* Home Team */}
-                <div 
-                  className="relative flex flex-col items-center"
-                  style={{ transformStyle: 'preserve-3d' }}
-                >
-                   {/* Shadow on the grass */}
-                   <div 
-                     className="absolute -bottom-3 w-16 h-3 bg-black/60 blur-[4px] rounded-[100%]"
-                     style={{
-                       transform: 'translateZ(-45px)',
-                     }}
-                   />
-                   {/* Logo */}
-                   <div 
-                     className="relative w-[4.5rem] h-[5.5rem] rounded-b-full bg-gradient-to-b from-red-600 to-red-800 border-[2px] border-yellow-400/80 shadow-2xl flex flex-col items-center justify-center font-black text-2xl text-white"
-                     style={{
-                       transform: 'translateZ(10px)',
-                     }}
-                   >
-                     <span className="text-xs uppercase tracking-widest text-yellow-300 mt-2">ACG</span>
-                   </div>
-                </div>
-                
-                {/* Away Team */}
-                <div 
-                  className="relative flex flex-col items-center"
-                  style={{ transformStyle: 'preserve-3d' }}
-                >
-                   {/* Shadow on the grass */}
-                   <div 
-                     className="absolute -bottom-3 w-16 h-3 bg-black/60 blur-[4px] rounded-[100%]"
-                     style={{
-                       transform: 'translateZ(-45px)',
-                     }}
-                   />
-                   {/* Logo */}
-                   <div 
-                     className="relative w-[4.5rem] h-[5.5rem] rounded-b-full bg-gradient-to-b from-blue-600 to-blue-900 border-[2px] border-yellow-400/80 shadow-2xl flex flex-col items-center justify-center font-black text-2xl text-white"
-                     style={{
-                       transform: 'translateZ(10px)',
-                     }}
-                   >
-                     <span className="text-[0.6rem] uppercase tracking-widest text-yellow-300 mt-2 text-center leading-tight">FC<br/>MON</span>
-                   </div>
-                </div>
+                 {/* Home Team */}
+                 <div 
+                   className="relative flex flex-col items-center"
+                   style={{ transformStyle: 'preserve-3d' }}
+                 >
+                    {/* Shadow on the grass */}
+                    <div 
+                      className="absolute -bottom-3 w-16 h-3 bg-black/60 blur-[4px] rounded-[100%]"
+                      style={{
+                        transform: 'translateZ(-45px)',
+                      }}
+                    />
+                    {/* Logo */}
+                    <div 
+                      className="relative w-[4.5rem] h-[5.5rem] rounded-b-full bg-gradient-to-b from-red-600 to-red-800 border-[2px] border-yellow-400/80 shadow-2xl flex flex-col items-center justify-center font-black text-2xl text-white"
+                      style={{
+                        transform: 'translateZ(10px)',
+                      }}
+                    >
+                      <span className="text-xs uppercase tracking-widest text-yellow-300 mt-2 text-center leading-tight">{AVATAR_INITIALS(homeName)}</span>
+                    </div>
+                 </div>
+                 
+                 {/* Away Team */}
+                 <div 
+                   className="relative flex flex-col items-center"
+                   style={{ transformStyle: 'preserve-3d' }}
+                 >
+                    {/* Shadow on the grass */}
+                    <div 
+                      className="absolute -bottom-3 w-16 h-3 bg-black/60 blur-[4px] rounded-[100%]"
+                      style={{
+                        transform: 'translateZ(-45px)',
+                      }}
+                    />
+                    {/* Logo */}
+                    <div 
+                      className="relative w-[4.5rem] h-[5.5rem] rounded-b-full bg-gradient-to-b from-blue-600 to-blue-900 border-[2px] border-yellow-400/80 shadow-2xl flex flex-col items-center justify-center font-black text-2xl text-white"
+                      style={{
+                        transform: 'translateZ(10px)',
+                      }}
+                    >
+                      <span className="text-[0.8rem] uppercase tracking-widest text-yellow-300 mt-2 text-center leading-tight">{AVATAR_INITIALS(awayName)}</span>
+                    </div>
+                 </div>
 
              </div>
           </div>
@@ -195,9 +245,15 @@ export default function LiveMatchIsland() {
                   <div className="absolute top-0 bottom-0 left-1/2 w-[1px] bg-white/20 -translate-x-1/2"></div>
           
           <div className="flex flex-col gap-8 relative z-10">
-            {EVENTS.map((ev, i) => {
-              const isCard = ev.type === 'Carta Attivata';
-              const isHome = ev.team === 'home';
+            {events.length === 0 ? (
+              <div className="text-center text-white/50 text-sm mt-4">Nessun evento ancora registrato in questa partita.</div>
+            ) : null}
+            {events.map((ev, i) => {
+              const isCard = ev.type === 'CARTA';
+              const isHome = ev.player?.team_id === liveMatch.home_team_id;
+              const playerName = ev.player?.name || 'Sconosciuto';
+              const detailType = ev.description;
+
               return (
                 <div key={i} className="flex items-center w-full min-w-0">
                   {/* Left Side (Home) */}
@@ -206,9 +262,9 @@ export default function LiveMatchIsland() {
                       isCard ? (
                         <div className="flex flex-col items-end gap-1 max-w-full">
                           <span className="text-[0.6rem] font-black tracking-widest text-white/40 uppercase truncate w-full text-right">
-                            {ev.player}
+                            {playerName}
                           </span>
-                          {renderEventMedia(ev)}
+                          {renderEventMedia({ type: 'Carta Attivata', detail: detailType })}
                         </div>
                       ) : (
                         <div className="flex items-center gap-2.5 text-right flex-row-reverse min-w-0">
@@ -216,7 +272,7 @@ export default function LiveMatchIsland() {
                              {renderEventMedia(ev)}
                            </div>
                            <div className="flex flex-col min-w-0">
-                             <span className="font-extrabold text-[0.8rem] md:text-[0.9rem] tracking-wide text-white drop-shadow-md uppercase leading-tight truncate">{ev.player}</span>
+                             <span className="font-extrabold text-[0.8rem] md:text-[0.9rem] tracking-wide text-white drop-shadow-md uppercase leading-tight truncate">{playerName}</span>
                              <span className="text-[0.65rem] text-white/60 font-semibold mt-0.5 truncate">{ev.type}</span>
                            </div>
                         </div>
@@ -237,9 +293,9 @@ export default function LiveMatchIsland() {
                       isCard ? (
                         <div className="flex flex-col items-start gap-1 max-w-full">
                           <span className="text-[0.6rem] font-black tracking-widest text-white/40 uppercase truncate w-full text-left">
-                            {ev.player}
+                            {playerName}
                           </span>
-                          {renderEventMedia(ev)}
+                          {renderEventMedia({ type: 'Carta Attivata', detail: detailType })}
                         </div>
                       ) : (
                         <div className="flex items-center gap-2.5 text-left min-w-0">
@@ -247,7 +303,7 @@ export default function LiveMatchIsland() {
                              {renderEventMedia(ev)}
                            </div>
                            <div className="flex flex-col min-w-0">
-                             <span className="font-extrabold text-[0.8rem] md:text-[0.9rem] tracking-wide text-white drop-shadow-md uppercase leading-tight truncate">{ev.player}</span>
+                             <span className="font-extrabold text-[0.8rem] md:text-[0.9rem] tracking-wide text-white drop-shadow-md uppercase leading-tight truncate">{playerName}</span>
                              <span className="text-[0.65rem] text-white/60 font-semibold mt-0.5 truncate">{ev.type}</span>
                            </div>
                         </div>
@@ -265,6 +321,7 @@ export default function LiveMatchIsland() {
 
 function renderEventMedia(ev: any) {
   switch (ev.type) {
+    case 'GOAL':
     case 'Goal':
       return (
         <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white/5 border border-[var(--glass-border)] shadow-[0_0_8px_rgba(255,255,255,0.05)]">
@@ -279,12 +336,14 @@ function renderEventMedia(ev: any) {
           <span className="text-sm">⚽</span>
         </div>
       );
+    case 'AMMONIZIONE':
     case 'Yellow Card':
       return (
         <div className="relative w-8 h-8 flex items-center justify-center">
           <div className="w-3.5 h-5 rounded-[2px] bg-yellow-400 border border-yellow-300 shadow-[0_0_8px_rgba(250,204,21,0.5)] rotate-12 transform-gpu" />
         </div>
       );
+    case 'ESPULSIONE':
     case 'Red Card':
       return (
         <div className="relative w-8 h-8 flex items-center justify-center">

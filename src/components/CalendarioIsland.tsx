@@ -1,24 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import GlassEffect from './GlassEffect';
-
-const MATCHES = [
-  // Girone A - Terminati
-  { date: 'lun 19 mag, 21:00', round: 'Girone A', status: 'TERMINATA', home: 'Montarsolo', away: 'Tama', score: '4 - 2' },
-  { date: 'lun 19 mag, 21:30', round: 'Girone A', status: 'TERMINATA', home: 'Amatori Calcio Genova', away: 'Corsi', score: '3 - 1' },
-  { date: 'mer 21 mag, 21:00', round: 'Girone A', status: 'TERMINATA', home: 'Dario', away: 'UCG (Bairon)', score: '2 - 2' },
-  { date: 'mer 21 mag, 21:30', round: 'Girone A', status: 'TERMINATA', home: 'Taverna', away: 'Mario', score: '1 - 3' },
-  // Girone B - Terminati
-  { date: 'gio 22 mag, 21:00', round: 'Girone B', status: 'TERMINATA', home: 'Samu Betti', away: 'chainz Andrea Robbiano', score: '5 - 2' },
-  { date: 'gio 22 mag, 21:30', round: 'Girone B', status: 'TERMINATA', home: 'Martino Gonzalez', away: 'Montarsolo', score: '0 - 2' },
-  // Prossime / Live
-  { date: 'lun 26 mag, 21:00', round: 'Girone A', status: 'PROSSIMA', home: 'Tama', away: 'Corsi', score: null },
-  { date: 'OGGI, 21:30', round: 'Girone A', status: 'LIVE', home: 'Amatori Calcio Genova', away: 'Montarsolo', score: '2 - 1' },
-  { date: 'mer 28 mag, 21:00', round: 'Girone B', status: 'PROSSIMA', home: 'UCG (Bairon)', away: 'Samu Betti', score: null },
-  { date: 'mer 28 mag, 21:30', round: 'Girone B', status: 'PROSSIMA', home: 'chainz Andrea Robbiano', away: 'Mario', score: null },
-  { date: 'ven 30 mag, 21:00', round: 'Semifinale 1', status: 'PROSSIMA', home: '1° Girone A', away: '2° Girone B', score: null },
-  { date: 'ven 30 mag, 21:00', round: 'Semifinale 2', status: 'PROSSIMA', home: '1° Girone B', away: '2° Girone A', score: null },
-  { date: 'ven 30 mag, 22:00', round: 'Finale', status: 'PROSSIMA', home: 'Vincitore SF1', away: 'Vincitore SF2', score: null },
-];
+import { supabase } from '../lib/supabase';
 
 const AVATAR_INITIALS = (name: string) => {
   const parts = name.split(' ');
@@ -42,6 +24,25 @@ const TEAM_IDX: Record<string, number> = {
 
 export default function CalendarioIsland() {
   const [tab, setTab] = useState<'calendario' | 'tabellone'>('calendario');
+  const [matches, setMatches] = useState<any[]>([]);
+
+  useEffect(() => {
+    async function loadMatches() {
+      const { data } = await supabase
+        .from('matches')
+        .select(`
+          id, match_date, round, status, home_score, away_score,
+          home_team:teams!home_team_id ( name ),
+          away_team:teams!away_team_id ( name )
+        `)
+        .order('match_date', { ascending: true });
+
+      if (data) {
+        setMatches(data);
+      }
+    }
+    loadMatches();
+  }, []);
 
   return (
     <div className="w-full">
@@ -75,7 +76,12 @@ export default function CalendarioIsland() {
       {/* Calendario Matches List */}
       {tab === 'calendario' && (
         <div className="animate-stagger">
-          {MATCHES.map((m, i) => {
+          {matches.map((m, i) => {
+            const homeName = m.home_team.name;
+            const awayName = m.away_team.name;
+            const scoreStr = (m.home_score !== null && m.away_score !== null && m.status !== 'PROSSIMA') ? `${m.home_score} - ${m.away_score}` : null;
+            const formattedDate = new Date(m.match_date).toLocaleString('it-IT', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+            
             const CardTag = m.status === 'LIVE' ? 'a' : 'div';
             const cardProps = m.status === 'LIVE' ? { href: '/live', style: { display: 'block', textDecoration: 'none', cursor: 'pointer', marginBottom: '1rem', padding: '1.2rem 1.25rem' } } : { style: { marginBottom: '1rem', padding: '1.2rem 1.25rem' } };
 
@@ -83,7 +89,7 @@ export default function CalendarioIsland() {
               <CardTag key={i} className={`glass-card ${m.status === 'LIVE' ? 'ring-2 ring-[rgba(239,68,68,0.5)] shadow-[0_0_20px_rgba(239,68,68,0.3)]' : ''}`} {...cardProps}>
                 <div className="flex items-center justify-between mb-4">
                   <span className={`text-xs font-medium ${m.status === 'LIVE' ? 'text-red-400 font-bold' : 'text-[var(--text-muted)]'}`}>
-                    {m.status === 'LIVE' ? '🔴 IN DIRETTA' : `📅 ${m.date}`}
+                    {m.status === 'LIVE' ? '🔴 IN DIRETTA' : `📅 ${formattedDate}`}
                   </span>
                   <div className="flex gap-1.5 items-center">
                     <span className="badge badge-round">{m.round}</span>
@@ -96,16 +102,16 @@ export default function CalendarioIsland() {
                 <div className="flex items-center justify-center gap-3">
                   {/* Home */}
                   <div className="flex items-center gap-2 flex-1 justify-end flex-row-reverse text-right">
-                    <div className={`team-avatar avatar-${TEAM_IDX[m.home] ?? 0}`} style={{ width: 34, height: 34, borderRadius: 10 }}>
-                      {AVATAR_INITIALS(m.home)}
+                    <div className={`team-avatar avatar-${TEAM_IDX[homeName] ?? 0}`} style={{ width: 34, height: 34, borderRadius: 10 }}>
+                      {AVATAR_INITIALS(homeName)}
                     </div>
-                    <span className="text-[0.875rem] font-bold text-[var(--text-primary)] leading-tight">{m.home}</span>
+                    <span className="text-[0.875rem] font-bold text-[var(--text-primary)] leading-tight">{homeName}</span>
                   </div>
 
                   {/* Score / VS */}
-                  {m.score ? (
+                  {scoreStr ? (
                     <div className="bg-[rgba(255,255,255,0.05)] border border-[var(--glass-border)] rounded-[12px] py-1.5 px-3.5 text-lg font-black text-white tracking-widest min-w-[76px] text-center shadow-[var(--inner-glow)]">
-                      {m.score}
+                      {scoreStr}
                     </div>
                   ) : (
                     <div className="bg-[rgba(59,130,246,0.1)] border border-[rgba(59,130,246,0.3)] rounded-[12px] py-1.5 px-4 text-sm font-bold text-[var(--accent-primary)] tracking-widest min-w-[76px] text-center shadow-[var(--inner-glow)]">
@@ -115,10 +121,10 @@ export default function CalendarioIsland() {
 
                   {/* Away */}
                   <div className="flex items-center gap-2 flex-1 text-left">
-                    <div className={`team-avatar avatar-${TEAM_IDX[m.away] ?? 1}`} style={{ width: 34, height: 34, borderRadius: 10 }}>
-                      {AVATAR_INITIALS(m.away)}
+                    <div className={`team-avatar avatar-${TEAM_IDX[awayName] ?? 1}`} style={{ width: 34, height: 34, borderRadius: 10 }}>
+                      {AVATAR_INITIALS(awayName)}
                     </div>
-                    <span className="text-[0.875rem] font-bold text-[var(--text-primary)] leading-tight">{m.away}</span>
+                    <span className="text-[0.875rem] font-bold text-[var(--text-primary)] leading-tight">{awayName}</span>
                   </div>
                 </div>
               </CardTag>

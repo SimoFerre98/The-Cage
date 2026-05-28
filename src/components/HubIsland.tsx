@@ -1,56 +1,6 @@
 import { useState, useEffect } from 'react';
 import GlassEffect from './GlassEffect';
-
-const TEAMS = [
-  {
-    name: 'Amatori Calcio Genova',
-    players: ['Rossi L.', 'Ferrari M.', 'Bianchi A.', 'Colombo G.', 'Gallo R.', 'Esposito D.', 'Romano F.', 'Ricci C.', 'Marino S.'],
-  },
-  {
-    name: 'Tama',
-    players: ['Conti P.', 'Bruno T.', 'Russo V.', 'De Luca E.', 'Costa M.', 'Greco N.', 'Rizzo L.', 'Lombardi A.', 'Barbieri G.'],
-  },
-  {
-    name: 'Mario',
-    players: ['Fontana C.', 'Santoro R.', 'Mariani L.', 'Rinaldi M.', 'Caruso A.', 'Ferretti D.', 'Galli S.', 'Palumbo F.', 'Mancini L.'],
-  },
-  {
-    name: 'Corsi',
-    players: ['Vitale P.', 'Leone T.', 'Serra E.', 'Conte G.', 'Pellegrini M.', 'Catalano R.', 'Longo A.', 'Morano D.', 'Fiore N.'],
-  },
-  {
-    name: 'Montarsolo',
-    players: ['Amato C.', 'Silvestri L.', 'Sanna M.', 'Fabbri P.', 'Marchetti T.', 'De Angelis R.', 'Villa A.', 'Poli G.', 'Gentile S.'],
-  },
-  {
-    name: 'Dario',
-    players: ['Ferrara M.', 'Neri C.', 'Basile L.', 'Riva T.', 'Croci P.', 'Bianco E.', 'Monti G.', 'Pagano R.', 'Guerra A.'],
-  },
-  {
-    name: 'Taverna',
-    players: ['Sala M.', 'Benedetti L.', 'Caputo T.', 'Farina P.', 'Rossetti E.', 'Negri G.', 'Pellegrino C.', 'Grassi R.', 'Palermo A.'],
-  },
-  {
-    name: 'UCG (Bairon)',
-    players: ['Ruggiero M.', 'Mazza L.', 'Cattaneo T.', 'Greco P.', 'Ferrario E.', 'Pinto G.', 'Martinelli C.', 'Gatti R.', 'D\'Amico A.'],
-  },
-  {
-    name: 'Samu Betti',
-    players: ['Betti S.', 'Moretti L.', 'Tosi T.', 'Messina P.', 'Coppola E.', 'Sartori G.', 'Rizzi C.', 'Vitali R.', 'Piazza A.'],
-  },
-  {
-    name: 'chainz Andrea Robbiano',
-    players: ['Robbiano A.', 'Sacco M.', 'Valenti L.', 'Ferretti T.', 'Cini P.', 'Donati E.', 'Proietti G.', 'Milani C.', 'Guerra R.'],
-  },
-  {
-    name: 'Martino Gonzalez',
-    players: ['Gonzalez M.', 'Moreno L.', 'Alvarez T.', 'Rodriguez P.', 'Garcia E.', 'Lopez G.', 'Martinez C.', 'Sanchez R.', 'Fernandez A.'],
-  },
-];
-
-const PLAYERS_ALL = TEAMS.flatMap((t, ti) =>
-  t.players.map((p, pi) => ({ name: p, team: t.name, idx: ti }))
-);
+import { supabase } from '../lib/supabase';
 
 const AVATAR_INITIALS = (name: string) => {
   const parts = name.split(' ');
@@ -80,8 +30,30 @@ export default function HubIsland() {
   const [votedId, setVotedId] = useState<string | null>(null);
   const [votes, setVotes] = useState<Record<string, number>>(BASE_VOTES);
   const [showVoteModal, setShowVoteModal] = useState(false);
+  const [teams, setTeams] = useState<any[]>([]);
+  const [playersAll, setPlayersAll] = useState<any[]>([]);
 
   useEffect(() => {
+    async function loadData() {
+      const { data: teamsData } = await supabase.from('teams').select('id, name').order('name');
+      const { data: playersData } = await supabase.from('players').select('id, name, team_id').order('name');
+      
+      if (teamsData && playersData) {
+        const processedTeams = teamsData.map((t, i) => ({
+          name: t.name,
+          idx: i,
+          players: playersData.filter(p => p.team_id === t.id).map(p => p.name)
+        }));
+        setTeams(processedTeams);
+
+        const allP = processedTeams.flatMap((t) =>
+          t.players.map((p) => ({ name: p, team: t.name, idx: t.idx }))
+        );
+        setPlayersAll(allP);
+      }
+    }
+    loadData();
+
     const savedVote = localStorage.getItem('cage-mvp-vote');
     if (savedVote) {
       setVotedId(savedVote);
@@ -127,7 +99,7 @@ export default function HubIsland() {
         <div className="flex gap-2 flex-wrap items-center mt-3.5">
           <div className="player-count-badge" style={{ marginTop: 0 }}>
             <span>👥</span>
-            <span>{PLAYERS_ALL.length} giocatori</span>
+            <span>{playersAll.length} giocatori</span>
           </div>
           <button 
             onClick={() => setShowVoteModal(true)}
@@ -171,7 +143,7 @@ export default function HubIsland() {
       {/* Squadre */}
       {tab === 'squadre' && (
         <div className="glass-card animate-stagger" style={{ marginTop: '2.5rem' }}>
-          {TEAMS.map((team, i) => (
+          {teams.map((team, i) => (
             <div key={i}>
               <div className="flex items-center gap-4 p-3 cursor-pointer hover:bg-[rgba(255,255,255,0.05)] transition-colors border-b border-[var(--glass-border)]" onClick={() => toggle(i)}>
                 <div className={`team-avatar avatar-${i}`} style={{ width: 42, height: 42, borderRadius: 14 }}>
@@ -207,7 +179,7 @@ export default function HubIsland() {
       {/* Giocatori */}
       {tab === 'giocatori' && (
         <div className="glass-card animate-stagger" style={{ marginTop: '2.5rem' }}>
-          {PLAYERS_ALL.map((p, i) => (
+          {playersAll.map((p, i) => (
             <div key={i} className="flex items-center gap-4 p-4 border-b border-[var(--glass-border)] last:border-b-0">
               <div className={`team-avatar avatar-${p.idx}`} style={{ width: 32, height: 32, borderRadius: 10, fontSize: '0.7rem' }}>
                 {AVATAR_INITIALS(p.team)}

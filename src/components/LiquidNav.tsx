@@ -11,8 +11,12 @@ const NAV_ITEMS = [
 
 export default function LiquidNav({ activePage }: { activePage: string }) {
   return (
-    <div className="pointer-events-auto">
-      <GlassEffect className="rounded-[2.5rem] p-2.5 hover:p-3 transition-all duration-700">
+    <div className="pointer-events-auto relative p-[2px] rounded-[2.6rem] overflow-hidden isolate shadow-[0_0_25px_rgba(139,92,246,0.25)] group transition-all duration-700">
+      {/* Animated Glowing Light Effect */}
+      <div className="absolute top-1/2 left-1/2 w-[300%] max-w-[800px] aspect-square -translate-x-1/2 -translate-y-1/2 animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0%,rgba(239,68,68,0.9)_20%,rgba(139,92,246,0.9)_40%,rgba(59,130,246,0.9)_60%,transparent_80%)] z-[-1] opacity-90 group-hover:opacity-100 transition-opacity" />
+      
+      {/* Inner Pill */}
+      <GlassEffect className="rounded-[2.5rem] p-2.5 group-hover:p-3 transition-all duration-700 relative z-10 bg-[rgba(10,13,24,0.94)] backdrop-blur-2xl">
         <div className="relative flex items-center justify-center gap-2 rounded-[2.5rem] px-1 overflow-hidden">
               {NAV_ITEMS.map((item, index) => {
                 const isActive = activePage === item.id;
