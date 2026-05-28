@@ -142,7 +142,7 @@ export default function HubIsland() {
 
       {/* Pill Toggle */}
       <div className="flex justify-center w-full mb-14 sticky top-[85px] md:top-8 z-[120] px-4 transition-all duration-300">
-        <GlassEffect className="w-full max-w-[360px] rounded-[50px] p-2 cursor-pointer">
+        <GlassEffect className="w-full max-w-[300px] rounded-[50px] p-2.5 cursor-pointer">
           <div className="relative flex w-full">
             <div 
               className="absolute top-0 bottom-0 bg-[rgba(59,130,246,0.3)] shadow-[inset_0_1px_4px_rgba(255,255,255,0.4)] rounded-[50px]" 
@@ -153,13 +153,13 @@ export default function HubIsland() {
               }}
             ></div>
             <button
-              className={`flex-1 relative z-10 py-5 text-[0.9rem] md:text-[1rem] font-bold transition-all duration-300 tracking-wide outline-none ${tab === 'squadre' ? 'text-white drop-shadow-md' : 'text-white/50 hover:text-white/80'}`}
+              className={`flex-1 relative z-10 py-[22px] text-[0.95rem] md:text-[1.05rem] font-bold transition-all duration-300 tracking-wide outline-none ${tab === 'squadre' ? 'text-white drop-shadow-md' : 'text-white/50 hover:text-white/80'}`}
               onClick={() => setTab('squadre')}
             >
               Squadre
             </button>
             <button
-              className={`flex-1 relative z-10 py-5 text-[0.9rem] md:text-[1rem] font-bold transition-all duration-300 tracking-wide outline-none ${tab === 'giocatori' ? 'text-white drop-shadow-md' : 'text-white/50 hover:text-white/80'}`}
+              className={`flex-1 relative z-10 py-[22px] text-[0.95rem] md:text-[1.05rem] font-bold transition-all duration-300 tracking-wide outline-none ${tab === 'giocatori' ? 'text-white drop-shadow-md' : 'text-white/50 hover:text-white/80'}`}
               onClick={() => setTab('giocatori')}
             >
               Giocatori
@@ -232,15 +232,20 @@ export default function HubIsland() {
 
               <div className="relative">
                 {/* Header */}
-                <div className="flex justify-between items-center mb-6">
-                  <div>
-                    <h3 className="text-xl font-extrabold tracking-tight text-white drop-shadow flex items-center gap-2">
-                      Vota MVP del Turno 🗳️
+                <div className="grid grid-cols-[32px_1fr_32px] gap-3 items-start mb-5 pt-3 px-1 md:px-3">
+                  {/* Spacer to keep title perfectly centered */}
+                  <div className="w-8 h-8 pointer-events-none"></div>
+
+                  <div className="flex flex-col items-center justify-center">
+                    <h3 className="text-lg md:text-xl font-extrabold tracking-tight text-white drop-shadow flex justify-center items-center flex-wrap gap-x-1.5 gap-y-1 leading-tight text-center">
+                      <span>Vota MVP del Turno</span>
+                      <span className="text-[1.1em]">🗳️</span>
                     </h3>
-                    <div className="h-[2px] w-12 mt-1.5 rounded bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)]" />
+                    <div className="h-[2px] w-12 mt-2 rounded bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)] mx-auto" />
                   </div>
+                  
                   <button 
-                    className="w-8 h-8 flex items-center justify-center rounded-full bg-[rgba(255,255,255,0.08)] hover:bg-[rgba(255,255,255,0.2)] border border-[rgba(255,255,255,0.12)] text-white transition-all duration-300 hover:rotate-90 active:scale-95 cursor-pointer outline-none"
+                    className="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-full bg-gradient-to-br from-red-500/20 to-red-600/40 hover:from-red-500/40 hover:to-red-600/60 border border-red-500/30 text-red-100 transition-all duration-300 hover:rotate-90 active:scale-95 cursor-pointer outline-none shadow-[0_0_10px_rgba(239,68,68,0.2)] justify-self-end"
                     onClick={() => setShowVoteModal(false)}
                     aria-label="Chiudi"
                   >
@@ -251,7 +256,7 @@ export default function HubIsland() {
                   </button>
                 </div>
 
-                <p className="text-xs font-semibold text-[var(--text-muted)] leading-relaxed mb-5">
+                <p className="text-[0.75rem] md:text-xs font-semibold text-[var(--text-muted)] leading-relaxed mb-6 px-6 md:px-8 text-center">
                   Chi è stato l'MVP dell'ultima giornata di gare? Esprimi la tua preferenza. Puoi modificare la tua scelta in qualsiasi momento.
                 </p>
 
