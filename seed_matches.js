@@ -15,7 +15,7 @@ const MATCHES = [
 
 async function seed() {
   const client = new Client({
-    connectionString: 'postgres://postgres:Tavernastallions98@aws-0-eu-central-1.pooler.supabase.com:6543/postgres'
+    connectionString: 'postgresql://postgres.yztuiiphzuayvorgrpbt:Tavernastallions98@aws-1-eu-central-1.pooler.supabase.com:6543/postgres'
   });
   
   try {
