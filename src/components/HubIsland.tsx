@@ -8,30 +8,68 @@ const AVATAR_INITIALS = (name: string) => {
   return name.slice(0, 2).toUpperCase();
 };
 
-const CANDIDATES = [
-  { id: 'deluca', name: 'De Luca E.', team: 'Tama', highlight: 'Capocannoniere con 7 gol segnati', avatarIdx: 1 },
-  { id: 'amato', name: 'Amato C.', team: 'Montarsolo', highlight: 'Trascinatore con 6 gol segnati', avatarIdx: 4 },
-  { id: 'betti', name: 'Betti S.', team: 'Samu Betti', highlight: 'Migliore in campo (5 gol segnati)', avatarIdx: 8 },
-  { id: 'rossi', name: 'Rossi L.', team: 'Amatori Calcio Genova', highlight: 'Doppietta decisiva (4 gol segnati)', avatarIdx: 0 },
-  { id: 'fontana', name: 'Fontana C.', team: 'Mario', highlight: 'Regista difensivo (3 gol segnati)', avatarIdx: 2 },
-];
-
-const BASE_VOTES: Record<string, number> = {
-  deluca: 54,
-  amato: 42,
-  betti: 35,
-  rossi: 23,
-  fontana: 15,
-};
-
 export default function HubIsland() {
   const [tab, setTab] = useState<'squadre' | 'giocatori'>('squadre');
   const [expanded, setExpanded] = useState<number | null>(null);
   const [votedId, setVotedId] = useState<string | null>(null);
-  const [votes, setVotes] = useState<Record<string, number>>(BASE_VOTES);
+  const [votes, setVotes] = useState<Record<string, number>>({});
+  const [candidates, setCandidates] = useState<any[]>([]);
   const [showVoteModal, setShowVoteModal] = useState(false);
   const [teams, setTeams] = useState<any[]>([]);
   const [playersAll, setPlayersAll] = useState<any[]>([]);
+
+  // Carica i voti dei candidati
+  const loadVotes = async (candList = candidates) => {
+    const { data: vData } = await supabase.from('mvp_votes').select('player_id');
+    const initialVotes: Record<string, number> = {};
+    candList.forEach(c => {
+      initialVotes[c.id] = 0;
+    });
+    vData?.forEach(v => {
+      if (initialVotes[v.player_id] !== undefined) {
+        initialVotes[v.player_id]++;
+      }
+    });
+    setVotes(initialVotes);
+
+    // Controlla se l'utente corrente ha già votato
+    let voterId = localStorage.getItem('cage-mvp-voter-id');
+    if (!voterId) {
+      voterId = 'voter_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+      localStorage.setItem('cage-mvp-voter-id', voterId);
+    }
+    const { data: myVote } = await supabase
+      .from('mvp_votes')
+      .select('player_id')
+      .eq('voter_id', voterId);
+    
+    if (myVote && myVote.length > 0) {
+      setVotedId(myVote[0].player_id);
+    } else {
+      setVotedId(null);
+    }
+  };
+
+  const loadCandidatesAndVotes = async () => {
+    const { data: cData } = await supabase
+      .from('mvp_candidates')
+      .select('player_id, player:players(name, team_id, team:teams(name))');
+
+    if (cData) {
+      const formattedCandidates = cData.map((c, idx) => ({
+        id: c.player_id,
+        name: c.player.name,
+        team: c.player.team.name,
+        highlight: `Giocatore di spicco dei ${c.player.team.name}`,
+        avatarIdx: idx % 11
+      }));
+      setCandidates(formattedCandidates);
+      await loadVotes(formattedCandidates);
+    } else {
+      setCandidates([]);
+      setVotes({});
+    }
+  };
 
   useEffect(() => {
     async function loadData() {
@@ -51,37 +89,59 @@ export default function HubIsland() {
         );
         setPlayersAll(allP);
       }
+
+      await loadCandidatesAndVotes();
     }
     loadData();
 
-    const savedVote = localStorage.getItem('cage-mvp-vote');
-    if (savedVote) {
-      setVotedId(savedVote);
-      setVotes(prev => ({
-        ...prev,
-        [savedVote]: BASE_VOTES[savedVote] + 1
-      }));
-    }
+    // Sottoscrizione realtime
+    const channel = supabase.channel('public_mvp_updates')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'mvp_votes' }, () => {
+        loadVotes();
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'mvp_candidates' }, () => {
+        loadCandidatesAndVotes();
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
-  const handleVote = (id: string) => {
-    localStorage.setItem('cage-mvp-vote', id);
-    setVotedId(id);
-    setVotes(prev => ({
-      ...prev,
-      [id]: prev[id] + 1
-    }));
+  const handleVote = async (id: string) => {
+    let voterId = localStorage.getItem('cage-mvp-voter-id');
+    if (!voterId) {
+      voterId = 'voter_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+      localStorage.setItem('cage-mvp-voter-id', voterId);
+    }
+
+    const { error } = await supabase
+      .from('mvp_votes')
+      .insert([{ player_id: id, voter_id: voterId }]);
+
+    if (!error) {
+      setVotedId(id);
+      await loadVotes();
+    } else {
+      alert("Errore durante il voto: " + error.message);
+    }
   };
 
-  const handleReset = () => {
-    if (votedId) {
-      const id = votedId;
-      localStorage.removeItem('cage-mvp-vote');
+  const handleReset = async () => {
+    const voterId = localStorage.getItem('cage-mvp-voter-id');
+    if (!voterId) return;
+
+    const { error } = await supabase
+      .from('mvp_votes')
+      .delete()
+      .eq('voter_id', voterId);
+
+    if (!error) {
       setVotedId(null);
-      setVotes(prev => ({
-        ...prev,
-        [id]: Math.max(BASE_VOTES[id], prev[id] - 1)
-      }));
+      await loadVotes();
+    } else {
+      alert("Errore nella modifica del voto: " + error.message);
     }
   };
 
@@ -234,7 +294,10 @@ export default function HubIsland() {
 
                 {/* Candidates List */}
                 <div className="flex flex-col gap-2.5 max-h-[50vh] overflow-y-auto pr-1">
-                  {CANDIDATES.map((c) => {
+                  {candidates.length === 0 ? (
+                    <div className="text-center text-white/50 text-sm py-8">Nessun candidato MVP disponibile al momento.</div>
+                  ) : null}
+                  {candidates.map((c) => {
                     const voteCount = votes[c.id] || 0;
                     const percentage = totalVotes > 0 ? Math.round((voteCount / totalVotes) * 100) : 0;
                     const hasVotedThis = votedId === c.id;
