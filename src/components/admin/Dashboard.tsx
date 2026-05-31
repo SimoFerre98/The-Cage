@@ -4,9 +4,10 @@ import GlassEffect from '../GlassEffect';
 import TeamsPlayersManager from './TeamsPlayersManager';
 import MatchesManager from './MatchesManager';
 import LiveController from './LiveController';
+import MVPManager from './MVPManager';
 
 export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState<'squadre' | 'partite' | 'live'>('squadre');
+  const [activeTab, setActiveTab] = useState<'squadre' | 'partite' | 'live' | 'mvp'>('squadre');
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -52,6 +53,12 @@ export default function Dashboard() {
             </span>
             Regia LIVE
           </button>
+          <button
+            onClick={() => setActiveTab('mvp')}
+            className={`flex-1 min-w-[120px] py-3 rounded-xl font-bold transition-all text-sm flex items-center justify-center gap-2 ${activeTab === 'mvp' ? 'bg-[rgba(139,92,246,0.4)] text-white shadow-lg border border-[rgba(139,92,246,0.5)]' : 'text-white/50 hover:text-white hover:bg-white/5 border border-transparent'}`}
+          >
+            Gestione MVP
+          </button>
         </div>
       </GlassEffect>
 
@@ -60,6 +67,7 @@ export default function Dashboard() {
         {activeTab === 'squadre' && <TeamsPlayersManager />}
         {activeTab === 'partite' && <MatchesManager />}
         {activeTab === 'live' && <LiveController />}
+        {activeTab === 'mvp' && <MVPManager />}
       </div>
     </div>
   );
