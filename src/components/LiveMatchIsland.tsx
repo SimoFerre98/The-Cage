@@ -252,7 +252,7 @@ export default function LiveMatchIsland() {
               const isCard = ev.type === 'CARTA';
               const isHome = ev.player?.team_id === liveMatch.home_team_id;
               const playerName = ev.player?.name || 'Sconosciuto';
-              const detailType = ev.description;
+              const detailType = ev.detail;
 
               return (
                 <div key={i} className="flex items-center w-full min-w-0">
