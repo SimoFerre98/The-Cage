@@ -1074,3 +1074,12 @@ body {
 [class*="liner-"], [id*="liner-"], [class*="Liner"], [id*="Liner"] {
   display: none !important;
 }
+
+/* Nasconde la barra di scorrimento orizzontale/verticale mantenendo la funzionalità */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
