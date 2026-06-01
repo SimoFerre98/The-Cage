@@ -11,10 +11,10 @@ const NAV_ITEMS = [
 
 export default function LiquidNav({ activePage }: { activePage: string }) {
   return (
-    <div className="pointer-events-auto relative p-[2px] rounded-[2.6rem] overflow-hidden isolate shadow-[0_0_25px_rgba(139,92,246,0.25)] group transition-all duration-700">
+    <div className="pointer-events-auto relative p-[2px] rounded-[2.6rem] overflow-hidden isolate menu-glow-pulse group transition-all duration-700">
       {/* Animated Glowing Light Effect */}
       <div 
-        className="absolute top-1/2 left-1/2 w-[300%] max-w-[800px] aspect-square animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0%,rgba(239,68,68,0.9)_20%,rgba(139,92,246,0.9)_40%,rgba(59,130,246,0.9)_60%,transparent_80%)] opacity-90 group-hover:opacity-100 transition-opacity" 
+        className="absolute top-1/2 left-1/2 w-[300%] max-w-[800px] aspect-square animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_0deg,#3b82f6_0%,#8b5cf6_25%,#ef4444_50%,#8b5cf6_75%,#3b82f6_100%)] opacity-90 group-hover:opacity-100 transition-opacity" 
         style={{ 
           zIndex: 0, 
           transform: "translate3d(-50%, -50%, 0)", 

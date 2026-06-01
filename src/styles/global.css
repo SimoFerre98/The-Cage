@@ -1083,3 +1083,21 @@ body {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+/* Pulsazione del bagliore dell'ombra del menu */
+@keyframes menuGlowPulse {
+  0% {
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.2), 0 0 30px rgba(139, 92, 246, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(59, 130, 246, 0.45), 0 0 50px rgba(139, 92, 246, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.2), 0 0 30px rgba(139, 92, 246, 0.1);
+  }
+}
+
+.menu-glow-pulse {
+  animation: menuGlowPulse 4s ease-in-out infinite;
+  will-change: box-shadow;
+}
