@@ -24,17 +24,19 @@ const GlassEffect: React.FC<GlassEffectProps> = ({
     >
       {/* Glass Layers */}
       <div
-        className="absolute inset-0 z-0 overflow-hidden pointer-events-none"
+        className="absolute inset-0 z-0 pointer-events-none"
         style={{
-          backdropFilter: "blur(12px)",
-          WebkitBackdropFilter: "blur(12px)",
-          isolation: "isolate",
+          backdropFilter: "blur(16px) saturate(180%)",
+          WebkitBackdropFilter: "blur(16px) saturate(180%)",
           borderRadius: "inherit",
         }}
       />
       <div
         className="absolute inset-0 z-10 pointer-events-none"
-        style={{ background: "rgba(255, 255, 255, 0.15)", borderRadius: "inherit" }}
+        style={{
+          background: "rgba(255, 255, 255, 0.18)",
+          borderRadius: "inherit",
+        }}
       />
       <div
         className="absolute inset-0 z-20 overflow-hidden pointer-events-none"
