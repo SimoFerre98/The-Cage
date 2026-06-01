@@ -1,10 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import HubIsland from '../components/HubIsland.tsx';
+import HomeIsland from '../components/HomeIsland.tsx';
 
 const totalPlayers = 11 * 9;
 ---
 
 <Layout title="Home" activePage="home">
-  <HubIsland client:load />
+  <HomeIsland client:load />
 </Layout>

@@ -8,7 +8,7 @@ const AVATAR_INITIALS = (name: string) => {
   return name.slice(0, 2).toUpperCase();
 };
 
-export default function HubIsland() {
+export default function HomeIsland() {
   const [tab, setTab] = useState<'squadre' | 'giocatori'>('squadre');
   const [expanded, setExpanded] = useState<number | null>(null);
   const [votedId, setVotedId] = useState<string | null>(null);

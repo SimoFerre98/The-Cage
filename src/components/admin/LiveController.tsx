@@ -80,9 +80,9 @@ export default function LiveController() {
   if (loading) return <div className="text-white/60">Ricerca partita in diretta...</div>;
 
   if (!liveMatch) return (
-    <GlassEffect className="p-8 text-center rounded-2xl">
+    <GlassEffect className="p-10 md:p-12 text-center rounded-2xl">
       <div className="text-4xl mb-4">📺</div>
-      <h2 className="text-xl font-bold text-white mb-2">Nessuna partita LIVE</h2>
+      <h2 className="text-xl font-bold text-white mb-4 text-center">Nessuna partita LIVE</h2>
       <p className="text-white/60 mb-6">Vai nella sezione "Calendario" e imposta una partita su LIVE per iniziare la regia.</p>
     </GlassEffect>
   );
@@ -92,7 +92,7 @@ export default function LiveController() {
   return (
     <div className="flex flex-col gap-6">
       {/* Scoreboard Controller */}
-      <GlassEffect className="p-6 rounded-2xl relative overflow-hidden">
+      <GlassEffect className="p-6 md:p-8 rounded-2xl relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-1 bg-red-500 animate-pulse"></div>
         <div className="text-center mb-6">
           <span className="bg-red-500 text-white text-xs font-black uppercase tracking-widest px-3 py-1 rounded-full animate-pulse shadow-[0_0_10px_rgba(239,68,68,0.5)]">
@@ -126,8 +126,8 @@ export default function LiveController() {
       </GlassEffect>
 
       {/* Events Controller */}
-      <GlassEffect className="p-6 rounded-2xl">
-        <h2 className="text-xl font-bold text-white mb-4">Aggiungi Evento (Timeline)</h2>
+      <GlassEffect className="p-6 md:p-8 rounded-2xl">
+        <h2 className="text-xl font-bold text-white mb-6 text-center">Aggiungi Evento (Timeline)</h2>
         <form onSubmit={handleAddEvent} className="grid grid-cols-1 md:grid-cols-2 gap-4">
           
           <div className="flex flex-col gap-1">

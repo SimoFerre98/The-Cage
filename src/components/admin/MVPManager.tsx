@@ -129,8 +129,8 @@ export default function MVPManager() {
   return (
     <div className="flex flex-col gap-6">
       {/* Aggiungi Candidato */}
-      <GlassEffect className="p-6 rounded-2xl">
-        <h2 className="text-xl font-bold text-white mb-4">Aggiungi Candidato MVP</h2>
+      <GlassEffect className="p-6 md:p-8 rounded-2xl">
+        <h2 className="text-xl font-bold text-white mb-6 text-center">Aggiungi Candidato MVP</h2>
         <form onSubmit={handleAddCandidate} className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col gap-1">
             <label className="text-xs text-white/60 font-bold uppercase">Squadra</label>
@@ -171,18 +171,19 @@ export default function MVPManager() {
 
       {/* Candidati Attuali */}
       <div className="flex flex-col gap-4">
-        <div className="flex items-center justify-between px-2">
-          <h2 className="text-xl font-bold text-white">Candidati Correnti e Voti</h2>
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 px-2 mb-2 text-center">
+          <div className="w-32 hidden md:block"></div> {/* spacer to center heading */}
+          <h2 className="text-xl font-bold text-white flex-1 text-center">Candidati Correnti e Voti</h2>
           <button 
             onClick={handleResetVotes}
-            className="px-4 py-2 bg-red-600/20 text-red-200 border border-red-500/30 rounded-lg hover:bg-red-600/40 transition-colors text-xs font-bold"
+            className="px-4 py-2 bg-red-600/20 text-red-200 border border-red-500/30 rounded-lg hover:bg-red-600/40 transition-colors text-xs font-bold mx-auto md:mx-0"
           >
             Reset Totale Voti
           </button>
         </div>
 
         {candidates.length === 0 ? (
-          <GlassEffect className="p-8 text-center rounded-xl text-white/60">
+          <GlassEffect className="p-10 md:p-12 text-center rounded-2xl text-white/60">
             Nessun candidato MVP impostato per questo turno. Aggiungine uno sopra.
           </GlassEffect>
         ) : (
@@ -191,7 +192,7 @@ export default function MVPManager() {
               const count = votesCount[c.player_id] || 0;
               const pct = totalVotes > 0 ? Math.round((count / totalVotes) * 100) : 0;
               return (
-                <GlassEffect key={c.id} className="p-4 rounded-xl flex items-center justify-between gap-4">
+                <GlassEffect key={c.id} className="p-6 rounded-2xl flex items-center justify-between gap-6">
                   <div className="flex-1 min-w-0">
                     <div className="font-bold text-white text-lg truncate">
                       {c.player?.name}

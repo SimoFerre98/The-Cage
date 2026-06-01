@@ -88,8 +88,8 @@ export default function MatchesManager() {
   return (
     <div className="flex flex-col gap-6">
       {/* Aggiungi Partita */}
-      <GlassEffect className="p-6 rounded-2xl">
-        <h2 className="text-xl font-bold text-white mb-4">Nuova Partita</h2>
+      <GlassEffect className="p-6 md:p-8 rounded-2xl">
+        <h2 className="text-xl font-bold text-white mb-6 text-center">Nuova Partita</h2>
         <form onSubmit={handleAddMatch} className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col gap-1">
             <label className="text-xs text-white/60 font-bold uppercase">Squadra Casa</label>
@@ -154,11 +154,11 @@ export default function MatchesManager() {
 
       {/* Lista Partite */}
       <div className="flex flex-col gap-4">
-        <h2 className="text-xl font-bold text-white px-2">Calendario</h2>
+        <h2 className="text-xl font-bold text-white mb-6 text-center">Calendario</h2>
         {matches.map(match => {
           const dateStr = new Date(match.match_date).toLocaleString('it-IT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
           return (
-            <GlassEffect key={match.id} className="p-4 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <GlassEffect key={match.id} className="p-6 md:p-8 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div className="flex-1">
                 <div className="text-xs text-white/50 font-bold uppercase tracking-wider mb-1">
                   {dateStr} • {match.round}

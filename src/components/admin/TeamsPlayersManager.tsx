@@ -63,8 +63,8 @@ export default function TeamsPlayersManager() {
 
   return (
     <div className="flex flex-col gap-6">
-      <GlassEffect className="p-6 rounded-2xl">
-        <h2 className="text-xl font-bold text-white mb-4">Aggiungi Squadra</h2>
+      <GlassEffect className="p-6 md:p-8 rounded-2xl">
+        <h2 className="text-xl font-bold text-white mb-6 text-center">Aggiungi Squadra</h2>
         <form onSubmit={handleAddTeam} className="flex gap-3">
           <input 
             type="text" 
@@ -80,7 +80,7 @@ export default function TeamsPlayersManager() {
 
       <div className="flex flex-col gap-4">
         {teams.map(team => (
-          <GlassEffect key={team.id} className="p-4 rounded-xl overflow-hidden">
+          <GlassEffect key={team.id} className="p-6 md:p-8 rounded-2xl overflow-hidden">
             <div className="flex items-center justify-between">
               <div 
                 className="font-bold text-lg text-white cursor-pointer flex-1"
@@ -123,7 +123,7 @@ export default function TeamsPlayersManager() {
 
                 <div className="flex flex-col gap-2">
                   {players.filter(p => p.team_id === team.id).map(player => (
-                    <div key={player.id} className="flex items-center justify-between bg-white/5 px-3 py-2 rounded-lg">
+                    <div key={player.id} className="flex items-center justify-between bg-white/5 px-4 py-3 rounded-xl">
                       <span className="text-sm text-white/90">{player.name}</span>
                       <button 
                         onClick={() => handleDeletePlayer(player.id)}
