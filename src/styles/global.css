@@ -1069,3 +1069,8 @@ body {
 .live-field-float {
   animation: liveFieldFloat 8s ease-in-out infinite;
 }
+
+/* Nasconde gli elementi iniettati dall'estensione browser LINER se presenti nella pagina */
+[class*="liner-"], [id*="liner-"], [class*="Liner"], [id*="Liner"] {
+  display: none !important;
+}
