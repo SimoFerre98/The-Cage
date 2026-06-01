@@ -95,8 +95,8 @@ const navItems = [
     </div>
 
     <script>
-      // Register Service Worker
-      if ('serviceWorker' in navigator) {
+      // Register Service Worker only in production to prevent local development caching
+      if (import.meta.env.PROD && 'serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('/sw.js')
             .then(reg => console.log('Service Worker registered successfully:', reg.scope))

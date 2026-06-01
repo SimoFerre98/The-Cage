@@ -1,4 +1,4 @@
-const CACHE_NAME = 'the-cage-pwa-v1';
+const CACHE_NAME = 'the-cage-pwa-v2';
 const ASSETS_TO_CACHE = [
   '/',
   '/manifest.json',
