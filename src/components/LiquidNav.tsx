@@ -38,8 +38,8 @@ export default function LiquidNav({ activePage }: { activePage: string }) {
         }}
       />
 
-      {/* Inner Glass Pill — completely clean, no gradient leaking through */}
-      <GlassEffect className="rounded-[2.5rem] p-2.5 group-hover:p-3 transition-all duration-700 relative bg-[rgba(10,13,24,0.4)] backdrop-blur-2xl">
+      {/* Inner Glass Pill — GlassEffect handles blur/tint on its own */}
+      <GlassEffect className="rounded-[2.5rem] p-2.5 group-hover:p-3 transition-all duration-700 relative">
         <div className="relative flex items-center justify-center gap-2 rounded-[2.5rem] px-1">
           {NAV_ITEMS.map((item, index) => {
             const isActive = activePage === item.id;
