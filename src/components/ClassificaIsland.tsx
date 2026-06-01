@@ -123,15 +123,15 @@ export default function ClassificaIsland() {
                 <th className="text-[0.65rem] font-semibold text-[var(--accent-primary)] uppercase tracking-wider px-2 py-3 text-center">PT</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-[rgba(255,255,255,0.07)]">
               {standings.map((row, i) => (
                 <tr key={i} className="hover:bg-[rgba(255,255,255,0.05)] transition-colors duration-300">
-                  <td className="px-2 py-3 text-center">
+                  <td className="px-2 py-3.5 text-center">
                     <span className={`text-[0.8rem] font-bold ${i < 3 ? 'text-[var(--accent-primary)]' : 'text-[var(--text-muted)]'}`}>
                       {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : i + 1}
                     </span>
                   </td>
-                  <td className="px-2 py-3">
+                  <td className="px-2 py-3.5">
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
                       <div className={`team-avatar avatar-${AVATAR_IDX[row.team_name] ?? 0}`} style={{ width: 26, height: 26, borderRadius: 7, fontSize: '0.55rem', flexShrink: 0 }}>
                         {AVATAR_INITIALS(row.team_name)}
@@ -139,13 +139,13 @@ export default function ClassificaIsland() {
                       <span className="text-[0.85rem] font-bold text-[var(--text-primary)]">{row.team_name}</span>
                     </div>
                   </td>
-                  <td className="px-1 py-3 text-center text-sm text-[var(--text-secondary)]">{row.g}</td>
-                  <td className="px-1 py-3 text-center text-sm text-[var(--text-secondary)]">{row.v}</td>
-                  <td className="px-1 py-3 text-center text-sm text-[var(--text-secondary)]">{row.n}</td>
-                  <td className="px-1 py-3 text-center text-sm text-[var(--text-secondary)]">{row.p}</td>
-                  <td className="px-1 py-3 text-center text-sm text-[var(--text-secondary)]">{row.gf}</td>
-                  <td className="px-1 py-3 text-center text-sm text-[var(--text-secondary)]">{row.gs}</td>
-                  <td className="px-2 py-3 text-center"><span className="font-black text-white text-[0.95rem]">{row.pt}</span></td>
+                  <td className="px-1 py-3.5 text-center text-sm text-[var(--text-secondary)]">{row.g}</td>
+                  <td className="px-1 py-3.5 text-center text-sm text-[var(--text-secondary)]">{row.v}</td>
+                  <td className="px-1 py-3.5 text-center text-sm text-[var(--text-secondary)]">{row.n}</td>
+                  <td className="px-1 py-3.5 text-center text-sm text-[var(--text-secondary)]">{row.p}</td>
+                  <td className="px-1 py-3.5 text-center text-sm text-[var(--text-secondary)]">{row.gf}</td>
+                  <td className="px-1 py-3.5 text-center text-sm text-[var(--text-secondary)]">{row.gs}</td>
+                  <td className="px-2 py-3.5 text-center"><span className="font-black text-white text-[0.95rem]">{row.pt}</span></td>
                 </tr>
               ))}
             </tbody>
