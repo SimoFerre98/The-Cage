@@ -1101,3 +1101,20 @@ body {
   animation: menuGlowPulse 4s ease-in-out infinite;
   will-change: box-shadow;
 }
+
+/* Flusso continuo del gradiente sul bordo del menu */
+@keyframes borderGlowFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+.border-glow-flow {
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ef4444, #8b5cf6, #3b82f6);
+  background-size: 200% auto;
+  animation: borderGlowFlow 6s linear infinite;
+  will-change: background-position;
+}

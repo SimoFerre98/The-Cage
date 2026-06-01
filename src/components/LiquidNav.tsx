@@ -11,17 +11,7 @@ const NAV_ITEMS = [
 
 export default function LiquidNav({ activePage }: { activePage: string }) {
   return (
-    <div className="pointer-events-auto relative p-[2px] rounded-[2.6rem] overflow-hidden isolate menu-glow-pulse group transition-all duration-700">
-      {/* Animated Glowing Light Effect */}
-      <div 
-        className="absolute top-1/2 left-1/2 w-[300%] max-w-[800px] aspect-square animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_0deg,#3b82f6_0%,#8b5cf6_25%,#ef4444_50%,#8b5cf6_75%,#3b82f6_100%)] opacity-90 group-hover:opacity-100 transition-opacity" 
-        style={{ 
-          zIndex: 0, 
-          transform: "translate3d(-50%, -50%, 0)", 
-          WebkitTransform: "translate3d(-50%, -50%, 0)" 
-        }}
-      />
-      
+    <div className="pointer-events-auto relative p-[2px] rounded-[2.6rem] overflow-hidden isolate border-glow-flow menu-glow-pulse group transition-all duration-700">
       {/* Inner Pill */}
       <GlassEffect className="rounded-[2.5rem] p-2.5 group-hover:p-3 transition-all duration-700 relative z-10 bg-[rgba(10,13,24,0.5)] backdrop-blur-2xl">
         <div className="relative flex items-center justify-center gap-2 rounded-[2.5rem] px-1 overflow-hidden">
