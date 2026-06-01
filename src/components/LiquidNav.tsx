@@ -11,42 +11,71 @@ const NAV_ITEMS = [
 
 export default function LiquidNav({ activePage }: { activePage: string }) {
   return (
-    <div className="pointer-events-auto relative p-[2px] rounded-[2.6rem] overflow-hidden isolate border-glow-flow menu-glow-pulse group transition-all duration-700">
-      {/* Inner Pill */}
-      <GlassEffect className="rounded-[2.5rem] p-2.5 group-hover:p-3 transition-all duration-700 relative z-10 bg-[rgba(10,13,24,0.5)] backdrop-blur-2xl">
-        <div className="relative flex items-center justify-center gap-2 rounded-[2.5rem] px-1 overflow-hidden">
-              {NAV_ITEMS.map((item, index) => {
-                const isActive = activePage === item.id;
-                return (
-                  <a
-                    key={index}
-                    href={item.href}
-                    className={`relative flex flex-col items-center justify-center w-[4.5rem] h-[4.5rem] rounded-[1.8rem] transition-all duration-700 cursor-pointer ${
-                      !isActive ? 'hover:bg-[rgba(255,255,255,0.1)] hover:scale-110' : ''
-                    }`}
-                    style={{
-                      transformOrigin: "center center",
-                      transitionTimingFunction: "cubic-bezier(0.175, 0.885, 0.32, 2.2)",
-                      textDecoration: "none"
-                    }}
-                  >
-                    {isActive && (
-                      <div 
-                        className="absolute inset-0 bg-[rgba(59,130,246,0.3)] shadow-[inset_0_1px_4px_rgba(255,255,255,0.4)] rounded-[1.8rem] pointer-events-none"
-                        style={{ viewTransitionName: 'nav-active-bubble' } as React.CSSProperties}
-                      />
-                    )}
-                    <span className="relative z-10 text-[1.8rem] drop-shadow-md" style={{ filter: isActive ? 'drop-shadow(0 0 8px rgba(255,255,255,0.6))' : 'none' }}>
-                      {item.icon}
-                    </span>
-                    <span className={`relative z-10 text-[0.65rem] mt-1 font-bold tracking-wide ${isActive ? 'text-white drop-shadow-md' : 'text-white/70'}`}>
-                      {item.label}
-                    </span>
-                  </a>
-                );
-              })}
-            </div>
-          </GlassEffect>
+    <div
+      className="pointer-events-auto relative rounded-[2.6rem] menu-glow-pulse group transition-all duration-700"
+    >
+      {/*
+        Gradient border layer: positioned absolute, fills the full capsule,
+        then masked so only the 2px outer ring is visible.
+        The glass content below is completely unaffected.
+      */}
+      <div
+        className="border-glow-flow"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          borderRadius: '2.6rem',
+          padding: '2px',
+          /* mask trick: show only the padding ring, hide the content area */
+          WebkitMask:
+            'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+          WebkitMaskComposite: 'xor',
+          mask:
+            'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+          maskComposite: 'exclude',
+          pointerEvents: 'none',
+          zIndex: 10,
+        }}
+      />
+
+      {/* Inner Glass Pill — completely clean, no gradient leaking through */}
+      <GlassEffect className="rounded-[2.5rem] p-2.5 group-hover:p-3 transition-all duration-700 relative bg-[rgba(10,13,24,0.85)] backdrop-blur-2xl">
+        <div className="relative flex items-center justify-center gap-2 rounded-[2.5rem] px-1">
+          {NAV_ITEMS.map((item, index) => {
+            const isActive = activePage === item.id;
+            return (
+              <a
+                key={index}
+                href={item.href}
+                className={`relative flex flex-col items-center justify-center w-[4.5rem] h-[4.5rem] rounded-[1.8rem] transition-all duration-700 cursor-pointer ${
+                  !isActive ? 'hover:bg-[rgba(255,255,255,0.1)] hover:scale-110' : ''
+                }`}
+                style={{
+                  transformOrigin: 'center center',
+                  transitionTimingFunction: 'cubic-bezier(0.175, 0.885, 0.32, 2.2)',
+                  textDecoration: 'none',
+                }}
+              >
+                {isActive && (
+                  <div
+                    className="absolute inset-0 bg-[rgba(59,130,246,0.3)] shadow-[inset_0_1px_4px_rgba(255,255,255,0.4)] rounded-[1.8rem] pointer-events-none"
+                    style={{ viewTransitionName: 'nav-active-bubble' } as React.CSSProperties}
+                  />
+                )}
+                <span
+                  className="relative z-10 text-[1.8rem] drop-shadow-md"
+                  style={{ filter: isActive ? 'drop-shadow(0 0 8px rgba(255,255,255,0.6))' : 'none' }}
+                >
+                  {item.icon}
+                </span>
+                <span className={`relative z-10 text-[0.65rem] mt-1 font-bold tracking-wide ${isActive ? 'text-white drop-shadow-md' : 'text-white/70'}`}>
+                  {item.label}
+                </span>
+              </a>
+            );
+          })}
+        </div>
+      </GlassEffect>
     </div>
   );
 }
