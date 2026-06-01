@@ -3,7 +3,7 @@ import React from "react";
 import GlassEffect from './GlassEffect';
 
 const NAV_ITEMS = [
-  { href: '/', label: 'Hub', icon: '🏠', id: 'hub' },
+  { href: '/', label: 'Home', icon: '🏠', id: 'home' },
   { href: '/calendario', label: 'Calendario', icon: '📅', id: 'calendario' },
   { href: '/classifica', label: 'Classifica', icon: '🏆', id: 'classifica' },
   { href: '/carte', label: 'Carte', icon: '🃏', id: 'carte' },

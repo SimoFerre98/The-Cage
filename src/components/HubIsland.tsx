@@ -153,7 +153,7 @@ export default function HubIsland() {
     <div>
       {/* Page Header integrated dynamically */}
       <div className="page-header">
-        <h1 className="page-title">Hub</h1>
+        <h1 className="page-title">Home</h1>
         <p className="page-subtitle">Squadre e giocatori del torneo</p>
         <div className="accent-line"></div>
         <div className="flex gap-2 flex-wrap items-center mt-3.5">
