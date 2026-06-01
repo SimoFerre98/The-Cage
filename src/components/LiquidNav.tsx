@@ -23,7 +23,7 @@ export default function LiquidNav({ activePage }: { activePage: string }) {
       />
       
       {/* Inner Pill */}
-      <GlassEffect className="rounded-[2.5rem] p-2.5 group-hover:p-3 transition-all duration-700 relative z-10 bg-[rgba(10,13,24,0.94)] backdrop-blur-2xl">
+      <GlassEffect className="rounded-[2.5rem] p-2.5 group-hover:p-3 transition-all duration-700 relative z-10 bg-[rgba(10,13,24,0.5)] backdrop-blur-2xl">
         <div className="relative flex items-center justify-center gap-2 rounded-[2.5rem] px-1 overflow-hidden">
               {NAV_ITEMS.map((item, index) => {
                 const isActive = activePage === item.id;
