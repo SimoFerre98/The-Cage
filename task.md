@@ -24,13 +24,13 @@ Questo file rappresenta il **Punto di Tracciamento Centralizzato** di tutto il p
   - **File di backlog**: [sprint-5-verification-and-seeding.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-5-verification-and-seeding.md)
 
 ### Sprint di Ottimizzazione (In Coda)
-- [/] **Sprint 6: Caching SWR e Ottimizzazione Classifica**
+- [x] **Sprint 6: Caching SWR e Ottimizzazione Classifica**
   - **File di backlog**: [sprint-6-cache-swr-classifica.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-6-cache-swr-classifica.md)
   - **Branch**: `sprint-6-swr-classifica`
-- [ ] **Sprint 7: Caching SWR su Calendario e Home Page**
+- [x] **Sprint 7: Caching SWR su Calendario e Home Page**
   - **File di backlog**: [sprint-7-cache-swr-calendario-home.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-7-cache-swr-calendario-home.md)
   - **Branch**: `sprint-7-swr-calendario-home`
-- [ ] **Sprint 8: Ottimizzazione Query Relazionali (Teams & Players)**
+- [x] **Sprint 8: Ottimizzazione Query Relazionali (Teams & Players)**
   - **File di backlog**: [sprint-8-relational-query-teams-players.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-8-relational-query-teams-players.md)
   - **Branch**: `sprint-8-teams-players-query`
 - [ ] **Sprint 9: Aggregazione Ottimizzata Voti MVP e Realtime**
