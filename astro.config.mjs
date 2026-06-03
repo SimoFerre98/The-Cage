@@ -10,6 +10,25 @@ export default defineConfig({
   integrations: [react()],
 
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    build: {
+      cssMinify: true,
+      minify: 'esbuild',
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              if (id.includes('@supabase')) {
+                return 'supabase';
+              }
+              if (id.includes('react')) {
+                return 'react-vendor';
+              }
+              return 'vendor';
+            }
+          }
+        }
+      }
+    }
   }
 });

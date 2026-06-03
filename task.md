@@ -39,7 +39,7 @@ Questo file rappresenta il **Punto di Tracciamento Centralizzato** di tutto il p
 - [x] **Sprint 10: Ottimizzazione Service Worker (PWA) e Compressione Asset**
   - **File di backlog**: [sprint-10-pwa-assets-optimization.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-10-pwa-assets-optimization.md)
   - **Branch**: `sprint-10-pwa-assets-optimization`
-- [ ] **Sprint 11: Lazy Loading Admin e Idratazione Differita**
+- [/] **Sprint 11: Lazy Loading Admin e Idratazione Differita**
   - **File di backlog**: [sprint-11-lazy-loading-hydration.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-11-lazy-loading-hydration.md)
   - **Branch**: `sprint-11-lazy-loading-hydration`
 

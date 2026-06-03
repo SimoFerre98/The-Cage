@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import GlassEffect from '../GlassEffect';
-import TeamsPlayersManager from './TeamsPlayersManager';
-import MatchesManager from './MatchesManager';
-import LiveController from './LiveController';
-import MVPManager from './MVPManager';
+
+// Lazy loading admin subcomponents to reduce initial bundle size
+const TeamsPlayersManager = React.lazy(() => import('./TeamsPlayersManager'));
+const MatchesManager = React.lazy(() => import('./MatchesManager'));
+const LiveController = React.lazy(() => import('./LiveController'));
+const MVPManager = React.lazy(() => import('./MVPManager'));
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<'squadre' | 'partite' | 'live' | 'mvp'>('squadre');
@@ -64,10 +66,12 @@ export default function Dashboard() {
 
       {/* Content */}
       <div className="mt-2 animate-[modalSlideUp_0.3s_ease-out]">
-        {activeTab === 'squadre' && <TeamsPlayersManager />}
-        {activeTab === 'partite' && <MatchesManager />}
-        {activeTab === 'live' && <LiveController />}
-        {activeTab === 'mvp' && <MVPManager />}
+        <React.Suspense fallback={<div className="text-white/65 p-6 text-center">Caricamento sezione...</div>}>
+          {activeTab === 'squadre' && <TeamsPlayersManager />}
+          {activeTab === 'partite' && <MatchesManager />}
+          {activeTab === 'live' && <LiveController />}
+          {activeTab === 'mvp' && <MVPManager />}
+        </React.Suspense>
       </div>
     </div>
   );
