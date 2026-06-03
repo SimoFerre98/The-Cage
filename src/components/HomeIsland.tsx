@@ -103,54 +103,47 @@ export default function HomeIsland() {
     let isMounted = true;
 
     async function loadData() {
-      const teamsData = await fetchWithCache(
-        'cage-teams-all',
+      const teamsWithPlayers = await fetchWithCache(
+        'cage-teams-with-players',
         async () => {
-          const { data } = await supabase.from('teams').select('id, name').order('name');
+          const { data } = await supabase
+            .from('teams')
+            .select('id, name, players(id, name)')
+            .order('name');
           return data || [];
         },
         (newData) => {
-          if (isMounted) updateTeamsUI(newData, null);
-        }
-      );
-
-      const playersData = await fetchWithCache(
-        'cage-players-all',
-        async () => {
-          const { data } = await supabase.from('players').select('id, name, team_id').order('name');
-          return data || [];
-        },
-        (newData) => {
-          if (isMounted) updateTeamsUI(null, newData);
+          if (isMounted) updateTeamsUI(newData);
         }
       );
 
       if (isMounted) {
-        updateTeamsUI(teamsData, playersData);
+        updateTeamsUI(teamsWithPlayers);
         await loadCandidatesAndVotes(false);
       }
     }
 
-    let currentTeams: any[] = [];
-    let currentPlayers: any[] = [];
+    const updateTeamsUI = (tData: any[] | null) => {
+      if (!tData || tData.length === 0) return;
 
-    const updateTeamsUI = (tData: any[] | null, pData: any[] | null) => {
-      if (tData) currentTeams = tData;
-      if (pData) currentPlayers = pData;
-
-      if (currentTeams.length > 0 && currentPlayers.length > 0) {
-        const processedTeams = currentTeams.map((t, i) => ({
+      const processedTeams = tData.map((t, i) => {
+        // Ordiniamo i giocatori per nome localmente per sicurezza
+        const sortedPlayers = [...(t.players || [])].sort((a: any, b: any) => 
+          a.name.localeCompare(b.name)
+        );
+        
+        return {
           name: t.name,
           idx: i,
-          players: currentPlayers.filter(p => p.team_id === t.id).map(p => p.name)
-        }));
-        setTeams(processedTeams);
+          players: sortedPlayers.map(p => p.name)
+        };
+      });
+      setTeams(processedTeams);
 
-        const allP = processedTeams.flatMap((t) =>
-          t.players.map((p) => ({ name: p, team: t.name, idx: t.idx }))
-        );
-        setPlayersAll(allP);
-      }
+      const allP = processedTeams.flatMap((t) =>
+        t.players.map((p) => ({ name: p, team: t.name, idx: t.idx }))
+      );
+      setPlayersAll(allP);
     };
 
     loadData();
