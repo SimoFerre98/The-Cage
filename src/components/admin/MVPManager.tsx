@@ -24,8 +24,8 @@ export default function MVPManager() {
 
     // 3. Carica i voti reali per contare
     const { data: vData } = await supabase
-      .from('mvp_votes')
-      .select('player_id');
+      .from('mvp_votes_summary')
+      .select('player_id, vote_count');
 
     if (tData) setTeams(tData);
     if (pData) setPlayers(pData);
@@ -37,7 +37,7 @@ export default function MVPManager() {
     if (vData) {
       const counts: Record<string, number> = {};
       vData.forEach(v => {
-        counts[v.player_id] = (counts[v.player_id] || 0) + 1;
+        counts[v.player_id] = v.vote_count;
       });
       setVotesCount(counts);
     }
@@ -50,7 +50,27 @@ export default function MVPManager() {
 
     // Sottoscrivi agli aggiornamenti dei voti in tempo reale
     const channel = supabase.channel('admin_mvp_updates')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'mvp_votes' }, () => {
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'mvp_votes' }, (payload) => {
+        const newVote = payload.new as { player_id: string };
+        if (newVote && newVote.player_id) {
+          setVotesCount(prev => ({
+            ...prev,
+            [newVote.player_id]: (prev[newVote.player_id] || 0) + 1
+          }));
+        }
+      })
+      .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'mvp_votes' }, (payload) => {
+        const oldVote = payload.old as { player_id?: string };
+        if (oldVote && oldVote.player_id) {
+          setVotesCount(prev => ({
+            ...prev,
+            [oldVote.player_id]: Math.max(0, (prev[oldVote.player_id] || 0) - 1)
+          }));
+        } else {
+          loadData();
+        }
+      })
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'mvp_votes' }, () => {
         loadData();
       })
       .on('postgres_changes', { event: '*', schema: 'public', table: 'mvp_candidates' }, () => {

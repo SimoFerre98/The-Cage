@@ -22,14 +22,14 @@ export default function HomeIsland() {
 
   // Carica i voti dei candidati (NESSUNA CACHE: i voti cambiano in tempo reale)
   const loadVotes = async (candList = candidates) => {
-    const { data: vData } = await supabase.from('mvp_votes').select('player_id');
+    const { data: vData } = await supabase.from('mvp_votes_summary').select('player_id, vote_count');
     const initialVotes: Record<string, number> = {};
     candList.forEach(c => {
       initialVotes[c.id] = 0;
     });
     vData?.forEach(v => {
       if (initialVotes[v.player_id] !== undefined) {
-        initialVotes[v.player_id]++;
+        initialVotes[v.player_id] = v.vote_count;
       }
     });
     setVotes(initialVotes);
@@ -150,7 +150,31 @@ export default function HomeIsland() {
 
     // Sottoscrizione realtime
     const channel = supabase.channel('public_mvp_updates')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'mvp_votes' }, () => {
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'mvp_votes' }, (payload) => {
+        const newVote = payload.new as { player_id: string };
+        if (newVote && newVote.player_id) {
+          setVotes(prev => {
+            if (prev[newVote.player_id] !== undefined) {
+              return { ...prev, [newVote.player_id]: prev[newVote.player_id] + 1 };
+            }
+            return prev;
+          });
+        }
+      })
+      .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'mvp_votes' }, (payload) => {
+        const oldVote = payload.old as { player_id?: string };
+        if (oldVote && oldVote.player_id) {
+          setVotes(prev => {
+            if (prev[oldVote.player_id] !== undefined) {
+              return { ...prev, [oldVote.player_id]: Math.max(0, prev[oldVote.player_id] - 1) };
+            }
+            return prev;
+          });
+        } else {
+          loadVotes();
+        }
+      })
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'mvp_votes' }, () => {
         loadVotes();
       })
       .on('postgres_changes', { event: '*', schema: 'public', table: 'mvp_candidates' }, () => {
