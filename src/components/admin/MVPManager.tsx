@@ -157,7 +157,7 @@ export default function MVPManager() {
             <select 
               value={selectedTeamId} 
               onChange={e => { setSelectedTeamId(e.target.value); setSelectedPlayerId(''); }}
-              className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 shadow-inner h-[48px]"
+              className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 h-[48px]"
               required
             >
               <option value="">-- Seleziona Squadra --</option>
@@ -169,7 +169,7 @@ export default function MVPManager() {
             <select 
               value={selectedPlayerId} 
               onChange={e => setSelectedPlayerId(e.target.value)}
-              className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 shadow-inner h-[48px]"
+              className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 h-[48px]"
               disabled={!selectedTeamId}
               required
             >

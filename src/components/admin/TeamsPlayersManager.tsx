@@ -70,7 +70,7 @@ export default function TeamsPlayersManager() {
             type="text" 
             value={newTeamName}
             onChange={(e) => setNewTeamName(e.target.value)}
-            className="flex-1 bg-[rgba(0,0,0,0.2)] border border-white/10 rounded-xl px-5 py-3 text-white outline-none focus:border-blue-500/50 shadow-inner"
+            className="flex-1 bg-[rgba(0,0,0,0.2)] border border-white/10 rounded-xl px-5 py-3 text-white outline-none focus:border-blue-500/50"
             placeholder="Nome della squadra..."
             required
           />
@@ -112,7 +112,7 @@ export default function TeamsPlayersManager() {
                     type="text" 
                     value={newPlayerName}
                     onChange={(e) => setNewPlayerName(e.target.value)}
-                    className="flex-1 bg-[rgba(0,0,0,0.2)] border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-blue-500/50 shadow-inner"
+                    className="flex-1 bg-[rgba(0,0,0,0.2)] border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-blue-500/50"
                     placeholder="Nome giocatore..."
                     required
                   />

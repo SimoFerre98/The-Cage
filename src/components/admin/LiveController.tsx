@@ -106,7 +106,7 @@ export default function LiveController() {
             <h3 className="text-lg md:text-xl font-bold text-white text-center mb-6">{liveMatch.home_team.name}</h3>
             <div className="flex items-center gap-5">
               <button onClick={() => updateScore(-1, 0)} className="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-xl flex items-center justify-center transition-colors border border-white/5">-</button>
-              <div className="text-6xl md:text-7xl font-black text-white w-20 text-center drop-shadow-md select-none">{liveMatch.home_score}</div>
+              <div className="text-6xl md:text-7xl font-black text-white w-20 text-center select-none">{liveMatch.home_score}</div>
               <button onClick={() => updateScore(1, 0)} className="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-xl flex items-center justify-center transition-colors border border-white/5">+</button>
             </div>
           </div>
@@ -118,7 +118,7 @@ export default function LiveController() {
             <h3 className="text-lg md:text-xl font-bold text-white text-center mb-6">{liveMatch.away_team.name}</h3>
             <div className="flex items-center gap-5">
               <button onClick={() => updateScore(0, -1)} className="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-xl flex items-center justify-center transition-colors border border-white/5">-</button>
-              <div className="text-6xl md:text-7xl font-black text-white w-20 text-center drop-shadow-md select-none">{liveMatch.away_score}</div>
+              <div className="text-6xl md:text-7xl font-black text-white w-20 text-center select-none">{liveMatch.away_score}</div>
               <button onClick={() => updateScore(0, 1)} className="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-xl flex items-center justify-center transition-colors border border-white/5">+</button>
             </div>
           </div>
@@ -155,7 +155,7 @@ export default function LiveController() {
             <select 
               value={eventPlayerId} 
               onChange={e => setEventPlayerId(e.target.value)}
-              className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 shadow-inner h-[48px]"
+              className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 h-[48px]"
               required
             >
               <option value="">-- Seleziona Giocatore --</option>
@@ -168,7 +168,7 @@ export default function LiveController() {
             <select 
               value={eventType} 
               onChange={e => setEventType(e.target.value)}
-              className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 shadow-inner h-[48px]"
+              className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 h-[48px]"
               required
             >
               <option value="GOAL">⚽ Goal (Normale)</option>
@@ -184,7 +184,7 @@ export default function LiveController() {
               <select 
                 value={eventDetail} 
                 onChange={e => setEventDetail(e.target.value)}
-                className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none border-purple-500/50 focus:border-purple-500 shadow-inner h-[48px]"
+                className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none border-purple-500/50 focus:border-purple-500 h-[48px]"
                 required
               >
                 <option value="">-- Seleziona Carta --</option>
@@ -204,7 +204,7 @@ export default function LiveController() {
               type="number" 
               value={eventMinute} 
               onChange={e => setEventMinute(e.target.value)}
-              className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 shadow-inner h-[48px]"
+              className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 h-[48px]"
               placeholder="Es: 12"
               required
               min="0"

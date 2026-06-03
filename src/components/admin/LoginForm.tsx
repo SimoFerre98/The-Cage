@@ -41,7 +41,7 @@ export default function LoginForm() {
               type="email" 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-[rgba(0,0,0,0.2)] border border-white/10 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 focus:bg-[rgba(0,0,0,0.4)] transition-all shadow-inner"
+              className="w-full bg-[rgba(0,0,0,0.2)] border border-white/10 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 focus:bg-[rgba(0,0,0,0.4)] transition-all"
               placeholder="admin@thecage.it"
               required
             />
@@ -52,7 +52,7 @@ export default function LoginForm() {
               type="password" 
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-[rgba(0,0,0,0.2)] border border-white/10 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 focus:bg-[rgba(0,0,0,0.4)] transition-all shadow-inner"
+              className="w-full bg-[rgba(0,0,0,0.2)] border border-white/10 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 focus:bg-[rgba(0,0,0,0.4)] transition-all"
               placeholder="••••••••"
               required
             />

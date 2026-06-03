@@ -96,7 +96,7 @@ export default function MatchesManager() {
             <select 
               value={homeTeamId} 
               onChange={e => setHomeTeamId(e.target.value)}
-              className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 shadow-inner"
+              className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50"
               required
             >
               <option value="">-- Seleziona --</option>
@@ -108,7 +108,7 @@ export default function MatchesManager() {
             <select 
               value={awayTeamId} 
               onChange={e => setAwayTeamId(e.target.value)}
-              className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 shadow-inner"
+              className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50"
               required
             >
               <option value="">-- Seleziona --</option>
@@ -121,7 +121,7 @@ export default function MatchesManager() {
               type="date" 
               value={matchDate} 
               onChange={e => setMatchDate(e.target.value)}
-              className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 shadow-inner"
+              className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50"
               required
             />
           </div>
@@ -131,7 +131,7 @@ export default function MatchesManager() {
               type="time" 
               value={matchTime} 
               onChange={e => setMatchTime(e.target.value)}
-              className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 shadow-inner"
+              className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50"
               required
             />
           </div>
@@ -141,7 +141,7 @@ export default function MatchesManager() {
               type="text" 
               value={round} 
               onChange={e => setRound(e.target.value)}
-              className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 shadow-inner"
+              className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50"
               placeholder="Es: Girone A, Semifinale..."
               required
             />
