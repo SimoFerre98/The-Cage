@@ -42,6 +42,9 @@ Questo file rappresenta il **Punto di Tracciamento Centralizzato** di tutto il p
 - [x] **Sprint 11: Lazy Loading Admin e Idratazione Differita**
   - **File di backlog**: [sprint-11-lazy-loading-hydration.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/02-optimization/sprint-11-lazy-loading-hydration.md)
   - **Branch**: `sprint-11-lazy-loading-hydration`
+- [ ] **Sprint 12: Statistiche Giocatori Avanzate (Assist e Sanzioni)**
+  - **File di backlog**: [sprint-12-player-statistics.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/03-new-features/sprint-12-player-statistics.md)
+  - **Branch**: `sprint-12-player-statistics`
 
 ---
 
