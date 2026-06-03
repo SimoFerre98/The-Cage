@@ -100,35 +100,19 @@ export default function CalendarioIsland() {
             const scoreStr = (m.home_score !== null && m.away_score !== null && m.status !== 'PROSSIMA') ? `${m.home_score} - ${m.away_score}` : null;
             const formattedDate = new Date(m.match_date).toLocaleString('it-IT', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
             
-            const CardTag = m.status === 'LIVE' ? 'a' : 'div';
-            const cardProps = m.status === 'LIVE' 
-              ? { 
-                  href: '/live', 
-                  style: { 
-                    display: 'block', 
-                    textDecoration: 'none', 
-                    cursor: 'pointer', 
-                    marginBottom: '1rem', 
-                    padding: '1.2rem 1.25rem',
-                  } 
-                } 
-              : { 
-                  style: { 
-                    marginBottom: '1rem', 
-                    padding: '1.2rem 1.25rem' 
-                  } 
-                };
+            const isLive = m.status === 'LIVE';
 
-            return (
-              <CardTag key={i} className={`glass-card ${m.status === 'LIVE' ? 'live-card-pulse' : ''}`} {...cardProps}>
+            // Contenuto della card (uguale per live e non-live)
+            const cardContent = (
+              <>
                 <div className="flex items-center justify-between mb-4">
-                  <span className={`text-xs font-medium ${m.status === 'LIVE' ? 'text-red-400 font-bold' : 'text-[var(--text-muted)]'}`}>
-                    {m.status === 'LIVE' ? '🔴 IN DIRETTA' : `📅 ${formattedDate}`}
+                  <span className={`text-xs font-medium ${isLive ? 'text-red-400 font-bold' : 'text-[var(--text-muted)]'}`}>
+                    {isLive ? '🔴 IN DIRETTA' : `📅 ${formattedDate}`}
                   </span>
                   <div className="flex gap-1.5 items-center">
                     <span className="badge badge-round">{m.round}</span>
-                    <span className={`badge ${m.status === 'TERMINATA' ? 'badge-done' : m.status === 'LIVE' ? 'badge-live' : 'badge-next'}`}>
-                      {m.status === 'TERMINATA' ? '✓' : m.status === 'LIVE' ? '⚡' : '⚡'} {m.status}
+                    <span className={`badge ${m.status === 'TERMINATA' ? 'badge-done' : isLive ? 'badge-live' : 'badge-next'}`}>
+                      {m.status === 'TERMINATA' ? '✓' : '⚡'} {m.status}
                     </span>
                   </div>
                 </div>
@@ -161,7 +145,29 @@ export default function CalendarioIsland() {
                     <span className="text-[0.875rem] font-bold text-[var(--text-primary)] leading-tight">{awayName}</span>
                   </div>
                 </div>
-              </CardTag>
+              </>
+            );
+
+            // Per le partite LIVE: wrapper esterno animato + glass-card interna STATICA
+            // (CSS animation + backdrop-filter sullo stesso elemento si rompono a vicenda)
+            if (isLive) {
+              return (
+                <div key={i} className="live-border-wrapper" style={{ marginBottom: '1rem' }}>
+                  <a
+                    href="/live"
+                    className="glass-card live-card-inner"
+                    style={{ display: 'block', textDecoration: 'none', cursor: 'pointer', padding: '1.2rem 1.25rem' }}
+                  >
+                    {cardContent}
+                  </a>
+                </div>
+              );
+            }
+
+            return (
+              <div key={i} className="glass-card" style={{ marginBottom: '1rem', padding: '1.2rem 1.25rem' }}>
+                {cardContent}
+              </div>
             );
           })}
         </div>

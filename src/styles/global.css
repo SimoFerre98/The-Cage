@@ -1119,33 +1119,41 @@ body {
   will-change: background-position;
 }
 
-/* Animazione bordo + glow rosso pulsante per match in diretta nel calendario */
-@keyframes liveCardBorderPulse {
-  0% {
-    border-color: rgba(239, 68, 68, 0.5);
-    box-shadow: var(--inner-glow), 0 8px 32px rgba(0, 0, 0, 0.3),
-      0 0 0 1px rgba(239, 68, 68, 0.3),
-      0 0 16px rgba(239, 68, 68, 0.25),
-      0 0 32px rgba(239, 68, 68, 0.1);
+/* ===================================================
+   LIVE MATCH CARD: wrapper + backdrop-filter override
+   - Wrapper porta l'animazione box-shadow
+   - glass-card interna usa sfondo solido invece di
+     backdrop-filter (qualsiasi animazione su un antenato
+     rompe il backdrop sampling del compositor)
+   =================================================== */
+
+@keyframes liveBorderGlow {
+  0%, 100% {
+    box-shadow:
+      0 0 0 1.5px rgba(239, 68, 68, 0.55),
+      0 0 14px  rgba(239, 68, 68, 0.35),
+      0 0 28px  rgba(239, 68, 68, 0.18);
   }
   50% {
-    border-color: rgba(239, 68, 68, 0.95);
-    box-shadow: var(--inner-glow), 0 8px 32px rgba(0, 0, 0, 0.3),
-      0 0 0 2px rgba(239, 68, 68, 0.6),
-      0 0 24px rgba(239, 68, 68, 0.55),
-      0 0 48px rgba(239, 68, 68, 0.3);
-  }
-  100% {
-    border-color: rgba(239, 68, 68, 0.5);
-    box-shadow: var(--inner-glow), 0 8px 32px rgba(0, 0, 0, 0.3),
-      0 0 0 1px rgba(239, 68, 68, 0.3),
-      0 0 16px rgba(239, 68, 68, 0.25),
-      0 0 32px rgba(239, 68, 68, 0.1);
+    box-shadow:
+      0 0 0 2.5px rgba(239, 68, 68, 0.95),
+      0 0 26px  rgba(239, 68, 68, 0.70),
+      0 0 52px  rgba(239, 68, 68, 0.40);
   }
 }
 
-/* Classe applicata alla glass-card del match LIVE nel calendario */
-.live-card-pulse {
-  animation: liveCardBorderPulse 2.5s ease-in-out infinite;
-  will-change: border-color, box-shadow;
+.live-border-wrapper {
+  border-radius: 20px;
+  animation: liveBorderGlow 2.5s ease-in-out infinite;
+}
+
+/*
+  Sulla glass-card live RIMUOVIAMO backdrop-filter.
+  backdrop-filter + animation su un antenato = card invisibile.
+  Il colore solido è impercettibilmente diverso, ma funziona.
+*/
+.live-card-inner::after {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: rgba(10, 12, 22, 0.88) !important;
 }
