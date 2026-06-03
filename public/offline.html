@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offline | Memorial Gerry The Cage</title>
+  <style>
+    :root {
+      --bg-deep: #03050a;
+      --text-primary: #ffffff;
+      --text-secondary: rgba(255, 255, 255, 0.7);
+      --accent-primary: #3b82f6;
+      --glass-bg: rgba(20, 25, 40, 0.35);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-blur: blur(20px);
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-deep);
+      color: var(--text-primary);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(rgba(3, 5, 10, 0.4), rgba(3, 5, 10, 0.7)), url('/sfondo.webp') center/cover no-repeat;
+      overflow: hidden;
+    }
+    .offline-card {
+      border: 1px solid var(--glass-border);
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 8px 32px rgba(0, 0, 0, 0.3);
+      border-radius: 24px;
+      padding: 32px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      margin: 16px;
+    }
+    .icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin: 0 0 12px 0;
+      letter-spacing: -0.03em;
+    }
+    p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin: 0 0 24px 0;
+    }
+    .retry-btn {
+      background: var(--accent-primary);
+      color: white;
+      border: none;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 12px 24px;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+      transition: all 0.3s ease;
+    }
+    .retry-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+    }
+    .retry-btn:active {
+      transform: scale(0.98);
+    }
+  </style>
+</head>
+<body>
+  <div class="offline-card">
+    <div class="icon">📡❌</div>
+    <h1>Connessione Assente</h1>
+    <p>Sembra che tu sia offline. Alcune parti dell'app "The Cage" richiedono una connessione internet attiva per ricevere i dati aggiornati del torneo in tempo reale.</p>
+    <button class="retry-btn" onclick="window.location.reload()">Riprova</button>
+  </div>
+</body>
+</html>

@@ -9,9 +9,9 @@
   "theme_color": "#0a0f1d",
   "icons": [
     {
-      "src": "/Logo_Torneo.jpg",
+      "src": "/Logo_Torneo.webp",
       "sizes": "512x512",
-      "type": "image/jpeg",
+      "type": "image/webp",
       "purpose": "any maskable"
     },
     {

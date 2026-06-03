@@ -36,7 +36,7 @@ Questo file rappresenta il **Punto di Tracciamento Centralizzato** di tutto il p
 - [x] **Sprint 9: Aggregazione Ottimizzata Voti MVP e Realtime**
   - **File di backlog**: [sprint-9-mvp-votes-aggregation.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-9-mvp-votes-aggregation.md)
   - **Branch**: `sprint-9-mvp-votes-aggregation`
-- [ ] **Sprint 10: Ottimizzazione Service Worker (PWA) e Compressione Asset**
+- [/] **Sprint 10: Ottimizzazione Service Worker (PWA) e Compressione Asset**
   - **File di backlog**: [sprint-10-pwa-assets-optimization.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-10-pwa-assets-optimization.md)
   - **Branch**: `sprint-10-pwa-assets-optimization`
 - [ ] **Sprint 11: Lazy Loading Admin e Idratazione Differita**

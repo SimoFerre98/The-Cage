@@ -107,7 +107,7 @@ export default function LiveMatchIsland() {
         <div 
           className="absolute inset-0 bg-cover bg-bottom bg-no-repeat"
           style={{ 
-            backgroundImage: `url('/3d-field.png')`,
+            backgroundImage: `url('/3d-field.webp')`,
           }}
         />
         
