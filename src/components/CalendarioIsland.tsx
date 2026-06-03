@@ -101,10 +101,44 @@ export default function CalendarioIsland() {
             const formattedDate = new Date(m.match_date).toLocaleString('it-IT', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
             
             const CardTag = m.status === 'LIVE' ? 'a' : 'div';
-            const cardProps = m.status === 'LIVE' ? { href: '/live', style: { display: 'block', textDecoration: 'none', cursor: 'pointer', marginBottom: '1rem', padding: '1.2rem 1.25rem' } } : { style: { marginBottom: '1rem', padding: '1.2rem 1.25rem' } };
+            const cardProps = m.status === 'LIVE' 
+              ? { 
+                  href: '/live', 
+                  style: { 
+                    display: 'block', 
+                    textDecoration: 'none', 
+                    cursor: 'pointer', 
+                    marginBottom: '1rem', 
+                    padding: '1.2rem 1.25rem',
+                    borderColor: 'transparent'
+                  } 
+                } 
+              : { 
+                  style: { 
+                    marginBottom: '1rem', 
+                    padding: '1.2rem 1.25rem' 
+                  } 
+                };
 
             return (
-              <CardTag key={i} className={`glass-card ${m.status === 'LIVE' ? 'ring-2 ring-[rgba(239,68,68,0.5)] shadow-[0_0_20px_rgba(239,68,68,0.3)]' : ''}`} {...cardProps}>
+              <CardTag key={i} className={`glass-card ${m.status === 'LIVE' ? 'live-glow-pulse' : ''}`} {...cardProps}>
+                {m.status === 'LIVE' && (
+                  <div
+                    className="border-glow-flow-red"
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      borderRadius: '20px',
+                      padding: '2px',
+                      WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                      WebkitMaskComposite: 'xor',
+                      mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                      maskComposite: 'exclude',
+                      pointerEvents: 'none',
+                      zIndex: 10,
+                    }}
+                  />
+                )}
                 <div className="flex items-center justify-between mb-4">
                   <span className={`text-xs font-medium ${m.status === 'LIVE' ? 'text-red-400 font-bold' : 'text-[var(--text-muted)]'}`}>
                     {m.status === 'LIVE' ? '🔴 IN DIRETTA' : `📅 ${formattedDate}`}
