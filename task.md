@@ -1,26 +1,53 @@
-Agisci come un Esperto Frontend Developer specializzato in UI/UX Motion Design moderni. Devo ottimizzare e rifare il look alla UI/UX del sito web di un torneo di calcio. Il sito sarà visitato al 90% da smartphone, quindi l'intera struttura deve essere strettamente Mobile-First, altamente usabile con il pollice (thumb-zone ottimizzata) e reattiva.
+# Tabellone delle Attività di Ottimizzazione (The Cage)
 
-Voglio che il design adotti uno stile premium e futuristico, ispirato fortemente all'effetto Liquid Glass e alle trasparenze dinamiche di Apple (Glassmorphism evoluto).
+Questo file rappresenta il **Punto di Tracciamento Centralizzato** di tutto il progetto. Serve a tracciare lo stato di completamento di ciascun blocco di lavoro (Sprint).
 
-Applica le seguenti linee guida strutturali e visive:
+## Legenda degli Stati
+- `[ ]` **Da completare**: Attività in coda.
+- `[/]` **In corso**: Attività attualmente in fase di sviluppo (su branch dedicato).
+- `[x]` **Completato**: Sviluppo terminato, verificato e mergiato nel branch `main`.
 
-1. STILE VISIVO & LIQUID GLASS:
+---
 
-- Usa un background scuro e profondo (es. dark mode dinamica con sfumature fluide/neon sullo sfondo che si muovono lentamente).
-- Per le card (classifiche, match, statistiche) usa un effetto Glassmorphism avanzato: background con opacità ridotta, un forte `backdrop-filter: blur(20px)`, bordi finissimi e semi-trasparenti che simulano il riflesso del vetro, e un leggero bagliore interno (inner shadow).
-- Integra elementi grafici con forme organiche e "liquide" (smooth blobs) che fluttuano sullo sfondo per dare profondità alle trasparenze delle card in primo piano.
+## Stato degli Sprint
 
-2. ANIMAZIONI FLUIDE (Focalizzate sulle Performance):
+### Sprint Precedenti (Completati)
+- [x] **Sprint 1: Schema Database e Regole RLS**
+  - **File di backlog**: [sprint-1-db-schema-and-rls.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-1-db-schema-and-rls.md)
+- [x] **Sprint 2: Area Admin MVP**
+  - **File di backlog**: [sprint-2-admin-mvp.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-2-admin-mvp.md)
+- [x] **Sprint 3: Hub MVP Pubblico**
+  - **File di backlog**: [sprint-3-public-mvp.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-3-public-mvp.md)
+- [x] **Sprint 4: Correzione Timeline Live**
+  - **File di backlog**: [sprint-4-live-timeline-fix.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-4-live-timeline-fix.md)
+- [x] **Sprint 5: Semina Dati (Seeding) e Verifiche Finali**
+  - **File di backlog**: [sprint-5-verification-and-seeding.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-5-verification-and-seeding.md)
 
-- Ogni transizione di stato (cambio tab, apertura dettagli partita, espansione delle statistiche) deve essere burrosa e fluida.
-- Usa curve di easing naturali ispirate ad Apple (es. cubic-bezier(0.25, 1, 0.5, 1) o spring physics).
-- Implementa micro-interazioni sui tap: leggero shrink al touch, hover/active states fluidi, ed effetti di "shimmer" (riflesso di luce) che passano sulle card di vetro quando appaiono a schermo.
-- Ottimizza le animazioni usando solo proprietà che non causano repaint pesanti (usa `transform` e `opacity`) per garantire i 60fps fissi anche su smartphone meno recenti.
+### Sprint di Ottimizzazione (In Coda)
+- [/] **Sprint 6: Caching SWR e Ottimizzazione Classifica**
+  - **File di backlog**: [sprint-6-cache-swr-classifica.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-6-cache-swr-classifica.md)
+  - **Branch**: `sprint-6-swr-classifica`
+- [ ] **Sprint 7: Caching SWR su Calendario e Home Page**
+  - **File di backlog**: [sprint-7-cache-swr-calendario-home.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-7-cache-swr-calendario-home.md)
+  - **Branch**: `sprint-7-swr-calendario-home`
+- [ ] **Sprint 8: Ottimizzazione Query Relazionali (Teams & Players)**
+  - **File di backlog**: [sprint-8-relational-query-teams-players.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-8-relational-query-teams-players.md)
+  - **Branch**: `sprint-8-teams-players-query`
+- [ ] **Sprint 9: Aggregazione Ottimizzata Voti MVP e Realtime**
+  - **File di backlog**: [sprint-9-mvp-votes-aggregation.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-9-mvp-votes-aggregation.md)
+  - **Branch**: `sprint-9-mvp-votes-aggregation`
+- [ ] **Sprint 10: Ottimizzazione Service Worker (PWA) e Compressione Asset**
+  - **File di backlog**: [sprint-10-pwa-assets-optimization.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-10-pwa-assets-optimization.md)
+  - **Branch**: `sprint-10-pwa-assets-optimization`
+- [ ] **Sprint 11: Lazy Loading Admin e Idratazione Differita**
+  - **File di backlog**: [sprint-11-lazy-loading-hydration.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-11-lazy-loading-hydration.md)
+  - **Branch**: `sprint-11-lazy-loading-hydration`
 
-3. STRUTTURA MOBILE-FIRST (Torneo di Calcio):
+---
 
-- I componenti principali da stilizzare sono: una Dashboard con i match del giorno/live, la Tabella Classifica e i Tab di navigazione inferiori (Bottom Navigation Bar stile App nativa).
-- La navigazione tra i tab deve includere un indicatore liquido o una pillola di sfondo che si sposta in modo fluido da un'icona all'altra al cambio sezione.
-- Per le liste lunghe (es. marcatori o partite), implementa un caricamento ad apparizione fluida (fade-in + slide-up) mentre l'utente scrolla.
-
-Forniscimi il codice HTML/CSS (o componenti React/Tailwind se preferisci, specifica quale) per la struttura principale e le classi/stili necessari per ottenere questo effetto Liquid Glass super animato e fluido.
+## Linee Guida per gli Agenti
+Tutti gli agenti che lavorano su questo repository devono attenersi alle regole specificate in [.agents/RULES.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/RULES.md).
+In sintesi:
+1. Creare o estendere sempre il file della task nella cartella backlog prima di iniziare a lavorare.
+2. Aggiornare lo stato in questo file (`task.md`) all'inizio (`[/]`) e alla fine (`[x]`) dello sviluppo di ciascun blocco di lavoro.
+3. Lavorare sempre in un branch git separato, effettuando il merge su `main` solo al completamento dello sprint.

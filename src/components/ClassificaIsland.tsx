@@ -32,6 +32,8 @@ const AVATAR_IDX: Record<string, number> = {
   'Martino Gonzalez': 10,
 };
 
+import { fetchWithCache } from '../lib/cache';
+
 export default function ClassificaIsland() {
   const [tab, setTab] = useState<'squadre' | 'marcatori'>('squadre');
   const [showLegend, setShowLegend] = useState(false);
@@ -40,22 +42,47 @@ export default function ClassificaIsland() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function loadData() {
-      setLoading(true);
-      const [standingsRes, scorersRes] = await Promise.all([
-        supabase.from('standings').select('*'),
-        supabase.from('top_scorers').select('*')
-      ]);
+    let isMounted = true;
 
-      if (standingsRes.data) {
-        setStandings(standingsRes.data);
+    async function loadData() {
+      // Iniziamo il loading solo se non abbiamo dati in memoria/cache immediatamente (gestito in fondo)
+      const standingsPromise = fetchWithCache(
+        'cage-standings',
+        async () => {
+          const { data } = await supabase.from('standings').select('*');
+          return data || [];
+        },
+        (newData) => {
+          if (isMounted) setStandings(newData);
+        }
+      );
+
+      const scorersPromise = fetchWithCache(
+        'cage-top-scorers',
+        async () => {
+          const { data } = await supabase.from('top_scorers').select('*');
+          return data || [];
+        },
+        (newData) => {
+          if (isMounted) setScorers(newData);
+        }
+      );
+
+      // Risolve immediatamente se i dati sono in cache, o attende il primo caricamento
+      const [cachedStandings, cachedScorers] = await Promise.all([standingsPromise, scorersPromise]);
+      
+      if (isMounted) {
+        if (cachedStandings) setStandings(cachedStandings);
+        if (cachedScorers) setScorers(cachedScorers);
+        setLoading(false);
       }
-      if (scorersRes.data) {
-        setScorers(scorersRes.data);
-      }
-      setLoading(false);
     }
+
     loadData();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (
