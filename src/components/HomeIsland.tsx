@@ -8,6 +8,8 @@ const AVATAR_INITIALS = (name: string) => {
   return name.slice(0, 2).toUpperCase();
 };
 
+import { fetchWithCache } from '../lib/cache';
+
 export default function HomeIsland() {
   const [tab, setTab] = useState<'squadre' | 'giocatori'>('squadre');
   const [expanded, setExpanded] = useState<number | null>(null);
@@ -18,7 +20,7 @@ export default function HomeIsland() {
   const [teams, setTeams] = useState<any[]>([]);
   const [playersAll, setPlayersAll] = useState<any[]>([]);
 
-  // Carica i voti dei candidati
+  // Carica i voti dei candidati (NESSUNA CACHE: i voti cambiano in tempo reale)
   const loadVotes = async (candList = candidates) => {
     const { data: vData } = await supabase.from('mvp_votes').select('player_id');
     const initialVotes: Record<string, number> = {};
@@ -32,7 +34,6 @@ export default function HomeIsland() {
     });
     setVotes(initialVotes);
 
-    // Controlla se l'utente corrente ha già votato
     let voterId = localStorage.getItem('cage-mvp-voter-id');
     if (!voterId) {
       voterId = 'voter_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
@@ -50,13 +51,40 @@ export default function HomeIsland() {
     }
   };
 
-  const loadCandidatesAndVotes = async () => {
-    const { data: cData } = await supabase
-      .from('mvp_candidates')
-      .select('player_id, player:players(name, team_id, team:teams(name))');
+  const loadCandidatesAndVotes = async (forceFetch = false) => {
+    const fetchFn = async () => {
+      const { data } = await supabase
+        .from('mvp_candidates')
+        .select('player_id, player:players(name, team_id, team:teams(name))');
+      return data || [];
+    };
 
-    if (cData) {
-      const formattedCandidates = cData.map((c, idx) => ({
+    let cData: any[];
+
+    if (forceFetch) {
+      cData = await fetchFn();
+    } else {
+      cData = await fetchWithCache(
+        'cage-mvp-candidates',
+        fetchFn,
+        async (newData) => {
+          if (newData) {
+            const formattedCandidates = newData.map((c: any, idx: number) => ({
+              id: c.player_id,
+              name: c.player.name,
+              team: c.player.team.name,
+              highlight: `Giocatore di spicco dei ${c.player.team.name}`,
+              avatarIdx: idx % 11
+            }));
+            setCandidates(formattedCandidates);
+            await loadVotes(formattedCandidates);
+          }
+        }
+      );
+    }
+
+    if (cData && cData.length > 0) {
+      const formattedCandidates = cData.map((c: any, idx: number) => ({
         id: c.player_id,
         name: c.player.name,
         team: c.player.team.name,
@@ -72,15 +100,49 @@ export default function HomeIsland() {
   };
 
   useEffect(() => {
+    let isMounted = true;
+
     async function loadData() {
-      const { data: teamsData } = await supabase.from('teams').select('id, name').order('name');
-      const { data: playersData } = await supabase.from('players').select('id, name, team_id').order('name');
-      
-      if (teamsData && playersData) {
-        const processedTeams = teamsData.map((t, i) => ({
+      const teamsData = await fetchWithCache(
+        'cage-teams-all',
+        async () => {
+          const { data } = await supabase.from('teams').select('id, name').order('name');
+          return data || [];
+        },
+        (newData) => {
+          if (isMounted) updateTeamsUI(newData, null);
+        }
+      );
+
+      const playersData = await fetchWithCache(
+        'cage-players-all',
+        async () => {
+          const { data } = await supabase.from('players').select('id, name, team_id').order('name');
+          return data || [];
+        },
+        (newData) => {
+          if (isMounted) updateTeamsUI(null, newData);
+        }
+      );
+
+      if (isMounted) {
+        updateTeamsUI(teamsData, playersData);
+        await loadCandidatesAndVotes(false);
+      }
+    }
+
+    let currentTeams: any[] = [];
+    let currentPlayers: any[] = [];
+
+    const updateTeamsUI = (tData: any[] | null, pData: any[] | null) => {
+      if (tData) currentTeams = tData;
+      if (pData) currentPlayers = pData;
+
+      if (currentTeams.length > 0 && currentPlayers.length > 0) {
+        const processedTeams = currentTeams.map((t, i) => ({
           name: t.name,
           idx: i,
-          players: playersData.filter(p => p.team_id === t.id).map(p => p.name)
+          players: currentPlayers.filter(p => p.team_id === t.id).map(p => p.name)
         }));
         setTeams(processedTeams);
 
@@ -89,9 +151,8 @@ export default function HomeIsland() {
         );
         setPlayersAll(allP);
       }
+    };
 
-      await loadCandidatesAndVotes();
-    }
     loadData();
 
     // Sottoscrizione realtime
@@ -100,11 +161,13 @@ export default function HomeIsland() {
         loadVotes();
       })
       .on('postgres_changes', { event: '*', schema: 'public', table: 'mvp_candidates' }, () => {
-        loadCandidatesAndVotes();
+        // Se un candidato cambia, bypassiamo la cache per l'aggiornamento real-time
+        loadCandidatesAndVotes(true);
       })
       .subscribe();
 
     return () => {
+      isMounted = false;
       supabase.removeChannel(channel);
     };
   }, []);

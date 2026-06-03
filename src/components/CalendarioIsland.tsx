@@ -22,26 +22,44 @@ const TEAM_IDX: Record<string, number> = {
   'Martino Gonzalez': 10,
 };
 
+import { fetchWithCache } from '../lib/cache';
+
 export default function CalendarioIsland() {
   const [tab, setTab] = useState<'calendario' | 'tabellone'>('calendario');
   const [matches, setMatches] = useState<any[]>([]);
 
   useEffect(() => {
-    async function loadMatches() {
-      const { data } = await supabase
-        .from('matches')
-        .select(`
-          id, match_date, round, status, home_score, away_score,
-          home_team:teams!home_team_id ( name ),
-          away_team:teams!away_team_id ( name )
-        `)
-        .order('match_date', { ascending: true });
+    let isMounted = true;
 
-      if (data) {
-        setMatches(data);
+    async function loadMatches() {
+      const cachedData = await fetchWithCache(
+        'cage-matches',
+        async () => {
+          const { data } = await supabase
+            .from('matches')
+            .select(`
+              id, match_date, round, status, home_score, away_score,
+              home_team:teams!home_team_id ( name ),
+              away_team:teams!away_team_id ( name )
+            `)
+            .order('match_date', { ascending: true });
+          return data || [];
+        },
+        (newData) => {
+          if (isMounted) setMatches(newData);
+        }
+      );
+
+      if (isMounted && cachedData) {
+        setMatches(cachedData);
       }
     }
+    
     loadMatches();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (
