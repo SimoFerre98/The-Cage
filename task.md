@@ -13,34 +13,34 @@ Questo file rappresenta il **Punto di Tracciamento Centralizzato** di tutto il p
 
 ### Sprint Precedenti (Completati)
 - [x] **Sprint 1: Schema Database e Regole RLS**
-  - **File di backlog**: [sprint-1-db-schema-and-rls.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-1-db-schema-and-rls.md)
+  - **File di backlog**: [sprint-1-db-schema-and-rls.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/01-mvp-foundation/sprint-1-db-schema-and-rls.md)
 - [x] **Sprint 2: Area Admin MVP**
-  - **File di backlog**: [sprint-2-admin-mvp.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-2-admin-mvp.md)
+  - **File di backlog**: [sprint-2-admin-mvp.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/01-mvp-foundation/sprint-2-admin-mvp.md)
 - [x] **Sprint 3: Hub MVP Pubblico**
-  - **File di backlog**: [sprint-3-public-mvp.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-3-public-mvp.md)
+  - **File di backlog**: [sprint-3-public-mvp.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/01-mvp-foundation/sprint-3-public-mvp.md)
 - [x] **Sprint 4: Correzione Timeline Live**
-  - **File di backlog**: [sprint-4-live-timeline-fix.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-4-live-timeline-fix.md)
+  - **File di backlog**: [sprint-4-live-timeline-fix.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/01-mvp-foundation/sprint-4-live-timeline-fix.md)
 - [x] **Sprint 5: Semina Dati (Seeding) e Verifiche Finali**
-  - **File di backlog**: [sprint-5-verification-and-seeding.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-5-verification-and-seeding.md)
+  - **File di backlog**: [sprint-5-verification-and-seeding.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/01-mvp-foundation/sprint-5-verification-and-seeding.md)
 
 ### Sprint di Ottimizzazione (In Coda)
 - [x] **Sprint 6: Caching SWR e Ottimizzazione Classifica**
-  - **File di backlog**: [sprint-6-cache-swr-classifica.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-6-cache-swr-classifica.md)
+  - **File di backlog**: [sprint-6-cache-swr-classifica.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/02-optimization/sprint-6-cache-swr-classifica.md)
   - **Branch**: `sprint-6-swr-classifica`
 - [x] **Sprint 7: Caching SWR su Calendario e Home Page**
-  - **File di backlog**: [sprint-7-cache-swr-calendario-home.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-7-cache-swr-calendario-home.md)
+  - **File di backlog**: [sprint-7-cache-swr-calendario-home.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/02-optimization/sprint-7-cache-swr-calendario-home.md)
   - **Branch**: `sprint-7-swr-calendario-home`
 - [x] **Sprint 8: Ottimizzazione Query Relazionali (Teams & Players)**
-  - **File di backlog**: [sprint-8-relational-query-teams-players.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-8-relational-query-teams-players.md)
+  - **File di backlog**: [sprint-8-relational-query-teams-players.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/02-optimization/sprint-8-relational-query-teams-players.md)
   - **Branch**: `sprint-8-teams-players-query`
 - [x] **Sprint 9: Aggregazione Ottimizzata Voti MVP e Realtime**
-  - **File di backlog**: [sprint-9-mvp-votes-aggregation.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-9-mvp-votes-aggregation.md)
+  - **File di backlog**: [sprint-9-mvp-votes-aggregation.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/02-optimization/sprint-9-mvp-votes-aggregation.md)
   - **Branch**: `sprint-9-mvp-votes-aggregation`
 - [x] **Sprint 10: Ottimizzazione Service Worker (PWA) e Compressione Asset**
-  - **File di backlog**: [sprint-10-pwa-assets-optimization.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-10-pwa-assets-optimization.md)
+  - **File di backlog**: [sprint-10-pwa-assets-optimization.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/02-optimization/sprint-10-pwa-assets-optimization.md)
   - **Branch**: `sprint-10-pwa-assets-optimization`
 - [x] **Sprint 11: Lazy Loading Admin e Idratazione Differita**
-  - **File di backlog**: [sprint-11-lazy-loading-hydration.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-11-lazy-loading-hydration.md)
+  - **File di backlog**: [sprint-11-lazy-loading-hydration.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/02-optimization/sprint-11-lazy-loading-hydration.md)
   - **Branch**: `sprint-11-lazy-loading-hydration`
 
 ---
