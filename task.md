@@ -33,7 +33,7 @@ Questo file rappresenta il **Punto di Tracciamento Centralizzato** di tutto il p
 - [x] **Sprint 8: Ottimizzazione Query Relazionali (Teams & Players)**
   - **File di backlog**: [sprint-8-relational-query-teams-players.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-8-relational-query-teams-players.md)
   - **Branch**: `sprint-8-teams-players-query`
-- [/] **Sprint 9: Aggregazione Ottimizzata Voti MVP e Realtime**
+- [x] **Sprint 9: Aggregazione Ottimizzata Voti MVP e Realtime**
   - **File di backlog**: [sprint-9-mvp-votes-aggregation.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/sprint-9-mvp-votes-aggregation.md)
   - **Branch**: `sprint-9-mvp-votes-aggregation`
 - [ ] **Sprint 10: Ottimizzazione Service Worker (PWA) e Compressione Asset**
