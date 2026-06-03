@@ -45,7 +45,7 @@ Questo file rappresenta il **Punto di Tracciamento Centralizzato** di tutto il p
 - [ ] **Sprint 12: Statistiche Giocatori Avanzate (Assist e Sanzioni)**
   - **File di backlog**: [sprint-12-player-statistics.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/03-new-features/sprint-12-player-statistics.md)
   - **Branch**: `sprint-12-player-statistics`
-- [ ] **Sprint 13: Ripristino Accesso Admin e Ottimizzazione Layout Globale**
+- [/] **Sprint 13: Ripristino Accesso Admin e Ottimizzazione Layout Globale**
   - **File di backlog**: [sprint-13-admin-ui-layout.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/04-admin-overhaul/sprint-13-admin-ui-layout.md)
   - **Branch**: `sprint-13-admin-ui-layout`
 - [ ] **Sprint 14: Ottimizzazione Prestazioni Admin ed Efficienza Query**

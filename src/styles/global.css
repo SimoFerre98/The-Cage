@@ -437,7 +437,7 @@ body {
 
 /* Mobile Topbar */
 .mobile-topbar {
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
   padding: 1rem 1.25rem;
