@@ -54,6 +54,15 @@ Questo file rappresenta il **Punto di Tracciamento Centralizzato** di tutto il p
 - [ ] **Sprint 15: Admin Testing Suite ed Esperienza Utente (UX)**
   - **File di backlog**: [sprint-15-admin-ux-testing.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/04-admin-overhaul/sprint-15-admin-ux-testing.md)
   - **Branch**: `sprint-15-admin-ux-testing`
+- [ ] **Sprint 16: Dettaglio Partite nel Calendario (Tabellino Eventi)**
+  - **File di backlog**: [sprint-16-match-details.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/03-new-features/sprint-16-match-details.md)
+  - **Branch**: `sprint-16-match-details`
+- [ ] **Sprint 17: Indicatore Live e Notifiche Broadcast in App**
+  - **File di backlog**: [sprint-17-live-broadcast-indicator.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/03-new-features/sprint-17-live-broadcast-indicator.md)
+  - **Branch**: `sprint-17-live-broadcast-indicator`
+- [ ] **Sprint 18: OpenGraph, Meta Tags SEO e Condivisione Social**
+  - **File di backlog**: [sprint-18-seo-sharing.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/03-new-features/sprint-18-seo-sharing.md)
+  - **Branch**: `sprint-18-seo-sharing`
 
 ---
 
