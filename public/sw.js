@@ -53,6 +53,17 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Bypass Vite/Astro dev server specific requests (HMR, hot-updates, node_modules, src)
+  if (
+    event.request.url.includes('/@vite/') ||
+    event.request.url.includes('/@fs/') ||
+    event.request.url.includes('hot-update') ||
+    event.request.url.includes('/node_modules/') ||
+    event.request.url.includes('/src/')
+  ) {
+    return;
+  }
+
   const url = new URL(event.request.url);
 
   // Cache-First Strategy for static assets (images, CSS, JS, fonts)
