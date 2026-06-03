@@ -1119,28 +1119,33 @@ body {
   will-change: background-position;
 }
 
-/* Pulsazione del bagliore rosso per i match in diretta */
-@keyframes liveGlowPulse {
+/* Animazione bordo + glow rosso pulsante per match in diretta nel calendario */
+@keyframes liveCardBorderPulse {
   0% {
-    box-shadow: 0 0 12px rgba(239, 68, 68, 0.2), 0 0 24px rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.5);
+    box-shadow: var(--inner-glow), 0 8px 32px rgba(0, 0, 0, 0.3),
+      0 0 0 1px rgba(239, 68, 68, 0.3),
+      0 0 16px rgba(239, 68, 68, 0.25),
+      0 0 32px rgba(239, 68, 68, 0.1);
   }
   50% {
-    box-shadow: 0 0 22px rgba(239, 68, 68, 0.55), 0 0 44px rgba(239, 68, 68, 0.35);
+    border-color: rgba(239, 68, 68, 0.95);
+    box-shadow: var(--inner-glow), 0 8px 32px rgba(0, 0, 0, 0.3),
+      0 0 0 2px rgba(239, 68, 68, 0.6),
+      0 0 24px rgba(239, 68, 68, 0.55),
+      0 0 48px rgba(239, 68, 68, 0.3);
   }
   100% {
-    box-shadow: 0 0 12px rgba(239, 68, 68, 0.2), 0 0 24px rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.5);
+    box-shadow: var(--inner-glow), 0 8px 32px rgba(0, 0, 0, 0.3),
+      0 0 0 1px rgba(239, 68, 68, 0.3),
+      0 0 16px rgba(239, 68, 68, 0.25),
+      0 0 32px rgba(239, 68, 68, 0.1);
   }
 }
 
-.live-glow-pulse {
-  animation: liveGlowPulse 4s ease-in-out infinite;
-  will-change: box-shadow;
-}
-
-/* Flusso continuo del gradiente rosso sul bordo del match in diretta */
-.border-glow-flow-red {
-  background: linear-gradient(90deg, #ef4444, #b91c1c, #f87171, #b91c1c, #ef4444);
-  background-size: 200% auto;
-  animation: borderGlowFlow 6s linear infinite;
-  will-change: background-position;
+/* Classe applicata alla glass-card del match LIVE nel calendario */
+.live-card-pulse {
+  animation: liveCardBorderPulse 2.5s ease-in-out infinite;
+  will-change: border-color, box-shadow;
 }

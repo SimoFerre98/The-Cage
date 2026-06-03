@@ -110,7 +110,6 @@ export default function CalendarioIsland() {
                     cursor: 'pointer', 
                     marginBottom: '1rem', 
                     padding: '1.2rem 1.25rem',
-                    borderColor: 'transparent'
                   } 
                 } 
               : { 
@@ -121,24 +120,7 @@ export default function CalendarioIsland() {
                 };
 
             return (
-              <CardTag key={i} className={`glass-card ${m.status === 'LIVE' ? 'live-glow-pulse' : ''}`} {...cardProps}>
-                {m.status === 'LIVE' && (
-                  <div
-                    className="border-glow-flow-red"
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      borderRadius: '20px',
-                      padding: '2px',
-                      WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-                      WebkitMaskComposite: 'xor',
-                      mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-                      maskComposite: 'exclude',
-                      pointerEvents: 'none',
-                      zIndex: 10,
-                    }}
-                  />
-                )}
+              <CardTag key={i} className={`glass-card ${m.status === 'LIVE' ? 'live-card-pulse' : ''}`} {...cardProps}>
                 <div className="flex items-center justify-between mb-4">
                   <span className={`text-xs font-medium ${m.status === 'LIVE' ? 'text-red-400 font-bold' : 'text-[var(--text-muted)]'}`}>
                     {m.status === 'LIVE' ? '🔴 IN DIRETTA' : `📅 ${formattedDate}`}
