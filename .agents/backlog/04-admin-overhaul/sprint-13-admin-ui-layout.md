@@ -12,6 +12,7 @@
 
 ### Checklist
 - [ ] Ripristinare il pulsante/icona ingranaggio (`⚙️`) per accedere a `/admin` in alto a destra nella topbar mobile/desktop all'interno di [Layout.astro](file:///c:/Users/s.ferrero/Code/The%20Cage/src/layouts/Layout.astro) e [LayoutLive.astro](file:///c:/Users/s.ferrero/Code/The%20Cage/src/layouts/LayoutLive.astro).
+- [ ] Rimuovere il collegamento testuale "Area Admin" ed il relativo separatore nel footer delle pagine per pulire il fondo pagina ed evitare doppie vie d'accesso.
 - [ ] Rivedere i padding, margin e larghezze contenitore nei moduli gestionali admin:
   - **`LoginForm.tsx`**: Centrare la scheda di login, allontanare i testi e gli input dai bordi (aumentare il padding interno da `p-4` a `p-6` o `p-8` con classi CSS responsive), aggiungere ombreggiature morbide.
   - **`Dashboard.tsx`**: Distanziare i pulsanti dei tab, allineare i testi, ed equilibrare lo spazio bianco.
