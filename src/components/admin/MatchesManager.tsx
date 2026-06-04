@@ -98,23 +98,27 @@ export default function MatchesManager({ teams, matches, onRefreshMatches }: Adm
           </div>
           <div className="w-full flex flex-col items-center">
             <label className="text-xs text-white/60 font-bold uppercase tracking-wider mb-2 text-center">Data</label>
-            <input
-              type="date"
-              value={matchDate}
-              onChange={e => setMatchDate(e.target.value)}
-              className="w-[80%] bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 text-center"
-              required
-            />
+            <div className="w-[80%] relative">
+              <input
+                type="date"
+                value={matchDate}
+                onChange={e => setMatchDate(e.target.value)}
+                className="w-full bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 text-center cursor-pointer [color-scheme:dark]"
+                required
+              />
+            </div>
           </div>
           <div className="w-full flex flex-col items-center">
-            <label className="text-xs text-white/60 font-bold uppercase tracking-wider mb-2 text-center">Ora (Es: 21:00)</label>
-            <input
-              type="time"
-              value={matchTime}
-              onChange={e => setMatchTime(e.target.value)}
-              className="w-[80%] bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 text-center"
-              required
-            />
+            <label className="text-xs text-white/60 font-bold uppercase tracking-wider mb-2 text-center">Ora</label>
+            <div className="w-[80%] relative">
+              <input
+                type="time"
+                value={matchTime}
+                onChange={e => setMatchTime(e.target.value)}
+                className="w-full bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 text-center cursor-pointer [color-scheme:dark]"
+                required
+              />
+            </div>
           </div>
           <div className="w-full flex flex-col items-center">
             <label className="text-xs text-white/60 font-bold uppercase tracking-wider mb-2 text-center">Turno / Girone</label>
@@ -139,18 +143,10 @@ export default function MatchesManager({ teams, matches, onRefreshMatches }: Adm
             day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit',
           });
           return (
-            <GlassEffect key={match.id} className="p-8 md:p-10 rounded-[24px] flex flex-col items-center justify-center text-center gap-6 relative">
-              {/* Cestino posizionato a lato (in alto a destra) */}
-              <button
-                onClick={() => handleDeleteMatch(match.id)}
-                className="absolute top-4 right-4 w-9 h-9 bg-red-500/15 hover:bg-red-500/35 border border-red-500/20 rounded-xl text-red-200 flex items-center justify-center transition-colors cursor-pointer"
-                title="Elimina partita"
-              >
-                🗑️
-              </button>
-
-              <div className="w-full flex flex-col items-center">
-                <div className="text-xs text-white/50 font-bold uppercase tracking-wider mb-3 text-center">
+            <GlassEffect key={match.id} className="p-8 md:p-10 rounded-[24px]">
+              {/* Info partita (data, round, squadre, punteggio) */}
+              <div className="flex flex-col items-center text-center gap-4 mb-5">
+                <div className="text-xs text-white/50 font-bold uppercase tracking-wider text-center">
                   {dateStr} • {match.round}
                 </div>
                 <div className="flex items-center justify-center gap-4 flex-wrap">
@@ -162,6 +158,7 @@ export default function MatchesManager({ teams, matches, onRefreshMatches }: Adm
                 </div>
               </div>
 
+              {/* Controlli stato + cestino sulla stessa riga */}
               <div className="flex flex-row flex-wrap items-center justify-center gap-3 w-full">
                 <button
                   onClick={() => handleChangeStatus(match.id, 'PROSSIMA')}
@@ -192,6 +189,18 @@ export default function MatchesManager({ teams, matches, onRefreshMatches }: Adm
                   }`}
                 >
                   TERMINATA
+                </button>
+
+                {/* Separatore visivo */}
+                <div className="w-px h-6 bg-white/10 mx-1" />
+
+                {/* Cestino separato a destra */}
+                <button
+                  onClick={() => handleDeleteMatch(match.id)}
+                  className="w-9 h-9 bg-red-500/15 hover:bg-red-500/35 border border-red-500/20 rounded-xl text-red-200 flex items-center justify-center transition-colors cursor-pointer flex-shrink-0"
+                  title="Elimina partita"
+                >
+                  🗑️
                 </button>
               </div>
             </GlassEffect>
