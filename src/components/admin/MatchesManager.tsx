@@ -139,12 +139,21 @@ export default function MatchesManager({ teams, matches, onRefreshMatches }: Adm
             day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit',
           });
           return (
-            <GlassEffect key={match.id} className="p-8 md:p-10 rounded-[24px] flex flex-col md:flex-row md:items-center justify-between gap-6">
-              <div className="flex-1">
-                <div className="text-xs text-white/50 font-bold uppercase tracking-wider mb-2">
+            <GlassEffect key={match.id} className="p-8 md:p-10 rounded-[24px] flex flex-col items-center justify-center text-center gap-6 relative">
+              {/* Cestino posizionato a lato (in alto a destra) */}
+              <button
+                onClick={() => handleDeleteMatch(match.id)}
+                className="absolute top-4 right-4 w-9 h-9 bg-red-500/15 hover:bg-red-500/35 border border-red-500/20 rounded-xl text-red-200 flex items-center justify-center transition-colors cursor-pointer"
+                title="Elimina partita"
+              >
+                🗑️
+              </button>
+
+              <div className="w-full flex flex-col items-center">
+                <div className="text-xs text-white/50 font-bold uppercase tracking-wider mb-3 text-center">
                   {dateStr} • {match.round}
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center justify-center gap-4 flex-wrap">
                   <span className="font-bold text-white text-lg md:text-xl">{match.home_team?.name}</span>
                   <span className="px-3 py-1.5 rounded-xl bg-black/40 text-white/95 font-mono text-sm md:text-base border border-white/5 font-bold">
                     {match.home_score} - {match.away_score}
@@ -153,7 +162,7 @@ export default function MatchesManager({ teams, matches, onRefreshMatches }: Adm
                 </div>
               </div>
 
-              <div className="flex flex-row flex-wrap items-center justify-center gap-3 mt-4 md:mt-0">
+              <div className="flex flex-row flex-wrap items-center justify-center gap-3 w-full">
                 <button
                   onClick={() => handleChangeStatus(match.id, 'PROSSIMA')}
                   className={`px-4 py-2.5 text-xs font-bold rounded-xl transition-all border duration-300 cursor-pointer ${
@@ -183,14 +192,6 @@ export default function MatchesManager({ teams, matches, onRefreshMatches }: Adm
                   }`}
                 >
                   TERMINATA
-                </button>
-
-                <button
-                  onClick={() => handleDeleteMatch(match.id)}
-                  className="px-4 py-2.5 bg-red-500/20 hover:bg-red-500/40 border border-red-500/30 rounded-xl text-sm text-red-200 transition-colors flex items-center justify-center cursor-pointer"
-                  style={{ minWidth: '42px', minHeight: '42px' }}
-                >
-                  🗑️
                 </button>
               </div>
             </GlassEffect>

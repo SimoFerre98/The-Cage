@@ -31,20 +31,39 @@ export default function CalendarioIsland() {
   useEffect(() => {
     let isMounted = true;
 
-    async function loadMatches() {
+    async function loadMatches(force = false) {
+      const fetchFn = async () => {
+        const { data } = await supabase
+          .from('matches')
+          .select(`
+            id, match_date, round, status, home_score, away_score,
+            home_team:teams!home_team_id ( name ),
+            away_team:teams!away_team_id ( name )
+          `)
+          .order('match_date', { ascending: true });
+        return data || [];
+      };
+
+      if (force) {
+        try {
+          const freshData = await fetchFn();
+          if (isMounted) {
+            setMatches(freshData);
+            // Aggiorna cache locale
+            const win = window as any;
+            if (!win.__cage_cache) win.__cage_cache = {};
+            win.__cage_cache['cage-matches'] = { data: freshData, timestamp: Date.now() };
+            localStorage.setItem('cage-matches', JSON.stringify({ data: freshData, timestamp: Date.now() }));
+          }
+        } catch (e) {
+          console.error(e);
+        }
+        return;
+      }
+
       const cachedData = await fetchWithCache(
         'cage-matches',
-        async () => {
-          const { data } = await supabase
-            .from('matches')
-            .select(`
-              id, match_date, round, status, home_score, away_score,
-              home_team:teams!home_team_id ( name ),
-              away_team:teams!away_team_id ( name )
-            `)
-            .order('match_date', { ascending: true });
-          return data || [];
-        },
+        fetchFn,
         (newData) => {
           if (isMounted) setMatches(newData);
         }
@@ -57,8 +76,16 @@ export default function CalendarioIsland() {
     
     loadMatches();
 
+    // Sottoscrizione realtime per le partite
+    const channel = supabase.channel('calendario_realtime_matches')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'matches' }, () => {
+        loadMatches(true);
+      })
+      .subscribe();
+
     return () => {
       isMounted = false;
+      supabase.removeChannel(channel);
     };
   }, []);
 
