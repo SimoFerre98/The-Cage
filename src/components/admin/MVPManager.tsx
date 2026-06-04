@@ -115,7 +115,7 @@ export default function MVPManager({ teams, players }: AdminChildProps) {
             <select
               value={selectedTeamId}
               onChange={e => { setSelectedTeamId(e.target.value); setSelectedPlayerId(''); }}
-              className="w-[80%] bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 h-[48px] text-center"
+              className="w-[80%] bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 h-[48px] text-center custom-select"
               style={{ textAlignLast: 'center' }}
               required
             >
@@ -128,7 +128,7 @@ export default function MVPManager({ teams, players }: AdminChildProps) {
             <select
               value={selectedPlayerId}
               onChange={e => setSelectedPlayerId(e.target.value)}
-              className="w-[80%] bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 h-[48px] text-center"
+              className="w-[80%] bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 h-[48px] text-center custom-select"
               style={{ textAlignLast: 'center' }}
               disabled={!selectedTeamId}
               required

@@ -75,7 +75,7 @@ export default function MatchesManager({ teams, matches, onRefreshMatches }: Adm
             <select
               value={homeTeamId}
               onChange={e => setHomeTeamId(e.target.value)}
-              className="w-[80%] bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 text-center"
+              className="w-[80%] bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 text-center custom-select"
               style={{ textAlignLast: 'center' }}
               required
             >
@@ -88,7 +88,7 @@ export default function MatchesManager({ teams, matches, onRefreshMatches }: Adm
             <select
               value={awayTeamId}
               onChange={e => setAwayTeamId(e.target.value)}
-              className="w-[80%] bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 text-center"
+              className="w-[80%] bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 text-center custom-select"
               style={{ textAlignLast: 'center' }}
               required
             >

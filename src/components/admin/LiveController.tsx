@@ -154,7 +154,7 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
               <select
                 value={eventPlayerId}
                 onChange={e => setEventPlayerId(e.target.value)}
-                className="w-[80%] bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 h-[48px] text-center"
+                className="w-[80%] bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 h-[48px] text-center custom-select"
                 style={{ textAlignLast: 'center' }}
                 required
               >
@@ -168,7 +168,7 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
               <select
                 value={eventType}
                 onChange={e => setEventType(e.target.value)}
-                className="w-[80%] bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 h-[48px] text-center"
+                className="w-[80%] bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 h-[48px] text-center custom-select"
                 style={{ textAlignLast: 'center' }}
                 required
               >
@@ -185,7 +185,7 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
                 <select
                   value={eventDetail}
                   onChange={e => setEventDetail(e.target.value)}
-                  className="w-[80%] bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none border-purple-500/50 focus:border-purple-500 h-[48px] text-center"
+                  className="w-[80%] bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none border-purple-500/50 focus:border-purple-500 h-[48px] text-center custom-select"
                   style={{ textAlignLast: 'center' }}
                   required
                 >
