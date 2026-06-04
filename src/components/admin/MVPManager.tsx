@@ -174,11 +174,16 @@ export default function MVPManager({ teams, players }: AdminChildProps) {
               const count = votesCount[c.player_id] || 0;
               const pct = totalVotes > 0 ? Math.round((count / totalVotes) * 100) : 0;
               return (
-                <GlassEffect key={c.id} className="p-8 rounded-[24px] flex items-center justify-between gap-6">
-                  <div className="flex-1 min-w-0">
-                    <div className="font-bold text-white text-lg md:text-xl truncate">{c.player?.name}</div>
-                    <div className="text-sm text-white/60 truncate mt-1">{c.player?.team?.name}</div>
-                    <div className="w-full bg-white/10 rounded-full h-3 mt-4 overflow-hidden border border-white/5">
+                <GlassEffect key={c.id} className="p-6 rounded-[24px] flex flex-col items-center text-center gap-4">
+                  {/* Avatar */}
+                  <div className={`team-avatar avatar-${TEAM_IDX[c.player?.team?.name || ''] ?? 0} mx-auto`} style={{ width: 44, height: 44, borderRadius: 12, fontSize: '0.75rem', flexShrink: 0, fontWeight: 800 }}>
+                    {AVATAR_INITIALS(c.player?.team?.name || '')}
+                  </div>
+
+                  <div className="w-full min-w-0 flex flex-col items-center">
+                    <div className="font-black text-white text-lg md:text-xl">{c.player?.name}</div>
+                    <div className="text-sm text-white/60 mt-1 uppercase tracking-wider font-bold">{c.player?.team?.name}</div>
+                    <div className="w-[80%] bg-white/10 rounded-full h-3 mt-4 overflow-hidden border border-white/5 mx-auto">
                       <div
                         className="bg-gradient-to-r from-purple-500 to-indigo-500 h-full rounded-full transition-all duration-500"
                         style={{ width: `${pct}%` }}
@@ -186,17 +191,17 @@ export default function MVPManager({ teams, players }: AdminChildProps) {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-5">
-                    <div className="text-right">
-                      <div className="text-3xl font-black text-white">{count}</div>
-                      <div className="text-xs text-white/50 font-bold uppercase mt-1">{pct}%</div>
+                  <div className="flex flex-col items-center gap-3 mt-2 w-full">
+                    <div className="text-center">
+                      <div className="text-3xl font-black text-white">{count} {count === 1 ? 'voto' : 'voti'}</div>
+                      <div className="text-xs text-white/50 font-bold uppercase mt-1">{pct}% dei voti</div>
                     </div>
                     <button
                       onClick={() => handleRemoveCandidate(c.id)}
-                      className="w-12 h-12 bg-red-500/20 hover:bg-red-500/40 border border-red-500/30 rounded-xl text-red-200 flex items-center justify-center transition-colors"
+                      className="px-5 py-2.5 bg-red-500/20 hover:bg-red-500/40 border border-red-500/30 rounded-xl text-red-200 text-xs font-bold transition-colors mt-2 cursor-pointer"
                       title="Rimuovi candidato"
                     >
-                      🗑️
+                      Rimuovi Candidato
                     </button>
                   </div>
                 </GlassEffect>

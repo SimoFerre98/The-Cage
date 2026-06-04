@@ -385,49 +385,44 @@ export default function HomeIsland() {
                     return (
                       <div 
                         key={c.id} 
-                        className={`poll-option-card rounded-xl border border-[rgba(255,255,255,0.05)] bg-[rgba(255,255,255,0.02)] p-4 ${votedId && hasVotedThis ? 'poll-option-voted' : ''}`}
+                        className={`poll-option-card rounded-xl border border-[rgba(255,255,255,0.05)] bg-[rgba(255,255,255,0.02)] p-5 flex flex-col items-center text-center gap-3.5 ${votedId && hasVotedThis ? 'poll-option-voted' : ''}`}
                       >
-                        <div className="flex items-center gap-3">
-                          {/* Avatar */}
-                          <div className={`team-avatar avatar-${c.avatarIdx}`} style={{ width: 34, height: 34, borderRadius: 10, fontSize: '0.6rem', flexShrink: 0, fontWeight: 800 }}>
-                            {AVATAR_INITIALS(c.team)}
-                          </div>
+                        {/* Avatar */}
+                        <div className={`team-avatar avatar-${c.avatarIdx} mx-auto`} style={{ width: 44, height: 44, borderRadius: 12, fontSize: '0.75rem', flexShrink: 0, fontWeight: 800 }}>
+                          {AVATAR_INITIALS(c.team)}
+                        </div>
 
-                          {/* Candidate Info */}
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-baseline gap-2 justify-between">
-                              <span className="font-bold text-sm text-white truncate">{c.name}</span>
-                              <span className="text-[0.65rem] font-bold text-[var(--text-muted)] truncate">{c.team}</span>
+                        {/* Candidate Info */}
+                        <div className="w-full flex flex-col items-center">
+                          <span className="font-extrabold text-sm text-white text-center">{c.name}</span>
+                          <span className="text-[0.65rem] font-bold text-[var(--text-muted)] text-center mt-1 uppercase tracking-wider">{c.team}</span>
+                          {c.highlight && <div className="text-[0.7rem] text-[var(--text-muted)] mt-1.5 px-4 text-center">{c.highlight}</div>}
+                        </div>
+
+                        {/* Action or Percentage */}
+                        <div className="w-full flex flex-col items-center mt-1">
+                          {!votedId ? (
+                            <button 
+                              onClick={() => handleVote(c.id)}
+                              className="poll-vote-btn px-6 py-2 text-xs font-bold w-[60%] justify-center"
+                            >
+                              Vota
+                            </button>
+                          ) : (
+                            <div className="flex flex-col items-center gap-1">
+                              <span className={`poll-percentage text-sm font-bold ${hasVotedThis ? 'poll-voted-percentage' : ''}`}>
+                                {percentage}% dei voti
+                              </span>
+                              {hasVotedThis && (
+                                <span className="poll-voted-badge px-2 py-0.5 text-[0.6rem] rounded-full">Votato</span>
+                              )}
                             </div>
-                            <div className="text-[0.7rem] text-[var(--text-muted)] mt-0.5 truncate">{c.highlight}</div>
-                          </div>
-
-                          {/* Action or Percentage */}
-                          <div className="flex-shrink-0 ml-2">
-                            {!votedId ? (
-                              <button 
-                                onClick={() => handleVote(c.id)}
-                                className="poll-vote-btn"
-                                style={{ padding: '0.35rem 0.8rem', fontSize: '0.7rem' }}
-                              >
-                                Vota
-                              </button>
-                            ) : (
-                              <div className="flex flex-col items-end gap-0.5">
-                                <span className={`poll-percentage text-sm ${hasVotedThis ? 'poll-voted-percentage' : ''}`}>
-                                  {percentage}%
-                                </span>
-                                {hasVotedThis && (
-                                  <span className="poll-voted-badge" style={{ padding: '0.15rem 0.4rem', fontSize: '0.55rem' }}>Votato</span>
-                                )}
-                              </div>
-                            )}
-                          </div>
+                          )}
                         </div>
 
                         {/* Progress Bar */}
                         {votedId && (
-                          <div className="poll-progress-container" style={{ height: 6, marginTop: '0.5rem' }}>
+                          <div className="poll-progress-container w-[80%] mx-auto" style={{ height: 6, marginTop: '0.2rem' }}>
                             <div 
                               className={`poll-progress-fill ${hasVotedThis ? 'poll-voted-fill' : ''}`}
                               style={{ width: `${percentage}%` }}
