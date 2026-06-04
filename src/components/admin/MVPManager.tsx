@@ -170,13 +170,13 @@ export default function MVPManager({ teams, players }: AdminChildProps) {
           </GlassEffect>
         ) : (
           <div className="flex flex-col gap-4">
-            {candidates.map(c => {
+            {candidates.map((c, idx) => {
               const count = votesCount[c.player_id] || 0;
               const pct = totalVotes > 0 ? Math.round((count / totalVotes) * 100) : 0;
               return (
                 <GlassEffect key={c.id} className="p-6 rounded-[24px] flex flex-col items-center text-center gap-4">
                   {/* Avatar */}
-                  <div className={`team-avatar avatar-${TEAM_IDX[c.player?.team?.name || ''] ?? 0} mx-auto`} style={{ width: 44, height: 44, borderRadius: 12, fontSize: '0.75rem', flexShrink: 0, fontWeight: 800 }}>
+                  <div className={`team-avatar avatar-${idx % 11} mx-auto`} style={{ width: 44, height: 44, borderRadius: 12, fontSize: '0.75rem', flexShrink: 0, fontWeight: 800 }}>
                     {AVATAR_INITIALS(c.player?.team?.name || '')}
                   </div>
 
