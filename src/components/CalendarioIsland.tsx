@@ -105,11 +105,11 @@ export default function CalendarioIsland() {
             // Contenuto della card (uguale per live e non-live)
             const cardContent = (
               <>
-                <div className="flex items-center justify-between mb-4">
-                  <span className={`text-xs font-medium ${isLive ? 'text-red-400 font-bold' : 'text-[var(--text-muted)]'}`}>
+                <div className="flex flex-col items-center gap-2 mb-5">
+                  <span className={`text-xs font-semibold tracking-wide ${isLive ? 'text-red-400 font-bold' : 'text-[var(--text-muted)]'}`}>
                     {isLive ? '🔴 IN DIRETTA' : `📅 ${formattedDate}`}
                   </span>
-                  <div className="flex gap-1.5 items-center">
+                  <div className="flex gap-1.5 items-center justify-center">
                     <span className="badge badge-round">{m.round}</span>
                     <span className={`badge ${m.status === 'TERMINATA' ? 'badge-done' : isLive ? 'badge-live' : 'badge-next'}`}>
                       {m.status === 'TERMINATA' ? '✓' : '⚡'} {m.status}
