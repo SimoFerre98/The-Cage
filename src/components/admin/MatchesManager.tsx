@@ -153,31 +153,41 @@ export default function MatchesManager({ teams, matches, onRefreshMatches }: Adm
                 </div>
               </div>
 
-              <div className="flex flex-col md:flex-row items-center gap-3">
-                <div className="flex bg-[rgba(0,0,0,0.3)] rounded-xl p-1 border border-white/5">
-                  <button
-                    onClick={() => handleChangeStatus(match.id, 'PROSSIMA')}
-                    className={`px-4 py-2 text-xs font-bold rounded-lg transition-colors ${match.status === 'PROSSIMA' ? 'bg-white/20 text-white' : 'text-white/50 hover:text-white'}`}
-                  >
-                    PROSSIMA
-                  </button>
-                  <button
-                    onClick={() => handleChangeStatus(match.id, 'LIVE')}
-                    className={`px-4 py-2 text-xs font-bold rounded-lg transition-colors ${match.status === 'LIVE' ? 'bg-red-500 text-white shadow-[0_0_10px_rgba(239,68,68,0.5)]' : 'text-white/50 hover:text-red-400'}`}
-                  >
-                    LIVE
-                  </button>
-                  <button
-                    onClick={() => handleChangeStatus(match.id, 'TERMINATA')}
-                    className={`px-4 py-2 text-xs font-bold rounded-lg transition-colors ${match.status === 'TERMINATA' ? 'bg-green-500 text-white shadow-[0_0_10px_rgba(34,197,94,0.5)]' : 'text-white/50 hover:text-green-400'}`}
-                  >
-                    TERMINATA
-                  </button>
-                </div>
+              <div className="flex flex-row flex-wrap items-center justify-center gap-3 mt-4 md:mt-0">
+                <button
+                  onClick={() => handleChangeStatus(match.id, 'PROSSIMA')}
+                  className={`px-4 py-2.5 text-xs font-bold rounded-xl transition-all border duration-300 cursor-pointer ${
+                    match.status === 'PROSSIMA'
+                      ? 'bg-white/20 text-white border-white/30 shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)]'
+                      : 'bg-white/5 text-white/50 border-white/5 hover:text-white hover:bg-white/10'
+                  }`}
+                >
+                  PROSSIMA
+                </button>
+                <button
+                  onClick={() => handleChangeStatus(match.id, 'LIVE')}
+                  className={`px-4 py-2.5 text-xs font-bold rounded-xl transition-all border duration-300 cursor-pointer ${
+                    match.status === 'LIVE'
+                      ? 'bg-red-500 text-white border-red-500/50 shadow-[0_2px_8px_rgba(239,68,68,0.4)]'
+                      : 'bg-white/5 text-white/50 border-white/5 hover:text-red-400 hover:bg-red-500/10'
+                  }`}
+                >
+                  LIVE
+                </button>
+                <button
+                  onClick={() => handleChangeStatus(match.id, 'TERMINATA')}
+                  className={`px-4 py-2.5 text-xs font-bold rounded-xl transition-all border duration-300 cursor-pointer ${
+                    match.status === 'TERMINATA'
+                      ? 'bg-green-500 text-white border-green-500/50 shadow-[0_2px_8px_rgba(34,197,94,0.4)]'
+                      : 'bg-white/5 text-white/50 border-white/5 hover:text-green-400 hover:bg-green-500/10'
+                  }`}
+                >
+                  TERMINATA
+                </button>
 
                 <button
                   onClick={() => handleDeleteMatch(match.id)}
-                  className="px-4 py-2.5 bg-red-500/20 hover:bg-red-500/40 border border-red-500/30 rounded-xl text-sm text-red-200 transition-colors flex items-center justify-center"
+                  className="px-4 py-2.5 bg-red-500/20 hover:bg-red-500/40 border border-red-500/30 rounded-xl text-sm text-red-200 transition-colors flex items-center justify-center cursor-pointer"
                   style={{ minWidth: '42px', minHeight: '42px' }}
                 >
                   🗑️
