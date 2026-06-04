@@ -1,19 +1,67 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../../lib/supabase';
 import GlassEffect from '../GlassEffect';
-
-// Lazy loading admin subcomponents to reduce initial bundle size
-const TeamsPlayersManager = React.lazy(() => import('./TeamsPlayersManager'));
-const MatchesManager = React.lazy(() => import('./MatchesManager'));
-const LiveController = React.lazy(() => import('./LiveController'));
-const MVPManager = React.lazy(() => import('./MVPManager'));
+import TeamsPlayersManager from './TeamsPlayersManager';
+import MatchesManager from './MatchesManager';
+import LiveController from './LiveController';
+import MVPManager from './MVPManager';
+import type { Team, Player, Match } from './types';
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<'squadre' | 'partite' | 'live' | 'mvp'>('squadre');
 
+  // ── Stato centralizzato ────────────────────────────────────────────────────
+  const [teams, setTeams] = useState<Team[]>([]);
+  const [players, setPlayers] = useState<Player[]>([]);
+  const [matches, setMatches] = useState<Match[]>([]);
+  const [initialLoading, setInitialLoading] = useState(true);
+
+  // ── Fetch teams + players (join unico) ────────────────────────────────────
+  const refreshTeams = useCallback(async () => {
+    const { data } = await supabase
+      .from('teams')
+      .select('id, name, players(id, name, team_id)')
+      .order('name');
+    if (data) {
+      setTeams(data as Team[]);
+      // Estrai lista piatta dei giocatori da usare nei componenti figli
+      const flat: Player[] = data.flatMap((t: any) =>
+        (t.players || []).map((p: any) => ({ ...p, team_id: t.id }))
+      );
+      setPlayers(flat);
+    }
+  }, []);
+
+  // ── Fetch matches (con join teams) ────────────────────────────────────────
+  const refreshMatches = useCallback(async () => {
+    const { data } = await supabase
+      .from('matches')
+      .select('*, home_team:teams!home_team_id(id, name), away_team:teams!away_team_id(id, name)')
+      .order('match_date', { ascending: true });
+    if (data) setMatches(data as Match[]);
+  }, []);
+
+  // ── Caricamento iniziale ──────────────────────────────────────────────────
+  useEffect(() => {
+    Promise.all([refreshTeams(), refreshMatches()]).finally(() =>
+      setInitialLoading(false)
+    );
+  }, [refreshTeams, refreshMatches]);
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
   };
+
+  if (initialLoading) {
+    return (
+      <div className="flex items-center justify-center p-20 text-white/60">
+        Caricamento dashboard...
+      </div>
+    );
+  }
+
+  // Props condivise per tutti i componenti figli
+  const childProps = { teams, players, matches, onRefreshTeams: refreshTeams, onRefreshMatches: refreshMatches };
 
   return (
     <div className="w-full flex flex-col gap-6">
@@ -22,7 +70,7 @@ export default function Dashboard() {
           <h1 className="text-3xl font-black text-white drop-shadow-md">Dashboard</h1>
           <p className="text-white/60 text-sm mt-1">Gestione dati e regia</p>
         </div>
-        <button 
+        <button
           onClick={handleLogout}
           className="px-4 py-2 bg-red-500/20 text-red-200 border border-red-500/30 rounded-lg hover:bg-red-500/40 transition-colors text-sm font-bold"
         >
@@ -37,7 +85,7 @@ export default function Dashboard() {
             onClick={() => setActiveTab('squadre')}
             className={`flex-1 min-w-[140px] py-3.5 px-4 rounded-2xl font-bold transition-all text-xs md:text-sm flex items-center justify-center text-center ${activeTab === 'squadre' ? 'bg-[rgba(59,130,246,0.4)] text-white shadow-lg border border-[rgba(59,130,246,0.5)]' : 'text-white/50 hover:text-white hover:bg-white/5 border border-transparent'}`}
           >
-            Squadre & Giocatori
+            Squadre &amp; Giocatori
           </button>
           <button
             onClick={() => setActiveTab('partite')}
@@ -64,14 +112,12 @@ export default function Dashboard() {
         </div>
       </GlassEffect>
 
-      {/* Content */}
+      {/* Content — nessun Suspense, componenti importati direttamente */}
       <div className="mt-2 animate-[modalSlideUp_0.3s_ease-out]">
-        <React.Suspense fallback={<div className="text-white/65 p-6 text-center">Caricamento sezione...</div>}>
-          {activeTab === 'squadre' && <TeamsPlayersManager />}
-          {activeTab === 'partite' && <MatchesManager />}
-          {activeTab === 'live' && <LiveController />}
-          {activeTab === 'mvp' && <MVPManager />}
-        </React.Suspense>
+        {activeTab === 'squadre' && <TeamsPlayersManager {...childProps} />}
+        {activeTab === 'partite' && <MatchesManager {...childProps} />}
+        {activeTab === 'live' && <LiveController {...childProps} />}
+        {activeTab === 'mvp' && <MVPManager {...childProps} />}
       </div>
     </div>
   );
