@@ -59,7 +59,7 @@ body {
   width: 100vw;
   height: 100vh; /* Fixed height prevents jumping when mobile URL bar hides */
   z-index: -1;
-  background: linear-gradient(rgba(3, 5, 10, 0.4), rgba(3, 5, 10, 0.7)), url('/sfondo.webp') center/cover no-repeat;
+  background: linear-gradient(rgba(3, 5, 10, 0.4), rgba(3, 5, 10, 0.7)), url('/Sfondo1.jpg') center/cover no-repeat;
   view-transition-name: fixed-background;
 }
 
@@ -259,6 +259,10 @@ body {
 .page-header {
   margin-bottom: 2rem;
   animation: slideUpFade 0.6s var(--ease-apple) both;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .page-title {

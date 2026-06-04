@@ -79,38 +79,52 @@ export default function Dashboard() {
       </div>
 
       {/* Tabs */}
-      <GlassEffect className="w-full rounded-[24px] p-3 md:p-4">
-        <div className="flex w-full overflow-x-auto gap-3 md:gap-4 scrollbar-hide">
-          <button
-            onClick={() => setActiveTab('squadre')}
-            className={`flex-1 min-w-[140px] py-3.5 px-4 rounded-2xl font-bold transition-all text-xs md:text-sm flex items-center justify-center text-center ${activeTab === 'squadre' ? 'bg-[rgba(59,130,246,0.4)] text-white shadow-lg border border-[rgba(59,130,246,0.5)]' : 'text-white/50 hover:text-white hover:bg-white/5 border border-transparent'}`}
-          >
-            Squadre &amp; Giocatori
-          </button>
-          <button
-            onClick={() => setActiveTab('partite')}
-            className={`flex-1 min-w-[140px] py-3.5 px-4 rounded-2xl font-bold transition-all text-xs md:text-sm flex items-center justify-center text-center ${activeTab === 'partite' ? 'bg-[rgba(59,130,246,0.4)] text-white shadow-lg border border-[rgba(59,130,246,0.5)]' : 'text-white/50 hover:text-white hover:bg-white/5 border border-transparent'}`}
-          >
-            Calendario
-          </button>
-          <button
-            onClick={() => setActiveTab('live')}
-            className={`flex-1 min-w-[140px] py-3.5 px-4 rounded-2xl font-bold transition-all text-xs md:text-sm flex items-center justify-center gap-2.5 text-center ${activeTab === 'live' ? 'bg-red-500/30 text-white shadow-lg border border-red-500/50' : 'text-red-400/50 hover:text-red-400 hover:bg-red-500/10 border border-transparent'}`}
-          >
-            <span className="relative flex h-2.5 w-2.5 flex-shrink-0">
-              {activeTab === 'live' && <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>}
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
-            </span>
-            Regia LIVE
-          </button>
-          <button
-            onClick={() => setActiveTab('mvp')}
-            className={`flex-1 min-w-[140px] py-3.5 px-4 rounded-2xl font-bold transition-all text-xs md:text-sm flex items-center justify-center gap-2.5 text-center ${activeTab === 'mvp' ? 'bg-[rgba(139,92,246,0.4)] text-white shadow-lg border border-[rgba(139,92,246,0.5)]' : 'text-white/50 hover:text-white hover:bg-white/5 border border-transparent'}`}
-          >
-            Gestione MVP
-          </button>
-        </div>
-      </GlassEffect>
+      <div className="flex flex-wrap justify-center gap-3 w-full mb-8 mt-2">
+        <button
+          onClick={() => setActiveTab('squadre')}
+          className={`px-6 py-2.5 rounded-full font-bold text-xs md:text-sm transition-all border duration-300 cursor-pointer ${
+            activeTab === 'squadre'
+              ? 'bg-[rgba(59,130,246,0.3)] text-white border-[rgba(59,130,246,0.5)] shadow-[0_2px_8px_rgba(59,130,246,0.3),inset_0_1px_4px_rgba(255,255,255,0.2)] scale-105'
+              : 'bg-white/5 text-white/60 border-white/10 hover:text-white hover:bg-white/10 hover:border-white/20'
+          }`}
+        >
+          Squadre
+        </button>
+        <button
+          onClick={() => setActiveTab('partite')}
+          className={`px-6 py-2.5 rounded-full font-bold text-xs md:text-sm transition-all border duration-300 cursor-pointer ${
+            activeTab === 'partite'
+              ? 'bg-[rgba(59,130,246,0.3)] text-white border-[rgba(59,130,246,0.5)] shadow-[0_2px_8px_rgba(59,130,246,0.3),inset_0_1px_4px_rgba(255,255,255,0.2)] scale-105'
+              : 'bg-white/5 text-white/60 border-white/10 hover:text-white hover:bg-white/10 hover:border-white/20'
+          }`}
+        >
+          Calendario
+        </button>
+        <button
+          onClick={() => setActiveTab('live')}
+          className={`px-6 py-2.5 rounded-full font-bold text-xs md:text-sm transition-all border duration-300 cursor-pointer flex items-center gap-1.5 ${
+            activeTab === 'live'
+              ? 'bg-red-500/30 text-white border-red-500/50 shadow-[0_2px_8px_rgba(239,68,68,0.3),inset_0_1px_4px_rgba(255,255,255,0.2)] scale-105'
+              : 'bg-white/5 text-red-400/70 border-white/10 hover:text-red-400 hover:bg-red-500/10 hover:border-white/20'
+          }`}
+        >
+          <span className="relative flex h-2 w-2 flex-shrink-0">
+            {activeTab === 'live' && <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>}
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+          </span>
+          Regia LIVE
+        </button>
+        <button
+          onClick={() => setActiveTab('mvp')}
+          className={`px-6 py-2.5 rounded-full font-bold text-xs md:text-sm transition-all border duration-300 cursor-pointer ${
+            activeTab === 'mvp'
+              ? 'bg-[rgba(139,92,246,0.3)] text-white border-[rgba(139,92,246,0.5)] shadow-[0_2px_8px_rgba(139,92,246,0.3),inset_0_1px_4px_rgba(255,255,255,0.2)] scale-105'
+              : 'bg-white/5 text-white/60 border-white/10 hover:text-white hover:bg-white/10 hover:border-white/20'
+          }`}
+        >
+          MVP
+        </button>
+      </div>
 
       {/* Content — nessun Suspense, componenti importati direttamente */}
       <div className="mt-2 animate-[modalSlideUp_0.3s_ease-out]">

@@ -236,7 +236,7 @@ export default function HomeIsland() {
         <h1 className="page-title">Home</h1>
         <p className="page-subtitle">Squadre e giocatori del torneo</p>
         <div className="accent-line"></div>
-        <div className="flex gap-2 flex-wrap items-center mt-3.5">
+        <div className="flex gap-2 flex-wrap items-center justify-center mt-3.5">
           <div className="player-count-badge" style={{ marginTop: 0 }}>
             <span>👥</span>
             <span>{playersAll.length} giocatori</span>

@@ -52,16 +52,16 @@ export default function TeamsPlayersManager({ teams, players, onRefreshTeams }: 
     <div className="flex flex-col gap-8">
       <GlassEffect className="p-8 md:p-10 rounded-[24px]">
         <h2 className="text-xl font-bold text-white mb-6 text-center uppercase tracking-wider">Aggiungi Squadra</h2>
-        <form onSubmit={handleAddTeam} className="flex gap-4">
+        <form onSubmit={handleAddTeam} className="flex flex-col items-center gap-4 w-full">
           <input
             type="text"
             value={newTeamName}
             onChange={(e) => setNewTeamName(e.target.value)}
-            className="flex-1 bg-[rgba(0,0,0,0.2)] border border-white/10 rounded-xl px-5 py-3 text-white outline-none focus:border-blue-500/50"
+            className="w-[80%] bg-[rgba(0,0,0,0.2)] border border-white/10 rounded-xl px-5 py-3.5 text-white outline-none focus:border-blue-500/50 text-center"
             placeholder="Nome della squadra..."
             required
           />
-          <button type="submit" className="install-btn m-0 py-3 px-6">Aggiungi</button>
+          <button type="submit" className="install-btn w-[80%] justify-center py-3.5 mt-2">Aggiungi Squadra</button>
         </form>
       </GlassEffect>
 

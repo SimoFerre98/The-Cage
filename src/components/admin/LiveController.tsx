@@ -128,10 +128,10 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
         {playersLoading ? (
           <div className="text-white/50 text-center py-8">Caricamento giocatori...</div>
         ) : (
-          <form onSubmit={handleAddEvent} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="flex flex-col gap-2">
-              <label className="text-xs text-white/60 font-bold uppercase tracking-wider ml-1 mb-1">Squadra</label>
-              <div className="flex bg-[rgba(0,0,0,0.3)] rounded-xl p-1.5 border border-white/10">
+          <form onSubmit={handleAddEvent} className="flex flex-col items-center gap-6 w-full">
+            <div className="w-full flex flex-col items-center">
+              <label className="text-xs text-white/60 font-bold uppercase tracking-wider mb-2 text-center">Squadra</label>
+              <div className="w-[80%] flex bg-[rgba(0,0,0,0.3)] rounded-xl p-1.5 border border-white/10">
                 <button
                   type="button"
                   onClick={() => { setEventTeamId(liveMatch.home_team_id); setEventPlayerId(''); }}
@@ -149,12 +149,13 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
               </div>
             </div>
 
-            <div className="flex flex-col gap-2">
-              <label className="text-xs text-white/60 font-bold uppercase tracking-wider ml-1 mb-1">Giocatore</label>
+            <div className="w-full flex flex-col items-center">
+              <label className="text-xs text-white/60 font-bold uppercase tracking-wider mb-2 text-center">Giocatore</label>
               <select
                 value={eventPlayerId}
                 onChange={e => setEventPlayerId(e.target.value)}
-                className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 h-[48px]"
+                className="w-[80%] bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 h-[48px] text-center"
+                style={{ textAlignLast: 'center' }}
                 required
               >
                 <option value="">-- Seleziona Giocatore --</option>
@@ -162,12 +163,13 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
               </select>
             </div>
 
-            <div className="flex flex-col gap-2">
-              <label className="text-xs text-white/60 font-bold uppercase tracking-wider ml-1 mb-1">Tipo di Evento</label>
+            <div className="w-full flex flex-col items-center">
+              <label className="text-xs text-white/60 font-bold uppercase tracking-wider mb-2 text-center">Tipo di Evento</label>
               <select
                 value={eventType}
                 onChange={e => setEventType(e.target.value)}
-                className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 h-[48px]"
+                className="w-[80%] bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 h-[48px] text-center"
+                style={{ textAlignLast: 'center' }}
                 required
               >
                 <option value="GOAL">⚽ Goal (Normale)</option>
@@ -178,12 +180,13 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
             </div>
 
             {eventType === 'CARTA' && (
-              <div className="flex flex-col gap-2">
-                <label className="text-xs text-white/60 font-bold uppercase tracking-wider ml-1 mb-1">Quale Carta?</label>
+              <div className="w-full flex flex-col items-center">
+                <label className="text-xs text-white/60 font-bold uppercase tracking-wider mb-2 text-center">Quale Carta?</label>
                 <select
                   value={eventDetail}
                   onChange={e => setEventDetail(e.target.value)}
-                  className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none border-purple-500/50 focus:border-purple-500 h-[48px]"
+                  className="w-[80%] bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none border-purple-500/50 focus:border-purple-500 h-[48px] text-center"
+                  style={{ textAlignLast: 'center' }}
                   required
                 >
                   <option value="">-- Seleziona Carta --</option>
@@ -197,13 +200,13 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
               </div>
             )}
 
-            <div className="flex flex-col gap-2">
-              <label className="text-xs text-white/60 font-bold uppercase tracking-wider ml-1 mb-1">Minuto</label>
+            <div className="w-full flex flex-col items-center">
+              <label className="text-xs text-white/60 font-bold uppercase tracking-wider mb-2 text-center">Minuto</label>
               <input
                 type="number"
                 value={eventMinute}
                 onChange={e => setEventMinute(e.target.value)}
-                className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 h-[48px]"
+                className="w-[80%] bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 h-[48px] text-center"
                 placeholder="Es: 12"
                 required
                 min="0"
@@ -211,9 +214,7 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
               />
             </div>
 
-            <div className="md:col-span-2 mt-4">
-              <button type="submit" className="install-btn w-full justify-center py-4">Genera Evento Live</button>
-            </div>
+            <button type="submit" className="install-btn w-[80%] justify-center py-4 mt-2">Genera Evento Live</button>
           </form>
         )}
       </GlassEffect>

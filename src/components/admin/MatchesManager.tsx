@@ -69,65 +69,65 @@ export default function MatchesManager({ teams, matches, onRefreshMatches }: Adm
       {/* Aggiungi Partita */}
       <GlassEffect className="p-8 md:p-10 rounded-[24px]">
         <h2 className="text-xl font-bold text-white mb-6 text-center uppercase tracking-wider">Nuova Partita</h2>
-        <form onSubmit={handleAddMatch} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="flex flex-col gap-2">
-            <label className="text-xs text-white/60 font-bold uppercase tracking-wider ml-1 mb-1">Squadra Casa</label>
+        <form onSubmit={handleAddMatch} className="flex flex-col items-center gap-6 w-full">
+          <div className="w-full flex flex-col items-center">
+            <label className="text-xs text-white/60 font-bold uppercase tracking-wider mb-2 text-center">Squadra Casa</label>
             <select
               value={homeTeamId}
               onChange={e => setHomeTeamId(e.target.value)}
-              className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50"
+              className="w-[80%] bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 text-center"
+              style={{ textAlignLast: 'center' }}
               required
             >
               <option value="">-- Seleziona --</option>
               {teams.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
             </select>
           </div>
-          <div className="flex flex-col gap-2">
-            <label className="text-xs text-white/60 font-bold uppercase tracking-wider ml-1 mb-1">Squadra Trasferta</label>
+          <div className="w-full flex flex-col items-center">
+            <label className="text-xs text-white/60 font-bold uppercase tracking-wider mb-2 text-center">Squadra Trasferta</label>
             <select
               value={awayTeamId}
               onChange={e => setAwayTeamId(e.target.value)}
-              className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50"
+              className="w-[80%] bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 text-center"
+              style={{ textAlignLast: 'center' }}
               required
             >
               <option value="">-- Seleziona --</option>
               {teams.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
             </select>
           </div>
-          <div className="flex flex-col gap-2">
-            <label className="text-xs text-white/60 font-bold uppercase tracking-wider ml-1 mb-1">Data</label>
+          <div className="w-full flex flex-col items-center">
+            <label className="text-xs text-white/60 font-bold uppercase tracking-wider mb-2 text-center">Data</label>
             <input
               type="date"
               value={matchDate}
               onChange={e => setMatchDate(e.target.value)}
-              className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50"
+              className="w-[80%] bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 text-center"
               required
             />
           </div>
-          <div className="flex flex-col gap-2">
-            <label className="text-xs text-white/60 font-bold uppercase tracking-wider ml-1 mb-1">Ora (Es: 21:00)</label>
+          <div className="w-full flex flex-col items-center">
+            <label className="text-xs text-white/60 font-bold uppercase tracking-wider mb-2 text-center">Ora (Es: 21:00)</label>
             <input
               type="time"
               value={matchTime}
               onChange={e => setMatchTime(e.target.value)}
-              className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50"
+              className="w-[80%] bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 text-center"
               required
             />
           </div>
-          <div className="flex flex-col gap-2 md:col-span-2">
-            <label className="text-xs text-white/60 font-bold uppercase tracking-wider ml-1 mb-1">Turno / Girone</label>
+          <div className="w-full flex flex-col items-center">
+            <label className="text-xs text-white/60 font-bold uppercase tracking-wider mb-2 text-center">Turno / Girone</label>
             <input
               type="text"
               value={round}
               onChange={e => setRound(e.target.value)}
-              className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50"
+              className="w-[80%] bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 text-center"
               placeholder="Es: Girone A, Semifinale..."
               required
             />
           </div>
-          <div className="md:col-span-2 mt-4">
-            <button type="submit" className="install-btn w-full justify-center py-4">Programma Partita</button>
-          </div>
+          <button type="submit" className="install-btn w-[80%] justify-center py-4 mt-2">Programma Partita</button>
         </form>
       </GlassEffect>
 

@@ -109,25 +109,27 @@ export default function MVPManager({ teams, players }: AdminChildProps) {
       {/* Aggiungi Candidato */}
       <GlassEffect className="p-8 md:p-10 rounded-[24px]">
         <h2 className="text-xl font-bold text-white mb-6 text-center uppercase tracking-wider">Aggiungi Candidato MVP</h2>
-        <form onSubmit={handleAddCandidate} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="flex flex-col gap-2">
-            <label className="text-xs text-white/60 font-bold uppercase tracking-wider ml-1 mb-1">Squadra</label>
+        <form onSubmit={handleAddCandidate} className="flex flex-col items-center gap-6 w-full">
+          <div className="w-full flex flex-col items-center">
+            <label className="text-xs text-white/60 font-bold uppercase tracking-wider mb-2 text-center">Squadra</label>
             <select
               value={selectedTeamId}
               onChange={e => { setSelectedTeamId(e.target.value); setSelectedPlayerId(''); }}
-              className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 h-[48px]"
+              className="w-[80%] bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 h-[48px] text-center"
+              style={{ textAlignLast: 'center' }}
               required
             >
               <option value="">-- Seleziona Squadra --</option>
               {teams.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
             </select>
           </div>
-          <div className="flex flex-col gap-2">
-            <label className="text-xs text-white/60 font-bold uppercase tracking-wider ml-1 mb-1">Giocatore</label>
+          <div className="w-full flex flex-col items-center">
+            <label className="text-xs text-white/60 font-bold uppercase tracking-wider mb-2 text-center">Giocatore</label>
             <select
               value={selectedPlayerId}
               onChange={e => setSelectedPlayerId(e.target.value)}
-              className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 h-[48px]"
+              className="w-[80%] bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 h-[48px] text-center"
+              style={{ textAlignLast: 'center' }}
               disabled={!selectedTeamId}
               required
             >
@@ -135,15 +137,13 @@ export default function MVPManager({ teams, players }: AdminChildProps) {
               {filteredPlayers.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
             </select>
           </div>
-          <div className="md:col-span-2 mt-4">
-            <button
-              type="submit"
-              className="install-btn w-full justify-center disabled:opacity-50 py-4"
-              disabled={!selectedPlayerId || candidates.length >= 5}
-            >
-              Aggiungi come Candidato ({candidates.length}/5)
-            </button>
-          </div>
+          <button
+            type="submit"
+            className="install-btn w-[80%] justify-center disabled:opacity-50 py-4 mt-2"
+            disabled={!selectedPlayerId || candidates.length >= 5}
+          >
+            Aggiungi come Candidato ({candidates.length}/5)
+          </button>
         </form>
       </GlassEffect>
 
