@@ -183,7 +183,7 @@ export default function CalendarioIsland() {
   return (
     <div className="w-full">
       {/* Chips Toggle */}
-      <div className="flex justify-center w-full mb-20 mt-6 sticky top-[85px] md:top-8 z-[120] px-4 transition-all duration-300">
+      <div className="flex justify-center w-full mt-6 sticky top-[85px] md:top-8 z-[120] px-4 transition-all duration-300" style={{ marginBottom: '40px' }}>
         <div className="flex justify-center gap-3 w-full max-w-[360px]">
           <button
             onClick={() => setTab('calendario')}
