@@ -289,7 +289,7 @@ export default function CalendarioIsland() {
               return (
                 <div
                   key={i}
-                  className="relative pointer-events-auto rounded-[20px] menu-glow-pulse-red group transition-all duration-700"
+                  className="relative pointer-events-auto rounded-[20px] group transition-all duration-700"
                   style={{ marginBottom: '1rem' }}
                 >
                   {/* Flowing red border layer */}
@@ -310,7 +310,7 @@ export default function CalendarioIsland() {
                   />
                   <a
                     href="/live"
-                    className="glass-card live-card-inner"
+                    className="glass-card live-card-inner menu-glow-pulse-red"
                     style={{
                       display: 'block',
                       textDecoration: 'none',
