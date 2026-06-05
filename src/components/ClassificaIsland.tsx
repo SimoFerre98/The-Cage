@@ -156,53 +156,52 @@ export default function ClassificaIsland() {
   return (
     <div>
       {/* Controls Container */}
-      <div className="flex items-center justify-center gap-4 w-full mb-14 px-4 max-w-[460px] mx-auto sticky top-[85px] md:top-8 z-[120] transition-all duration-300">
-        
-        {/* Legend Button */}
-        <GlassEffect className="w-12 h-12 rounded-full flex items-center justify-center cursor-pointer flex-shrink-0 hover:scale-105 active:scale-95 transition-all duration-300">
-          <button
-            onClick={() => setShowLegend(true)}
-            className="w-full h-full flex items-center justify-center text-white outline-none cursor-pointer"
-            aria-label="Info legenda"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-5 h-5 opacity-70 hover:opacity-100 transition-opacity">
-              <circle cx="12" cy="12" r="10" />
-              <line x1="12" y1="16" x2="12" y2="12" />
-              <line x1="12" y1="8" x2="12.01" y2="8" />
-            </svg>
-          </button>
-        </GlassEffect>
-
-        {/* Pill Toggle */}
-        <div className="flex-1 w-full max-w-[360px]">
-          <GlassEffect className="w-full rounded-[50px] p-2 cursor-pointer">
-            <div className="relative flex w-full">
-              <div 
-                className="absolute top-0 bottom-0 w-1/2 bg-[rgba(59,130,246,0.3)] shadow-[inset_0_1px_4px_rgba(255,255,255,0.4)] rounded-[50px]" 
-                style={{ 
-                  transform: tab === 'squadre' ? 'translateX(0)' : 'translateX(100%)',
-                  transition: 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)'
-                }}
-              ></div>
-              <button
-                className={`flex-1 relative z-10 py-5 text-[1rem] font-bold transition-all duration-300 tracking-wide outline-none ${tab === 'squadre' ? 'text-white drop-shadow-md' : 'text-white/50 hover:text-white/80'}`}
-                onClick={() => setTab('squadre')}
-              >
-                Squadre
-              </button>
-              <button
-                className={`flex-1 relative z-10 py-5 text-[1rem] font-bold transition-all duration-300 tracking-wide outline-none ${tab === 'marcatori' ? 'text-white drop-shadow-md' : 'text-white/50 hover:text-white/80'}`}
-                onClick={() => setTab('marcatori')}
-              >
-                Marcatori
-              </button>
-            </div>
+      <div className="flex justify-center w-full mb-14 mt-6 sticky top-[85px] md:top-8 z-[120] px-4 transition-all duration-300">
+        <div className="flex items-center justify-center gap-4 w-full max-w-[460px]">
+          
+          {/* Legend Button */}
+          <GlassEffect className="w-12 h-12 rounded-full flex items-center justify-center cursor-pointer flex-shrink-0 hover:scale-105 active:scale-95 transition-all duration-300">
+            <button
+              onClick={() => setShowLegend(true)}
+              className="w-full h-full flex items-center justify-center text-white outline-none cursor-pointer"
+              aria-label="Info legenda"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-5 h-5 opacity-70 hover:opacity-100 transition-opacity">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="16" x2="12" y2="12" />
+                <line x1="12" y1="8" x2="12.01" y2="8" />
+              </svg>
+            </button>
           </GlassEffect>
+
+          {/* Chips Toggle */}
+          <div className="flex justify-center gap-3 flex-1 max-w-[360px]">
+            <button
+              onClick={() => setTab('squadre')}
+              className={`flex-1 py-3 rounded-full font-bold text-[1rem] transition-all border duration-300 cursor-pointer outline-none backdrop-blur-md backdrop-saturate-[180%] ${
+                tab === 'squadre'
+                  ? 'bg-[rgba(59,130,246,0.3)] text-white border-[rgba(59,130,246,0.5)] shadow-[0_2px_8px_rgba(59,130,246,0.3),inset_0_1px_4px_rgba(255,255,255,0.2)] scale-105'
+                  : 'bg-white/5 text-white/60 border-white/10 hover:text-white hover:bg-white/10 hover:border-white/20'
+              }`}
+            >
+              Squadre
+            </button>
+            <button
+              onClick={() => setTab('marcatori')}
+              className={`flex-1 py-3 rounded-full font-bold text-[1rem] transition-all border duration-300 cursor-pointer outline-none backdrop-blur-md backdrop-saturate-[180%] ${
+                tab === 'marcatori'
+                  ? 'bg-[rgba(59,130,246,0.3)] text-white border-[rgba(59,130,246,0.5)] shadow-[0_2px_8px_rgba(59,130,246,0.3),inset_0_1px_4px_rgba(255,255,255,0.2)] scale-105'
+                  : 'bg-white/5 text-white/60 border-white/10 hover:text-white hover:bg-white/10 hover:border-white/20'
+              }`}
+            >
+              Marcatori
+            </button>
+          </div>
+
+          {/* Spacer bilanciamento per centratura perfetta */}
+          <div className="w-12 h-12 flex-shrink-0 pointer-events-none" />
+
         </div>
-
-        {/* Spacer bilanciamento per centratura perfetta */}
-        <div className="w-12 h-12 flex-shrink-0 pointer-events-none" />
-
       </div>
 
       {/* Classifica Squadre */}

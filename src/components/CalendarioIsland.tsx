@@ -99,31 +99,30 @@ export default function CalendarioIsland() {
 
   return (
     <div className="w-full">
-      {/* Pill Toggle */}
-      <div className="flex justify-center w-full mb-14 sticky top-[85px] md:top-8 z-[120] px-4 transition-all duration-300">
-        <GlassEffect className="w-full max-w-[360px] rounded-[50px] p-2 cursor-pointer">
-          <div className="relative flex w-full">
-            <div 
-              className="absolute top-0 bottom-0 w-1/2 bg-[rgba(59,130,246,0.3)] shadow-[inset_0_1px_4px_rgba(255,255,255,0.4)] rounded-[50px]" 
-              style={{ 
-                transform: tab === 'calendario' ? 'translateX(0)' : 'translateX(100%)',
-                transition: 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)'
-              }}
-            ></div>
-            <button
-              className={`flex-1 relative z-10 py-5 text-[1rem] font-bold transition-all duration-300 tracking-wide outline-none ${tab === 'calendario' ? 'text-white drop-shadow-md' : 'text-white/50 hover:text-white/80'}`}
-              onClick={() => setTab('calendario')}
-            >
-              Calendario
-            </button>
-            <button
-              className={`flex-1 relative z-10 py-5 text-[1rem] font-bold transition-all duration-300 tracking-wide outline-none ${tab === 'tabellone' ? 'text-white drop-shadow-md' : 'text-white/50 hover:text-white/80'}`}
-              onClick={() => setTab('tabellone')}
-            >
-              Tabellone
-            </button>
-          </div>
-        </GlassEffect>
+      {/* Chips Toggle */}
+      <div className="flex justify-center w-full mb-20 mt-6 sticky top-[85px] md:top-8 z-[120] px-4 transition-all duration-300">
+        <div className="flex justify-center gap-3 w-full max-w-[360px]">
+          <button
+            onClick={() => setTab('calendario')}
+            className={`flex-1 py-3 rounded-full font-bold text-[1rem] transition-all border duration-300 cursor-pointer outline-none backdrop-blur-md backdrop-saturate-[180%] ${
+              tab === 'calendario'
+                ? 'bg-[rgba(59,130,246,0.3)] text-white border-[rgba(59,130,246,0.5)] shadow-[0_2px_8px_rgba(59,130,246,0.3),inset_0_1px_4px_rgba(255,255,255,0.2)] scale-105'
+                : 'bg-white/5 text-white/60 border-white/10 hover:text-white hover:bg-white/10 hover:border-white/20'
+            }`}
+          >
+            Calendario
+          </button>
+          <button
+            onClick={() => setTab('tabellone')}
+            className={`flex-1 py-3 rounded-full font-bold text-[1rem] transition-all border duration-300 cursor-pointer outline-none backdrop-blur-md backdrop-saturate-[180%] ${
+              tab === 'tabellone'
+                ? 'bg-[rgba(59,130,246,0.3)] text-white border-[rgba(59,130,246,0.5)] shadow-[0_2px_8px_rgba(59,130,246,0.3),inset_0_1px_4px_rgba(255,255,255,0.2)] scale-105'
+                : 'bg-white/5 text-white/60 border-white/10 hover:text-white hover:bg-white/10 hover:border-white/20'
+            }`}
+          >
+            Tabellone
+          </button>
+        </div>
       </div>
 
       {/* Calendario Matches List */}

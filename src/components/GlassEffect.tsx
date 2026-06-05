@@ -3,12 +3,14 @@ import React from "react";
 export interface GlassEffectProps {
   children: React.ReactNode;
   className?: string;
+  contentClassName?: string;
   style?: React.CSSProperties;
 }
 
 const GlassEffect: React.FC<GlassEffectProps> = ({
   children,
   className = "",
+  contentClassName = "",
   style = {},
 }) => {
   const glassStyle = {
@@ -48,7 +50,7 @@ const GlassEffect: React.FC<GlassEffectProps> = ({
       />
 
       {/* Content */}
-      <div className="relative z-30 w-full">{children}</div>
+      <div className={`relative z-30 w-full ${contentClassName}`}>{children}</div>
     </div>
   );
 };

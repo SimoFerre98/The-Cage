@@ -178,14 +178,20 @@ export default function HomeIsland() {
     p.team.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Filtra le squadre in base al termine di ricerca (nome squadra o giocatore)
+  const filteredTeams = teams.filter(t =>
+    t.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    t.players.some((p: string) => p.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
+
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-12">
       {/* ── Page Header / Branding ── */}
-      <div className="page-header mb-4 animate-[slideUpFade_0.6s_var(--ease-apple)]">
+      <div className="page-header mb-8 animate-[slideUpFade_0.6s_var(--ease-apple)]">
         <img 
-          src="/Logo_Torneo.webp" 
+          src="/Logo_Torneo.png" 
           alt="Logo Torneo" 
-          className="w-24 h-24 mx-auto mb-4 object-contain drop-shadow-[0_4px_12px_rgba(59,130,246,0.35)]" 
+          className="w-24 h-24 mx-auto mb-4 object-contain" 
         />
         <h1 className="page-title text-3xl font-extrabold tracking-tight">Memorial Gerry</h1>
         <p className="page-subtitle text-sm text-[var(--text-muted)] mt-1">Torneo di Calcio a 5 • The Cage</p>
@@ -193,18 +199,19 @@ export default function HomeIsland() {
       </div>
 
       {/* ── Dashboard: Grid di Widget ── */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full animate-[slideUpFade_0.6s_var(--ease-apple)] delay-75">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full animate-[slideUpFade_0.6s_var(--ease-apple)] delay-75">
         
         {/* Widget 1: Partita in Evidenza */}
         <div className="flex flex-col h-full">
           <h2 className="text-xs font-bold uppercase tracking-wider text-white/50 mb-3 px-1">Featured Match</h2>
           {featuredMatch ? (
             <GlassEffect 
-              className={`p-6 rounded-[24px] flex flex-col justify-between h-full min-h-[220px] transition-all duration-300 ${
+              className={`rounded-[24px] flex flex-col h-full min-h-[240px] transition-all duration-300 ${
                 featuredMatch.type === 'LIVE' 
                   ? 'border-red-500/40 shadow-[0_0_20px_rgba(239,68,68,0.2)]' 
                   : 'border-[var(--glass-border)]'
               }`}
+              contentClassName="p-6 flex flex-col justify-between flex-1 w-full"
             >
               {/* Header del Match */}
               <div className="flex justify-between items-center w-full">
@@ -288,7 +295,10 @@ export default function HomeIsland() {
               </div>
             </GlassEffect>
           ) : (
-            <GlassEffect className="p-8 rounded-[24px] flex items-center justify-center text-center h-full min-h-[220px] text-white/50 text-sm">
+            <GlassEffect 
+              className="rounded-[24px] flex flex-col h-full min-h-[240px]"
+              contentClassName="p-8 flex items-center justify-center text-center flex-1 w-full text-white/50 text-sm"
+            >
               Nessun match programmato
             </GlassEffect>
           )}
@@ -297,9 +307,12 @@ export default function HomeIsland() {
         {/* Widget 2: Anteprima Classifica */}
         <div className="flex flex-col h-full">
           <h2 className="text-xs font-bold uppercase tracking-wider text-white/50 mb-3 px-1">Top Standings</h2>
-          <GlassEffect className="p-6 rounded-[24px] flex flex-col justify-between h-full min-h-[220px]">
+          <GlassEffect 
+            className="rounded-[24px] flex flex-col h-full min-h-[240px]"
+            contentClassName="p-6 flex flex-col justify-between flex-1 w-full"
+          >
             {standings.length > 0 ? (
-              <div className="w-full flex flex-col h-full justify-between">
+              <div className="w-full flex flex-col flex-1 justify-between">
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="border-b border-[var(--glass-border)] pb-2">
@@ -357,37 +370,35 @@ export default function HomeIsland() {
           <div className="h-[2px] w-8 mt-1.5 rounded bg-gradient-to-r from-blue-500 to-purple-500" />
         </div>
 
-        {/* Pill Toggle Locale */}
-        <div className="flex justify-center w-full mb-8">
-          <GlassEffect className="w-full max-w-[280px] rounded-[50px] p-1.5 cursor-pointer">
-            <div className="relative flex w-full">
-              <div 
-                className="absolute top-0 bottom-0 bg-[rgba(59,130,246,0.3)] shadow-[inset_0_1px_4px_rgba(255,255,255,0.4)] rounded-[50px]" 
-                style={{ 
-                  width: '50%',
-                  transform: tab === 'squadre' ? 'translateX(0)' : 'translateX(100%)',
-                  transition: 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)'
-                }}
-              ></div>
-              <button
-                className={`flex-1 relative z-10 py-3 text-xs md:text-sm font-bold transition-all duration-300 tracking-wide outline-none ${tab === 'squadre' ? 'text-white drop-shadow-md' : 'text-white/50 hover:text-white/80'}`}
-                onClick={() => setTab('squadre')}
-              >
-                Squadre
-              </button>
-              <button
-                className={`flex-1 relative z-10 py-3 text-xs md:text-sm font-bold transition-all duration-300 tracking-wide outline-none ${tab === 'giocatori' ? 'text-white drop-shadow-md' : 'text-white/50 hover:text-white/80'}`}
-                onClick={() => setTab('giocatori')}
-              >
-                Giocatori
-              </button>
-            </div>
-          </GlassEffect>
+        {/* Chips Toggle Locale */}
+        <div className="flex justify-center w-full mb-10 mt-10">
+          <div className="flex justify-center gap-3 w-full max-w-[360px] px-4">
+            <button
+              onClick={() => setTab('squadre')}
+              className={`flex-1 py-3 rounded-full font-bold text-[1rem] transition-all border duration-300 cursor-pointer outline-none backdrop-blur-md backdrop-saturate-[180%] ${
+                tab === 'squadre'
+                  ? 'bg-[rgba(59,130,246,0.3)] text-white border-[rgba(59,130,246,0.5)] shadow-[0_2px_8px_rgba(59,130,246,0.3),inset_0_1px_4px_rgba(255,255,255,0.2)] scale-105'
+                  : 'bg-white/5 text-white/60 border-white/10 hover:text-white hover:bg-white/10 hover:border-white/20'
+              }`}
+            >
+              Squadre
+            </button>
+            <button
+              onClick={() => setTab('giocatori')}
+              className={`flex-1 py-3 rounded-full font-bold text-[1rem] transition-all border duration-300 cursor-pointer outline-none backdrop-blur-md backdrop-saturate-[180%] ${
+                tab === 'giocatori'
+                  ? 'bg-[rgba(59,130,246,0.3)] text-white border-[rgba(59,130,246,0.5)] shadow-[0_2px_8px_rgba(59,130,246,0.3),inset_0_1px_4px_rgba(255,255,255,0.2)] scale-105'
+                  : 'bg-white/5 text-white/60 border-white/10 hover:text-white hover:bg-white/10 hover:border-white/20'
+              }`}
+            >
+              Giocatori
+            </button>
+          </div>
         </div>
 
-        {/* Filtro Ricerca Giocatori (Mostrato solo nel tab giocatori) */}
-        {tab === 'giocatori' && (
-          <div className="w-full max-w-[400px] mx-auto mb-6 px-1 animate-[slideUpFade_0.4s_var(--ease-spring)]">
+        {/* Filtro Ricerca Centrato con Spazio Verticale (Sempre visibile per consistenza e UX premium) */}
+        <div className="flex justify-center w-full mb-10 mt-10 px-4">
+          <div className="w-full max-w-[400px] animate-[slideUpFade_0.4s_var(--ease-spring)]">
             <GlassEffect className="flex items-center gap-3 px-4 py-2.5 rounded-2xl border border-white/5 bg-black/20">
               <span className="text-white/40 text-sm">🔍</span>
               <input
@@ -407,48 +418,54 @@ export default function HomeIsland() {
               )}
             </GlassEffect>
           </div>
-        )}
+        </div>
 
         {/* Liste Dati */}
         {tab === 'squadre' ? (
           <div className="glass-card animate-stagger">
-            {teams.map((team, i) => (
-              <div key={i}>
-                <div 
-                  className="flex items-center gap-4 p-4 cursor-pointer hover:bg-[rgba(255,255,255,0.03)] transition-colors border-b border-[var(--glass-border)] last:border-b-0" 
-                  onClick={() => toggle(i)}
-                >
-                  <div className={`team-avatar avatar-${team.idx}`} style={{ width: 38, height: 38, borderRadius: 12 }}>
-                    {AVATAR_INITIALS(team.name)}
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <div className="font-extrabold text-[0.9rem] text-white leading-tight">{team.name}</div>
-                  </div>
+            {filteredTeams.length > 0 ? (
+              filteredTeams.map((team, i) => (
+                <div key={i}>
                   <div 
-                    className="text-white/40 text-xs transition-transform duration-300" 
-                    style={{ transform: expanded === i ? 'rotate(180deg)' : 'rotate(0)' }}
+                    className="flex items-center gap-4 p-4 cursor-pointer hover:bg-[rgba(255,255,255,0.03)] transition-colors border-b border-[var(--glass-border)] last:border-b-0" 
+                    onClick={() => toggle(i)}
                   >
-                    ▼
+                    <div className={`team-avatar avatar-${team.idx}`} style={{ width: 38, height: 38, borderRadius: 12 }}>
+                      {AVATAR_INITIALS(team.name)}
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <div className="font-extrabold text-[0.9rem] text-white leading-tight">{team.name}</div>
+                    </div>
+                    <div 
+                      className="text-white/40 text-xs transition-transform duration-300" 
+                      style={{ transform: expanded === i ? 'rotate(180deg)' : 'rotate(0)' }}
+                    >
+                      ▼
+                    </div>
+                  </div>
+
+                  {/* Lista Giocatori (Accordion) */}
+                  <div
+                    className="transition-all duration-300 ease-[var(--ease-apple)] bg-[rgba(0,0,0,0.25)] shadow-[inset_0_2px_10px_rgba(0,0,0,0.35)]"
+                    style={{
+                      overflow: 'hidden',
+                      maxHeight: expanded === i ? `${team.players.length * 48}px` : '0px',
+                    }}
+                  >
+                    {team.players.map((player, j) => (
+                      <div key={j} className="flex items-center gap-4 px-8 py-3 text-[0.85rem] border-b border-[var(--glass-border)] last:border-b-0">
+                        <div className="text-white/30 font-mono text-xs w-4 text-center">{j + 1}</div>
+                        <span className="font-semibold text-white/90">{player}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
-
-                {/* Lista Giocatori (Accordion) */}
-                <div
-                  className="transition-all duration-300 ease-[var(--ease-apple)] bg-[rgba(0,0,0,0.25)] shadow-[inset_0_2px_10px_rgba(0,0,0,0.35)]"
-                  style={{
-                    overflow: 'hidden',
-                    maxHeight: expanded === i ? `${team.players.length * 48}px` : '0px',
-                  }}
-                >
-                  {team.players.map((player, j) => (
-                    <div key={j} className="flex items-center gap-4 px-8 py-3 text-[0.85rem] border-b border-[var(--glass-border)] last:border-b-0">
-                      <div className="text-white/30 font-mono text-xs w-4 text-center">{j + 1}</div>
-                      <span className="font-semibold text-white/90">{player}</span>
-                    </div>
-                  ))}
-                </div>
+              ))
+            ) : (
+              <div className="p-8 text-center text-white/40 text-xs italic">
+                Nessuna squadra corrisponde alla ricerca.
               </div>
-            ))}
+            )}
           </div>
         ) : (
           <div className="glass-card animate-stagger">
