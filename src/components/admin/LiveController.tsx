@@ -11,6 +11,7 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
   const [homePlayers, setHomePlayers] = useState<Player[]>([]);
   const [awayPlayers, setAwayPlayers] = useState<Player[]>([]);
   const [playersLoading, setPlayersLoading] = useState(false);
+  const [events, setEvents] = useState<any[]>([]);
 
   // Event form state
   const [eventTeamId, setEventTeamId] = useState('');
@@ -40,7 +41,59 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
     });
   }, [liveMatch?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Carica e sottoscrivi gli eventi del match live
+  useEffect(() => {
+    if (!liveMatch) {
+      setEvents([]);
+      return;
+    }
+
+    const fetchEvents = async () => {
+      const { data, error } = await supabase
+        .from('match_events')
+        .select(`
+          id,
+          minute,
+          type,
+          detail,
+          player:players(name)
+        `)
+        .eq('match_id', liveMatch.id)
+        .order('minute', { ascending: false });
+      if (!error && data) {
+        setEvents(data);
+      }
+    };
+
+    fetchEvents();
+
+    const channel = supabase.channel(`live_controller_events_${liveMatch.id}`)
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'match_events', filter: `match_id=eq.${liveMatch.id}` },
+        () => {
+          fetchEvents();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [liveMatch?.id]);
+
   // ── Handlers ─────────────────────────────────────────────────────────────
+
+  const handleDeleteEvent = async (eventId: string) => {
+    if (!confirm('Sei sicuro di voler eliminare questo evento? (Nota: se elimini un gol, ricordati di aggiornare anche il punteggio sopra)')) return;
+    const { error } = await supabase
+      .from('match_events')
+      .delete()
+      .eq('id', eventId);
+    if (error) {
+      alert('Errore nell\'eliminazione dell\'evento: ' + error.message);
+    }
+  };
 
   const updateScore = async (homeDelta: number, awayDelta: number) => {
     if (!liveMatch) return;
@@ -241,6 +294,50 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
             <button type="submit" className="install-btn w-[80%] justify-center py-4 mt-2">Genera Evento Live</button>
           </form>
         )}
+      </GlassEffect>
+
+      {/* Regia Timeline / Cronologia Eventi */}
+      <GlassEffect className="p-8 md:p-10 rounded-[24px]">
+        <h2 className="text-xl font-bold text-white mb-6 text-center uppercase tracking-wider">Timeline Eventi Live</h2>
+        <div className="flex flex-col gap-3 max-h-[300px] overflow-y-auto pr-1">
+          {events.length > 0 ? (
+            events.map((ev, i) => {
+              const emoji = ev.type === 'GOAL' ? '⚽' : ev.type === 'YELLOW_CARD' || ev.type === 'AMMONIZIONE' ? '🟨' : ev.type === 'RED_CARD' || ev.type === 'ESPULSIONE' ? '🟥' : '🃏';
+              const desc = ev.type === 'GOAL' 
+                ? 'Gol' 
+                : ev.type === 'ASSIST' 
+                  ? 'Assist' 
+                  : ev.type === 'YELLOW_CARD' || ev.type === 'AMMONIZIONE' 
+                    ? 'Ammonizione' 
+                    : ev.type === 'RED_CARD' || ev.type === 'ESPULSIONE' 
+                      ? 'Espulsione' 
+                      : `Carta (${ev.detail || 'Attivata'})`;
+              const playerName = ev.player?.name || 'Giocatore Sconosciuto';
+
+              return (
+                <div key={ev.id || i} className="flex items-center justify-between bg-white/5 border border-white/[0.04] p-4 rounded-xl">
+                  <div className="flex items-center gap-3">
+                    <span className="text-xl">{emoji}</span>
+                    <div className="flex flex-col">
+                      <span className="text-sm font-bold text-white">{desc}</span>
+                      <span className="text-xs text-white/50">{playerName} ({ev.minute}')</span>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => handleDeleteEvent(ev.id)}
+                    className="px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/25 border border-red-500/20 text-red-400 hover:text-red-300 text-xs font-bold transition-all cursor-pointer"
+                  >
+                    Elimina 🗑
+                  </button>
+                </div>
+              );
+            })
+          ) : (
+            <div className="text-center text-white/40 text-xs italic py-8 border border-white/5 bg-black/10 rounded-xl">
+              Nessun evento registrato per questo match.
+            </div>
+          )}
+        </div>
       </GlassEffect>
     </div>
   );
