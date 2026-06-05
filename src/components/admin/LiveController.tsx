@@ -52,12 +52,12 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
 
   const handleAddEvent = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!liveMatch || !eventTeamId || !eventPlayerId || !eventType || !eventMinute) return;
+    if (!liveMatch || !eventTeamId || !eventType || !eventMinute) return;
 
     const { error } = await supabase.from('match_events').insert([{
       match_id: liveMatch.id,
       team_id: eventTeamId,
-      player_id: eventPlayerId,
+      player_id: eventPlayerId || null,
       minute: parseInt(eventMinute),
       type: eventType,
       detail: eventDetail || null,
@@ -66,6 +66,7 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
     if (!error) {
       setEventMinute('');
       setEventDetail('');
+      setEventPlayerId('');
       alert('Evento aggiunto con successo e visibile live!');
     } else {
       alert('Errore: ' + error.message);
@@ -179,9 +180,8 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
                 onChange={e => setEventPlayerId(e.target.value)}
                 className="w-[80%] bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 h-[48px] text-center custom-select"
                 style={{ textAlignLast: 'center' }}
-                required
               >
-                <option value="">-- Seleziona Giocatore --</option>
+                <option value="">-- Giocatore Sconosciuto / Non Specificato --</option>
                 {activePlayers.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
               </select>
             </div>

@@ -16,6 +16,8 @@ export default function LiveMatchIsland() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
+
     async function loadData() {
       const { data: match } = await supabase
         .from('matches')
@@ -23,31 +25,169 @@ export default function LiveMatchIsland() {
         .eq('status', 'LIVE')
         .single();
       
+      if (!isMounted) return;
+
       if (match) {
         setLiveMatch(match);
+        
+        // Aggiorna cache locale 'cage-matches' se presente
+        try {
+          const lsStr = localStorage.getItem('cage-matches');
+          if (lsStr) {
+            const cached = JSON.parse(lsStr);
+            if (cached && cached.data) {
+              const idx = cached.data.findIndex((m: any) => m.id === match.id);
+              if (idx !== -1) {
+                cached.data[idx] = {
+                  ...cached.data[idx],
+                  status: match.status,
+                  home_score: match.home_score,
+                  away_score: match.away_score
+                };
+                localStorage.setItem('cage-matches', JSON.stringify(cached));
+                const win = window as any;
+                if (win.__cage_cache) {
+                  win.__cage_cache['cage-matches'] = cached;
+                }
+              }
+            }
+          }
+        } catch (e) {
+          console.warn('Errore aggiornamento cache al caricamento live:', e);
+        }
+
         const { data: evts } = await supabase
           .from('match_events')
           .select('*, player:players!player_id(name, team_id)')
           .eq('match_id', match.id)
           .order('minute', { ascending: false });
         
-        if (evts) setEvents(evts);
+        if (isMounted && evts) setEvents(evts);
+      } else {
+        setLiveMatch(null);
+        setEvents([]);
       }
       setLoading(false);
     }
-    loadData();
 
-    const channel = supabase.channel('live_match_updates')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'matches' }, (payload) => {
-        loadData();
-      })
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'match_events' }, (payload) => {
-        loadData();
-      })
-      .subscribe();
+    if (loading) {
+      loadData();
+    }
 
-    return () => { supabase.removeChannel(channel); };
-  }, []);
+    let channel: any = null;
+
+    if (liveMatch?.id) {
+      // 1. Sottoscrizione filtrata per la specifica partita live
+      channel = supabase.channel(`live_match_${liveMatch.id}`)
+        .on(
+          'postgres_changes',
+          { event: '*', schema: 'public', table: 'matches', filter: `id=eq.${liveMatch.id}` },
+          (payload) => {
+            if (payload.new && (payload.new as any).status !== 'LIVE') {
+              if (isMounted) {
+                setLiveMatch(null);
+                setEvents([]);
+
+                // Aggiorna cache locale per riflettere lo stato non più live (es. TERMINATA)
+                try {
+                  const lsStr = localStorage.getItem('cage-matches');
+                  if (lsStr) {
+                    const cached = JSON.parse(lsStr);
+                    if (cached && cached.data) {
+                      const idx = cached.data.findIndex((m: any) => m.id === (payload.new as any).id);
+                      if (idx !== -1) {
+                        cached.data[idx] = {
+                          ...cached.data[idx],
+                          status: (payload.new as any).status,
+                          home_score: (payload.new as any).home_score,
+                          away_score: (payload.new as any).away_score
+                        };
+                        localStorage.setItem('cage-matches', JSON.stringify(cached));
+                        const win = window as any;
+                        if (win.__cage_cache) {
+                          win.__cage_cache['cage-matches'] = cached;
+                        }
+                      }
+                    }
+                  }
+                } catch (e) {
+                  console.warn('Errore aggiornamento cache a fine partita:', e);
+                }
+              }
+            } else {
+              if (isMounted) {
+                setLiveMatch(prev => {
+                  const updated = { ...prev, ...payload.new };
+
+                  // Aggiorna cache locale per il punteggio live
+                  try {
+                    const lsStr = localStorage.getItem('cage-matches');
+                    if (lsStr) {
+                      const cached = JSON.parse(lsStr);
+                      if (cached && cached.data) {
+                        const idx = cached.data.findIndex((m: any) => m.id === updated.id);
+                        if (idx !== -1) {
+                          cached.data[idx] = {
+                            ...cached.data[idx],
+                            status: updated.status,
+                            home_score: updated.home_score,
+                            away_score: updated.away_score
+                          };
+                          localStorage.setItem('cage-matches', JSON.stringify(cached));
+                          const win = window as any;
+                          if (win.__cage_cache) {
+                            win.__cage_cache['cage-matches'] = cached;
+                          }
+                        }
+                      }
+                    }
+                  } catch (e) {
+                    console.warn('Errore aggiornamento cache punteggio live:', e);
+                  }
+
+                  return updated;
+                });
+              }
+            }
+          }
+        )
+        .on(
+          'postgres_changes',
+          { event: '*', schema: 'public', table: 'match_events', filter: `match_id=eq.${liveMatch.id}` },
+          async () => {
+            if (!isMounted) return;
+            const { data: evts } = await supabase
+              .from('match_events')
+              .select('*, player:players!player_id(name, team_id)')
+              .eq('match_id', liveMatch.id)
+              .order('minute', { ascending: false });
+            
+            if (isMounted && evts) setEvents(evts);
+          }
+        )
+        .subscribe();
+    } else if (!loading) {
+      // 2. Se non c'è una partita live, ascolta solo se una qualsiasi partita passa in stato LIVE
+      channel = supabase.channel('live_match_detector')
+        .on(
+          'postgres_changes',
+          { event: '*', schema: 'public', table: 'matches', filter: 'status=eq.LIVE' },
+          () => {
+            if (isMounted) {
+              setLoading(true);
+            }
+          }
+        )
+        .subscribe();
+    }
+
+    return () => {
+      isMounted = false;
+      if (channel) {
+        supabase.removeChannel(channel);
+      }
+    };
+  }, [liveMatch?.id, loading]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
@@ -250,7 +390,7 @@ export default function LiveMatchIsland() {
             ) : null}
             {events.map((ev, i) => {
               const isCard = ev.type === 'CARTA';
-              const isHome = ev.player?.team_id === liveMatch.home_team_id;
+              const isHome = ev.team_id === liveMatch.home_team_id;
               const playerName = ev.player?.name || 'Sconosciuto';
               const detailType = ev.detail;
 

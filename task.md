@@ -64,6 +64,13 @@ Questo file rappresenta il **Punto di Tracciamento Centralizzato** di tutto il p
   - **File di backlog**: [sprint-18-seo-sharing.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/03-new-features/sprint-18-seo-sharing.md)
   - **Branch**: `sprint-18-seo-sharing`
 
+- [x] **Sprint 19: Ottimizzazione Realtime (ATC)**
+  - **Analisi e Strategia**: [00-analisi-realtime.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/atc/00-analisi-realtime.md)
+  - **Design Architetturale**: [01-design-architetturale.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/atc/01-design-architetturale.md)
+  - **Issue 1 (Completato)**: [issue-01-realtime-classifica.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/atc/issues/issue-01-realtime-classifica.md)
+  - **Issue 2 (Completato)**: [issue-02-ottimizzazione-live-match.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/atc/issues/issue-02-ottimizzazione-live-match.md)
+  - **Issue 3 (Completato)**: [issue-03-realtime-admin-dashboard.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/atc/issues/issue-03-realtime-admin-dashboard.md)
+
 ---
 
 ## Linee Guida per gli Agenti

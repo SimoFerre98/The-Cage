@@ -43,15 +43,48 @@ export default function ClassificaIsland() {
 
   useEffect(() => {
     let isMounted = true;
+    let debounceTimer: any = null;
 
-    async function loadData() {
-      // Iniziamo il loading solo se non abbiamo dati in memoria/cache immediatamente (gestito in fondo)
+    async function loadData(force = false) {
+      const fetchStandings = async () => {
+        const { data } = await supabase.from('standings').select('*');
+        return data || [];
+      };
+
+      const fetchScorers = async () => {
+        const { data } = await supabase.from('top_scorers').select('*');
+        return data || [];
+      };
+
+      if (force) {
+        try {
+          const [freshStandings, freshScorers] = await Promise.all([
+            fetchStandings(),
+            fetchScorers(),
+          ]);
+          if (isMounted) {
+            setStandings(freshStandings);
+            setScorers(freshScorers);
+
+            // Aggiorna cache locale
+            const win = window as any;
+            if (!win.__cage_cache) win.__cage_cache = {};
+
+            win.__cage_cache['cage-standings'] = { data: freshStandings, timestamp: Date.now() };
+            localStorage.setItem('cage-standings', JSON.stringify({ data: freshStandings, timestamp: Date.now() }));
+
+            win.__cage_cache['cage-top-scorers'] = { data: freshScorers, timestamp: Date.now() };
+            localStorage.setItem('cage-top-scorers', JSON.stringify({ data: freshScorers, timestamp: Date.now() }));
+          }
+        } catch (e) {
+          console.error('Errore durante il rinfresco forzato della classifica:', e);
+        }
+        return;
+      }
+
       const standingsPromise = fetchWithCache(
         'cage-standings',
-        async () => {
-          const { data } = await supabase.from('standings').select('*');
-          return data || [];
-        },
+        fetchStandings,
         (newData) => {
           if (isMounted) setStandings(newData);
         }
@@ -59,16 +92,12 @@ export default function ClassificaIsland() {
 
       const scorersPromise = fetchWithCache(
         'cage-top-scorers',
-        async () => {
-          const { data } = await supabase.from('top_scorers').select('*');
-          return data || [];
-        },
+        fetchScorers,
         (newData) => {
           if (isMounted) setScorers(newData);
         }
       );
 
-      // Risolve immediatamente se i dati sono in cache, o attende il primo caricamento
       const [cachedStandings, cachedScorers] = await Promise.all([standingsPromise, scorersPromise]);
       
       if (isMounted) {
@@ -80,8 +109,47 @@ export default function ClassificaIsland() {
 
     loadData();
 
+    const triggerRefresh = () => {
+      if (debounceTimer) clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        loadData(true);
+      }, 2000);
+    };
+
+    // Sottoscrizione realtime per classifica e marcatori
+    const channel = supabase.channel('classifica_realtime_updates')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'matches' }, (payload: any) => {
+        const oldStatus = payload.old?.status;
+        const newStatus = payload.new?.status;
+        const oldHomeScore = payload.old?.home_score;
+        const newHomeScore = payload.new?.home_score;
+        const oldAwayScore = payload.old?.away_score;
+        const newAwayScore = payload.new?.away_score;
+
+        // Aggiorna solo se una partita è terminata (o era terminata prima) e c'è stato un cambio di stato o punteggio
+        const wasOrIsTerminata = oldStatus === 'TERMINATA' || newStatus === 'TERMINATA';
+        const scoreChanged = oldHomeScore !== newHomeScore || oldAwayScore !== newAwayScore;
+        const statusChanged = oldStatus !== newStatus;
+
+        if (wasOrIsTerminata && (scoreChanged || statusChanged)) {
+          triggerRefresh();
+        }
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'match_events' }, (payload: any) => {
+        const oldType = payload.old?.type;
+        const newType = payload.new?.type;
+
+        // Aggiorna solo se l'evento inserito/eliminato/modificato è un GOAL
+        if (oldType === 'GOAL' || newType === 'GOAL') {
+          triggerRefresh();
+        }
+      })
+      .subscribe();
+
     return () => {
       isMounted = false;
+      if (debounceTimer) clearTimeout(debounceTimer);
+      supabase.removeChannel(channel);
     };
   }, []);
 
