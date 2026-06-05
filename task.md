@@ -71,7 +71,7 @@ Questo file rappresenta il **Punto di Tracciamento Centralizzato** di tutto il p
   - **Issue 2 (Completato)**: [issue-02-ottimizzazione-live-match.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/atc/issues/issue-02-ottimizzazione-live-match.md)
   - **Issue 3 (Completato)**: [issue-03-realtime-admin-dashboard.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/atc/issues/issue-03-realtime-admin-dashboard.md)
 
-- [/] **Sprint 20: Rimozione conteggio giocatori nel drop down delle squadre**
+- [x] **Sprint 20: Rimozione conteggio giocatori nel drop down delle squadre**
   - **File di backlog**: [sprint-20-remove-player-numbers.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/05-remove-player-numbers/sprint-20-remove-player-numbers.md)
   - **Branch**: `sprint-20-remove-player-numbers`
 - [ ] **Sprint 22: Tab "Rose" (Squadre e Giocatori) in Classifica**
