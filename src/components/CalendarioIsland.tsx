@@ -24,6 +24,13 @@ const TEAM_IDX: Record<string, number> = {
 
 import { fetchWithCache } from '../lib/cache';
 
+const sortMatches = (list: any[]) => list.slice().sort((a, b) => {
+  const aLive = a.status === 'LIVE' ? 0 : 1;
+  const bLive = b.status === 'LIVE' ? 0 : 1;
+  if (aLive !== bLive) return aLive - bLive; // LIVE sempre prima
+  return new Date(a.match_date).getTime() - new Date(b.match_date).getTime();
+});
+
 export default function CalendarioIsland() {
   const [tab, setTab] = useState<'calendario' | 'tabellone'>('calendario');
   const [matches, setMatches] = useState<any[]>([]);
@@ -127,13 +134,7 @@ export default function CalendarioIsland() {
         return data || [];
       };
 
-      // Ordinamento: LIVE prima di tutto, poi per data crescente (FIFO)
-      const sortMatches = (list: any[]) => list.slice().sort((a, b) => {
-        const aLive = a.status === 'LIVE' ? 0 : 1;
-        const bLive = b.status === 'LIVE' ? 0 : 1;
-        if (aLive !== bLive) return aLive - bLive; // LIVE sempre prima
-        return new Date(a.match_date).getTime() - new Date(b.match_date).getTime();
-      });
+      // Ordinamento gestito tramite la funzione globale sortMatches
 
       if (force) {
         try {
@@ -167,10 +168,28 @@ export default function CalendarioIsland() {
     
     loadMatches();
 
-    // Sottoscrizione realtime per le partite
+    // Sottoscrizione realtime per le partite (fetch diretto come in HomeIsland)
     const channel = supabase.channel('calendario_realtime_matches')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'matches' }, () => {
-        loadMatches(true);
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'matches' }, async () => {
+        try {
+          const { data } = await supabase
+            .from('matches')
+            .select(`
+              id, match_date, round, status, home_score, away_score,
+              home_team:teams!home_team_id ( name ),
+              away_team:teams!away_team_id ( name )
+            `)
+            .order('match_date', { ascending: true });
+          if (isMounted && data) {
+            setMatches(sortMatches(data));
+            const win = window as any;
+            if (!win.__cage_cache) win.__cage_cache = {};
+            win.__cage_cache['cage-matches'] = { data, timestamp: Date.now() };
+            localStorage.setItem('cage-matches', JSON.stringify({ data, timestamp: Date.now() }));
+          }
+        } catch (e) {
+          console.error('Errore nel fetch realtime delle partite in Calendario:', e);
+        }
       })
       .subscribe();
 
@@ -222,7 +241,7 @@ export default function CalendarioIsland() {
             // Contenuto della card (uguale per live e non-live)
             const cardContent = (
               <>
-                <div className="flex flex-col items-center gap-2 mb-5">
+                <div className="flex flex-col items-center gap-2 mb-7">
                   <span className={`text-xs font-semibold tracking-wide ${isLive ? 'text-red-400 font-bold' : 'text-[var(--text-muted)]'}`}>
                     {isLive ? '🔴 IN DIRETTA' : `📅 ${formattedDate}`}
                   </span>
@@ -265,15 +284,40 @@ export default function CalendarioIsland() {
               </>
             );
 
-            // Per le partite LIVE: wrapper esterno animato + glass-card interna STATICA
-            // (CSS animation + backdrop-filter sullo stesso elemento si rompono a vicenda)
+            // Per le partite LIVE: glass-card con bordo rosso pulsante e senza backdrop-filter
             if (isLive) {
               return (
-                <div key={i} className="live-border-wrapper" style={{ marginBottom: '1rem' }}>
+                <div
+                  key={i}
+                  className="relative pointer-events-auto rounded-[20px] menu-glow-pulse-red group transition-all duration-700"
+                  style={{ marginBottom: '1rem' }}
+                >
+                  {/* Flowing red border layer */}
+                  <div
+                    className="border-glow-flow-red"
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      borderRadius: '20px',
+                      padding: '2px', // border size
+                      WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                      WebkitMaskComposite: 'xor',
+                      mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                      maskComposite: 'exclude',
+                      pointerEvents: 'none',
+                      zIndex: 10,
+                    }}
+                  />
                   <a
                     href="/live"
                     className="glass-card live-card-inner"
-                    style={{ display: 'block', textDecoration: 'none', cursor: 'pointer', padding: '1.2rem 1.25rem' }}
+                    style={{
+                      display: 'block',
+                      textDecoration: 'none',
+                      cursor: 'pointer',
+                      padding: '1.2rem 1.25rem',
+                      border: '1px solid transparent', // Keep transparent border to prevent layout shifts
+                    }}
                   >
                     {cardContent}
                   </a>

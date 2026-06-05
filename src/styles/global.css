@@ -1247,6 +1247,30 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover {
   will-change: background-position;
 }
 
+.border-glow-flow-red {
+  background: linear-gradient(90deg, #ef4444, #f97316, #ec4899, #f97316, #ef4444);
+  background-size: 200% auto;
+  animation: borderGlowFlow 6s linear infinite;
+  will-change: background-position;
+}
+
+@keyframes menuGlowPulseRed {
+  0% {
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.25), 0 0 30px rgba(249, 115, 22, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(239, 68, 68, 0.55), 0 0 50px rgba(249, 115, 22, 0.35);
+  }
+  100% {
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.25), 0 0 30px rgba(249, 115, 22, 0.15);
+  }
+}
+
+.menu-glow-pulse-red {
+  animation: menuGlowPulseRed 4s ease-in-out infinite;
+  will-change: box-shadow;
+}
+
 /* ===================================================
    LIVE MATCH CARD: wrapper + backdrop-filter override
    - Wrapper porta l'animazione box-shadow
