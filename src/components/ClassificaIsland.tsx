@@ -203,9 +203,9 @@ export default function ClassificaIsland() {
   }, []);
 
   return (
-    <div>
+    <div className="flex flex-col items-stretch">
       {/* Legenda Header Button Centered (above sticky bar to avoid mobile squeezing) */}
-      <div className="flex justify-center w-full mb-6">
+      <div className="flex justify-center w-full" style={{ marginBottom: '16px' }}>
         <GlassEffect className="w-12 h-12 rounded-full flex items-center justify-center cursor-pointer flex-shrink-0 hover:scale-105 active:scale-95 transition-all duration-300">
           <button
             onClick={() => setShowLegend(true)}
@@ -222,7 +222,7 @@ export default function ClassificaIsland() {
       </div>
 
       {/* Controls Container */}
-      <div className="flex justify-center w-full mb-10 mt-6 sticky top-[85px] md:top-8 z-[120] px-4 transition-all duration-300">
+      <div className="flex justify-center w-full sticky top-[85px] md:top-8 z-[120] px-4 transition-all duration-300" style={{ marginTop: '16px', marginBottom: '24px' }}>
         <div className="flex justify-center w-full max-w-[360px]">
           
           {/* Chips Toggle */}
@@ -254,7 +254,7 @@ export default function ClassificaIsland() {
 
       {/* Subtabs for Giocatori */}
       {tab === 'giocatori' && (
-        <div className="flex justify-center w-full mb-10 -mt-4 sticky top-[150px] md:top-24 z-[115] px-4 transition-all duration-300">
+        <div className="flex justify-center w-full sticky top-[150px] md:top-24 z-[115] px-4 transition-all duration-300" style={{ marginTop: '16px', marginBottom: '32px' }}>
           <div className="flex justify-center gap-3 w-full max-w-[360px]">
             <button
               onClick={() => setSubTab('marcatori')}
