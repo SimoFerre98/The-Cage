@@ -80,7 +80,7 @@ Questo file rappresenta il **Punto di Tracciamento Centralizzato** di tutto il p
 - [x] **Sprint 23: Effetti Grafici e Luci (Liquid Glass Glow System)**
   - **File di backlog**: [sprint-23-graphic-light-effects.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/08-graphic-light-effects/sprint-23-graphic-light-effects.md)
   - **Branch**: `sprint-23-graphic-light-effects`
-- [ ] **Sprint 24: Modale Statistiche Specifiche Giocatore**
+- [x] **Sprint 24: Modale Statistiche Specifiche Giocatore**
   - **File di backlog**: [sprint-24-player-stats-modal.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/09-player-stats-modal/sprint-24-player-stats-modal.md)
   - **Branch**: `sprint-24-player-stats-modal`
 - [ ] **Sprint 25: Integrazione Quarti di Finale nel Tabellone**

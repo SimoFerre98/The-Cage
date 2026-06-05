@@ -11,12 +11,12 @@
 6. **Testable**: Cliccare sul nome di un giocatore (es. in classifica marcatori) e verificare che si apra il modale e mostri correttamente i gol e cartellini estratti dal DB.
 
 ### Checklist
-- [ ] Creare il componente [PlayerStatsModal.tsx](file:///c:/Users/s.ferrero/Code/The%20Cage/src/components/PlayerStatsModal.tsx):
+- [x] Creare il componente [PlayerStatsModal.tsx](file:///c:/Users/s.ferrero/Code/The%20Cage/src/components/PlayerStatsModal.tsx):
   - Deve caricare dinamicamente le informazioni del giocatore (Nome, Squadra).
   - Deve eseguire query su `match_events` filtrate per `player_id` per contare: Gol, Ammonizioni, Espulsioni, Carte Speciali.
   - Deve recuperare la lista cronologica di tutti gli eventi inseriti durante il live per il giocatore in questione, arricchiti con il round della partita.
-- [ ] Integrare l'evento click sui nomi dei giocatori nei seguenti componenti:
+- [x] Integrare l'evento click sui nomi dei giocatori nei seguenti componenti:
   - [ClassificaIsland.tsx](file:///c:/Users/s.ferrero/Code/The%20Cage/src/components/ClassificaIsland.tsx) (tab Marcatori e tab Rose).
   - [HomeIsland.tsx](file:///c:/Users/s.ferrero/Code/The%20Cage/src/components/HomeIsland.tsx) (tab Giocatori, lista candidati MVP).
   - [LiveMatchIsland.tsx](file:///c:/Users/s.ferrero/Code/The%20Cage/src/components/LiveMatchIsland.tsx) (nella timeline degli eventi live).
-- [ ] Applicare design premium Glassmorphic con icone dedicate per ciascuna statistica.
+- [x] Applicare design premium Glassmorphic con icone dedicate per ciascuna statistica.

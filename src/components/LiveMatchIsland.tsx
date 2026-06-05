@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import GlassEffect from './GlassEffect';
 import { supabase } from '../lib/supabase';
+import PlayerStatsModal from './PlayerStatsModal';
 
 const AVATAR_INITIALS = (name: string) => {
   const parts = name.split(' ');
@@ -14,6 +15,7 @@ export default function LiveMatchIsland() {
   const [liveMatch, setLiveMatch] = useState<any>(null);
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -401,7 +403,10 @@ export default function LiveMatchIsland() {
                     {isHome && (
                       isCard ? (
                         <div className="flex flex-col items-end gap-1 max-w-full">
-                          <span className="text-[0.6rem] font-black tracking-widest text-white/40 uppercase truncate w-full text-right">
+                          <span 
+                            onClick={() => ev.player_id && setSelectedPlayerId(ev.player_id)}
+                            className={`text-[0.6rem] font-black tracking-widest text-white/40 uppercase truncate w-full text-right ${ev.player_id ? 'cursor-pointer hover:text-blue-400 transition-colors' : ''}`}
+                          >
                             {playerName}
                           </span>
                           {renderEventMedia({ type: 'Carta Attivata', detail: detailType })}
@@ -412,7 +417,12 @@ export default function LiveMatchIsland() {
                              {renderEventMedia(ev)}
                            </div>
                            <div className="flex flex-col min-w-0">
-                             <span className="font-extrabold text-[0.8rem] md:text-[0.9rem] tracking-wide text-white drop-shadow-md uppercase leading-tight truncate">{playerName}</span>
+                             <span 
+                               onClick={() => ev.player_id && setSelectedPlayerId(ev.player_id)}
+                               className={`font-extrabold text-[0.8rem] md:text-[0.9rem] tracking-wide text-white drop-shadow-md uppercase leading-tight truncate ${ev.player_id ? 'cursor-pointer hover:text-blue-400 transition-colors' : ''}`}
+                             >
+                               {playerName}
+                             </span>
                              <span className="text-[0.65rem] text-white/60 font-semibold mt-0.5 truncate">{ev.type}</span>
                            </div>
                         </div>
@@ -432,7 +442,10 @@ export default function LiveMatchIsland() {
                     {!isHome && (
                       isCard ? (
                         <div className="flex flex-col items-start gap-1 max-w-full">
-                          <span className="text-[0.6rem] font-black tracking-widest text-white/40 uppercase truncate w-full text-left">
+                          <span 
+                            onClick={() => ev.player_id && setSelectedPlayerId(ev.player_id)}
+                            className={`text-[0.6rem] font-black tracking-widest text-white/40 uppercase truncate w-full text-left ${ev.player_id ? 'cursor-pointer hover:text-blue-400 transition-colors' : ''}`}
+                          >
                             {playerName}
                           </span>
                           {renderEventMedia({ type: 'Carta Attivata', detail: detailType })}
@@ -443,7 +456,12 @@ export default function LiveMatchIsland() {
                              {renderEventMedia(ev)}
                            </div>
                            <div className="flex flex-col min-w-0">
-                             <span className="font-extrabold text-[0.8rem] md:text-[0.9rem] tracking-wide text-white drop-shadow-md uppercase leading-tight truncate">{playerName}</span>
+                             <span 
+                               onClick={() => ev.player_id && setSelectedPlayerId(ev.player_id)}
+                               className={`font-extrabold text-[0.8rem] md:text-[0.9rem] tracking-wide text-white drop-shadow-md uppercase leading-tight truncate ${ev.player_id ? 'cursor-pointer hover:text-blue-400 transition-colors' : ''}`}
+                             >
+                               {playerName}
+                             </span>
                              <span className="text-[0.65rem] text-white/60 font-semibold mt-0.5 truncate">{ev.type}</span>
                            </div>
                         </div>
@@ -454,7 +472,13 @@ export default function LiveMatchIsland() {
               );
             })}
           </div>
-       </div>
+        </div>
+      {selectedPlayerId && (
+        <PlayerStatsModal 
+          playerId={selectedPlayerId} 
+          onClose={() => setSelectedPlayerId(null)} 
+        />
+      )}
     </div>
   );
 }

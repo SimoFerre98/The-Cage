@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import GlassEffect from './GlassEffect';
 import { supabase } from '../lib/supabase';
 import { fetchWithCache } from '../lib/cache';
+import PlayerStatsModal from './PlayerStatsModal';
 
 const AVATAR_INITIALS = (name: string) => {
   const parts = name.split(' ');
@@ -33,6 +34,7 @@ export default function HomeIsland() {
   const [standings, setStandings] = useState<any[]>([]);
   const [featuredMatch, setFeaturedMatch] = useState<any>(null); // { type: 'LIVE'|'UPCOMING'|'LAST', match: any }
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -121,13 +123,13 @@ export default function HomeIsland() {
         return {
           name: t.name,
           idx: AVATAR_IDX[t.name] ?? i,
-          players: sortedPlayers.map(p => p.name)
+          players: sortedPlayers.map(p => ({ id: p.id, name: p.name }))
         };
       });
       setTeams(processedTeams);
 
       const allP = processedTeams.flatMap((t) =>
-        t.players.map((p) => ({ name: p, team: t.name, idx: t.idx }))
+        t.players.map((p) => ({ id: p.id, name: p.name, team: t.name, idx: t.idx }))
       );
       setPlayersAll(allP);
     };
@@ -181,7 +183,7 @@ export default function HomeIsland() {
   // Filtra le squadre in base al termine di ricerca (nome squadra o giocatore)
   const filteredTeams = teams.filter(t =>
     t.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    t.players.some((p: string) => p.toLowerCase().includes(searchTerm.toLowerCase()))
+    t.players.some((p: any) => p.name.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   return (
@@ -453,9 +455,13 @@ export default function HomeIsland() {
                     }}
                   >
                     {team.players.map((player, j) => (
-                      <div key={j} className="flex items-center gap-4 px-8 py-3 text-[0.85rem] border-b border-[var(--glass-border)] last:border-b-0">
+                      <div 
+                        key={j} 
+                        onClick={() => setSelectedPlayerId(player.id)}
+                        className="flex items-center gap-4 px-8 py-3 text-[0.85rem] border-b border-[var(--glass-border)] last:border-b-0 cursor-pointer hover:bg-white/[0.02] transition-colors"
+                      >
                         <div className="text-white/30 font-mono text-xs w-4 text-center">{j + 1}</div>
-                        <span className="font-semibold text-white/90">{player}</span>
+                        <span className="font-semibold text-white/90 hover:text-blue-400 transition-colors">{player.name}</span>
                       </div>
                     ))}
                   </div>
@@ -471,12 +477,16 @@ export default function HomeIsland() {
           <div className="glass-card animate-stagger">
             {filteredPlayers.length > 0 ? (
               filteredPlayers.map((p, i) => (
-                <div key={i} className="flex items-center gap-4 p-4 border-b border-[var(--glass-border)] last:border-b-0 hover:bg-[rgba(255,255,255,0.02)] transition-colors">
+                <div 
+                  key={i} 
+                  onClick={() => setSelectedPlayerId(p.id)}
+                  className="flex items-center gap-4 p-4 border-b border-[var(--glass-border)] last:border-b-0 hover:bg-[rgba(255,255,255,0.02)] transition-colors cursor-pointer"
+                >
                   <div className={`team-avatar avatar-${p.idx}`} style={{ width: 30, height: 30, borderRadius: 8, fontSize: '0.65rem' }}>
                     {AVATAR_INITIALS(p.team)}
                   </div>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'white' }}>{p.name}</div>
+                    <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'white' }} className="hover:text-blue-400 transition-colors">{p.name}</div>
                     <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }} className="uppercase font-semibold tracking-wider mt-0.5">{p.team}</div>
                   </div>
                 </div>
@@ -490,6 +500,12 @@ export default function HomeIsland() {
         )}
 
       </div>
+      {selectedPlayerId && (
+        <PlayerStatsModal 
+          playerId={selectedPlayerId} 
+          onClose={() => setSelectedPlayerId(null)} 
+        />
+      )}
     </div>
   );
 }

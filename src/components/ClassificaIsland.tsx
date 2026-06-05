@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import GlassEffect from './GlassEffect';
 import { supabase } from '../lib/supabase';
+import PlayerStatsModal from './PlayerStatsModal';
 
 const LEGEND = [
   { label: 'PT', desc: 'Punti totali' },
@@ -40,6 +41,7 @@ export default function ClassificaIsland() {
   const [standings, setStandings] = useState<any[]>([]);
   const [scorers, setScorers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -255,7 +257,11 @@ export default function ClassificaIsland() {
       {tab === 'marcatori' && (
         <div className="glass-card animate-stagger" style={{ marginTop: '2.5rem' }}>
           {scorers.map((s, i) => (
-            <div key={i} className="flex items-center gap-3 px-4 py-3.5 border-b border-[var(--glass-border)] hover:bg-[rgba(255,255,255,0.05)] transition-colors duration-300">
+            <div 
+              key={i} 
+              onClick={() => setSelectedPlayerId(s.player_id)}
+              className="flex items-center gap-3 px-4 py-3.5 border-b border-[var(--glass-border)] hover:bg-[rgba(255,255,255,0.05)] transition-colors duration-300 cursor-pointer"
+            >
               <div 
                 className="flex items-center justify-center w-8 h-8 rounded-lg text-xs font-bold shrink-0 border"
                 style={{
@@ -342,6 +348,12 @@ export default function ClassificaIsland() {
             </GlassEffect>
           </div>
         </div>
+      )}
+      {selectedPlayerId && (
+        <PlayerStatsModal 
+          playerId={selectedPlayerId} 
+          onClose={() => setSelectedPlayerId(null)} 
+        />
       )}
     </div>
   );
