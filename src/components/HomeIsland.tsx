@@ -187,9 +187,9 @@ export default function HomeIsland() {
   );
 
   return (
-    <div className="flex flex-col gap-12">
+    <div className="flex flex-col gap-10">
       {/* ── Page Header / Branding ── */}
-      <div className="page-header mb-8 animate-[slideUpFade_0.6s_var(--ease-apple)]">
+      <div className="page-header animate-[slideUpFade_0.6s_var(--ease-apple)]">
         <img 
           src="/Logo_Torneo.png" 
           alt="Logo Torneo" 
