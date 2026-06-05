@@ -370,13 +370,13 @@ export default function HomeIsland() {
       <div className="w-full mt-10 flex flex-col items-stretch animate-[slideUpFade_0.6s_var(--ease-apple)] delay-150">
         
         {/* Intestazione Sezione */}
-        <div className="flex flex-col items-center mb-10">
+        <div className="flex flex-col items-center mb-16">
           <h2 className="text-lg font-black text-white uppercase tracking-wider text-center">Esplora il Torneo</h2>
           <div className="h-[2px] w-8 mt-1.5 rounded bg-gradient-to-r from-blue-500 to-purple-500" />
         </div>
 
         {/* Chips Toggle Locale */}
-        <div className="flex justify-center w-full mt-8 mb-10">
+        <div className="flex justify-center w-full mt-24 mb-24">
           <div className="flex justify-center gap-3 w-full max-w-[360px] px-4">
             <button
               onClick={() => setTab('squadre')}
@@ -402,7 +402,7 @@ export default function HomeIsland() {
         </div>
 
         {/* Filtro Ricerca Centrato con Spazio Verticale (Sempre visibile per consistenza e UX premium) */}
-        <div className="flex justify-center w-full mt-8 mb-12 px-4">
+        <div className="flex justify-center w-full mt-20 mb-24 px-4">
           <div className="w-full max-w-[400px] animate-[slideUpFade_0.4s_var(--ease-spring)]">
             <GlassEffect className="flex items-center gap-3 px-4 py-2.5 rounded-2xl border border-white/5 bg-black/20">
               <span className="text-white/40 text-sm">🔍</span>
