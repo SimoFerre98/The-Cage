@@ -170,28 +170,64 @@ export default function CalendarioIsland() {
 
     // Sottoscrizione realtime per le partite (fetch diretto come in HomeIsland)
     const channel = supabase.channel('calendario_realtime_matches')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'matches' }, async () => {
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'matches' }, async (payload: any) => {
+        console.log('Realtime match update received in Calendario:', payload);
         try {
-          const { data } = await supabase
-            .from('matches')
-            .select(`
-              id, match_date, round, status, home_score, away_score,
-              home_team:teams!home_team_id ( name ),
-              away_team:teams!away_team_id ( name )
-            `)
-            .order('match_date', { ascending: true });
-          if (isMounted && data) {
-            setMatches(sortMatches(data));
-            const win = window as any;
-            if (!win.__cage_cache) win.__cage_cache = {};
-            win.__cage_cache['cage-matches'] = { data, timestamp: Date.now() };
-            localStorage.setItem('cage-matches', JSON.stringify({ data, timestamp: Date.now() }));
+          if (payload.eventType === 'UPDATE' && payload.new) {
+            const updated = payload.new;
+            setMatches(prevMatches => {
+              const updatedList = prevMatches.map(m => {
+                if (m.id === updated.id) {
+                  return {
+                    ...m,
+                    status: updated.status,
+                    home_score: updated.home_score,
+                    away_score: updated.away_score,
+                    match_date: updated.match_date,
+                    round: updated.round,
+                    home_team_id: updated.home_team_id,
+                    away_team_id: updated.away_team_id
+                  };
+                }
+                return m;
+              });
+              
+              const sorted = sortMatches(updatedList);
+              
+              // Aggiorna la cache locale istantaneamente
+              const win = window as any;
+              if (!win.__cage_cache) win.__cage_cache = {};
+              win.__cage_cache['cage-matches'] = { data: sorted, timestamp: Date.now() };
+              localStorage.setItem('cage-matches', JSON.stringify({ data: sorted, timestamp: Date.now() }));
+              
+              return sorted;
+            });
+          } else {
+            // Per INSERT o DELETE, facciamo un fetch fresco completo
+            const { data } = await supabase
+              .from('matches')
+              .select(`
+                id, match_date, round, status, home_score, away_score,
+                home_team:teams!home_team_id ( name ),
+                away_team:teams!away_team_id ( name )
+              `)
+              .order('match_date', { ascending: true });
+            if (isMounted && data) {
+              const sorted = sortMatches(data);
+              setMatches(sorted);
+              const win = window as any;
+              if (!win.__cage_cache) win.__cage_cache = {};
+              win.__cage_cache['cage-matches'] = { data: sorted, timestamp: Date.now() };
+              localStorage.setItem('cage-matches', JSON.stringify({ data: sorted, timestamp: Date.now() }));
+            }
           }
         } catch (e) {
-          console.error('Errore nel fetch realtime delle partite in Calendario:', e);
+          console.error('Errore nel caricamento realtime in Calendario:', e);
         }
       })
-      .subscribe();
+      .subscribe((status) => {
+        console.log('Realtime channel subscription status in Calendario:', status);
+      });
 
     return () => {
       isMounted = false;
