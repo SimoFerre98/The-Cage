@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import GlassEffect from './GlassEffect';
 import { supabase } from '../lib/supabase';
+import { fetchWithCache } from '../lib/cache';
 
 const AVATAR_INITIALS = (name: string) => {
   const parts = name.split(' ');
@@ -8,18 +9,36 @@ const AVATAR_INITIALS = (name: string) => {
   return name.slice(0, 2).toUpperCase();
 };
 
-import { fetchWithCache } from '../lib/cache';
+const AVATAR_IDX: Record<string, number> = {
+  'Amatori Calcio Genova': 0,
+  'Tama': 1,
+  'Mario': 2,
+  'Corsi': 3,
+  'Montarsolo': 4,
+  'Dario': 5,
+  'Taverna': 6,
+  'UCG (Bairon)': 7,
+  'Samu Betti': 8,
+  'chainz Andrea Robbiano': 9,
+  'Martino Gonzalez': 10,
+};
 
 export default function HomeIsland() {
   const [tab, setTab] = useState<'squadre' | 'giocatori'>('squadre');
   const [expanded, setExpanded] = useState<number | null>(null);
   const [teams, setTeams] = useState<any[]>([]);
   const [playersAll, setPlayersAll] = useState<any[]>([]);
+  
+  // Dashboard states
+  const [standings, setStandings] = useState<any[]>([]);
+  const [featuredMatch, setFeaturedMatch] = useState<any>(null); // { type: 'LIVE'|'UPCOMING'|'LAST', match: any }
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     let isMounted = true;
 
     async function loadData() {
+      // 1. Fetch teams & players
       const teamsWithPlayers = await fetchWithCache(
         'cage-teams-with-players',
         async () => {
@@ -34,23 +53,74 @@ export default function HomeIsland() {
         }
       );
 
-      if (isMounted) {
+      if (isMounted && teamsWithPlayers) {
         updateTeamsUI(teamsWithPlayers);
       }
+
+      // 2. Fetch standings for preview (limit 3)
+      const standingsPromise = fetchWithCache(
+        'cage-standings',
+        async () => {
+          const { data } = await supabase.from('standings').select('*');
+          return data || [];
+        },
+        (newData) => {
+          if (isMounted) setStandings(newData.slice(0, 3));
+        }
+      );
+
+      // 3. Fetch matches to determine featured match
+      const matchesPromise = fetchWithCache(
+        'cage-matches',
+        async () => {
+          const { data } = await supabase
+            .from('matches')
+            .select(`
+              id, match_date, round, status, home_score, away_score,
+              home_team:teams!home_team_id ( name ),
+              away_team:teams!away_team_id ( name )
+            `)
+            .order('match_date', { ascending: true });
+          return data || [];
+        },
+        (newData) => {
+          if (isMounted) setFeaturedMatch(processMatches(newData));
+        }
+      );
+
+      const [cachedStandings, cachedMatches] = await Promise.all([standingsPromise, matchesPromise]);
+      if (isMounted) {
+        if (cachedStandings) setStandings(cachedStandings.slice(0, 3));
+        if (cachedMatches) setFeaturedMatch(processMatches(cachedMatches));
+      }
     }
+
+    const processMatches = (list: any[]) => {
+      const live = list.find(m => m.status === 'LIVE');
+      if (live) return { type: 'LIVE', match: live };
+
+      const upcoming = list.find(m => m.status === 'PROSSIMA');
+      if (upcoming) return { type: 'UPCOMING', match: upcoming };
+
+      const terminati = list.filter(m => m.status === 'TERMINATA');
+      if (terminati.length > 0) {
+        return { type: 'LAST', match: terminati[terminati.length - 1] };
+      }
+
+      return null;
+    };
 
     const updateTeamsUI = (tData: any[] | null) => {
       if (!tData || tData.length === 0) return;
 
       const processedTeams = tData.map((t, i) => {
-        // Ordiniamo i giocatori per nome localmente per sicurezza
         const sortedPlayers = [...(t.players || [])].sort((a: any, b: any) => 
           a.name.localeCompare(b.name)
         );
         
         return {
           name: t.name,
-          idx: i,
+          idx: AVATAR_IDX[t.name] ?? i,
           players: sortedPlayers.map(p => p.name)
         };
       });
@@ -64,116 +134,345 @@ export default function HomeIsland() {
 
     loadData();
 
+    // Sottoscrizioni Realtime per aggiornare i widget della Home in tempo reale
+    const matchesChannel = supabase.channel('home_matches_sync')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'matches' }, async () => {
+        const { data } = await supabase
+          .from('matches')
+          .select(`
+            id, match_date, round, status, home_score, away_score,
+            home_team:teams!home_team_id ( name ),
+            away_team:teams!away_team_id ( name )
+          `)
+          .order('match_date', { ascending: true });
+        if (isMounted && data) {
+          setFeaturedMatch(processMatches(data));
+        }
+      })
+      .subscribe();
+
+    const standingsChannel = supabase.channel('home_standings_sync')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'matches' }, async (payload: any) => {
+        // Se una partita termina, ricarica la classifica
+        if (payload.new?.status === 'TERMINATA' || payload.old?.status === 'TERMINATA') {
+          const { data } = await supabase.from('standings').select('*');
+          if (isMounted && data) {
+            setStandings(data.slice(0, 3));
+          }
+        }
+      })
+      .subscribe();
+
     return () => {
       isMounted = false;
+      supabase.removeChannel(matchesChannel);
+      supabase.removeChannel(standingsChannel);
     };
   }, []);
 
   const toggle = (i: number) => setExpanded(expanded === i ? null : i);
 
+  // Filtra i giocatori in base al termine di ricerca
+  const filteredPlayers = playersAll.filter(p => 
+    p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    p.team.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div>
-      {/* Page Header integrated dynamically */}
-      <div className="page-header">
-        <h1 className="page-title">Home</h1>
-        <p className="page-subtitle">Squadre e giocatori del torneo</p>
-        <div className="accent-line"></div>
-        <div className="flex gap-2 flex-wrap items-center justify-center mt-3.5">
-          <div className="player-count-badge" style={{ marginTop: 0 }}>
-            <span>👥</span>
-            <span>{playersAll.length} giocatori</span>
-          </div>
-          <button 
-            onClick={() => setShowVoteModal(true)}
-            className="player-count-badge hover:bg-[rgba(59,130,246,0.2)] active:scale-95 transition-all cursor-pointer font-bold border border-[rgba(59,130,246,0.4)] bg-[rgba(59,130,246,0.1)] text-[#60a5fa] hover:text-white"
-            style={{ marginTop: 0 }}
-          >
-            <span>🗳️</span>
-            <span>Vota MVP</span>
-          </button>
-        </div>
+    <div className="flex flex-col gap-8">
+      {/* ── Page Header / Branding ── */}
+      <div className="page-header mb-4 animate-[slideUpFade_0.6s_var(--ease-apple)]">
+        <img 
+          src="/Logo_Torneo.webp" 
+          alt="Logo Torneo" 
+          className="w-24 h-24 mx-auto mb-4 object-contain drop-shadow-[0_4px_12px_rgba(59,130,246,0.35)]" 
+        />
+        <h1 className="page-title text-3xl font-extrabold tracking-tight">Memorial Gerry</h1>
+        <p className="page-subtitle text-sm text-[var(--text-muted)] mt-1">Torneo di Calcio a 5 • The Cage</p>
+        <div className="accent-line mx-auto mt-3"></div>
       </div>
 
-      {/* Pill Toggle */}
-      <div className="flex justify-center w-full mb-14 sticky top-[85px] md:top-8 z-[120] px-4 transition-all duration-300">
-        <GlassEffect className="w-full max-w-[300px] rounded-[50px] p-2.5 cursor-pointer">
-          <div className="relative flex w-full">
-            <div 
-              className="absolute top-0 bottom-0 bg-[rgba(59,130,246,0.3)] shadow-[inset_0_1px_4px_rgba(255,255,255,0.4)] rounded-[50px]" 
-              style={{ 
-                width: '50%',
-                transform: tab === 'squadre' ? 'translateX(0)' : 'translateX(100%)',
-                transition: 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)'
-              }}
-            ></div>
-            <button
-              className={`flex-1 relative z-10 py-[22px] text-[0.95rem] md:text-[1.05rem] font-bold transition-all duration-300 tracking-wide outline-none ${tab === 'squadre' ? 'text-white drop-shadow-md' : 'text-white/50 hover:text-white/80'}`}
-              onClick={() => setTab('squadre')}
+      {/* ── Dashboard: Grid di Widget ── */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full animate-[slideUpFade_0.6s_var(--ease-apple)] delay-75">
+        
+        {/* Widget 1: Partita in Evidenza */}
+        <div className="flex flex-col h-full">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-white/50 mb-3 px-1">Featured Match</h2>
+          {featuredMatch ? (
+            <GlassEffect 
+              className={`p-6 rounded-[24px] flex flex-col justify-between h-full min-h-[220px] transition-all duration-300 ${
+                featuredMatch.type === 'LIVE' 
+                  ? 'border-red-500/40 shadow-[0_0_20px_rgba(239,68,68,0.2)]' 
+                  : 'border-[var(--glass-border)]'
+              }`}
             >
-              Squadre
-            </button>
-            <button
-              className={`flex-1 relative z-10 py-[22px] text-[0.95rem] md:text-[1.05rem] font-bold transition-all duration-300 tracking-wide outline-none ${tab === 'giocatori' ? 'text-white drop-shadow-md' : 'text-white/50 hover:text-white/80'}`}
-              onClick={() => setTab('giocatori')}
-            >
-              Giocatori
-            </button>
-          </div>
-        </GlassEffect>
-      </div>
-
-      {/* Squadre */}
-      {tab === 'squadre' && (
-        <div className="glass-card animate-stagger" style={{ marginTop: '2.5rem' }}>
-          {teams.map((team, i) => (
-            <div key={i}>
-              <div className="flex items-center gap-4 p-3 cursor-pointer hover:bg-[rgba(255,255,255,0.05)] transition-colors border-b border-[var(--glass-border)]" onClick={() => toggle(i)}>
-                <div className={`team-avatar avatar-${i}`} style={{ width: 42, height: 42, borderRadius: 14 }}>
-                  {AVATAR_INITIALS(team.name)}
-                </div>
-                <div style={{ flex: 1 }}>
-                  <div className="font-bold text-[0.95rem] text-[var(--text-primary)] leading-tight">{team.name}</div>
-                </div>
-                <div className="text-[var(--text-muted)] text-sm transition-transform duration-300" style={{ transform: expanded === i ? 'rotate(180deg)' : 'rotate(0)' }}>▼</div>
+              {/* Header del Match */}
+              <div className="flex justify-between items-center w-full">
+                <span className="text-[0.65rem] font-bold text-white/50 uppercase tracking-widest bg-white/5 px-2.5 py-1 rounded-full">
+                  {featuredMatch.match.round}
+                </span>
+                {featuredMatch.type === 'LIVE' ? (
+                  <span className="flex items-center gap-1.5 bg-red-500/20 text-red-400 text-[0.65rem] font-black uppercase px-2.5 py-1 rounded-full animate-pulse">
+                    <span className="h-1.5 w-1.5 rounded-full bg-red-500"></span>
+                    Live Now
+                  </span>
+                ) : featuredMatch.type === 'UPCOMING' ? (
+                  <span className="bg-blue-500/20 text-blue-400 text-[0.65rem] font-bold uppercase px-2.5 py-1 rounded-full">
+                    Prossimo Match
+                  </span>
+                ) : (
+                  <span className="bg-white/10 text-white/60 text-[0.65rem] font-bold uppercase px-2.5 py-1 rounded-full">
+                    Ultimo Risultato
+                  </span>
+                )}
               </div>
 
-              {/* Player list */}
-              <div
-                className="transition-all duration-300 ease-[var(--ease-apple)] bg-[rgba(0,0,0,0.2)] shadow-[inset_0_2px_10px_rgba(0,0,0,0.2)]"
-                style={{
-                  overflow: 'hidden',
-                  maxHeight: expanded === i ? `${team.players.length * 48}px` : '0px',
-                }}
-              >
-                {team.players.map((player, j) => (
-                  <div key={j} className="flex items-center gap-4 px-8 py-3 text-[0.9rem] border-b border-[var(--glass-border)] last:border-b-0">
-                    <div className="text-[var(--text-muted)] font-mono text-xs w-4 text-center">{j + 1}</div>
-                    <span className="font-medium text-[var(--text-secondary)]">{player}</span>
+              {/* Scoreboard centrale */}
+              <div className="flex items-center justify-between gap-4 py-4 my-auto">
+                {/* Casa */}
+                <div className="flex flex-col items-center flex-1 min-w-0">
+                  <div className={`team-avatar avatar-${AVATAR_IDX[featuredMatch.match.home_team.name] ?? 0} w-10 h-10 rounded-xl mb-2 text-xs`}>
+                    {AVATAR_INITIALS(featuredMatch.match.home_team.name)}
                   </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+                  <span className="font-extrabold text-[0.8rem] md:text-sm text-white text-center leading-tight truncate w-full">
+                    {featuredMatch.match.home_team.name}
+                  </span>
+                </div>
 
-      {/* Giocatori */}
-      {tab === 'giocatori' && (
-        <div className="glass-card animate-stagger" style={{ marginTop: '2.5rem' }}>
-          {playersAll.map((p, i) => (
-            <div key={i} className="flex items-center gap-4 p-4 border-b border-[var(--glass-border)] last:border-b-0">
-              <div className={`team-avatar avatar-${p.idx}`} style={{ width: 32, height: 32, borderRadius: 10, fontSize: '0.7rem' }}>
-                {AVATAR_INITIALS(p.team)}
-              </div>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-primary)' }}>{p.name}</div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{p.team}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+                {/* VS / Score */}
+                <div className="flex flex-col items-center">
+                  {featuredMatch.type === 'UPCOMING' ? (
+                    <div className="text-xs font-bold text-white/40 uppercase tracking-widest bg-white/5 py-1.5 px-3 rounded-lg border border-white/5">
+                      VS
+                    </div>
+                  ) : (
+                    <div className="text-2xl font-black text-white tabular-nums tracking-widest bg-black/30 border border-[var(--glass-border)] py-1.5 px-4 rounded-xl shadow-[inset_0_1px_2px_rgba(255,255,255,0.1)]">
+                      {featuredMatch.match.home_score} - {featuredMatch.match.away_score}
+                    </div>
+                  )}
+                </div>
 
+                {/* Trasferta */}
+                <div className="flex flex-col items-center flex-1 min-w-0">
+                  <div className={`team-avatar avatar-${AVATAR_IDX[featuredMatch.match.away_team.name] ?? 1} w-10 h-10 rounded-xl mb-2 text-xs`}>
+                    {AVATAR_INITIALS(featuredMatch.match.away_team.name)}
+                  </div>
+                  <span className="font-extrabold text-[0.8rem] md:text-sm text-white text-center leading-tight truncate w-full">
+                    {featuredMatch.match.away_team.name}
+                  </span>
+                </div>
+              </div>
+
+              {/* Info orario / Pulsante live */}
+              <div className="flex justify-between items-center w-full pt-3 border-t border-[var(--glass-border)]">
+                <span className="text-[0.7rem] font-semibold text-white/45">
+                  {featuredMatch.type === 'UPCOMING' 
+                    ? new Date(featuredMatch.match.match_date).toLocaleString('it-IT', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })
+                    : new Date(featuredMatch.match.match_date).toLocaleString('it-IT', { day: '2-digit', month: 'short' })}
+                </span>
+                {featuredMatch.type === 'LIVE' ? (
+                  <a 
+                    href="/live" 
+                    className="text-[0.7rem] font-black text-red-400 hover:text-red-300 uppercase tracking-wider flex items-center gap-1 active:scale-95 transition-all"
+                  >
+                    Segui Diretta 📺
+                  </a>
+                ) : (
+                  <a 
+                    href="/calendario" 
+                    className="text-[0.7rem] font-bold text-blue-400 hover:text-blue-300 uppercase tracking-wider flex items-center gap-1 active:scale-95 transition-all"
+                  >
+                    Calendario 📅
+                  </a>
+                )}
+              </div>
+            </GlassEffect>
+          ) : (
+            <GlassEffect className="p-8 rounded-[24px] flex items-center justify-center text-center h-full min-h-[220px] text-white/50 text-sm">
+              Nessun match programmato
+            </GlassEffect>
+          )}
+        </div>
+
+        {/* Widget 2: Anteprima Classifica */}
+        <div className="flex flex-col h-full">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-white/50 mb-3 px-1">Top Standings</h2>
+          <GlassEffect className="p-6 rounded-[24px] flex flex-col justify-between h-full min-h-[220px]">
+            {standings.length > 0 ? (
+              <div className="w-full flex flex-col h-full justify-between">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-[var(--glass-border)] pb-2">
+                      <th className="text-[0.6rem] font-bold text-white/40 uppercase py-1 text-center w-8">#</th>
+                      <th className="text-[0.6rem] font-bold text-white/40 uppercase py-1">Squadra</th>
+                      <th className="text-[0.6rem] font-bold text-white/40 uppercase py-1 text-center w-8">G</th>
+                      <th className="text-[0.6rem] font-bold text-white/40 uppercase py-1 text-center w-8">PT</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {standings.map((row, i) => (
+                      <tr key={i} className="border-b border-white/[0.03] last:border-b-0">
+                        <td className="py-2.5 text-center text-xs font-bold text-white/50">
+                          {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : i + 1}
+                        </td>
+                        <td className="py-2.5 font-bold text-xs text-white">
+                          <div className="flex items-center gap-2">
+                            <div className={`team-avatar avatar-${AVATAR_IDX[row.team_name] ?? 0} w-5 h-5 rounded-md text-[0.5rem]`}>
+                              {AVATAR_INITIALS(row.team_name)}
+                            </div>
+                            <span className="truncate max-w-[120px] md:max-w-[150px]">{row.team_name}</span>
+                          </div>
+                        </td>
+                        <td className="py-2.5 text-center text-xs text-white/75 font-mono">{row.g}</td>
+                        <td className="py-2.5 text-center text-xs font-black text-blue-400 font-mono">{row.pt}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <div className="pt-2 border-t border-[var(--glass-border)] text-right w-full mt-2">
+                  <a 
+                    href="/classifica" 
+                    className="text-[0.7rem] font-bold text-blue-400 hover:text-blue-300 uppercase tracking-wider flex items-center gap-1 justify-end active:scale-95 transition-all"
+                  >
+                    Classifica Completa 🏆
+                  </a>
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center justify-center text-center w-full h-full text-white/50 text-sm">
+                Nessun dato classifica
+              </div>
+            )}
+          </GlassEffect>
+        </div>
+
+      </div>
+
+      {/* ── Sezione Inferiore: Rose e Giocatori ── */}
+      <div className="w-full mt-8 animate-[slideUpFade_0.6s_var(--ease-apple)] delay-150">
+        
+        {/* Intestazione Sezione */}
+        <div className="flex flex-col items-center mb-6">
+          <h2 className="text-lg font-black text-white uppercase tracking-wider text-center">Esplora il Torneo</h2>
+          <div className="h-[2px] w-8 mt-1.5 rounded bg-gradient-to-r from-blue-500 to-purple-500" />
+        </div>
+
+        {/* Pill Toggle Locale */}
+        <div className="flex justify-center w-full mb-8">
+          <GlassEffect className="w-full max-w-[280px] rounded-[50px] p-1.5 cursor-pointer">
+            <div className="relative flex w-full">
+              <div 
+                className="absolute top-0 bottom-0 bg-[rgba(59,130,246,0.3)] shadow-[inset_0_1px_4px_rgba(255,255,255,0.4)] rounded-[50px]" 
+                style={{ 
+                  width: '50%',
+                  transform: tab === 'squadre' ? 'translateX(0)' : 'translateX(100%)',
+                  transition: 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)'
+                }}
+              ></div>
+              <button
+                className={`flex-1 relative z-10 py-3 text-xs md:text-sm font-bold transition-all duration-300 tracking-wide outline-none ${tab === 'squadre' ? 'text-white drop-shadow-md' : 'text-white/50 hover:text-white/80'}`}
+                onClick={() => setTab('squadre')}
+              >
+                Squadre
+              </button>
+              <button
+                className={`flex-1 relative z-10 py-3 text-xs md:text-sm font-bold transition-all duration-300 tracking-wide outline-none ${tab === 'giocatori' ? 'text-white drop-shadow-md' : 'text-white/50 hover:text-white/80'}`}
+                onClick={() => setTab('giocatori')}
+              >
+                Giocatori
+              </button>
+            </div>
+          </GlassEffect>
+        </div>
+
+        {/* Filtro Ricerca Giocatori (Mostrato solo nel tab giocatori) */}
+        {tab === 'giocatori' && (
+          <div className="w-full max-w-[400px] mx-auto mb-6 px-1 animate-[slideUpFade_0.4s_var(--ease-spring)]">
+            <GlassEffect className="flex items-center gap-3 px-4 py-2.5 rounded-2xl border border-white/5 bg-black/20">
+              <span className="text-white/40 text-sm">🔍</span>
+              <input
+                type="text"
+                placeholder="Cerca giocatore o squadra..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="flex-1 bg-transparent border-none outline-none text-white text-xs placeholder-white/30"
+              />
+              {searchTerm && (
+                <button 
+                  onClick={() => setSearchTerm('')} 
+                  className="text-white/40 hover:text-white/70 text-xs px-1 cursor-pointer"
+                >
+                  ✕
+                </button>
+              )}
+            </GlassEffect>
+          </div>
+        )}
+
+        {/* Liste Dati */}
+        {tab === 'squadre' ? (
+          <div className="glass-card animate-stagger">
+            {teams.map((team, i) => (
+              <div key={i}>
+                <div 
+                  className="flex items-center gap-4 p-4 cursor-pointer hover:bg-[rgba(255,255,255,0.03)] transition-colors border-b border-[var(--glass-border)] last:border-b-0" 
+                  onClick={() => toggle(i)}
+                >
+                  <div className={`team-avatar avatar-${team.idx}`} style={{ width: 38, height: 38, borderRadius: 12 }}>
+                    {AVATAR_INITIALS(team.name)}
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <div className="font-extrabold text-[0.9rem] text-white leading-tight">{team.name}</div>
+                  </div>
+                  <div 
+                    className="text-white/40 text-xs transition-transform duration-300" 
+                    style={{ transform: expanded === i ? 'rotate(180deg)' : 'rotate(0)' }}
+                  >
+                    ▼
+                  </div>
+                </div>
+
+                {/* Lista Giocatori (Accordion) */}
+                <div
+                  className="transition-all duration-300 ease-[var(--ease-apple)] bg-[rgba(0,0,0,0.25)] shadow-[inset_0_2px_10px_rgba(0,0,0,0.35)]"
+                  style={{
+                    overflow: 'hidden',
+                    maxHeight: expanded === i ? `${team.players.length * 48}px` : '0px',
+                  }}
+                >
+                  {team.players.map((player, j) => (
+                    <div key={j} className="flex items-center gap-4 px-8 py-3 text-[0.85rem] border-b border-[var(--glass-border)] last:border-b-0">
+                      <div className="text-white/30 font-mono text-xs w-4 text-center">{j + 1}</div>
+                      <span className="font-semibold text-white/90">{player}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="glass-card animate-stagger">
+            {filteredPlayers.length > 0 ? (
+              filteredPlayers.map((p, i) => (
+                <div key={i} className="flex items-center gap-4 p-4 border-b border-[var(--glass-border)] last:border-b-0 hover:bg-[rgba(255,255,255,0.02)] transition-colors">
+                  <div className={`team-avatar avatar-${p.idx}`} style={{ width: 30, height: 30, borderRadius: 8, fontSize: '0.65rem' }}>
+                    {AVATAR_INITIALS(p.team)}
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'white' }}>{p.name}</div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }} className="uppercase font-semibold tracking-wider mt-0.5">{p.team}</div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="p-8 text-center text-white/40 text-xs italic">
+                Nessun giocatore corrisponde alla ricerca.
+              </div>
+            )}
+          </div>
+        )}
+
+      </div>
     </div>
   );
 }

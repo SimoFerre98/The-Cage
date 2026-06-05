@@ -11,8 +11,8 @@
 6. **Testable**: Caricare la homepage, verificare la presenza dei nuovi widget (dashboard, live match, quick standings) e, scorrendo in basso, confermare il funzionamento dell'accordion delle rose e della lista dei giocatori.
 
 ### Checklist
-- [ ] Creare una sezione "Esplora il Torneo" nella parte inferiore di [HomeIsland.tsx](file:///c:/Users/s.ferrero/Code/The%20Cage/src/components/HomeIsland.tsx).
-- [ ] Spostare il Pill Toggle ("Squadre" / "Giocatori") e l'accordion delle rose all'interno di questa nuova sezione inferiore.
-- [ ] Rimuovere il comportamento `sticky` dal Pill Toggle, in modo che rimanga posizionato staticamente all'inizio della sezione Rose senza coprire i widget superiori durante lo scroll.
-- [ ] Implementare un widget di Quick Preview per la classifica (con fetch della vista standings limitata alle prime 3 posizioni) e inserirlo nella parte superiore (Dashboard) della Home Page.
-- [ ] Aggiornare il widget Live Match o Prossimo Match nella Dashboard superiore con informazioni dettagliate sull'incontro corrente o futuro.
+- [x] Creare una sezione "Esplora il Torneo" nella parte inferiore di [HomeIsland.tsx](file:///c:/Users/s.ferrero/Code/The%20Cage/src/components/HomeIsland.tsx).
+- [x] Spostare il Pill Toggle ("Squadre" / "Giocatori") e l'accordion delle rose all'interno di questa nuova sezione inferiore.
+- [x] Rimuovere il comportamento `sticky` dal Pill Toggle, in modo che rimanga posizionato staticamente all'inizio della sezione Rose senza coprire i widget superiori durante lo scroll.
+- [x] Implementare un widget di Quick Preview per la classifica (con fetch della vista standings limitata alle prime 3 posizioni) e inserirlo nella parte superiore (Dashboard) della Home Page.
+- [x] Aggiornare il widget Live Match o Prossimo Match nella Dashboard superiore con informazioni dettagliate sull'incontro corrente o futuro.

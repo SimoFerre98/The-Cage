@@ -74,7 +74,7 @@ Questo file rappresenta il **Punto di Tracciamento Centralizzato** di tutto il p
 - [x] **Sprint 20: Rimozione conteggio giocatori nel drop down delle squadre**
   - **File di backlog**: [sprint-20-remove-player-numbers.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/05-remove-player-numbers/sprint-20-remove-player-numbers.md)
   - **Branch**: `sprint-20-remove-player-numbers`
-- [ ] **Sprint 22: Integrazione Rose (Squadre e Giocatori) in fondo alla Home Page**
+- [/] **Sprint 22: Integrazione Rose (Squadre e Giocatori) in fondo alla Home Page**
   - **File di backlog**: [sprint-22-rosters-homepage-integration.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/07-rosters-homepage-integration/sprint-22-rosters-homepage-integration.md)
   - **Branch**: `sprint-22-rosters-homepage-integration`
 - [ ] **Sprint 23: Effetti Grafici e Luci (Liquid Glass Glow System)**
