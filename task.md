@@ -71,6 +71,22 @@ Questo file rappresenta il **Punto di Tracciamento Centralizzato** di tutto il p
   - **Issue 2 (Completato)**: [issue-02-ottimizzazione-live-match.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/atc/issues/issue-02-ottimizzazione-live-match.md)
   - **Issue 3 (Completato)**: [issue-03-realtime-admin-dashboard.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/atc/issues/issue-03-realtime-admin-dashboard.md)
 
+- [/] **Sprint 20: Rimozione conteggio giocatori nel drop down delle squadre**
+  - **File di backlog**: [sprint-20-remove-player-numbers.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/05-remove-player-numbers/sprint-20-remove-player-numbers.md)
+  - **Branch**: `sprint-20-remove-player-numbers`
+- [ ] **Sprint 22: Tab "Rose" (Squadre e Giocatori) in Classifica**
+  - **File di backlog**: [sprint-22-rosters-tab-classifica.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/07-rosters-tab-classifica/sprint-22-rosters-tab-classifica.md)
+  - **Branch**: `sprint-22-rosters-tab-classifica`
+- [ ] **Sprint 23: Effetti Grafici e Luci (Liquid Glass Glow System)**
+  - **File di backlog**: [sprint-23-graphic-light-effects.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/08-graphic-light-effects/sprint-23-graphic-light-effects.md)
+  - **Branch**: `sprint-23-graphic-light-effects`
+- [ ] **Sprint 24: Modale Statistiche Specifiche Giocatore**
+  - **File di backlog**: [sprint-24-player-stats-modal.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/09-player-stats-modal/sprint-24-player-stats-modal.md)
+  - **Branch**: `sprint-24-player-stats-modal`
+- [ ] **Sprint 25: Integrazione Quarti di Finale nel Tabellone**
+  - **File di backlog**: [sprint-25-bracket-quarterfinals.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/10-bracket-quarterfinals/sprint-25-bracket-quarterfinals.md)
+  - **Branch**: `sprint-25-bracket-quarterfinals`
+
 ---
 
 ## Linee Guida per gli Agenti
