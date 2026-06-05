@@ -205,7 +205,7 @@ export default function HomeIsland() {
         
         {/* Widget 1: Partita in Evidenza */}
         <div className="flex flex-col h-full">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-white/50 mb-3 px-1">Featured Match</h2>
+          <h2 className="text-xs font-bold uppercase tracking-wider text-white/50 mb-3 text-center w-full">Featured Match</h2>
           {featuredMatch ? (
             <GlassEffect 
               className={`rounded-[24px] flex flex-col h-full min-h-[240px] transition-all duration-300 ${
@@ -215,11 +215,8 @@ export default function HomeIsland() {
               }`}
               contentClassName="p-6 flex flex-col justify-between flex-1 w-full"
             >
-              {/* Header del Match */}
-              <div className="flex justify-between items-center w-full">
-                <span className="text-[0.65rem] font-bold text-white/50 uppercase tracking-widest bg-white/5 px-2.5 py-1 rounded-full">
-                  {featuredMatch.match.round}
-                </span>
+              {/* Header del Match Centrato */}
+              <div className="flex flex-col items-center gap-2 w-full">
                 {featuredMatch.type === 'LIVE' ? (
                   <span className="flex items-center gap-1.5 bg-red-500/20 text-red-400 text-[0.65rem] font-black uppercase px-2.5 py-1 rounded-full animate-pulse">
                     <span className="h-1.5 w-1.5 rounded-full bg-red-500"></span>
@@ -234,6 +231,9 @@ export default function HomeIsland() {
                     Ultimo Risultato
                   </span>
                 )}
+                <span className="text-[0.65rem] font-bold text-white/50 uppercase tracking-widest bg-white/5 px-2.5 py-1 rounded-full">
+                  {featuredMatch.match.round}
+                </span>
               </div>
 
               {/* Scoreboard centrale */}
@@ -272,9 +272,9 @@ export default function HomeIsland() {
                 </div>
               </div>
 
-              {/* Info orario / Pulsante live */}
-              <div className="flex justify-between items-center w-full pt-4 border-t border-[var(--glass-border)] mt-4">
-                <span className="text-[0.75rem] font-semibold text-white/55">
+              {/* Info orario / Pulsante live Centrati */}
+              <div className="flex flex-col items-center gap-3 w-full pt-4 border-t border-[var(--glass-border)] mt-4">
+                <span className="text-[0.75rem] font-semibold text-white/55 text-center">
                   {featuredMatch.type === 'UPCOMING' 
                     ? new Date(featuredMatch.match.match_date).toLocaleString('it-IT', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })
                     : new Date(featuredMatch.match.match_date).toLocaleString('it-IT', { day: '2-digit', month: 'short' })}
@@ -282,7 +282,7 @@ export default function HomeIsland() {
                 {featuredMatch.type === 'LIVE' ? (
                   <a 
                     href="/live" 
-                    className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-[0.7rem] font-black text-red-400 uppercase tracking-wider transition-all hover:scale-[1.03] active:scale-[0.97] cursor-pointer"
+                    className="flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-[0.7rem] font-black text-red-400 uppercase tracking-wider transition-all hover:scale-[1.03] active:scale-[0.97] cursor-pointer"
                   >
                     <span>Segui Diretta</span>
                     <span>📺</span>
@@ -290,7 +290,7 @@ export default function HomeIsland() {
                 ) : (
                   <a 
                     href="/calendario" 
-                    className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 text-[0.7rem] font-bold text-blue-400 uppercase tracking-wider transition-all hover:scale-[1.03] active:scale-[0.97] cursor-pointer"
+                    className="flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 text-[0.7rem] font-bold text-blue-400 uppercase tracking-wider transition-all hover:scale-[1.03] active:scale-[0.97] cursor-pointer"
                   >
                     <span>Calendario</span>
                     <span>📅</span>
@@ -310,7 +310,7 @@ export default function HomeIsland() {
 
         {/* Widget 2: Anteprima Classifica */}
         <div className="flex flex-col h-full">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-white/50 mb-3 px-1">Top Standings</h2>
+          <h2 className="text-xs font-bold uppercase tracking-wider text-white/50 mb-3 text-center w-full">Top Standings</h2>
           <GlassEffect 
             className="rounded-[24px] flex flex-col h-full min-h-[240px]"
             contentClassName="p-6 flex flex-col justify-between flex-1 w-full"
@@ -346,10 +346,10 @@ export default function HomeIsland() {
                     ))}
                   </tbody>
                 </table>
-                <div className="pt-4 border-t border-[var(--glass-border)] flex justify-end w-full mt-4">
+                <div className="pt-4 border-t border-[var(--glass-border)] flex justify-center w-full mt-4">
                   <a 
                     href="/classifica" 
-                    className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 text-[0.7rem] font-bold text-blue-400 uppercase tracking-wider transition-all hover:scale-[1.03] active:scale-[0.97] cursor-pointer"
+                    className="flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 text-[0.7rem] font-bold text-blue-400 uppercase tracking-wider transition-all hover:scale-[1.03] active:scale-[0.97] cursor-pointer"
                   >
                     <span>Classifica Completa</span>
                     <span>🏆</span>
