@@ -160,40 +160,24 @@ export default function ClassificaIsland() {
     const triggerRefresh = () => {
       if (debounceTimer) clearTimeout(debounceTimer);
       debounceTimer = setTimeout(() => {
+        console.log('Realtime refresh triggered in Classifica');
         loadData(true);
-      }, 2000);
+      }, 400); // 400ms per una risposta immediata all'utente
     };
 
     // Sottoscrizione realtime per classifica, marcatori, assist e sanzioni
     const channel = supabase.channel('classifica_realtime_updates')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'matches' }, (payload: any) => {
-        const oldStatus = payload.old?.status;
-        const newStatus = payload.new?.status;
-        const oldHomeScore = payload.old?.home_score;
-        const newHomeScore = payload.new?.home_score;
-        const oldAwayScore = payload.old?.away_score;
-        const newAwayScore = payload.new?.away_score;
-
-        // Aggiorna solo se una partita è terminata (o era terminata prima) e c'è stato un cambio di stato o punteggio
-        const wasOrIsTerminata = oldStatus === 'TERMINATA' || newStatus === 'TERMINATA';
-        const scoreChanged = oldHomeScore !== newHomeScore || oldAwayScore !== newAwayScore;
-        const statusChanged = oldStatus !== newStatus;
-
-        if (wasOrIsTerminata && (scoreChanged || statusChanged)) {
-          triggerRefresh();
-        }
+        console.log('Matches table change detected in Classifica:', payload);
+        triggerRefresh();
       })
       .on('postgres_changes', { event: '*', schema: 'public', table: 'match_events' }, (payload: any) => {
-        const oldType = payload.old?.type;
-        const newType = payload.new?.type;
-
-        // Aggiorna se l'evento inserito/eliminato/modificato è rilevante
-        const relevantTypes = ['GOAL', 'ASSIST', 'AMMONIZIONE', 'ESPULSIONE'];
-        if (relevantTypes.includes(oldType) || relevantTypes.includes(newType)) {
-          triggerRefresh();
-        }
+        console.log('Match events table change detected in Classifica:', payload);
+        triggerRefresh();
       })
-      .subscribe();
+      .subscribe((status) => {
+        console.log('Realtime channel subscription status in Classifica:', status);
+      });
 
     return () => {
       isMounted = false;

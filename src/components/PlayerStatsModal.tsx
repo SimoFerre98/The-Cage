@@ -103,8 +103,23 @@ export default function PlayerStatsModal({ playerId, onClose }: PlayerStatsModal
       fetchPlayerStats();
     }
 
+    // Sottoscrizione realtime per aggiornamenti live delle statistiche del giocatore
+    const channel = supabase.channel(`player_stats_sync_${playerId}`)
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'match_events', filter: `player_id=eq.${playerId}` },
+        () => {
+          console.log(`Realtime match event detected for player ${playerId}, refreshing stats...`);
+          fetchPlayerStats();
+        }
+      )
+      .subscribe((status) => {
+        console.log(`Player ${playerId} realtime channel status:`, status);
+      });
+
     return () => {
       isMounted = false;
+      supabase.removeChannel(channel);
     };
   }, [playerId]);
 
