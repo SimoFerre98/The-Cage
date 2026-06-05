@@ -204,27 +204,28 @@ export default function ClassificaIsland() {
 
   return (
     <div>
-      {/* Controls Container */}
-      <div className="flex justify-center w-full mb-14 mt-6 sticky top-[85px] md:top-8 z-[120] px-4 transition-all duration-300">
-        <div className="flex items-center justify-center gap-4 w-full max-w-[460px]">
-          
-          {/* Legend Button */}
-          <GlassEffect className="w-12 h-12 rounded-full flex items-center justify-center cursor-pointer flex-shrink-0 hover:scale-105 active:scale-95 transition-all duration-300">
-            <button
-              onClick={() => setShowLegend(true)}
-              className="w-full h-full flex items-center justify-center text-white outline-none cursor-pointer"
-              aria-label="Info legenda"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-5 h-5 opacity-70 hover:opacity-100 transition-opacity">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="12" y1="16" x2="12" y2="12" />
-                <line x1="12" y1="8" x2="12.01" y2="8" />
-              </svg>
-            </button>
-          </GlassEffect>
+      {/* Legenda Header Button Centered (above sticky bar to avoid mobile squeezing) */}
+      <div className="flex justify-center w-full mb-6">
+        <button
+          onClick={() => setShowLegend(true)}
+          className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white/70 hover:text-white text-xs font-bold transition-all cursor-pointer outline-none active:scale-95 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]"
+          aria-label="Info legenda"
+        >
+          <span>Legenda Classifica</span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-4 h-4 opacity-70">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="16" x2="12" y2="12" />
+            <line x1="12" y1="8" x2="12.01" y2="8" />
+          </svg>
+        </button>
+      </div>
 
+      {/* Controls Container */}
+      <div className="flex justify-center w-full mb-10 mt-6 sticky top-[85px] md:top-8 z-[120] px-4 transition-all duration-300">
+        <div className="flex justify-center w-full max-w-[360px]">
+          
           {/* Chips Toggle */}
-          <div className="flex justify-center gap-3 flex-1 max-w-[360px]">
+          <div className="flex justify-center gap-3 w-full">
             <button
               onClick={() => setTab('squadre')}
               className={`flex-1 py-3 rounded-full font-bold text-[1rem] transition-all border duration-300 cursor-pointer outline-none backdrop-blur-md backdrop-saturate-[180%] ${
@@ -247,9 +248,6 @@ export default function ClassificaIsland() {
             </button>
           </div>
 
-          {/* Spacer bilanciamento per centratura perfetta */}
-          <div className="w-12 h-12 flex-shrink-0 pointer-events-none" />
-
         </div>
       </div>
 
@@ -260,8 +258,8 @@ export default function ClassificaIsland() {
             onClick={() => setSubTab('marcatori')}
             className={`flex-1 py-2 rounded-full font-bold text-[0.85rem] transition-all border duration-300 cursor-pointer outline-none backdrop-blur-md backdrop-saturate-[180%] ${
               subTab === 'marcatori'
-                ? 'bg-[rgba(59,130,246,0.35)] text-white border-[rgba(59,130,246,0.5)] shadow-[0_2px_6px_rgba(59,130,246,0.2)] scale-105'
-                : 'bg-white/5 text-white/50 border-white/5 hover:text-white hover:bg-white/10'
+                ? 'bg-[rgba(59,130,246,0.3)] text-white border-[rgba(59,130,246,0.5)] shadow-[0_2px_8px_rgba(59,130,246,0.3),inset_0_1px_4px_rgba(255,255,255,0.2)] scale-105'
+                : 'bg-white/5 text-white/60 border-white/10 hover:text-white hover:bg-white/10 hover:border-white/20'
             }`}
           >
             Marcatori
@@ -270,8 +268,8 @@ export default function ClassificaIsland() {
             onClick={() => setSubTab('assist')}
             className={`flex-1 py-2 rounded-full font-bold text-[0.85rem] transition-all border duration-300 cursor-pointer outline-none backdrop-blur-md backdrop-saturate-[180%] ${
               subTab === 'assist'
-                ? 'bg-[rgba(59,130,246,0.35)] text-white border-[rgba(59,130,246,0.5)] shadow-[0_2px_6px_rgba(59,130,246,0.2)] scale-105'
-                : 'bg-white/5 text-white/50 border-white/5 hover:text-white hover:bg-white/10'
+                ? 'bg-[rgba(59,130,246,0.3)] text-white border-[rgba(59,130,246,0.5)] shadow-[0_2px_8px_rgba(59,130,246,0.3),inset_0_1px_4px_rgba(255,255,255,0.2)] scale-105'
+                : 'bg-white/5 text-white/60 border-white/10 hover:text-white hover:bg-white/10 hover:border-white/20'
             }`}
           >
             Assistman
@@ -280,8 +278,8 @@ export default function ClassificaIsland() {
             onClick={() => setSubTab('sanzioni')}
             className={`flex-1 py-2 rounded-full font-bold text-[0.85rem] transition-all border duration-300 cursor-pointer outline-none backdrop-blur-md backdrop-saturate-[180%] ${
               subTab === 'sanzioni'
-                ? 'bg-[rgba(59,130,246,0.35)] text-white border-[rgba(59,130,246,0.5)] shadow-[0_2px_6px_rgba(59,130,246,0.2)] scale-105'
-                : 'bg-white/5 text-white/50 border-white/5 hover:text-white hover:bg-white/10'
+                ? 'bg-[rgba(59,130,246,0.3)] text-white border-[rgba(59,130,246,0.5)] shadow-[0_2px_8px_rgba(59,130,246,0.3),inset_0_1px_4px_rgba(255,255,255,0.2)] scale-105'
+                : 'bg-white/5 text-white/60 border-white/10 hover:text-white hover:bg-white/10 hover:border-white/20'
             }`}
           >
             Sanzioni
