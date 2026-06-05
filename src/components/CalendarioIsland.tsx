@@ -44,11 +44,19 @@ export default function CalendarioIsland() {
         return data || [];
       };
 
+      // Ordinamento: LIVE prima di tutto, poi per data crescente (FIFO)
+      const sortMatches = (list: any[]) => list.slice().sort((a, b) => {
+        const aLive = a.status === 'LIVE' ? 0 : 1;
+        const bLive = b.status === 'LIVE' ? 0 : 1;
+        if (aLive !== bLive) return aLive - bLive; // LIVE sempre prima
+        return new Date(a.match_date).getTime() - new Date(b.match_date).getTime();
+      });
+
       if (force) {
         try {
           const freshData = await fetchFn();
           if (isMounted) {
-            setMatches(freshData);
+            setMatches(sortMatches(freshData));
             // Aggiorna cache locale
             const win = window as any;
             if (!win.__cage_cache) win.__cage_cache = {};
@@ -65,12 +73,12 @@ export default function CalendarioIsland() {
         'cage-matches',
         fetchFn,
         (newData) => {
-          if (isMounted) setMatches(newData);
+        if (isMounted) setMatches(sortMatches(newData));
         }
       );
 
       if (isMounted && cachedData) {
-        setMatches(cachedData);
+        setMatches(sortMatches(cachedData));
       }
     }
     
@@ -122,8 +130,8 @@ export default function CalendarioIsland() {
       {tab === 'calendario' && (
         <div className="animate-stagger">
           {matches.map((m, i) => {
-            const homeName = m.home_team.name;
-            const awayName = m.away_team.name;
+            const homeName = m.home_team?.name ?? 'N/D';
+            const awayName = m.away_team?.name ?? 'N/D';
             const scoreStr = (m.home_score !== null && m.away_score !== null && m.status !== 'PROSSIMA') ? `${m.home_score} - ${m.away_score}` : null;
             const formattedDate = new Date(m.match_date).toLocaleString('it-IT', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
             
