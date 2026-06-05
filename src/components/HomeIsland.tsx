@@ -149,6 +149,12 @@ export default function HomeIsland() {
           .order('match_date', { ascending: true });
         if (isMounted && data) {
           setFeaturedMatch(processMatches(data));
+          
+          // Mantieni la cache globale allineata in tempo reale
+          const win = window as any;
+          if (!win.__cage_cache) win.__cage_cache = {};
+          win.__cage_cache['cage-matches'] = { data, timestamp: Date.now() };
+          localStorage.setItem('cage-matches', JSON.stringify({ data, timestamp: Date.now() }));
         }
       })
       .subscribe();

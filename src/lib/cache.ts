@@ -79,15 +79,11 @@ export async function fetchWithCache<T>(
 
   // Logica SWR
   if (cachedItem) {
-    const isExpired = (now - cachedItem.timestamp) > ttlMs;
+    // Esegui sempre il fetch in background in modo asincrono per reidratare con i dati più freschi
+    // (Pattern Stale-While-Revalidate classico)
+    doFetch().catch(() => {});
     
-    if (isExpired) {
-      // Dato Stale: Esegui il fetch in background silente
-      // Catch per non far esplodere unhandled rejections se offline
-      doFetch().catch(() => {});
-    }
-    
-    // Ritorna subito il dato in cache
+    // Ritorna subito il dato in cache per caricamento istantaneo
     return cachedItem.data;
   }
 
