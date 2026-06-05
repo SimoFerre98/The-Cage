@@ -17,6 +17,6 @@
   - Deve recuperare la lista cronologica di tutti gli eventi inseriti durante il live per il giocatore in questione, arricchiti con il round della partita.
 - [x] Integrare l'evento click sui nomi dei giocatori nei seguenti componenti:
   - [ClassificaIsland.tsx](file:///c:/Users/s.ferrero/Code/The%20Cage/src/components/ClassificaIsland.tsx) (tab Marcatori e tab Rose).
-  - [HomeIsland.tsx](file:///c:/Users/s.ferrero/Code/The%20Cage/src/components/HomeIsland.tsx) (tab Giocatori, lista candidati MVP).
+  - [HomeIsland.tsx](file:///c:/Users/s.ferrero/Code/The%20Cage/src/components/HomeIsland.tsx) (tab Giocatori).
   - [LiveMatchIsland.tsx](file:///c:/Users/s.ferrero/Code/The%20Cage/src/components/LiveMatchIsland.tsx) (nella timeline degli eventi live).
 - [x] Applicare design premium Glassmorphic con icone dedicate per ciascuna statistica.
