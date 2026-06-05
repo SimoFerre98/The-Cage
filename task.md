@@ -48,7 +48,7 @@ Questo file rappresenta il **Punto di Tracciamento Centralizzato** di tutto il p
 - [x] **Sprint 13: Ripristino Accesso Admin e Ottimizzazione Layout Globale**
   - **File di backlog**: [sprint-13-admin-ui-layout.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/04-admin-overhaul/sprint-13-admin-ui-layout.md)
   - **Branch**: `sprint-13-admin-ui-layout`
-- [ ] **Sprint 14: Ottimizzazione Prestazioni Admin ed Efficienza Query**
+- [x] **Sprint 14: Ottimizzazione Prestazioni Admin ed Efficienza Query**
   - **File di backlog**: [sprint-14-admin-performance-queries.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/04-admin-overhaul/sprint-14-admin-performance-queries.md)
   - **Branch**: `sprint-14-admin-performance-queries`
 - [ ] **Sprint 15: Admin Testing Suite ed Esperienza Utente (UX)**
