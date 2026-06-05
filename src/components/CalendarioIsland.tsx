@@ -28,6 +28,89 @@ export default function CalendarioIsland() {
   const [tab, setTab] = useState<'calendario' | 'tabellone'>('calendario');
   const [matches, setMatches] = useState<any[]>([]);
 
+  const findMatchByRound = (roundKey: string) => {
+    return matches.find(m => {
+      const r = m.round ? m.round.toLowerCase() : '';
+      if (roundKey === 'QF1') return r === 'qf1' || (r.includes('quarti') && (r.includes('1') || r.includes('uno')));
+      if (roundKey === 'QF2') return r === 'qf2' || (r.includes('quarti') && (r.includes('2') || r.includes('due')));
+      if (roundKey === 'QF3') return r === 'qf3' || (r.includes('quarti') && (r.includes('3') || r.includes('tre')));
+      if (roundKey === 'QF4') return r === 'qf4' || (r.includes('quarti') && (r.includes('4') || r.includes('quattro')));
+      if (roundKey === 'SF1') return r === 'sf1' || (r.includes('semifinale') && (r.includes('1') || r.includes('uno')));
+      if (roundKey === 'SF2') return r === 'sf2' || (r.includes('semifinale') && (r.includes('2') || r.includes('due')));
+      if (roundKey === 'Finale') return r === 'finale' && !r.includes('semi') && !r.includes('quarti');
+      return false;
+    });
+  };
+
+  const renderBracketCard = (roundLabel: string, defaultTeam1: string, defaultTeam2: string, defaultTime: string, roundKey: string, isGold = false) => {
+    const match = findMatchByRound(roundKey);
+    const homeName = match?.home_team?.name;
+    const awayName = match?.away_team?.name;
+    const homeScore = match?.home_score;
+    const awayScore = match?.away_score;
+    
+    const t1Name = homeName || defaultTeam1;
+    const t2Name = awayName || defaultTeam2;
+    
+    const timeStr = match
+      ? new Date(match.match_date).toLocaleString('it-IT', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
+      : defaultTime;
+
+    const isLive = match?.status === 'LIVE';
+    const isTerminata = match?.status === 'TERMINATA';
+
+    const t1Initials = homeName ? AVATAR_INITIALS(homeName) : defaultTeam1.substring(0, 2).toUpperCase();
+    const t2Initials = awayName ? AVATAR_INITIALS(awayName) : defaultTeam2.substring(0, 2).toUpperCase();
+
+    const t1Idx = homeName ? (TEAM_IDX[homeName] ?? 0) : 10;
+    const t2Idx = awayName ? (TEAM_IDX[awayName] ?? 1) : 11;
+
+    const homeWon = isTerminata && homeScore !== null && awayScore !== null && homeScore > awayScore;
+    const awayWon = isTerminata && homeScore !== null && awayScore !== null && awayScore > homeScore;
+
+    return (
+      <div className={`bracket-card-wrapper ${isGold ? 'final-wrapper' : ''}`}>
+        <div className={`bracket-round-title ${isGold ? 'final-title' : ''}`}>
+          {isLive && <span className="text-red-500 mr-1 animate-pulse">🔴</span>}
+          {roundLabel}
+        </div>
+        <div className={`glass-card bracket-card ${isGold ? 'final-card-gold' : ''} ${isLive ? 'bracket-card-live' : ''}`}>
+          {/* Team 1 */}
+          <div className={`bracket-team ${homeWon ? 'bracket-team-winner' : isTerminata && awayScore !== null ? 'opacity-50' : ''}`}>
+            <div className={`team-avatar avatar-${t1Idx}`} style={{ width: isGold ? 28 : 26, height: isGold ? 28 : 26, borderRadius: isGold ? 8 : 6, fontSize: '0.55rem', fontWeight: 800 }}>
+              {t1Initials}
+            </div>
+            <span className={`bracket-team-name ${isGold ? 'font-black' : ''}`}>
+              {t1Name}
+            </span>
+            {isTerminata && homeScore !== null && (
+              <span className="bracket-team-score ml-auto font-bold">{homeScore}</span>
+            )}
+          </div>
+          
+          <div className="bracket-divider" />
+          
+          {/* Team 2 */}
+          <div className={`bracket-team ${awayWon ? 'bracket-team-winner' : isTerminata && homeScore !== null ? 'opacity-50' : ''}`}>
+            <div className={`team-avatar avatar-${t2Idx}`} style={{ width: isGold ? 28 : 26, height: isGold ? 28 : 26, borderRadius: isGold ? 8 : 6, fontSize: '0.55rem', fontWeight: 800 }}>
+              {t2Initials}
+            </div>
+            <span className={`bracket-team-name ${isGold ? 'font-black' : ''}`}>
+              {t2Name}
+            </span>
+            {isTerminata && awayScore !== null && (
+              <span className="bracket-team-score ml-auto font-bold">{awayScore}</span>
+            )}
+          </div>
+          
+          <div className={`bracket-time ${isGold ? 'final-time' : ''} ${isLive ? 'text-red-400 font-bold animate-pulse' : ''}`}>
+            {isLive ? 'IN DIRETTA' : timeStr}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   useEffect(() => {
     let isMounted = true;
 
@@ -209,86 +292,63 @@ export default function CalendarioIsland() {
 
       {/* Knockout Bracket View */}
       {tab === 'tabellone' && (
-        <div className="bracket-container animate-stagger" style={{ marginTop: '2rem' }}>
-          {/* Top Row: Semifinale 1 and Semifinale 2 */}
-          <div className="bracket-row">
-            {/* Semifinale 1 Card */}
-            <div className="bracket-card-wrapper">
-              <div className="bracket-round-title">Semifinale 1</div>
-              <div className="glass-card bracket-card">
-                <div className="bracket-team">
-                  <div className="team-avatar avatar-4" style={{ width: 26, height: 26, borderRadius: 6, fontSize: '0.55rem', fontWeight: 800 }}>1A</div>
-                  <span className="bracket-team-name">1° Girone A</span>
-                </div>
-                <div className="bracket-divider" />
-                <div className="bracket-team">
-                  <div className="team-avatar avatar-1" style={{ width: 26, height: 26, borderRadius: 6, fontSize: '0.55rem', fontWeight: 800 }}>2B</div>
-                  <span className="bracket-team-name">2° Girone B</span>
-                </div>
-                <div className="bracket-time">30 mag, 21:00</div>
-              </div>
+        <div className="bracket-scroll-wrapper">
+          <div className="bracket-container animate-stagger" style={{ marginTop: '2rem' }}>
+            {/* Row 1: Quarti di Finale */}
+            <div className="bracket-row">
+              {renderBracketCard("Quarti 1", "1° Girone A", "4° Girone B", "28 mag, 20:00", "QF1")}
+              {renderBracketCard("Quarti 2", "2° Girone B", "3° Girone A", "28 mag, 20:30", "QF2")}
+              {renderBracketCard("Quarti 3", "1° Girone B", "4° Girone A", "28 mag, 21:00", "QF3")}
+              {renderBracketCard("Quarti 4", "2° Girone A", "3° Girone B", "28 mag, 21:30", "QF4")}
             </div>
 
-            {/* Semifinale 2 Card */}
-            <div className="bracket-card-wrapper">
-              <div className="bracket-round-title">Semifinale 2</div>
-              <div className="glass-card bracket-card">
-                <div className="bracket-team">
-                  <div className="team-avatar avatar-8" style={{ width: 26, height: 26, borderRadius: 6, fontSize: '0.55rem', fontWeight: 800 }}>1B</div>
-                  <span className="bracket-team-name">1° Girone B</span>
-                </div>
-                <div className="bracket-divider" />
-                <div className="bracket-team">
-                  <div className="team-avatar avatar-0" style={{ width: 26, height: 26, borderRadius: 6, fontSize: '0.55rem', fontWeight: 800 }}>2A</div>
-                  <span className="bracket-team-name">2° Girone A</span>
-                </div>
-                <div className="bracket-time">30 mag, 21:00</div>
-              </div>
+            {/* SVG Connector Lines (Quarti -> Semifinali) */}
+            <div className="bracket-connector-container">
+              <svg className="bracket-svg" viewBox="0 0 100 50" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+                {/* Paths */}
+                <path d="M 12.5 0 V 25 H 25 V 50" stroke="rgba(255,255,255,0.12)" strokeWidth="2" strokeLinecap="round" />
+                <path d="M 37.5 0 V 25 H 25 V 50" stroke="rgba(255,255,255,0.12)" strokeWidth="2" strokeLinecap="round" />
+                <path d="M 62.5 0 V 25 H 75 V 50" stroke="rgba(255,255,255,0.12)" strokeWidth="2" strokeLinecap="round" />
+                <path d="M 87.5 0 V 25 H 75 V 50" stroke="rgba(255,255,255,0.12)" strokeWidth="2" strokeLinecap="round" />
+                
+                {/* Active Glows */}
+                <path d="M 12.5 0 V 25 H 25 V 50" stroke="url(#active-glow-left)" strokeWidth="2.5" strokeLinecap="round" opacity="0.8" />
+                <path d="M 37.5 0 V 25 H 25 V 50" stroke="url(#active-glow-left)" strokeWidth="2.5" strokeLinecap="round" opacity="0.8" />
+                <path d="M 62.5 0 V 25 H 75 V 50" stroke="url(#active-glow-right)" strokeWidth="2.5" strokeLinecap="round" opacity="0.8" />
+                <path d="M 87.5 0 V 25 H 75 V 50" stroke="url(#active-glow-right)" strokeWidth="2.5" strokeLinecap="round" opacity="0.8" />
+                
+                <defs>
+                  <linearGradient id="active-glow-left" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="var(--accent-primary)" stopOpacity="0.8" />
+                    <stop offset="100%" stopColor="var(--accent-secondary)" stopOpacity="0.8" />
+                  </linearGradient>
+                  <linearGradient id="active-glow-right" x1="100%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="var(--accent-secondary)" stopOpacity="0.8" />
+                    <stop offset="100%" stopColor="var(--accent-primary)" stopOpacity="0.8" />
+                  </linearGradient>
+                </defs>
+              </svg>
             </div>
-          </div>
 
-          {/* SVG Connector Lines */}
-          <div className="bracket-connector-container">
-            <svg className="bracket-svg" viewBox="0 0 100 50" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {/* Left SF to Center flow */}
-              <path d="M 25 0 V 25 H 50 V 50" stroke="rgba(255,255,255,0.12)" strokeWidth="2" strokeLinecap="round" />
-              {/* Right SF to Center flow */}
-              <path d="M 75 0 V 25 H 50 V 50" stroke="rgba(255,255,255,0.12)" strokeWidth="2" strokeLinecap="round" />
-              {/* Glowing active path indicators */}
-              <path d="M 25 0 V 25 H 50 V 50" stroke="url(#active-glow-left)" strokeWidth="2.5" strokeLinecap="round" opacity="0.8" />
-              <path d="M 75 0 V 25 H 50 V 50" stroke="url(#active-glow-right)" strokeWidth="2.5" strokeLinecap="round" opacity="0.8" />
-              
-              <defs>
-                <linearGradient id="active-glow-left" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="var(--accent-primary)" stopOpacity="0.8" />
-                  <stop offset="100%" stopColor="var(--accent-secondary)" stopOpacity="0.8" />
-                </linearGradient>
-                <linearGradient id="active-glow-right" x1="100%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="var(--accent-secondary)" stopOpacity="0.8" />
-                  <stop offset="100%" stopColor="var(--accent-primary)" stopOpacity="0.8" />
-                </linearGradient>
-              </defs>
-            </svg>
-          </div>
+            {/* Row 2: Semifinali */}
+            <div className="bracket-row">
+              {renderBracketCard("Semifinale 1", "Vincitore Quarti 1", "Vincitore Quarti 2", "30 mag, 21:00", "SF1")}
+              {renderBracketCard("Semifinale 2", "Vincitore Quarti 3", "Vincitore Quarti 4", "30 mag, 21:00", "SF2")}
+            </div>
 
-          {/* Bottom Row: Finale centered */}
-          <div className="bracket-row-center">
-            <div className="bracket-card-wrapper final-wrapper">
-              <div className="bracket-round-title final-title">
-                🏆 FINALE 🏆
-              </div>
-              <div className="glass-card bracket-card final-card-gold">
-                <div className="bracket-team">
-                  <div className="team-avatar avatar-9" style={{ width: 28, height: 28, borderRadius: 8, fontSize: '0.6rem', fontWeight: 800 }}>SF1</div>
-                  <span className="bracket-team-name font-black">Vincitore SF1</span>
-                </div>
-                <div className="bracket-divider" />
-                <div className="bracket-team">
-                  <div className="team-avatar avatar-10" style={{ width: 28, height: 28, borderRadius: 8, fontSize: '0.6rem', fontWeight: 800 }}>SF2</div>
-                  <span className="bracket-team-name font-black">Vincitore SF2</span>
-                </div>
-                <div className="bracket-time final-time">30 mag, 22:00</div>
-              </div>
+            {/* SVG Connector Lines (Semifinali -> Finale) */}
+            <div className="bracket-connector-container">
+              <svg className="bracket-svg" viewBox="0 0 100 50" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 25 0 V 25 H 50 V 50" stroke="rgba(255,255,255,0.12)" strokeWidth="2" strokeLinecap="round" />
+                <path d="M 75 0 V 25 H 50 V 50" stroke="rgba(255,255,255,0.12)" strokeWidth="2" strokeLinecap="round" />
+                <path d="M 25 0 V 25 H 50 V 50" stroke="url(#active-glow-left)" strokeWidth="2.5" strokeLinecap="round" opacity="0.8" />
+                <path d="M 75 0 V 25 H 50 V 50" stroke="url(#active-glow-right)" strokeWidth="2.5" strokeLinecap="round" opacity="0.8" />
+              </svg>
+            </div>
+
+            {/* Row 3: Finale */}
+            <div className="bracket-row-center">
+              {renderBracketCard("🏆 FINALE 🏆", "Vincitore SF1", "Vincitore SF2", "30 mag, 22:00", "Finale", true)}
             </div>
           </div>
         </div>

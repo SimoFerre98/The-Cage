@@ -83,7 +83,7 @@ Questo file rappresenta il **Punto di Tracciamento Centralizzato** di tutto il p
 - [x] **Sprint 24: Modale Statistiche Specifiche Giocatore**
   - **File di backlog**: [sprint-24-player-stats-modal.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/09-player-stats-modal/sprint-24-player-stats-modal.md)
   - **Branch**: `sprint-24-player-stats-modal`
-- [ ] **Sprint 25: Integrazione Quarti di Finale nel Tabellone**
+- [x] **Sprint 25: Integrazione Quarti di Finale nel Tabellone**
   - **File di backlog**: [sprint-25-bracket-quarterfinals.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/10-bracket-quarterfinals/sprint-25-bracket-quarterfinals.md)
   - **Branch**: `sprint-25-bracket-quarterfinals`
 

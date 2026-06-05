@@ -11,10 +11,10 @@
 6. **Testable**: Caricare il tabellone ed effettuare uno zoom/scroll verificando che tutti i 4 quarti di finale siano visibili, posizionati correttamente e connessi graficamente alle semifinali.
 
 ### Checklist
-- [ ] Implementare la funzione helper `findMatchByRound` in `CalendarioIsland.tsx` per mappare i match della fase a eliminazione diretta dal DB.
-- [ ] Riprogettare il layout del tabellone in [CalendarioIsland.tsx](file:///c:/Users/s.ferrero/Code/The%20Cage/src/components/CalendarioIsland.tsx) per includere i Quarti di Finale (4 accoppiamenti: QF1, QF2, QF3, QF4).
-- [ ] Agganciare i dati reali provenienti da Supabase (nomi squadre, punteggi, date, stato LIVE) o definire placeholder testuali descrittivi nel frontend in caso di dati assenti.
-- [ ] Disegnare i tracciati SVG dei raccordi per connettere graficamente i Quarti di Finale alle Semifinali:
+- [x] Implementare la funzione helper `findMatchByRound` in `CalendarioIsland.tsx` per mappare i match della fase a eliminazione diretta dal DB.
+- [x] Riprogettare il layout del tabellone in [CalendarioIsland.tsx](file:///c:/Users/s.ferrero/Code/The%20Cage/src/components/CalendarioIsland.tsx) per includere i Quarti di Finale (4 accoppiamenti: QF1, QF2, QF3, QF4).
+- [x] Agganciare i dati reali provenienti da Supabase (nomi squadre, punteggi, date, stato LIVE) o definire placeholder testuali descrittivi nel frontend in caso di dati assenti.
+- [x] Disegnare i tracciati SVG dei raccordi per connettere graficamente i Quarti di Finale alle Semifinali:
   - Quarto 1 (X=12.5%) e Quarto 2 (X=37.5%) confluiscono in Semifinale 1 (X=25%).
   - Quarto 3 (X=62.5%) e Quarto 4 (X=87.5%) confluiscono in Semifinale 2 (X=75%).
-- [ ] Ottimizzare il layout CSS in [global.css](file:///c:/Users/s.ferrero/Code/The%20Cage/src/styles/global.css) introducendo un contenitore scrollabile orizzontalmente (`.bracket-scroll-wrapper`) per mantenere la leggibilità sui dispositivi mobili.
+- [x] Ottimizzare il layout CSS in [global.css](file:///c:/Users/s.ferrero/Code/The%20Cage/src/styles/global.css) introducendo un contenitore scrollabile orizzontalmente (`.bracket-scroll-wrapper`) per mantenere la leggibilità sui dispositivi mobili.
