@@ -11,8 +11,8 @@
 6. **Testable**: Ispezione visiva del portale per confermare la fluidità degli effetti di luce hover e le animazioni dei blob di sfondo.
 
 ### Checklist
-- [ ] Creare un wrapper React `SpotlightCard.tsx` o hook per tracciare il movimento del cursore del mouse e passare le coordinate `--mouse-x` e `--mouse-y` all'elemento.
-- [ ] Definire in [global.css](file:///c:/Users/s.ferrero/Code/The%20Cage/src/styles/global.css) gli stili per l'effetto spotlight con gradienti radiali.
-- [ ] Aggiungere bordi luminosi al passaggio del mouse su tutte le schede principali (`glass-card`).
-- [ ] Aggiungere ed animare i blob di sfondo (`bg-blobs`) per simulare un'atmosfera liquida e tridimensionale.
-- [ ] Applicare effetti di testo neon e pulsazioni soffuse per la partita live e la finale del tabellone.
+- [x] Creare un wrapper React `SpotlightCard.tsx` o hook per tracciare il movimento del cursore del mouse e passare le coordinate `--mouse-x` e `--mouse-y` all'elemento. (Implementato direttamente in GlassEffect.tsx per tutti i card)
+- [x] Definire in [global.css](file:///c:/Users/s.ferrero/Code/The%20Cage/src/styles/global.css) gli stili per l'effetto spotlight con gradienti radiali.
+- [x] Aggiungere bordi luminosi al passaggio del mouse su tutte le schede principali (`glass-card` / `GlassEffect`).
+- [x] Aggiungere ed animare i blob di sfondo (`bg-blobs`) per simulare un'atmosfera liquida e tridimensionale.
+- [x] Applicare effetti di testo neon e pulsazioni soffuse per la partita live e la finale del tabellone.

@@ -59,8 +59,64 @@ body {
   width: 100vw;
   height: 100vh; /* Fixed height prevents jumping when mobile URL bar hides */
   z-index: -1;
-  background: linear-gradient(rgba(3, 5, 10, 0.4), rgba(3, 5, 10, 0.7)), url('/Sfondo1.jpg') center/cover no-repeat;
+  background: linear-gradient(rgba(3, 5, 10, 0.55), rgba(3, 5, 10, 0.85)), url('/Sfondo1.jpg') center/cover no-repeat;
+  overflow: hidden;
   view-transition-name: fixed-background;
+}
+
+/* Floating colorful blobs inside background */
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.15;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.blob-blue {
+  top: 10%;
+  left: 10%;
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, var(--accent-primary) 0%, transparent 80%);
+  animation: float-blob-1 25s infinite alternate ease-in-out;
+}
+
+.blob-purple {
+  bottom: 15%;
+  right: 10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, var(--accent-secondary) 0%, transparent 80%);
+  animation: float-blob-2 30s infinite alternate ease-in-out;
+}
+
+.blob-cyan {
+  top: 45%;
+  left: 50%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, #06b6d4 0%, transparent 80%);
+  animation: float-blob-3 22s infinite alternate ease-in-out;
+}
+
+@keyframes float-blob-1 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(80px, 60px) scale(1.1); }
+  100% { transform: translate(-40px, 120px) scale(0.95); }
+}
+
+@keyframes float-blob-2 {
+  0% { transform: translate(0, 0) scale(0.9); }
+  50% { transform: translate(-100px, -80px) scale(1.05); }
+  100% { transform: translate(50px, -140px) scale(1); }
+}
+
+@keyframes float-blob-3 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-50px, 90px) scale(0.9); }
+  100% { transform: translate(60px, -60px) scale(1.1); }
 }
 
 
@@ -1200,4 +1256,53 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   background: rgba(10, 12, 22, 0.88) !important;
+}
+
+/* Featured Match Live Neon Pulsation */
+.live-card-glow {
+  animation: border-pulse-live 2s infinite ease-in-out;
+}
+
+@keyframes border-pulse-live {
+  0% {
+    border-color: rgba(239, 68, 68, 0.4) !important;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.1) !important;
+  }
+  50% {
+    border-color: rgba(239, 68, 68, 0.95) !important;
+    box-shadow: 0 0 25px rgba(239, 68, 68, 0.45), inset 0 1px 2px rgba(255, 255, 255, 0.2) !important;
+  }
+  100% {
+    border-color: rgba(239, 68, 68, 0.4) !important;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.1) !important;
+  }
+}
+
+/* Bracket Finale Gold Glow */
+.final-card-gold {
+  animation: gold-pulse 3s infinite ease-in-out;
+}
+
+@keyframes gold-pulse {
+  0% {
+    border-color: rgba(245, 158, 11, 0.35) !important;
+    box-shadow: 
+      inset 0 1px 1px rgba(255, 255, 255, 0.1),
+      0 10px 40px rgba(245, 158, 11, 0.15),
+      0 0 20px rgba(245, 158, 11, 0.05) !important;
+  }
+  50% {
+    border-color: rgba(245, 158, 11, 0.85) !important;
+    box-shadow: 
+      inset 0 1px 2px rgba(255, 255, 255, 0.25),
+      0 15px 45px rgba(245, 158, 11, 0.35),
+      0 0 35px rgba(245, 158, 11, 0.2) !important;
+  }
+  100% {
+    border-color: rgba(245, 158, 11, 0.35) !important;
+    box-shadow: 
+      inset 0 1px 1px rgba(255, 255, 255, 0.1),
+      0 10px 40px rgba(245, 158, 11, 0.15),
+      0 0 20px rgba(245, 158, 11, 0.05) !important;
+  }
 }

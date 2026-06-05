@@ -208,7 +208,7 @@ export default function HomeIsland() {
             <GlassEffect 
               className={`rounded-[24px] flex flex-col h-full min-h-[240px] transition-all duration-300 ${
                 featuredMatch.type === 'LIVE' 
-                  ? 'border-red-500/40 shadow-[0_0_20px_rgba(239,68,68,0.2)]' 
+                  ? 'live-card-glow' 
                   : 'border-[var(--glass-border)]'
               }`}
               contentClassName="p-6 flex flex-col justify-between flex-1 w-full"
