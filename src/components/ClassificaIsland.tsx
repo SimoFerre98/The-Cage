@@ -36,10 +36,13 @@ const AVATAR_IDX: Record<string, number> = {
 import { fetchWithCache } from '../lib/cache';
 
 export default function ClassificaIsland() {
-  const [tab, setTab] = useState<'squadre' | 'marcatori'>('squadre');
+  const [tab, setTab] = useState<'squadre' | 'giocatori'>('squadre');
+  const [subTab, setSubTab] = useState<'marcatori' | 'assist' | 'sanzioni'>('marcatori');
   const [showLegend, setShowLegend] = useState(false);
   const [standings, setStandings] = useState<any[]>([]);
   const [scorers, setScorers] = useState<any[]>([]);
+  const [assists, setAssists] = useState<any[]>([]);
+  const [cards, setCards] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
 
@@ -58,15 +61,29 @@ export default function ClassificaIsland() {
         return data || [];
       };
 
+      const fetchAssists = async () => {
+        const { data } = await supabase.from('top_assists').select('*');
+        return data || [];
+      };
+
+      const fetchCards = async () => {
+        const { data } = await supabase.from('top_cards').select('*');
+        return data || [];
+      };
+
       if (force) {
         try {
-          const [freshStandings, freshScorers] = await Promise.all([
+          const [freshStandings, freshScorers, freshAssists, freshCards] = await Promise.all([
             fetchStandings(),
             fetchScorers(),
+            fetchAssists(),
+            fetchCards(),
           ]);
           if (isMounted) {
             setStandings(freshStandings);
             setScorers(freshScorers);
+            setAssists(freshAssists);
+            setCards(freshCards);
 
             // Aggiorna cache locale
             const win = window as any;
@@ -77,6 +94,12 @@ export default function ClassificaIsland() {
 
             win.__cage_cache['cage-top-scorers'] = { data: freshScorers, timestamp: Date.now() };
             localStorage.setItem('cage-top-scorers', JSON.stringify({ data: freshScorers, timestamp: Date.now() }));
+
+            win.__cage_cache['cage-top-assists'] = { data: freshAssists, timestamp: Date.now() };
+            localStorage.setItem('cage-top-assists', JSON.stringify({ data: freshAssists, timestamp: Date.now() }));
+
+            win.__cage_cache['cage-top-cards'] = { data: freshCards, timestamp: Date.now() };
+            localStorage.setItem('cage-top-cards', JSON.stringify({ data: freshCards, timestamp: Date.now() }));
           }
         } catch (e) {
           console.error('Errore durante il rinfresco forzato della classifica:', e);
@@ -100,11 +123,34 @@ export default function ClassificaIsland() {
         }
       );
 
-      const [cachedStandings, cachedScorers] = await Promise.all([standingsPromise, scorersPromise]);
+      const assistsPromise = fetchWithCache(
+        'cage-top-assists',
+        fetchAssists,
+        (newData) => {
+          if (isMounted) setAssists(newData);
+        }
+      );
+
+      const cardsPromise = fetchWithCache(
+        'cage-top-cards',
+        fetchCards,
+        (newData) => {
+          if (isMounted) setCards(newData);
+        }
+      );
+
+      const [cachedStandings, cachedScorers, cachedAssists, cachedCards] = await Promise.all([
+        standingsPromise,
+        scorersPromise,
+        assistsPromise,
+        cardsPromise,
+      ]);
       
       if (isMounted) {
         if (cachedStandings) setStandings(cachedStandings);
         if (cachedScorers) setScorers(cachedScorers);
+        if (cachedAssists) setAssists(cachedAssists);
+        if (cachedCards) setCards(cachedCards);
         setLoading(false);
       }
     }
@@ -118,7 +164,7 @@ export default function ClassificaIsland() {
       }, 2000);
     };
 
-    // Sottoscrizione realtime per classifica e marcatori
+    // Sottoscrizione realtime per classifica, marcatori, assist e sanzioni
     const channel = supabase.channel('classifica_realtime_updates')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'matches' }, (payload: any) => {
         const oldStatus = payload.old?.status;
@@ -141,8 +187,9 @@ export default function ClassificaIsland() {
         const oldType = payload.old?.type;
         const newType = payload.new?.type;
 
-        // Aggiorna solo se l'evento inserito/eliminato/modificato è un GOAL
-        if (oldType === 'GOAL' || newType === 'GOAL') {
+        // Aggiorna se l'evento inserito/eliminato/modificato è rilevante
+        const relevantTypes = ['GOAL', 'ASSIST', 'AMMONIZIONE', 'ESPULSIONE'];
+        if (relevantTypes.includes(oldType) || relevantTypes.includes(newType)) {
           triggerRefresh();
         }
       })
@@ -189,14 +236,14 @@ export default function ClassificaIsland() {
               Squadre
             </button>
             <button
-              onClick={() => setTab('marcatori')}
+              onClick={() => setTab('giocatori')}
               className={`flex-1 py-3 rounded-full font-bold text-[1rem] transition-all border duration-300 cursor-pointer outline-none backdrop-blur-md backdrop-saturate-[180%] ${
-                tab === 'marcatori'
+                tab === 'giocatori'
                   ? 'bg-[rgba(59,130,246,0.3)] text-white border-[rgba(59,130,246,0.5)] shadow-[0_2px_8px_rgba(59,130,246,0.3),inset_0_1px_4px_rgba(255,255,255,0.2)] scale-105'
                   : 'bg-white/5 text-white/60 border-white/10 hover:text-white hover:bg-white/10 hover:border-white/20'
               }`}
             >
-              Marcatori
+              Giocatori
             </button>
           </div>
 
@@ -205,6 +252,42 @@ export default function ClassificaIsland() {
 
         </div>
       </div>
+
+      {/* Subtabs for Giocatori */}
+      {tab === 'giocatori' && (
+        <div className="flex justify-center gap-3 w-full max-w-[360px] mx-auto mb-10 -mt-4 sticky top-[150px] md:top-24 z-[115] transition-all duration-300">
+          <button
+            onClick={() => setSubTab('marcatori')}
+            className={`flex-1 py-2 rounded-full font-bold text-[0.85rem] transition-all border duration-300 cursor-pointer outline-none backdrop-blur-md backdrop-saturate-[180%] ${
+              subTab === 'marcatori'
+                ? 'bg-[rgba(59,130,246,0.35)] text-white border-[rgba(59,130,246,0.5)] shadow-[0_2px_6px_rgba(59,130,246,0.2)] scale-105'
+                : 'bg-white/5 text-white/50 border-white/5 hover:text-white hover:bg-white/10'
+            }`}
+          >
+            Marcatori
+          </button>
+          <button
+            onClick={() => setSubTab('assist')}
+            className={`flex-1 py-2 rounded-full font-bold text-[0.85rem] transition-all border duration-300 cursor-pointer outline-none backdrop-blur-md backdrop-saturate-[180%] ${
+              subTab === 'assist'
+                ? 'bg-[rgba(59,130,246,0.35)] text-white border-[rgba(59,130,246,0.5)] shadow-[0_2px_6px_rgba(59,130,246,0.2)] scale-105'
+                : 'bg-white/5 text-white/50 border-white/5 hover:text-white hover:bg-white/10'
+            }`}
+          >
+            Assistman
+          </button>
+          <button
+            onClick={() => setSubTab('sanzioni')}
+            className={`flex-1 py-2 rounded-full font-bold text-[0.85rem] transition-all border duration-300 cursor-pointer outline-none backdrop-blur-md backdrop-saturate-[180%] ${
+              subTab === 'sanzioni'
+                ? 'bg-[rgba(59,130,246,0.35)] text-white border-[rgba(59,130,246,0.5)] shadow-[0_2px_6px_rgba(59,130,246,0.2)] scale-105'
+                : 'bg-white/5 text-white/50 border-white/5 hover:text-white hover:bg-white/10'
+            }`}
+          >
+            Sanzioni
+          </button>
+        </div>
+      )}
 
       {/* Classifica Squadre */}
       {tab === 'squadre' && (
@@ -253,35 +336,121 @@ export default function ClassificaIsland() {
         </div>
       )}
 
-      {/* Marcatori */}
-      {tab === 'marcatori' && (
-        <div className="glass-card animate-stagger" style={{ marginTop: '2.5rem' }}>
-          {scorers.map((s, i) => (
-            <div 
-              key={i} 
-              onClick={() => setSelectedPlayerId(s.player_id)}
-              className="flex items-center gap-3 px-4 py-3.5 border-b border-[var(--glass-border)] hover:bg-[rgba(255,255,255,0.05)] transition-colors duration-300 cursor-pointer"
-            >
-              <div 
-                className="flex items-center justify-center w-8 h-8 rounded-lg text-xs font-bold shrink-0 border"
-                style={{
-                  background: i === 0 ? 'rgba(245, 158, 11, 0.15)' : i === 1 ? 'rgba(148, 163, 184, 0.15)' : i === 2 ? 'rgba(180, 83, 9, 0.15)' : 'var(--glass-bg)',
-                  borderColor: i === 0 ? 'rgba(245, 158, 11, 0.3)' : i === 1 ? 'rgba(148, 163, 184, 0.3)' : i === 2 ? 'rgba(180, 83, 9, 0.3)' : 'var(--glass-border)',
-                  color: i === 0 ? '#fbbf24' : i === 1 ? '#94a3b8' : i === 2 ? '#fb923c' : 'var(--text-muted)'
-                }}
-              >
-                {i < 3 ? (i === 0 ? '🏅' : i === 1 ? '2' : '3') : i + 1}
-              </div>
-              <div className="flex-1">
-                <div className="text-[0.9rem] font-bold text-[var(--text-primary)]">{s.player_name}</div>
-                <div className="text-[0.75rem] text-[var(--text-muted)]">{s.team_name}</div>
-              </div>
-              <div className="flex items-center gap-1.5 font-black text-lg text-[var(--accent-primary)]">
-                <span className="text-sm">⚽</span>
-                <span>{s.goals}</span>
-              </div>
-            </div>
-          ))}
+      {/* Giocatori List */}
+      {tab === 'giocatori' && (
+        <div className="glass-card animate-stagger" style={{ marginTop: '1.5rem' }}>
+          
+          {/* Marcatori sub-tab */}
+          {subTab === 'marcatori' && (
+            scorers.length === 0 ? (
+              <div className="text-center text-white/50 py-8">Nessun marcatore registrato.</div>
+            ) : (
+              scorers.map((s, i) => (
+                <div 
+                  key={i} 
+                  onClick={() => setSelectedPlayerId(s.player_id)}
+                  className="flex items-center gap-3 px-4 py-3.5 border-b border-[var(--glass-border)] last:border-b-0 hover:bg-[rgba(255,255,255,0.05)] transition-colors duration-300 cursor-pointer"
+                >
+                  <div 
+                    className="flex items-center justify-center w-8 h-8 rounded-lg text-xs font-bold shrink-0 border"
+                    style={{
+                      background: i === 0 ? 'rgba(245, 158, 11, 0.15)' : i === 1 ? 'rgba(148, 163, 184, 0.15)' : i === 2 ? 'rgba(180, 83, 9, 0.15)' : 'var(--glass-bg)',
+                      borderColor: i === 0 ? 'rgba(245, 158, 11, 0.3)' : i === 1 ? 'rgba(148, 163, 184, 0.3)' : i === 2 ? 'rgba(180, 83, 9, 0.3)' : 'var(--glass-border)',
+                      color: i === 0 ? '#fbbf24' : i === 1 ? '#94a3b8' : i === 2 ? '#fb923c' : 'var(--text-muted)'
+                    }}
+                  >
+                    {i < 3 ? (i === 0 ? '🏅' : i === 1 ? '2' : '3') : i + 1}
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-[0.9rem] font-bold text-[var(--text-primary)]">{s.player_name}</div>
+                    <div className="text-[0.75rem] text-[var(--text-muted)]">{s.team_name}</div>
+                  </div>
+                  <div className="flex items-center gap-1.5 font-black text-lg text-[var(--accent-primary)]">
+                    <span className="text-sm">⚽</span>
+                    <span>{s.goals}</span>
+                  </div>
+                </div>
+              ))
+            )
+          )}
+
+          {/* Assistman sub-tab */}
+          {subTab === 'assist' && (
+            assists.length === 0 ? (
+              <div className="text-center text-white/50 py-8">Nessun assist registrato.</div>
+            ) : (
+              assists.map((a, i) => (
+                <div 
+                  key={i} 
+                  onClick={() => setSelectedPlayerId(a.player_id)}
+                  className="flex items-center gap-3 px-4 py-3.5 border-b border-[var(--glass-border)] last:border-b-0 hover:bg-[rgba(255,255,255,0.05)] transition-colors duration-300 cursor-pointer"
+                >
+                  <div 
+                    className="flex items-center justify-center w-8 h-8 rounded-lg text-xs font-bold shrink-0 border"
+                    style={{
+                      background: i === 0 ? 'rgba(245, 158, 11, 0.15)' : i === 1 ? 'rgba(148, 163, 184, 0.15)' : i === 2 ? 'rgba(180, 83, 9, 0.15)' : 'var(--glass-bg)',
+                      borderColor: i === 0 ? 'rgba(245, 158, 11, 0.3)' : i === 1 ? 'rgba(148, 163, 184, 0.3)' : i === 2 ? 'rgba(180, 83, 9, 0.3)' : 'var(--glass-border)',
+                      color: i === 0 ? '#fbbf24' : i === 1 ? '#94a3b8' : i === 2 ? '#fb923c' : 'var(--text-muted)'
+                    }}
+                  >
+                    {i < 3 ? (i === 0 ? '🏅' : i === 1 ? '2' : '3') : i + 1}
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-[0.9rem] font-bold text-[var(--text-primary)]">{a.player_name}</div>
+                    <div className="text-[0.75rem] text-[var(--text-muted)]">{a.team_name}</div>
+                  </div>
+                  <div className="flex items-center gap-1.5 font-black text-lg text-blue-400">
+                    <span className="text-sm">🎯</span>
+                    <span>{a.assists}</span>
+                  </div>
+                </div>
+              ))
+            )
+          )}
+
+          {/* Sanzioni sub-tab */}
+          {subTab === 'sanzioni' && (
+            cards.length === 0 ? (
+              <div className="text-center text-white/50 py-8">Nessun cartellino estratto.</div>
+            ) : (
+              cards.map((c, i) => (
+                <div 
+                  key={i} 
+                  onClick={() => setSelectedPlayerId(c.player_id)}
+                  className="flex items-center gap-3 px-4 py-3.5 border-b border-[var(--glass-border)] last:border-b-0 hover:bg-[rgba(255,255,255,0.05)] transition-colors duration-300 cursor-pointer"
+                >
+                  <div 
+                    className="flex items-center justify-center w-8 h-8 rounded-lg text-xs font-bold shrink-0 border"
+                    style={{
+                      background: i === 0 ? 'rgba(245, 158, 11, 0.15)' : i === 1 ? 'rgba(148, 163, 184, 0.15)' : i === 2 ? 'rgba(180, 83, 9, 0.15)' : 'var(--glass-bg)',
+                      borderColor: i === 0 ? 'rgba(245, 158, 11, 0.3)' : i === 1 ? 'rgba(148, 163, 184, 0.3)' : i === 2 ? 'rgba(180, 83, 9, 0.3)' : 'var(--glass-border)',
+                      color: i === 0 ? '#fbbf24' : i === 1 ? '#94a3b8' : i === 2 ? '#fb923c' : 'var(--text-muted)'
+                    }}
+                  >
+                    {i < 3 ? (i === 0 ? '🏅' : i === 1 ? '2' : '3') : i + 1}
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-[0.9rem] font-bold text-[var(--text-primary)]">{c.player_name}</div>
+                    <div className="text-[0.75rem] text-[var(--text-muted)]">{c.team_name}</div>
+                  </div>
+                  <div className="flex items-center gap-3 font-bold text-sm">
+                    {c.yellow_cards > 0 && (
+                      <div className="flex items-center gap-1.5 bg-yellow-500/10 border border-yellow-500/30 rounded-lg px-2.5 py-1 text-yellow-400">
+                        <div className="w-2.5 h-3.5 bg-yellow-400 rounded-[1px] rotate-6 shadow-[0_0_6px_rgba(250,204,21,0.4)]" />
+                        <span>{c.yellow_cards}</span>
+                      </div>
+                    )}
+                    {c.red_cards > 0 && (
+                      <div className="flex items-center gap-1.5 bg-red-500/10 border border-red-500/30 rounded-lg px-2.5 py-1 text-red-400">
+                        <div className="w-2.5 h-3.5 bg-red-500 rounded-[1px] rotate-6 shadow-[0_0_6px_rgba(239,68,68,0.4)]" />
+                        <span>{c.red_cards}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))
+            )
+          )}
         </div>
       )}
 

@@ -11,12 +11,12 @@
 6. **Testabile**: Possibilità di aggiungere un assist o ammonizione in Regia LIVE e verificare che compaia istantaneamente nelle classifiche dedicate del sito.
 
 ### Checklist
-- [ ] Creare una migrazione Supabase per definire le viste pubbliche `public.top_assists` e `public.top_cards`, e concedere i permessi di lettura (`GRANT SELECT`) ad utenti anonimi e autenticati.
-- [ ] Aggiornare il componente [ClassificaIsland.tsx](file:///c:/Users/s.ferrero/Code/The%20Cage/src/components/ClassificaIsland.tsx):
+- [x] Creare una migrazione Supabase per definire le viste pubbliche `public.top_assists` e `public.top_cards`, e concedere i permessi di lettura (`GRANT SELECT`) ad utenti anonimi e autenticati.
+- [x] Aggiornare il componente [ClassificaIsland.tsx](file:///c:/Users/s.ferrero/Code/The%20Cage/src/components/ClassificaIsland.tsx):
   - Aggiungere un menu di selezione sotto il tab "Giocatori" (Marcatori, Assistman, Sanzioni).
   - Interrogare le nuove viste `top_assists` e `top_cards` a seconda del tab attivo.
   - Creare layout a tabelle o liste per mostrare gli assistman ed i giocatori sanzionati con badge grafici per i cartellini gialli/rossi.
-- [ ] Aggiornare la console amministratore di regia LIVE in [LiveController.tsx](file:///c:/Users/s.ferrero/Code/The%20Cage/src/components/admin/LiveController.tsx) per consentire l'inserimento di eventi di tipo `ASSIST`.
+- [x] Aggiornare la console amministratore di regia LIVE in [LiveController.tsx](file:///c:/Users/s.ferrero/Code/The%20Cage/src/components/admin/LiveController.tsx) per consentire l'inserimento di eventi di tipo `ASSIST`.
 
 ## Specifiche Tecniche
 

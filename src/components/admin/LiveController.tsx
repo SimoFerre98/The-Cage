@@ -196,6 +196,7 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
                 required
               >
                 <option value="GOAL">⚽ Goal (Normale)</option>
+                <option value="ASSIST">🎯 Assist</option>
                 <option value="AMMONIZIONE">🟨 Cartellino Giallo</option>
                 <option value="ESPULSIONE">🟥 Cartellino Rosso</option>
                 <option value="CARTA">🃏 Carta Attivata</option>
