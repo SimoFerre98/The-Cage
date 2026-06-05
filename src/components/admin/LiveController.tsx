@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../../lib/supabase';
 import GlassEffect from '../GlassEffect';
 import type { AdminChildProps, Player } from './types';
@@ -17,8 +17,10 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
   const [eventTeamId, setEventTeamId] = useState('');
   const [eventPlayerId, setEventPlayerId] = useState('');
   const [eventType, setEventType] = useState('GOAL');
-  const [eventDetail, setEventDetail] = useState('');
   const [eventMinute, setEventMinute] = useState('');
+
+  // Modale di conferma eliminazione
+  const [confirmDeleteEvent, setConfirmDeleteEvent] = useState<any | null>(null);
 
   // Carica i giocatori solo quando cambia il match LIVE
   useEffect(() => {
@@ -41,38 +43,47 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
     });
   }, [liveMatch?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Carica e sottoscrivi gli eventi del match live
+  // Carica gli eventi del match live
+  const fetchEvents = useCallback(async () => {
+    if (!liveMatch) return;
+    const { data, error } = await supabase
+      .from('match_events')
+      .select(`
+        id,
+        minute,
+        type,
+        detail,
+        player:players(name)
+      `)
+      .eq('match_id', liveMatch.id)
+      .order('minute', { ascending: false });
+    if (!error && data) {
+      setEvents(data);
+    }
+  }, [liveMatch?.id]);
+
+  // Carica e sottoscrivi in realtime agli eventi del match live
   useEffect(() => {
     if (!liveMatch) {
       setEvents([]);
       return;
     }
 
-    const fetchEvents = async () => {
-      const { data, error } = await supabase
-        .from('match_events')
-        .select(`
-          id,
-          minute,
-          type,
-          detail,
-          player:players(name)
-        `)
-        .eq('match_id', liveMatch.id)
-        .order('minute', { ascending: false });
-      if (!error && data) {
-        setEvents(data);
-      }
-    };
-
     fetchEvents();
 
+    // Sottoscrizione non filtrata per match_id in Supabase Realtime per intercettare i DELETE (payload.old.id)
     const channel = supabase.channel(`live_controller_events_${liveMatch.id}`)
       .on(
         'postgres_changes',
-        { event: '*', schema: 'public', table: 'match_events', filter: `match_id=eq.${liveMatch.id}` },
-        () => {
-          fetchEvents();
+        { event: '*', schema: 'public', table: 'match_events' },
+        (payload) => {
+          if (payload.eventType === 'DELETE') {
+            // Su eliminazione ricarichiamo gli eventi del match corrente
+            fetchEvents();
+          } else if (payload.new && payload.new.match_id === liveMatch.id) {
+            // Per inserimento ed aggiornamento controlliamo se appartiene al match live
+            fetchEvents();
+          }
         }
       )
       .subscribe();
@@ -80,17 +91,25 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [liveMatch?.id]);
+  }, [liveMatch?.id, fetchEvents]);
 
   // ── Handlers ─────────────────────────────────────────────────────────────
 
-  const handleDeleteEvent = async (eventId: string) => {
-    if (!confirm('Sei sicuro di voler eliminare questo evento? (Nota: se elimini un gol, ricordati di aggiornare anche il punteggio sopra)')) return;
+  const performDeleteEvent = async (eventId: string) => {
+    const previousEvents = [...events];
+
+    // Aggiornamento ottimistico: sparisce istantaneamente (0ms latenza)
+    setEvents(prev => prev.filter(ev => ev.id !== eventId));
+
     const { error } = await supabase
       .from('match_events')
       .delete()
       .eq('id', eventId);
+
     if (error) {
+      // In caso di errore ripristina lo stato precedente
+      setEvents(previousEvents);
+      fetchEvents();
       alert('Errore nell\'eliminazione dell\'evento: ' + error.message);
     }
   };
@@ -107,18 +126,25 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
     e.preventDefault();
     if (!liveMatch || !eventTeamId || !eventType || !eventMinute) return;
 
+    let finalType = eventType;
+    let finalDetail = null;
+
+    if (eventType.startsWith('CARTA_')) {
+      finalType = 'CARTA';
+      finalDetail = eventType.replace('CARTA_', '');
+    }
+
     const { error } = await supabase.from('match_events').insert([{
       match_id: liveMatch.id,
       team_id: eventTeamId,
       player_id: eventPlayerId || null,
       minute: parseInt(eventMinute),
-      type: eventType,
-      detail: eventDetail || null,
+      type: finalType,
+      detail: finalDetail,
     }]);
 
     if (!error) {
       setEventMinute('');
-      setEventDetail('');
       setEventPlayerId('');
       alert('Evento aggiunto con successo e visibile live!');
     } else {
@@ -252,30 +278,14 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
                 <option value="ASSIST">🎯 Assist</option>
                 <option value="AMMONIZIONE">🟨 Cartellino Giallo</option>
                 <option value="ESPULSIONE">🟥 Cartellino Rosso</option>
-                <option value="CARTA">🃏 Carta Attivata</option>
+                <option value="CARTA_penalty">🃏 Carta: Penalty 🎯</option>
+                <option value="CARTA_shootout">🃏 Carta: Shootout ⚡</option>
+                <option value="CARTA_suspension">🃏 Carta: Suspension ⛔</option>
+                <option value="CARTA_goalx2">🃏 Carta: Goal X2 🔥</option>
+                <option value="CARTA_starplayer">🃏 Carta: Star Player 🌟</option>
+                <option value="CARTA_joker">🃏 Carta: Joker 🃏</option>
               </select>
             </div>
-
-            {eventType === 'CARTA' && (
-              <div className="w-full flex flex-col items-center">
-                <label className="text-xs text-white/60 font-bold uppercase tracking-wider mb-2 text-center">Quale Carta?</label>
-                <select
-                  value={eventDetail}
-                  onChange={e => setEventDetail(e.target.value)}
-                  className="w-[80%] bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-3 text-white outline-none border-purple-500/50 focus:border-purple-500 h-[48px] text-center custom-select"
-                  style={{ textAlignLast: 'center' }}
-                  required
-                >
-                  <option value="">-- Seleziona Carta --</option>
-                  <option value="penalty">Penalty 🎯</option>
-                  <option value="shootout">Shootout ⚡</option>
-                  <option value="suspension">Suspension ⛔</option>
-                  <option value="goalx2">Goal X2 🔥</option>
-                  <option value="starplayer">Star Player 🌟</option>
-                  <option value="joker">Joker 🃏</option>
-                </select>
-              </div>
-            )}
 
             <div className="w-full flex flex-col items-center">
               <label className="text-xs text-white/60 font-bold uppercase tracking-wider mb-2 text-center">Minuto</label>
@@ -324,7 +334,7 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
                     </div>
                   </div>
                   <button
-                    onClick={() => handleDeleteEvent(ev.id)}
+                    onClick={() => setConfirmDeleteEvent(ev)}
                     className="px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/25 border border-red-500/20 text-red-400 hover:text-red-300 text-xs font-bold transition-all cursor-pointer"
                   >
                     Elimina 🗑
@@ -339,6 +349,95 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
           )}
         </div>
       </GlassEffect>
+
+      {/* Custom Confirmation Modal */}
+      {confirmDeleteEvent && (
+        <div className="modal-overlay" onClick={() => setConfirmDeleteEvent(null)} style={{ zIndex: 99999 }}>
+          <div className="w-full max-w-[400px] px-4" onClick={e => e.stopPropagation()}>
+            <GlassEffect
+              className="w-full rounded-[28px] p-6 md:p-8 relative overflow-hidden text-center"
+              contentClassName="flex flex-col items-center"
+              style={{ display: 'block' }}
+            >
+              {/* Ambient background glows */}
+              <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-[rgba(239,68,68,0.25)] blur-[40px] pointer-events-none" />
+              <div className="absolute -bottom-10 -left-10 w-32 h-32 rounded-full bg-[rgba(139,92,246,0.2)] blur-[40px] pointer-events-none" />
+
+              {/* Icon header */}
+              <div className="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-4 z-10 relative">
+                <span className="text-3xl text-red-500">🗑️</span>
+              </div>
+
+              <h3 className="text-xl font-extrabold tracking-tight text-white mb-3 z-10 relative">
+                Elimina Evento
+              </h3>
+
+              {/* Event Summary Card */}
+              <div className="w-full bg-white/5 border border-white/[0.04] p-4 rounded-xl mb-4 text-left shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)] z-10 relative">
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">
+                    {confirmDeleteEvent.type === 'GOAL' 
+                      ? '⚽' 
+                      : confirmDeleteEvent.type === 'ASSIST' 
+                        ? '🎯' 
+                        : confirmDeleteEvent.type === 'YELLOW_CARD' || confirmDeleteEvent.type === 'AMMONIZIONE' 
+                          ? '🟨' 
+                          : confirmDeleteEvent.type === 'RED_CARD' || confirmDeleteEvent.type === 'ESPULSIONE' 
+                            ? '🟥' 
+                            : '🃏'}
+                  </span>
+                  <div className="flex flex-col">
+                    <span className="text-sm font-bold text-white">
+                      {confirmDeleteEvent.type === 'GOAL' 
+                        ? 'Gol' 
+                        : confirmDeleteEvent.type === 'ASSIST' 
+                          ? 'Assist' 
+                          : confirmDeleteEvent.type === 'YELLOW_CARD' || confirmDeleteEvent.type === 'AMMONIZIONE' 
+                            ? 'Ammonizione' 
+                            : confirmDeleteEvent.type === 'RED_CARD' || confirmDeleteEvent.type === 'ESPULSIONE' 
+                              ? 'Espulsione' 
+                              : `Carta (${confirmDeleteEvent.detail || 'Attivata'})`}
+                    </span>
+                    <span className="text-xs text-white/50">
+                      {confirmDeleteEvent.player?.name || 'Giocatore Sconosciuto'} ({confirmDeleteEvent.minute}')
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <p className="text-sm text-white/70 mb-6 px-1 z-10 relative leading-relaxed">
+                Sei sicuro di voler eliminare questo evento dalla timeline?
+                {confirmDeleteEvent.type === 'GOAL' && (
+                  <span className="block mt-3 text-xs text-amber-300 font-bold bg-amber-500/10 border border-amber-500/20 p-2.5 rounded-lg leading-normal">
+                    ⚠️ Se elimini un gol, ricordati di aggiornare il punteggio del match manualmente.
+                  </span>
+                )}
+              </p>
+
+              <div className="flex gap-3 justify-center w-full z-10 relative">
+                <button
+                  type="button"
+                  onClick={() => setConfirmDeleteEvent(null)}
+                  className="flex-1 py-3 px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold text-sm transition-all cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  Annulla
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const id = confirmDeleteEvent.id;
+                    setConfirmDeleteEvent(null);
+                    performDeleteEvent(id);
+                  }}
+                  className="flex-1 py-3 px-4 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-sm transition-all cursor-pointer shadow-[0_0_15px_rgba(239,68,68,0.3)] hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  Elimina
+                </button>
+              </div>
+            </GlassEffect>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
