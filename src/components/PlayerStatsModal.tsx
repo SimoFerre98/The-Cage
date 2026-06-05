@@ -157,47 +157,39 @@ export default function PlayerStatsModal({ playerId, onClose }: PlayerStatsModal
               {/* Stats Grid */}
               <div className="grid grid-cols-2 gap-4 mb-6">
                 {/* Gol */}
-                <div className="flex items-center gap-3 bg-white/5 border border-white/[0.04] p-3 rounded-xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
-                  <span className="text-2xl">⚽</span>
-                  <div className="flex flex-col">
-                    <span className="text-[0.65rem] font-bold text-white/40 uppercase tracking-wide">Gol Segnati</span>
-                    <span className="text-lg font-black text-white">{stats.goals}</span>
-                  </div>
+                <div className="flex flex-col items-center justify-center text-center bg-white/5 border border-white/[0.04] p-3 rounded-xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
+                  <span className="text-2xl mb-1">⚽</span>
+                  <span className="text-[0.65rem] font-bold text-white/40 uppercase tracking-wide">Gol Segnati</span>
+                  <span className="text-lg font-black text-white mt-0.5">{stats.goals}</span>
                 </div>
 
                 {/* Ammonizioni */}
-                <div className="flex items-center gap-3 bg-white/5 border border-white/[0.04] p-3 rounded-xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
-                  <span className="text-2xl">🟨</span>
-                  <div className="flex flex-col">
-                    <span className="text-[0.65rem] font-bold text-white/40 uppercase tracking-wide">Ammonizioni</span>
-                    <span className="text-lg font-black text-yellow-400">{stats.yellows}</span>
-                  </div>
+                <div className="flex flex-col items-center justify-center text-center bg-white/5 border border-white/[0.04] p-3 rounded-xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
+                  <span className="text-2xl mb-1">🟨</span>
+                  <span className="text-[0.65rem] font-bold text-white/40 uppercase tracking-wide">Ammonizioni</span>
+                  <span className="text-lg font-black text-yellow-400 mt-0.5">{stats.yellows}</span>
                 </div>
 
                 {/* Espulsioni */}
-                <div className="flex items-center gap-3 bg-white/5 border border-white/[0.04] p-3 rounded-xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
-                  <span className="text-2xl">🟥</span>
-                  <div className="flex flex-col">
-                    <span className="text-[0.65rem] font-bold text-white/40 uppercase tracking-wide">Espulsioni</span>
-                    <span className="text-lg font-black text-red-500">{stats.reds}</span>
-                  </div>
+                <div className="flex flex-col items-center justify-center text-center bg-white/5 border border-white/[0.04] p-3 rounded-xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
+                  <span className="text-2xl mb-1">🟥</span>
+                  <span className="text-[0.65rem] font-bold text-white/40 uppercase tracking-wide">Espulsioni</span>
+                  <span className="text-lg font-black text-red-500 mt-0.5">{stats.reds}</span>
                 </div>
 
                 {/* Carte Speciali */}
-                <div className="flex items-center gap-3 bg-white/5 border border-white/[0.04] p-3 rounded-xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
-                  <span className="text-2xl">🃏</span>
-                  <div className="flex flex-col">
-                    <span className="text-[0.65rem] font-bold text-white/40 uppercase tracking-wide">Carte Giocate</span>
-                    <span className="text-lg font-black text-purple-400">{stats.powerCards}</span>
-                  </div>
+                <div className="flex flex-col items-center justify-center text-center bg-white/5 border border-white/[0.04] p-3 rounded-xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
+                  <span className="text-2xl mb-1">🃏</span>
+                  <span className="text-[0.65rem] font-bold text-white/40 uppercase tracking-wide">Carte Giocate</span>
+                  <span className="text-lg font-black text-purple-400 mt-0.5">{stats.powerCards}</span>
                 </div>
               </div>
 
               {/* Match History / Timeline */}
-              <div className="flex flex-col flex-1 min-h-0">
-                <h4 className="text-xs font-bold text-white/50 uppercase tracking-wider mb-3 px-1">Cronologia Eventi</h4>
+              <div className="flex flex-col flex-1 min-h-0 w-full">
+                <h4 className="text-xs font-bold text-white/50 uppercase tracking-wider mb-3 px-1 text-center">Cronologia Eventi</h4>
                 <div 
-                  className="flex flex-col gap-2.5 max-h-[220px] overflow-y-auto pr-1 scrollbar-thin"
+                  className="flex flex-col gap-2.5 max-h-[220px] overflow-y-auto pr-1 scrollbar-thin items-center w-full"
                   style={{ scrollbarWidth: 'thin' }}
                 >
                   {history.length > 0 ? (
@@ -213,7 +205,7 @@ export default function PlayerStatsModal({ playerId, onClose }: PlayerStatsModal
                             : `Power Card (${h.detail || 'Attivata'})`;
 
                       return (
-                        <div key={i} className="flex items-center justify-between bg-black/15 border border-white/5 p-3 rounded-xl">
+                        <div key={i} className="flex items-center justify-between bg-black/15 border border-white/5 p-3 rounded-xl w-[80%] flex-shrink-0">
                           <div className="flex items-center gap-3 min-w-0">
                             <span className="text-base flex-shrink-0">{emoji}</span>
                             <div className="flex flex-col min-w-0">
@@ -233,7 +225,7 @@ export default function PlayerStatsModal({ playerId, onClose }: PlayerStatsModal
                       );
                     })
                   ) : (
-                    <div className="text-center text-white/40 text-xs italic py-8 border border-white/5 bg-black/10 rounded-xl">
+                    <div className="text-center text-white/40 text-xs italic py-8 border border-white/5 bg-black/10 rounded-xl w-[80%]">
                       Nessun evento registrato in archivio per questo giocatore.
                     </div>
                   )}

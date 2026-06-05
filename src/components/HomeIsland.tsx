@@ -273,8 +273,8 @@ export default function HomeIsland() {
               </div>
 
               {/* Info orario / Pulsante live */}
-              <div className="flex justify-between items-center w-full pt-3 border-t border-[var(--glass-border)]">
-                <span className="text-[0.7rem] font-semibold text-white/45">
+              <div className="flex justify-between items-center w-full pt-4 border-t border-[var(--glass-border)] mt-4">
+                <span className="text-[0.75rem] font-semibold text-white/55">
                   {featuredMatch.type === 'UPCOMING' 
                     ? new Date(featuredMatch.match.match_date).toLocaleString('it-IT', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })
                     : new Date(featuredMatch.match.match_date).toLocaleString('it-IT', { day: '2-digit', month: 'short' })}
@@ -282,16 +282,18 @@ export default function HomeIsland() {
                 {featuredMatch.type === 'LIVE' ? (
                   <a 
                     href="/live" 
-                    className="text-[0.7rem] font-black text-red-400 hover:text-red-300 uppercase tracking-wider flex items-center gap-1 active:scale-95 transition-all"
+                    className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-[0.7rem] font-black text-red-400 uppercase tracking-wider transition-all hover:scale-[1.03] active:scale-[0.97] cursor-pointer"
                   >
-                    Segui Diretta 📺
+                    <span>Segui Diretta</span>
+                    <span>📺</span>
                   </a>
                 ) : (
                   <a 
                     href="/calendario" 
-                    className="text-[0.7rem] font-bold text-blue-400 hover:text-blue-300 uppercase tracking-wider flex items-center gap-1 active:scale-95 transition-all"
+                    className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 text-[0.7rem] font-bold text-blue-400 uppercase tracking-wider transition-all hover:scale-[1.03] active:scale-[0.97] cursor-pointer"
                   >
-                    Calendario 📅
+                    <span>Calendario</span>
+                    <span>📅</span>
                   </a>
                 )}
               </div>
@@ -344,12 +346,13 @@ export default function HomeIsland() {
                     ))}
                   </tbody>
                 </table>
-                <div className="pt-2 border-t border-[var(--glass-border)] text-right w-full mt-2">
+                <div className="pt-4 border-t border-[var(--glass-border)] flex justify-end w-full mt-4">
                   <a 
                     href="/classifica" 
-                    className="text-[0.7rem] font-bold text-blue-400 hover:text-blue-300 uppercase tracking-wider flex items-center gap-1 justify-end active:scale-95 transition-all"
+                    className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 text-[0.7rem] font-bold text-blue-400 uppercase tracking-wider transition-all hover:scale-[1.03] active:scale-[0.97] cursor-pointer"
                   >
-                    Classifica Completa 🏆
+                    <span>Classifica Completa</span>
+                    <span>🏆</span>
                   </a>
                 </div>
               </div>
