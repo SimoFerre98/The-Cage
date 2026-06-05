@@ -97,28 +97,51 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
           </span>
         </div>
 
-        <div className="flex items-center justify-between gap-6 max-w-2xl mx-auto">
-          {/* Home */}
-          <div className="flex flex-col items-center flex-1">
-            <h3 className="text-lg md:text-xl font-bold text-white text-center mb-6">{liveMatch.home_team.name}</h3>
-            <div className="flex items-center gap-5">
-              <button onClick={() => updateScore(-1, 0)} className="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-xl flex items-center justify-center transition-colors border border-white/5">-</button>
-              <div className="text-6xl md:text-7xl font-black text-white w-20 text-center select-none">{liveMatch.home_score}</div>
-              <button onClick={() => updateScore(1, 0)} className="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-xl flex items-center justify-center transition-colors border border-white/5">+</button>
+        {/* Mobile: colonna | Desktop: riga fianco a fianco */}
+        <div className="flex flex-col md:flex-row items-center justify-center gap-6 w-full">
+
+          {/* Home team */}
+          <div className="flex flex-col items-center flex-1 w-full min-w-0">
+            <h3 className="text-base md:text-xl font-bold text-white text-center mb-4 leading-tight px-2 break-words w-full">
+              {liveMatch.home_team.name}
+            </h3>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => updateScore(-1, 0)}
+                className="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-xl flex items-center justify-center transition-colors border border-white/5 flex-shrink-0"
+              >-</button>
+              <div className="text-6xl md:text-7xl font-black text-white w-16 md:w-20 text-center select-none">
+                {liveMatch.home_score}
+              </div>
+              <button
+                onClick={() => updateScore(1, 0)}
+                className="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-xl flex items-center justify-center transition-colors border border-white/5 flex-shrink-0"
+              >+</button>
             </div>
           </div>
 
-          <div className="text-5xl font-light text-white/30 select-none">:</div>
+          <div className="text-4xl md:text-5xl font-light text-white/30 select-none flex-shrink-0">:</div>
 
-          {/* Away */}
-          <div className="flex flex-col items-center flex-1">
-            <h3 className="text-lg md:text-xl font-bold text-white text-center mb-6">{liveMatch.away_team.name}</h3>
-            <div className="flex items-center gap-5">
-              <button onClick={() => updateScore(0, -1)} className="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-xl flex items-center justify-center transition-colors border border-white/5">-</button>
-              <div className="text-6xl md:text-7xl font-black text-white w-20 text-center select-none">{liveMatch.away_score}</div>
-              <button onClick={() => updateScore(0, 1)} className="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-xl flex items-center justify-center transition-colors border border-white/5">+</button>
+          {/* Away team */}
+          <div className="flex flex-col items-center flex-1 w-full min-w-0">
+            <h3 className="text-base md:text-xl font-bold text-white text-center mb-4 leading-tight px-2 break-words w-full">
+              {liveMatch.away_team.name}
+            </h3>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => updateScore(0, -1)}
+                className="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-xl flex items-center justify-center transition-colors border border-white/5 flex-shrink-0"
+              >-</button>
+              <div className="text-6xl md:text-7xl font-black text-white w-16 md:w-20 text-center select-none">
+                {liveMatch.away_score}
+              </div>
+              <button
+                onClick={() => updateScore(0, 1)}
+                className="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-xl flex items-center justify-center transition-colors border border-white/5 flex-shrink-0"
+              >+</button>
             </div>
           </div>
+
         </div>
       </GlassEffect>
 
