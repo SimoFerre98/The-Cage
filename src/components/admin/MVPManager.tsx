@@ -3,6 +3,15 @@ import { supabase } from '../../lib/supabase';
 import GlassEffect from '../GlassEffect';
 import type { AdminChildProps } from './types';
 
+// Genera le iniziali da un nome (es. "Mario Rossi" → "MR")
+const AVATAR_INITIALS = (name: string) => {
+  if (!name) return '?';
+  const parts = name.trim().split(' ');
+  if (parts.length >= 2) return (parts[0][0] + (parts[1][0] || '')).toUpperCase();
+  return name.slice(0, 2).toUpperCase();
+};
+
+
 export default function MVPManager({ teams, players }: AdminChildProps) {
   const [candidates, setCandidates] = useState<any[]>([]);
   const [selectedTeamId, setSelectedTeamId] = useState('');
