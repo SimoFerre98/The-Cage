@@ -23,8 +23,7 @@
     2. Creare una squadra di test ("Test Team") ed un giocatore di test ("Test Player").
     3. Creare un match di test nel calendario.
     4. Navigare sul Regia LIVE e simulare il salvataggio di un evento (gol di "Test Player").
-    5. Aggiungere il giocatore ai candidati MVP, votarlo, ed effettuare il reset completo.
-    6. Cancellare la squadra ed il match di test per ripulire il database.
+    5. Cancellare la squadra ed il match di test per ripulire il database.
 
 ## Specifiche Tecniche
 - I toast verranno inseriti in uno stato globale del pannello admin (`AdminApp.tsx`) e rimossi automaticamente dopo 3 secondi utilizzando un timer.

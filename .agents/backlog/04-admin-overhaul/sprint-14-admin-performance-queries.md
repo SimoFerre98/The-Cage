@@ -13,7 +13,7 @@
 ### Checklist
 - [ ] **State Lifting (Sollevamento dello Stato)**:
   - Spostare gli stati comuni di squadre (`teams`), giocatori (`players`) e partite (`matches`) a livello del componente padre [Dashboard.tsx](file:///c:/Users/s.ferrero/Code/The%20Cage/src/components/admin/Dashboard.tsx).
-  - Condividere questi stati e le funzioni di aggiornamento come props ai componenti figli (`TeamsPlayersManager`, `MatchesManager`, `LiveController`, `MVPManager`).
+  - Condividere questi stati e le funzioni di aggiornamento come props ai componenti figli (`TeamsPlayersManager`, `MatchesManager`, `LiveController`).
   - Questo eliminerà il caricamento dati ad ogni cambio tab (tempo di transizione ridotto a **0ms** con **0 chiamate al DB**).
 - [ ] **Flicker-Free / Caricamenti Silenti**:
   - Rimuovere il blocco di caricamento a schermo intero (`loading = true`) durante l'inserimento o la cancellazione di record (squadre, giocatori, partite, candidati).
