@@ -304,21 +304,7 @@ export default function CalendarioIsland() {
                     }}
                   >
                     {/* Flowing red border layer */}
-                    <div
-                      className="border-glow-flow-red"
-                      style={{
-                        position: 'absolute',
-                        inset: 0,
-                        borderRadius: '20px',
-                        padding: '2px', // border size
-                        WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-                        WebkitMaskComposite: 'xor',
-                        mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-                        maskComposite: 'exclude',
-                        pointerEvents: 'none',
-                        zIndex: 10,
-                      }}
-                    />
+                    <div className="live-flowing-border" />
                     {cardContent}
                   </a>
                 </div>
