@@ -200,6 +200,9 @@ export default function ClassificaIsland() {
           </GlassEffect>
         </div>
 
+        {/* Spacer bilanciamento per centratura perfetta */}
+        <div className="w-12 h-12 flex-shrink-0 pointer-events-none" />
+
       </div>
 
       {/* Classifica Squadre */}
