@@ -158,6 +158,21 @@ export default function ClassificaIsland() {
       {/* Controls Container */}
       <div className="flex items-center justify-center gap-4 w-full mb-14 px-4 max-w-[460px] mx-auto sticky top-[85px] md:top-8 z-[120] transition-all duration-300">
         
+        {/* Legend Button */}
+        <GlassEffect className="w-12 h-12 rounded-full flex items-center justify-center cursor-pointer flex-shrink-0 hover:scale-105 active:scale-95 transition-all duration-300">
+          <button
+            onClick={() => setShowLegend(true)}
+            className="w-full h-full flex items-center justify-center text-white outline-none cursor-pointer"
+            aria-label="Info legenda"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-5 h-5 opacity-70 hover:opacity-100 transition-opacity">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="16" x2="12" y2="12" />
+              <line x1="12" y1="8" x2="12.01" y2="8" />
+            </svg>
+          </button>
+        </GlassEffect>
+
         {/* Pill Toggle */}
         <div className="flex-1 w-full max-w-[360px]">
           <GlassEffect className="w-full rounded-[50px] p-2 cursor-pointer">
@@ -185,20 +200,6 @@ export default function ClassificaIsland() {
           </GlassEffect>
         </div>
 
-        {/* Legend Button */}
-        <GlassEffect className="w-12 h-12 rounded-full flex items-center justify-center cursor-pointer flex-shrink-0 hover:scale-105 active:scale-95 transition-all duration-300">
-          <button
-            onClick={() => setShowLegend(true)}
-            className="w-full h-full flex items-center justify-center text-white outline-none cursor-pointer"
-            aria-label="Info legenda"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-5 h-5 opacity-70 hover:opacity-100 transition-opacity">
-              <circle cx="12" cy="12" r="10" />
-              <line x1="12" y1="16" x2="12" y2="12" />
-              <line x1="12" y1="8" x2="12.01" y2="8" />
-            </svg>
-          </button>
-        </GlassEffect>
       </div>
 
       {/* Classifica Squadre */}

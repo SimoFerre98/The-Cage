@@ -95,20 +95,7 @@ export default function Dashboard() {
       <div className="flex items-center justify-between pb-4 border-b border-white/10 mt-4">
         <div>
           <h1 className="text-3xl font-black text-white drop-shadow-md">Dashboard</h1>
-          <div className="flex items-center gap-2 mt-1">
-            <p className="text-white/60 text-sm">Gestione dati e regia</p>
-            {realtimeStatus === 'connected' ? (
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 border border-green-500/25 flex items-center gap-1 font-extrabold tracking-wide uppercase">
-                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-                Realtime Attivo
-              </span>
-            ) : (
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-yellow-500/10 text-yellow-400 border border-yellow-500/25 flex items-center gap-1 font-extrabold tracking-wide uppercase">
-                <span className="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></span>
-                In connessione...
-              </span>
-            )}
-          </div>
+          <p className="text-white/60 text-sm mt-1">Gestione dati e regia</p>
         </div>
         <button
           onClick={handleLogout}
