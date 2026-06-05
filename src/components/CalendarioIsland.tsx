@@ -292,25 +292,9 @@ export default function CalendarioIsland() {
                   className="relative pointer-events-auto rounded-[20px] group transition-all duration-700"
                   style={{ marginBottom: '1rem' }}
                 >
-                  {/* Flowing red border layer */}
-                  <div
-                    className="border-glow-flow-red"
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      borderRadius: '20px',
-                      padding: '2px', // border size
-                      WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-                      WebkitMaskComposite: 'xor',
-                      mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-                      maskComposite: 'exclude',
-                      pointerEvents: 'none',
-                      zIndex: 10,
-                    }}
-                  />
                   <a
                     href="/live"
-                    className="glass-card live-card-inner menu-glow-pulse-red"
+                    className="glass-card menu-glow-pulse-red"
                     style={{
                       display: 'block',
                       textDecoration: 'none',
@@ -319,6 +303,22 @@ export default function CalendarioIsland() {
                       border: '1px solid transparent', // Keep transparent border to prevent layout shifts
                     }}
                   >
+                    {/* Flowing red border layer */}
+                    <div
+                      className="border-glow-flow-red"
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        borderRadius: '20px',
+                        padding: '2px', // border size
+                        WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                        WebkitMaskComposite: 'xor',
+                        mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                        maskComposite: 'exclude',
+                        pointerEvents: 'none',
+                        zIndex: 10,
+                      }}
+                    />
                     {cardContent}
                   </a>
                 </div>
