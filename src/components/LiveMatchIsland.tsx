@@ -504,11 +504,11 @@ export default function LiveMatchIsland() {
 
           {tab === 'lineups' && (
             <div className="w-full pt-8 pb-24 flex flex-col gap-6 animate-[slideUpFade_0.4s_var(--ease-apple)]">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="liquid-glass-stack-wrapper w-full h-full">
                   <GlassEffect 
                     className="rounded-2xl border-[var(--glass-border)] h-full w-full"
-                    contentClassName="p-4 flex flex-col gap-2.5 w-full h-full"
+                    contentClassName="pt-6 px-5 pb-5 flex flex-col gap-3 w-full h-full"
                   >
                     <h3 className="text-xs font-black text-red-400 uppercase tracking-widest mb-3 border-b border-[var(--glass-border)] pb-2 text-center truncate">{homeName}</h3>
                     <div className="flex flex-col gap-2">
@@ -542,7 +542,7 @@ export default function LiveMatchIsland() {
                 <div className="liquid-glass-stack-wrapper w-full h-full">
                   <GlassEffect 
                     className="rounded-2xl border-[var(--glass-border)] h-full w-full"
-                    contentClassName="p-4 flex flex-col gap-2.5 w-full h-full"
+                    contentClassName="pt-6 px-5 pb-5 flex flex-col gap-3 w-full h-full"
                   >
                     <h3 className="text-xs font-black text-blue-400 uppercase tracking-widest mb-3 border-b border-[var(--glass-border)] pb-2 text-center truncate">{awayName}</h3>
                     <div className="flex flex-col gap-2">
@@ -581,7 +581,7 @@ export default function LiveMatchIsland() {
               <div className="liquid-glass-stack-wrapper w-full">
                 <GlassEffect 
                   className="rounded-2xl border-[var(--glass-border)] w-full"
-                  contentClassName="p-5 flex flex-col gap-5 w-full font-semibold"
+                  contentClassName="pt-6 px-5 pb-5 flex flex-col gap-5 w-full font-semibold"
                 >
                   <div className="flex justify-between items-center text-xs font-black uppercase tracking-wider text-[var(--text-muted)] border-b border-[var(--glass-border)] pb-3">
                     <span className="text-red-400 truncate max-w-[150px]">{homeName}</span>
