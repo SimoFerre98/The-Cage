@@ -59,7 +59,7 @@ const GlassEffect: React.FC<GlassEffectProps> = ({
       <div
         className="absolute inset-0 z-20 pointer-events-none opacity-0 group-hover/glass:opacity-100 transition-opacity duration-300"
         style={{
-          background: "radial-gradient(150px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(255, 255, 255, 0.08), transparent 80%)",
+          background: "radial-gradient(150px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), var(--spotlight-color, rgba(255, 255, 255, 0.08)), transparent 80%)",
           borderRadius: "inherit",
         }}
       />
@@ -70,7 +70,7 @@ const GlassEffect: React.FC<GlassEffectProps> = ({
         style={{
           border: "1px solid transparent",
           borderRadius: "inherit",
-          background: "radial-gradient(120px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(59, 130, 246, 0.35), rgba(139, 92, 246, 0.1) 60%, transparent 100%) border-box",
+          background: "radial-gradient(120px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), var(--hover-glow-start, rgba(59, 130, 246, 0.35)), var(--hover-glow-end, rgba(139, 92, 246, 0.1)) 60%, transparent 100%) border-box",
           WebkitMask: "linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)",
           WebkitMaskComposite: "destination-out",
           maskComposite: "exclude",
@@ -82,7 +82,7 @@ const GlassEffect: React.FC<GlassEffectProps> = ({
         className="absolute inset-0 z-30 overflow-hidden pointer-events-none"
         style={{
           boxShadow:
-            "inset 2px 2px 1px 0 rgba(255, 255, 255, 0.3), inset -1px -1px 1px 1px rgba(255, 255, 255, 0.2)",
+            "var(--card-inner-glow, inset 1px 1px 1px 0 rgba(255, 255, 255, 0.15), inset -1px -1px 1px 0 rgba(255, 255, 255, 0.08))",
           borderRadius: "inherit",
         }}
       />

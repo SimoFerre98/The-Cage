@@ -24,9 +24,34 @@ export default function ConfirmModal({
 }: ConfirmModalProps) {
   if (!isOpen) return null;
 
-  const confirmBg = type === 'danger' 
+  const isDanger = type === 'danger';
+  const confirmBg = isDanger 
     ? 'bg-gradient-to-r from-red-600 to-rose-500 hover:from-red-500 hover:to-rose-400 border-red-500/40 shadow-[0_4px_15px_rgba(239,68,68,0.4)]'
     : 'bg-gradient-to-r from-blue-600 to-indigo-500 hover:from-blue-500 hover:to-indigo-400 border-blue-500/40 shadow-[0_4px_15px_rgba(59,130,246,0.35)]';
+
+  const borderStyle = isDanger 
+    ? '1px solid rgba(239, 68, 68, 0.25)' 
+    : '1px solid rgba(59, 130, 246, 0.25)';
+      
+  const hoverGlowStart = isDanger 
+    ? 'rgba(239, 68, 68, 0.35)' 
+    : 'rgba(59, 130, 246, 0.35)';
+      
+  const hoverGlowEnd = isDanger 
+    ? 'rgba(239, 68, 68, 0.05)' 
+    : 'rgba(59, 130, 246, 0.05)';
+      
+  const innerGlow = isDanger
+    ? 'inset 1.5px 1.5px 1.5px 0 rgba(239, 68, 68, 0.25), inset -1px -1px 1px 0 rgba(255, 255, 255, 0.04)'
+    : 'inset 1.5px 1.5px 1.5px 0 rgba(59, 130, 246, 0.25), inset -1px -1px 1px 0 rgba(255, 255, 255, 0.04)';
+      
+  const stackBorderColor = isDanger 
+    ? 'rgba(239, 68, 68, 0.18)' 
+    : 'rgba(59, 130, 246, 0.18)';
+      
+  const stackGlowColor = isDanger 
+    ? 'rgba(239, 68, 68, 0.03)' 
+    : 'rgba(59, 130, 246, 0.03)';
 
   return (
     <div 
@@ -38,18 +63,28 @@ export default function ConfirmModal({
         onClick={e => e.stopPropagation()} 
         className="w-full max-w-[400px] px-4"
       >
-        <div className="liquid-glass-stack-wrapper w-full">
+        <div 
+          className="liquid-glass-stack-wrapper w-full"
+          style={{
+            '--stack-border-color': stackBorderColor,
+            '--stack-glow-color': stackGlowColor,
+          } as React.CSSProperties}
+        >
           <GlassEffect 
-            className="w-full rounded-[24px] p-6 relative overflow-hidden" 
-            contentClassName="flex flex-col items-center text-center"
-            style={{ display: 'block' }}
+            className="w-full rounded-[24px] relative overflow-hidden" 
+            contentClassName="p-6 md:p-8 flex flex-col items-center text-center"
+            style={{ 
+              display: 'block',
+              border: borderStyle,
+              '--hover-glow-start': hoverGlowStart,
+              '--hover-glow-end': hoverGlowEnd,
+              '--card-inner-glow': innerGlow,
+            } as React.CSSProperties}
           >
             {/* Ambient background glows */}
-            {type === 'danger' ? (
-              <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-[rgba(239,68,68,0.25)] blur-[40px] pointer-events-none" />
-            ) : (
-              <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-[rgba(59,130,246,0.25)] blur-[40px] pointer-events-none" />
-            )}
+            <div className={`absolute -top-10 -right-10 w-32 h-32 rounded-full blur-[40px] pointer-events-none ${
+              isDanger ? 'bg-[rgba(239,68,68,0.25)]' : 'bg-[rgba(59,130,246,0.25)]'
+            }`} />
 
             {/* Icon */}
             <div className="text-3xl mb-3">

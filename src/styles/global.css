@@ -226,7 +226,7 @@ body {
 /* Active Tab Class for Liquid Glass Track */
 .liquid-glass-tab-active {
   background: var(--glass-bg-hover);
-  border: 1px solid var(--glass-border-light) !important;
+  border: 1px solid rgba(59, 130, 246, 0.35) !important;
   color: var(--text-primary) !important;
   box-shadow: 
     0 4px 12px var(--accent-glow),
@@ -246,8 +246,8 @@ body {
   position: absolute;
   inset: 0;
   border-radius: 20px; /* Matches standard rounded-2xl */
-  border: 1px solid var(--glass-border);
-  background: var(--glass-bg);
+  border: 1px solid var(--stack-border-color, var(--glass-border));
+  background: var(--stack-glow-color, var(--glass-bg));
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   pointer-events: none;

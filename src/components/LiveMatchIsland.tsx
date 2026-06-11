@@ -468,7 +468,11 @@ export default function LiveMatchIsland() {
                       </div>
                       
                       <div className="flex-shrink-0 z-10 px-1.5">
-                         <div className="w-10 h-10 rounded-full flex items-center justify-center text-[0.85rem] font-bold text-white border border-white/45 bg-white/10 backdrop-blur-md shadow-[0_0_15px_rgba(0,0,0,0.5)]">
+                         <div className={`w-10 h-10 rounded-full flex items-center justify-center text-[0.8rem] font-black backdrop-blur-md shadow-[0_0_12px_rgba(0,0,0,0.4)] border transition-all duration-300 ${
+                           isHome 
+                             ? 'border-red-500/40 bg-red-950/25 text-red-400 shadow-[0_0_8px_rgba(239,68,68,0.15)]' 
+                             : 'border-blue-500/40 bg-blue-950/25 text-blue-400 shadow-[0_0_8px_rgba(59,130,246,0.15)]'
+                         }`}>
                            {ev.minute}'
                          </div>
                       </div>
@@ -505,10 +509,22 @@ export default function LiveMatchIsland() {
           {tab === 'lineups' && (
             <div className="w-full pt-8 pb-24 flex flex-col gap-6 animate-[slideUpFade_0.4s_var(--ease-apple)]">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="liquid-glass-stack-wrapper w-full h-full">
+                <div 
+                  className="liquid-glass-stack-wrapper w-full h-full"
+                  style={{
+                    '--stack-border-color': 'rgba(239, 68, 68, 0.18)',
+                    '--stack-glow-color': 'rgba(239, 68, 68, 0.03)',
+                  } as React.CSSProperties}
+                >
                   <GlassEffect 
-                    className="rounded-2xl border-[var(--glass-border)] h-full w-full"
+                    className="rounded-2xl h-full w-full"
                     contentClassName="pt-6 px-5 pb-5 flex flex-col gap-3 w-full h-full"
+                    style={{ 
+                      border: '1px solid rgba(239, 68, 68, 0.25)',
+                      '--hover-glow-start': 'rgba(239, 68, 68, 0.35)',
+                      '--hover-glow-end': 'rgba(239, 68, 68, 0.05)',
+                      '--card-inner-glow': 'inset 1.5px 1.5px 1.5px 0 rgba(239, 68, 68, 0.25), inset -1px -1px 1px 0 rgba(255, 255, 255, 0.04)'
+                    } as React.CSSProperties}
                   >
                     <h3 className="text-xs font-black text-red-400 uppercase tracking-widest mb-3 border-b border-[var(--glass-border)] pb-2 text-center truncate">{homeName}</h3>
                     <div className="flex flex-col gap-2">
@@ -518,7 +534,7 @@ export default function LiveMatchIsland() {
                         homePlayers.map((p, idx) => (
                           <div 
                             key={p.id} 
-                            className="relative flex items-center justify-between bg-black/10 hover:bg-black/20 dark:hover:bg-white/5 border border-[var(--glass-border)] hover:border-red-500/30 rounded-xl px-3.5 py-3 transition-all duration-300 group/player cursor-pointer"
+                            className="relative flex items-center justify-between bg-black/10 hover:bg-black/20 dark:hover:bg-white/5 border border-transparent hover:border-red-500/30 rounded-xl px-3.5 py-3 transition-all duration-300 group/player cursor-pointer"
                             onClick={() => setSelectedPlayerId(p.id)}
                           >
                             <div className="flex items-center gap-2.5 min-w-0">
@@ -539,10 +555,22 @@ export default function LiveMatchIsland() {
                   </GlassEffect>
                 </div>
 
-                <div className="liquid-glass-stack-wrapper w-full h-full">
+                <div 
+                  className="liquid-glass-stack-wrapper w-full h-full"
+                  style={{
+                    '--stack-border-color': 'rgba(59, 130, 246, 0.18)',
+                    '--stack-glow-color': 'rgba(59, 130, 246, 0.03)',
+                  } as React.CSSProperties}
+                >
                   <GlassEffect 
-                    className="rounded-2xl border-[var(--glass-border)] h-full w-full"
+                    className="rounded-2xl h-full w-full"
                     contentClassName="pt-6 px-5 pb-5 flex flex-col gap-3 w-full h-full"
+                    style={{ 
+                      border: '1px solid rgba(59, 130, 246, 0.25)',
+                      '--hover-glow-start': 'rgba(59, 130, 246, 0.35)',
+                      '--hover-glow-end': 'rgba(59, 130, 246, 0.05)',
+                      '--card-inner-glow': 'inset 1.5px 1.5px 1.5px 0 rgba(59, 130, 246, 0.25), inset -1px -1px 1px 0 rgba(255, 255, 255, 0.04)'
+                    } as React.CSSProperties}
                   >
                     <h3 className="text-xs font-black text-blue-400 uppercase tracking-widest mb-3 border-b border-[var(--glass-border)] pb-2 text-center truncate">{awayName}</h3>
                     <div className="flex flex-col gap-2">
@@ -552,7 +580,7 @@ export default function LiveMatchIsland() {
                         awayPlayers.map((p, idx) => (
                           <div 
                             key={p.id} 
-                            className="relative flex items-center justify-between bg-black/10 hover:bg-black/20 dark:hover:bg-white/5 border border-[var(--glass-border)] hover:border-blue-500/30 rounded-xl px-3.5 py-3 transition-all duration-300 group/player cursor-pointer"
+                            className="relative flex items-center justify-between bg-black/10 hover:bg-black/20 dark:hover:bg-white/5 border border-transparent hover:border-blue-500/30 rounded-xl px-3.5 py-3 transition-all duration-300 group/player cursor-pointer"
                             onClick={() => setSelectedPlayerId(p.id)}
                           >
                             <div className="flex items-center gap-2.5 min-w-0">
@@ -578,10 +606,22 @@ export default function LiveMatchIsland() {
 
           {tab === 'stats' && (
             <div className="w-full pt-8 pb-24 flex flex-col gap-6 animate-[slideUpFade_0.4s_var(--ease-apple)]">
-              <div className="liquid-glass-stack-wrapper w-full">
+              <div 
+                className="liquid-glass-stack-wrapper w-full"
+                style={{
+                  '--stack-border-color': 'rgba(139, 92, 246, 0.18)',
+                  '--stack-glow-color': 'rgba(139, 92, 246, 0.03)',
+                } as React.CSSProperties}
+              >
                 <GlassEffect 
-                  className="rounded-2xl border-[var(--glass-border)] w-full"
+                  className="rounded-2xl w-full"
                   contentClassName="pt-6 px-5 pb-5 flex flex-col gap-5 w-full font-semibold"
+                  style={{ 
+                    border: '1px solid rgba(139, 92, 246, 0.25)',
+                    '--hover-glow-start': 'rgba(139, 92, 246, 0.35)',
+                    '--hover-glow-end': 'rgba(139, 92, 246, 0.05)',
+                    '--card-inner-glow': 'inset 1.5px 1.5px 1.5px 0 rgba(139, 92, 246, 0.25), inset -1px -1px 1px 0 rgba(255, 255, 255, 0.04)'
+                  } as React.CSSProperties}
                 >
                   <div className="flex justify-between items-center text-xs font-black uppercase tracking-wider text-[var(--text-muted)] border-b border-[var(--glass-border)] pb-3">
                     <span className="text-red-400 truncate max-w-[150px]">{homeName}</span>
@@ -603,6 +643,13 @@ export default function LiveMatchIsland() {
         <PlayerStatsModal 
           playerId={selectedPlayerId} 
           onClose={() => setSelectedPlayerId(null)} 
+          themeColor={
+            homePlayers.some(p => p.id === selectedPlayerId)
+              ? 'home'
+              : awayPlayers.some(p => p.id === selectedPlayerId)
+                ? 'away'
+                : 'neutral'
+          }
         />
       )}
     </div>
