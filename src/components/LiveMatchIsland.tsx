@@ -24,8 +24,6 @@ const TEAM_IDX: Record<string, number> = {
 };
 
 export default function LiveMatchIsland() {
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
-  const containerRef = React.useRef<HTMLDivElement>(null);
   const [liveMatch, setLiveMatch] = useState<any>(null);
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -201,26 +199,7 @@ export default function LiveMatchIsland() {
     };
   }, [liveMatch?.id, matchId, loading]);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left - width / 2;
-    const mouseY = e.clientY - rect.top - height / 2;
-    
-    // Tilt limit to +/- 10 degrees.
-    const degX = -(mouseY / (height / 2)) * 10;
-    const degY = (mouseX / (width / 2)) * 10;
-    
-    setTilt({ x: degX, y: degY });
-  };
 
-  const handleMouseLeave = () => {
-    setTilt({ x: 0, y: 0 });
-  };
-
-  const isTilting = tilt.x !== 0 || tilt.y !== 0;
 
   if (loading) return <div className="p-8 text-center text-white">Caricamento diretta...</div>;
   
@@ -279,17 +258,12 @@ export default function LiveMatchIsland() {
 
   return (
     <div className="flex flex-col w-full text-white min-h-screen">
-      {/* Header HUD Container with Perspective */}
+      {/* Header HUD Container */}
       <div 
-        ref={containerRef}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
         className="relative w-full overflow-hidden border-b border-white/10"
         style={{ 
           height: '280px', 
-          perspective: '1000px', 
           boxShadow: '0 10px 40px rgba(0,0,0,0.6)',
-          transformStyle: 'preserve-3d',
         }}
       >
         {/* Blurred Stadium Background */}
@@ -304,8 +278,8 @@ export default function LiveMatchIsland() {
         <div className="absolute inset-0 bg-gradient-to-b from-[#03050a]/90 via-[#03050a]/50 to-[#03050a]/95" />
 
         {/* Ambient team glows */}
-        <div className="absolute top-1/2 left-[15%] -translate-y-1/2 w-48 h-48 rounded-full bg-red-600/15 blur-[60px] pointer-events-none" />
-        <div className="absolute top-1/2 right-[15%] -translate-y-1/2 w-48 h-48 rounded-full bg-blue-500/15 blur-[60px] pointer-events-none" />
+        <div className="absolute top-1/2 left-[15%] -translate-y-1/2 w-48 h-48 rounded-full bg-red-600/15 blur-[60px] pointer-events-none animate-glow-pulse-red" />
+        <div className="absolute top-1/2 right-[15%] -translate-y-1/2 w-48 h-48 rounded-full bg-blue-500/15 blur-[60px] pointer-events-none animate-glow-pulse-blue" />
 
         {/* Top Navbar */}
         <div className="absolute top-5 left-6 right-6 flex items-center justify-between z-30">
@@ -339,29 +313,16 @@ export default function LiveMatchIsland() {
           <div className="w-9"></div> {/* Spacer */}
         </div>
 
-        {/* Parallax Content Container */}
-        <div
-          className={`absolute inset-0 w-full h-full z-20 flex items-center justify-center pt-8 ${!isTilting ? 'live-field-float' : ''}`}
-          style={{
-            transform: isTilting ? `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)` : undefined,
-            transformStyle: 'preserve-3d',
-            transition: isTilting ? 'transform 0.1s ease-out' : 'transform 0.6s ease-out',
-          }}
-        >
+        {/* Dashboard Content Container */}
+        <div className="absolute inset-0 w-full h-full z-20 flex items-center justify-center pt-8 live-field-float">
           {/* Main Dashboard Panel */}
-          <div 
-            className="flex items-center justify-between w-full max-w-[440px] px-6"
-            style={{ transform: 'translateZ(60px)', transformStyle: 'preserve-3d' }}
-          >
+          <div className="flex items-center justify-between w-full max-w-[440px] px-6">
             {/* Home Team */}
-            <div className="flex flex-col items-center flex-1 min-w-0" style={{ transformStyle: 'preserve-3d' }}>
-              <div 
-                className="relative group cursor-pointer"
-                style={{ transform: 'translateZ(10px)' }}
-              >
+            <div className="flex flex-col items-center flex-1 min-w-0">
+              <div className="relative group cursor-pointer">
                 {/* Glowing neon ring backdrop */}
                 <div className="absolute -inset-1 rounded-full bg-gradient-to-b from-red-500 to-rose-600 opacity-20 blur-md group-hover:opacity-40 transition duration-500" />
-                <div className={`team-avatar avatar-${TEAM_IDX[homeName] ?? 0} !rounded-full w-16 h-16 border-2 border-red-500/40 text-lg font-black shadow-[0_8px_24px_rgba(239,68,68,0.25)] flex items-center justify-center`}>
+                <div className={`team-avatar avatar-${TEAM_IDX[homeName] ?? 0} !rounded-full w-16 h-16 border-2 border-red-500/40 text-lg font-black avatar-glow-home flex items-center justify-center`}>
                   {AVATAR_INITIALS(homeName)}
                 </div>
               </div>
@@ -374,7 +335,7 @@ export default function LiveMatchIsland() {
             </div>
 
             {/* Score & Status Center */}
-            <div className="flex flex-col items-center justify-center px-4" style={{ transform: 'translateZ(20px)' }}>
+            <div className="flex flex-col items-center justify-center px-4">
               {/* Status Indicator */}
               <div className="mb-3">
                 {liveMatch.status === 'LIVE' ? (
@@ -394,7 +355,7 @@ export default function LiveMatchIsland() {
               </div>
 
               {/* Glowing LED score */}
-              <div className="flex items-center gap-4 bg-black/45 border border-white/10 py-2.5 px-6 rounded-2xl shadow-[inset_0_1px_2px_rgba(255,255,255,0.05),0_8px_32px_rgba(0,0,0,0.4)] backdrop-blur-md">
+              <div className="flex items-center gap-4 bg-black/45 border border-white/10 py-2.5 px-6 rounded-2xl shadow-[inset_0_1px_2px_rgba(255,255,255,0.05),0_8px_32px_rgba(0,0,0,0.4)] backdrop-blur-md shimmer-sweep-container">
                 <span className="text-3xl font-black text-white tabular-nums tracking-normal">{homeScore}</span>
                 <span className="text-white/30 text-xl font-light">-</span>
                 <span className="text-3xl font-black text-white tabular-nums tracking-normal">{awayScore}</span>
@@ -407,14 +368,11 @@ export default function LiveMatchIsland() {
             </div>
 
             {/* Away Team */}
-            <div className="flex flex-col items-center flex-1 min-w-0" style={{ transformStyle: 'preserve-3d' }}>
-              <div 
-                className="relative group cursor-pointer"
-                style={{ transform: 'translateZ(10px)' }}
-              >
+            <div className="flex flex-col items-center flex-1 min-w-0">
+              <div className="relative group cursor-pointer">
                 {/* Glowing neon ring backdrop */}
                 <div className="absolute -inset-1 rounded-full bg-gradient-to-b from-blue-500 to-indigo-600 opacity-20 blur-md group-hover:opacity-40 transition duration-500" />
-                <div className={`team-avatar avatar-${TEAM_IDX[awayName] ?? 1} !rounded-full w-16 h-16 border-2 border-blue-500/40 text-lg font-black shadow-[0_8px_24px_rgba(59,130,246,0.25)] flex items-center justify-center`}>
+                <div className={`team-avatar avatar-${TEAM_IDX[awayName] ?? 1} !rounded-full w-16 h-16 border-2 border-blue-500/40 text-lg font-black avatar-glow-away flex items-center justify-center`}>
                   {AVATAR_INITIALS(awayName)}
                 </div>
               </div>
