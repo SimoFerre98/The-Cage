@@ -274,8 +274,13 @@ export default function LiveMatchIsland() {
           }}
         />
         
-        {/* Dark Vignette Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#03050a]/90 via-[#03050a]/50 to-[#03050a]/95" />
+        {/* Theme Vignette Overlay */}
+        <div 
+          className="absolute inset-0" 
+          style={{
+            background: 'linear-gradient(to bottom, var(--vignette-start) 40%, var(--vignette-mid) 75%, var(--vignette-end) 98%)'
+          }}
+        />
 
         {/* Ambient team glows */}
         <div className="absolute top-1/2 left-[15%] -translate-y-1/2 w-48 h-48 rounded-full bg-red-600/15 blur-[60px] pointer-events-none animate-glow-pulse-red" />
@@ -306,7 +311,7 @@ export default function LiveMatchIsland() {
           </GlassEffect>
 
           {/* Tournament Badge */}
-          <span className="text-[0.6rem] font-black text-white/40 uppercase tracking-widest bg-white/5 border border-white/10 px-3 py-1 rounded-full backdrop-blur-md">
+          <span className="text-[0.6rem] font-black text-[var(--text-muted)] uppercase tracking-widest bg-[var(--glass-bg)] border border-[var(--glass-border)] px-3 py-1 rounded-full backdrop-blur-md">
             Memorial Gerry • {liveMatch.round}
           </span>
 
@@ -327,8 +332,8 @@ export default function LiveMatchIsland() {
                 </div>
               </div>
               <span 
-                className="text-[0.75rem] font-black text-white mt-3 select-none uppercase tracking-wider truncate w-full text-center"
-                style={{ textShadow: '0 2px 4px rgba(0,0,0,0.6)' }}
+                className="text-[0.75rem] font-black text-[var(--text-primary)] mt-3 select-none uppercase tracking-wider truncate w-full text-center"
+                style={{ textShadow: '0 2px 4px rgba(0,0,0,0.4)' }}
               >
                 {homeName}
               </span>
@@ -344,7 +349,7 @@ export default function LiveMatchIsland() {
                     <span className="text-[0.6rem] font-black uppercase text-red-400 tracking-widest">Live</span>
                   </span>
                 ) : liveMatch.status === 'TERMINATA' ? (
-                  <span className="bg-white/5 border border-white/10 py-1 px-3 rounded-full text-white/50 text-[0.6rem] font-bold uppercase tracking-widest">
+                  <span className="bg-[var(--glass-bg)] border border-[var(--glass-border)] py-1 px-3 rounded-full text-[var(--text-secondary)] text-[0.6rem] font-bold uppercase tracking-widest">
                     Terminata
                   </span>
                 ) : (
@@ -355,14 +360,21 @@ export default function LiveMatchIsland() {
               </div>
 
               {/* Glowing LED score */}
-              <div className="flex items-center gap-4 bg-black/45 border border-white/10 py-2.5 px-6 rounded-2xl shadow-[inset_0_1px_2px_rgba(255,255,255,0.05),0_8px_32px_rgba(0,0,0,0.4)] backdrop-blur-md shimmer-sweep-container">
-                <span className="text-3xl font-black text-white tabular-nums tracking-normal">{homeScore}</span>
-                <span className="text-white/30 text-xl font-light">-</span>
-                <span className="text-3xl font-black text-white tabular-nums tracking-normal">{awayScore}</span>
+              <div 
+                className="flex items-center gap-4 py-2.5 px-6 rounded-2xl border backdrop-blur-md shimmer-sweep-container"
+                style={{
+                  background: 'var(--score-bg)',
+                  borderColor: 'var(--score-border)',
+                  boxShadow: 'var(--score-shadow)',
+                }}
+              >
+                <span className="text-3xl font-black text-[var(--text-primary)] tabular-nums tracking-normal">{homeScore}</span>
+                <span className="text-[var(--text-muted)] text-xl font-light">-</span>
+                <span className="text-3xl font-black text-[var(--text-primary)] tabular-nums tracking-normal">{awayScore}</span>
               </div>
 
               {/* Time display / subtitle */}
-              <span className="text-[0.65rem] font-semibold text-white/50 mt-3 bg-white/5 border border-white/5 py-0.5 px-2 rounded">
+              <span className="text-[0.65rem] font-semibold text-[var(--text-secondary)] mt-3 bg-[var(--glass-bg)] border border-[var(--glass-border)] py-0.5 px-2 rounded">
                 {liveMatch.status === 'LIVE' ? 'In corso...' : 'Match Terminato'}
               </span>
             </div>
@@ -377,8 +389,8 @@ export default function LiveMatchIsland() {
                 </div>
               </div>
               <span 
-                className="text-[0.75rem] font-black text-white mt-3 select-none uppercase tracking-wider truncate w-full text-center"
-                style={{ textShadow: '0 2px 4px rgba(0,0,0,0.6)' }}
+                className="text-[0.75rem] font-black text-[var(--text-primary)] mt-3 select-none uppercase tracking-wider truncate w-full text-center"
+                style={{ textShadow: '0 2px 4px rgba(0,0,0,0.4)' }}
               >
                 {awayName}
               </span>
@@ -389,7 +401,7 @@ export default function LiveMatchIsland() {
 
       {/* Glassmorphic Tabs Navigation */}
       <div className="flex justify-center w-full px-4 mt-6 z-10">
-        <div className="flex gap-1.5 bg-white/5 border border-white/10 rounded-full p-1 w-full max-w-[420px] backdrop-blur-md">
+        <div className="flex gap-1.5 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-full p-1 w-full max-w-[420px] backdrop-blur-md">
           {(['timeline', 'lineups', 'stats'] as const).map((t) => {
             const label = t === 'timeline' ? 'Cronologia' : t === 'lineups' ? 'Formazioni' : 'Statistiche';
             const isActive = tab === t;
@@ -399,8 +411,8 @@ export default function LiveMatchIsland() {
                 onClick={() => setTab(t)}
                 className={`flex-1 py-2.5 rounded-full font-bold text-[0.7rem] uppercase tracking-widest transition-all duration-300 cursor-pointer outline-none ${
                   isActive
-                    ? 'bg-gradient-to-r from-blue-600/30 to-indigo-500/30 border border-blue-500/40 text-white shadow-[0_2px_10px_rgba(59,130,246,0.25),inset_0_1px_1px_rgba(255,255,255,0.15)] scale-105'
-                    : 'text-white/50 hover:text-white border border-transparent'
+                    ? 'liquid-glass-tab-active'
+                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-transparent'
                 }`}
               >
                 {label}
@@ -493,89 +505,95 @@ export default function LiveMatchIsland() {
           {tab === 'lineups' && (
             <div className="w-full pt-8 pb-24 flex flex-col gap-6 animate-[slideUpFade_0.4s_var(--ease-apple)]">
               <div className="grid grid-cols-2 gap-4">
-                <GlassEffect 
-                  className="rounded-2xl border-[var(--glass-border)] flex-1"
-                  contentClassName="p-4 flex flex-col gap-2.5 w-full h-full"
-                >
-                  <h3 className="text-xs font-black text-red-400 uppercase tracking-widest mb-3 border-b border-white/5 pb-2 text-center truncate">{homeName}</h3>
-                  <div className="flex flex-col gap-2">
-                    {homePlayers.length === 0 ? (
-                      <div className="text-xs text-white/40 text-center py-4">Nessun giocatore registrato</div>
-                    ) : (
-                      homePlayers.map((p, idx) => (
-                        <div 
-                          key={p.id} 
-                          className="relative flex items-center justify-between bg-black/15 hover:bg-black/30 border border-white/5 hover:border-red-500/30 rounded-xl px-3.5 py-3 transition-all duration-300 group/player cursor-pointer"
-                          onClick={() => setSelectedPlayerId(p.id)}
-                        >
-                          <div className="flex items-center gap-2.5 min-w-0">
-                            <span className="text-white/30 font-mono text-[10px] w-3 text-center">{idx + 1}</span>
-                            <span className="font-bold text-white/90 group-hover/player:text-red-400 transition-colors truncate">
-                              {p.name}
-                            </span>
+                <div className="liquid-glass-stack-wrapper w-full h-full">
+                  <GlassEffect 
+                    className="rounded-2xl border-[var(--glass-border)] h-full w-full"
+                    contentClassName="p-4 flex flex-col gap-2.5 w-full h-full"
+                  >
+                    <h3 className="text-xs font-black text-red-400 uppercase tracking-widest mb-3 border-b border-[var(--glass-border)] pb-2 text-center truncate">{homeName}</h3>
+                    <div className="flex flex-col gap-2">
+                      {homePlayers.length === 0 ? (
+                        <div className="text-xs text-[var(--text-muted)] text-center py-4">Nessun Giocatore</div>
+                      ) : (
+                        homePlayers.map((p, idx) => (
+                          <div 
+                            key={p.id} 
+                            className="relative flex items-center justify-between bg-black/10 hover:bg-black/20 dark:hover:bg-white/5 border border-[var(--glass-border)] hover:border-red-500/30 rounded-xl px-3.5 py-3 transition-all duration-300 group/player cursor-pointer"
+                            onClick={() => setSelectedPlayerId(p.id)}
+                          >
+                            <div className="flex items-center gap-2.5 min-w-0">
+                              <span className="text-[var(--text-muted)] font-mono text-[10px] w-3 text-center">{idx + 1}</span>
+                              <span className="font-bold text-[var(--text-primary)] group-hover/player:text-red-400 transition-colors truncate">
+                                {p.name}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-2 flex-shrink-0">
+                              {playerGoals[p.id] && <span className="text-[10px] bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-full font-black text-red-400">⚽ {playerGoals[p.id]}</span>}
+                              {playerYellows[p.id] && <div className="w-2.5 h-3.5 rounded-[2px] bg-yellow-400 shadow-[0_0_6px_rgba(250,204,21,0.5)] rotate-12" />}
+                              {playerReds[p.id] && <div className="w-2.5 h-3.5 rounded-[2px] bg-red-600 shadow-[0_0_6px_rgba(220,38,38,0.5)] rotate-12" />}
+                            </div>
                           </div>
-                          <div className="flex items-center gap-2 flex-shrink-0">
-                            {playerGoals[p.id] && <span className="text-[10px] bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-full font-black text-red-400">⚽ {playerGoals[p.id]}</span>}
-                            {playerYellows[p.id] && <div className="w-2.5 h-3.5 rounded-[2px] bg-yellow-400 shadow-[0_0_6px_rgba(250,204,21,0.5)] rotate-12" />}
-                            {playerReds[p.id] && <div className="w-2.5 h-3.5 rounded-[2px] bg-red-600 shadow-[0_0_6px_rgba(220,38,38,0.5)] rotate-12" />}
-                          </div>
-                        </div>
-                      ))
-                    )}
-                  </div>
-                </GlassEffect>
+                        ))
+                      )}
+                    </div>
+                  </GlassEffect>
+                </div>
 
-                <GlassEffect 
-                  className="rounded-2xl border-[var(--glass-border)] flex-1"
-                  contentClassName="p-4 flex flex-col gap-2.5 w-full h-full"
-                >
-                  <h3 className="text-xs font-black text-blue-400 uppercase tracking-widest mb-3 border-b border-white/5 pb-2 text-center truncate">{awayName}</h3>
-                  <div className="flex flex-col gap-2">
-                    {awayPlayers.length === 0 ? (
-                      <div className="text-xs text-white/40 text-center py-4">Nessun giocatore registrato</div>
-                    ) : (
-                      awayPlayers.map((p, idx) => (
-                        <div 
-                          key={p.id} 
-                          className="relative flex items-center justify-between bg-black/15 hover:bg-black/30 border border-white/5 hover:border-blue-500/30 rounded-xl px-3.5 py-3 transition-all duration-300 group/player cursor-pointer"
-                          onClick={() => setSelectedPlayerId(p.id)}
-                        >
-                          <div className="flex items-center gap-2.5 min-w-0">
-                            <span className="text-white/30 font-mono text-[10px] w-3 text-center">{idx + 1}</span>
-                            <span className="font-bold text-white/90 group-hover/player:text-blue-400 transition-colors truncate">
-                              {p.name}
-                            </span>
+                <div className="liquid-glass-stack-wrapper w-full h-full">
+                  <GlassEffect 
+                    className="rounded-2xl border-[var(--glass-border)] h-full w-full"
+                    contentClassName="p-4 flex flex-col gap-2.5 w-full h-full"
+                  >
+                    <h3 className="text-xs font-black text-blue-400 uppercase tracking-widest mb-3 border-b border-[var(--glass-border)] pb-2 text-center truncate">{awayName}</h3>
+                    <div className="flex flex-col gap-2">
+                      {awayPlayers.length === 0 ? (
+                        <div className="text-xs text-[var(--text-muted)] text-center py-4">Nessun Giocatore</div>
+                      ) : (
+                        awayPlayers.map((p, idx) => (
+                          <div 
+                            key={p.id} 
+                            className="relative flex items-center justify-between bg-black/10 hover:bg-black/20 dark:hover:bg-white/5 border border-[var(--glass-border)] hover:border-blue-500/30 rounded-xl px-3.5 py-3 transition-all duration-300 group/player cursor-pointer"
+                            onClick={() => setSelectedPlayerId(p.id)}
+                          >
+                            <div className="flex items-center gap-2.5 min-w-0">
+                              <span className="text-[var(--text-muted)] font-mono text-[10px] w-3 text-center">{idx + 1}</span>
+                              <span className="font-bold text-[var(--text-primary)] group-hover/player:text-blue-400 transition-colors truncate">
+                                {p.name}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-2 flex-shrink-0">
+                              {playerGoals[p.id] && <span className="text-[10px] bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded-full font-black text-blue-400">⚽ {playerGoals[p.id]}</span>}
+                              {playerYellows[p.id] && <div className="w-2.5 h-3.5 rounded-[2px] bg-yellow-400 shadow-[0_0_6px_rgba(250,204,21,0.5)] rotate-12" />}
+                              {playerReds[p.id] && <div className="w-2.5 h-3.5 rounded-[2px] bg-red-600 shadow-[0_0_6px_rgba(220,38,38,0.5)] rotate-12" />}
+                            </div>
                           </div>
-                          <div className="flex items-center gap-2 flex-shrink-0">
-                            {playerGoals[p.id] && <span className="text-[10px] bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded-full font-black text-blue-400">⚽ {playerGoals[p.id]}</span>}
-                            {playerYellows[p.id] && <div className="w-2.5 h-3.5 rounded-[2px] bg-yellow-400 shadow-[0_0_6px_rgba(250,204,21,0.5)] rotate-12" />}
-                            {playerReds[p.id] && <div className="w-2.5 h-3.5 rounded-[2px] bg-red-600 shadow-[0_0_6px_rgba(220,38,38,0.5)] rotate-12" />}
-                          </div>
-                        </div>
-                      ))
-                    )}
-                  </div>
-                </GlassEffect>
+                        ))
+                      )}
+                    </div>
+                  </GlassEffect>
+                </div>
               </div>
             </div>
           )}
 
           {tab === 'stats' && (
             <div className="w-full pt-8 pb-24 flex flex-col gap-6 animate-[slideUpFade_0.4s_var(--ease-apple)]">
-              <GlassEffect 
-                className="rounded-2xl border-[var(--glass-border)] w-full"
-                contentClassName="p-5 flex flex-col gap-5 w-full font-semibold"
-              >
-                <div className="flex justify-between items-center text-xs font-black uppercase tracking-wider text-white/50 border-b border-white/5 pb-3">
-                  <span className="text-red-400 truncate max-w-[150px]">{homeName}</span>
-                  <span className="text-white/30">VS</span>
-                  <span className="text-blue-400 truncate max-w-[150px] text-right">{awayName}</span>
-                </div>
-                <StatRow label="Gol ⚽" homeVal={stats.home.goals} awayVal={stats.away.goals} homeCol="from-red-500 to-rose-500 shadow-[0_0_8px_rgba(239,68,68,0.3)]" awayCol="from-blue-500 to-indigo-500 shadow-[0_0_8px_rgba(59,130,246,0.3)]" />
-                <StatRow label="Ammonizioni 🟨" homeVal={stats.home.yellows} awayVal={stats.away.yellows} homeCol="from-yellow-400 to-yellow-500" awayCol="from-yellow-400 to-yellow-500" />
-                <StatRow label="Espulsioni 🟥" homeVal={stats.home.reds} awayVal={stats.away.reds} homeCol="from-red-600 to-red-700" awayCol="from-red-600 to-red-700" />
-                <StatRow label="Carte Giocate 🃏" homeVal={stats.home.powerCards} awayVal={stats.away.powerCards} homeCol="from-purple-500 to-pink-500" awayCol="from-purple-500 to-pink-500" />
-              </GlassEffect>
+              <div className="liquid-glass-stack-wrapper w-full">
+                <GlassEffect 
+                  className="rounded-2xl border-[var(--glass-border)] w-full"
+                  contentClassName="p-5 flex flex-col gap-5 w-full font-semibold"
+                >
+                  <div className="flex justify-between items-center text-xs font-black uppercase tracking-wider text-[var(--text-muted)] border-b border-[var(--glass-border)] pb-3">
+                    <span className="text-red-400 truncate max-w-[150px]">{homeName}</span>
+                    <span className="text-[var(--text-muted)]">VS</span>
+                    <span className="text-blue-400 truncate max-w-[150px] text-right">{awayName}</span>
+                  </div>
+                  <StatRow label="Gol ⚽" homeVal={stats.home.goals} awayVal={stats.away.goals} homeCol="from-red-500 to-rose-500 shadow-[0_0_8px_rgba(239,68,68,0.3)]" awayCol="from-blue-500 to-indigo-500 shadow-[0_0_8px_rgba(59,130,246,0.3)]" />
+                  <StatRow label="Ammonizioni 🟨" homeVal={stats.home.yellows} awayVal={stats.away.yellows} homeCol="from-yellow-400 to-yellow-500" awayCol="from-yellow-400 to-yellow-500" />
+                  <StatRow label="Espulsioni 🟥" homeVal={stats.home.reds} awayVal={stats.away.reds} homeCol="from-red-600 to-red-700" awayCol="from-red-600 to-red-700" />
+                  <StatRow label="Carte Giocate 🃏" homeVal={stats.home.powerCards} awayVal={stats.away.powerCards} homeCol="from-purple-500 to-pink-500" awayCol="from-purple-500 to-pink-500" />
+                </GlassEffect>
+              </div>
             </div>
           )}
         </div>

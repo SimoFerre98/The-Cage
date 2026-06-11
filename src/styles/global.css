@@ -2,12 +2,12 @@
 @import "tailwindcss";
 
 :root {
-  /* Liquid Glass Palette */
-  --bg-deep: #03050a;
-  --bg-mid: #0a0d18;
+  /* Liquid Glass Palette (Dark Mode - Default) */
+  --bg-deep: #0a0f1d;
+  --bg-mid: #151f32;
   --accent-primary: #3b82f6;
   --accent-secondary: #8b5cf6;
-  --accent-glow: rgba(59, 130, 246, 0.3);
+  --accent-glow: rgba(59, 130, 246, 0.35);
   
   /* Text */
   --text-primary: #ffffff;
@@ -18,14 +18,59 @@
   --glass-bg: rgba(20, 25, 40, 0.35);
   --glass-bg-hover: rgba(30, 35, 55, 0.45);
   --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-border-light: rgba(255, 255, 255, 0.15);
+  --glass-border-light: rgba(255, 255, 255, 0.16);
   --glass-blur: blur(20px);
   --inner-glow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
   --inner-glow-strong: inset 0 1px 2px rgba(255, 255, 255, 0.2);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --glass-hover: rgba(255, 255, 255, 0.1);
+
+  /* Scoreboard HUD specific */
+  --score-bg: rgba(0, 0, 0, 0.45);
+  --score-border: rgba(255, 255, 255, 0.10);
+  --score-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.05), 0 8px 32px rgba(0, 0, 0, 0.45);
+
+  --vignette-start: rgba(3, 5, 10, 0.9);
+  --vignette-mid: rgba(3, 5, 10, 0.5);
+  --vignette-end: rgba(3, 5, 10, 0.95);
   
   /* Easing */
   --ease-apple: cubic-bezier(0.25, 1, 0.5, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+:root.light-theme {
+  /* Liquid Glass Palette (Light Mode) */
+  --bg-deep: #f8fafc;
+  --bg-mid: #f1f5f9;
+  --accent-primary: #1d4ed8;
+  --accent-secondary: #6d28d9;
+  --accent-glow: rgba(29, 78, 216, 0.15);
+  
+  /* Text */
+  --text-primary: #0f172a;
+  --text-secondary: rgba(15, 23, 42, 0.7);
+  --text-muted: rgba(15, 23, 42, 0.45);
+  
+  /* Glass Tokens */
+  --glass-bg: rgba(255, 255, 255, 0.45);
+  --glass-bg-hover: rgba(255, 255, 255, 0.65);
+  --glass-border: rgba(15, 23, 42, 0.08);
+  --glass-border-light: rgba(15, 23, 42, 0.15);
+  --glass-blur: blur(20px);
+  --inner-glow: inset 0 1px 1px rgba(255, 255, 255, 0.65);
+  --inner-glow-strong: inset 0 1px 2px rgba(255, 255, 255, 0.85);
+  --glass-shadow: 0 8px 32px rgba(15, 23, 42, 0.06);
+  --glass-hover: rgba(15, 23, 42, 0.05);
+
+  /* Scoreboard HUD specific */
+  --score-bg: rgba(255, 255, 255, 0.55);
+  --score-border: rgba(15, 23, 42, 0.12);
+  --score-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5), 0 8px 32px rgba(15, 23, 42, 0.08);
+
+  --vignette-start: rgba(248, 250, 252, 0.85);
+  --vignette-mid: rgba(248, 250, 252, 0.45);
+  --vignette-end: rgba(248, 250, 252, 0.95);
 }
 
 * {
@@ -59,7 +104,7 @@ body {
   width: 100vw;
   height: 100vh; /* Fixed height prevents jumping when mobile URL bar hides */
   z-index: -1;
-  background: linear-gradient(rgba(3, 5, 10, 0.55), rgba(3, 5, 10, 0.85)), url('/Sfondo/Campoalternativo.jpg') center/cover no-repeat;
+  background: linear-gradient(var(--vignette-start), var(--vignette-mid)), url('/Sfondo/Campoalternativo.jpg') center/cover no-repeat;
   overflow: hidden;
   view-transition-name: fixed-background;
 }
@@ -72,6 +117,12 @@ body {
   opacity: 0.15;
   mix-blend-mode: screen;
   pointer-events: none;
+  transition: mix-blend-mode 0.3s, opacity 0.3s;
+}
+
+:root.light-theme .blob {
+  mix-blend-mode: multiply;
+  opacity: 0.12;
 }
 
 .blob-blue {
@@ -123,7 +174,7 @@ body {
 /* Glass Card Base */
 .glass-card {
   border: 1px solid var(--glass-border);
-  box-shadow: var(--inner-glow), 0 8px 32px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--inner-glow), var(--glass-shadow);
   border-radius: 20px;
   position: relative;
   isolation: isolate;
@@ -170,6 +221,60 @@ body {
 
 .glass-card:active::after {
   background: var(--glass-bg-hover);
+}
+
+/* Active Tab Class for Liquid Glass Track */
+.liquid-glass-tab-active {
+  background: var(--glass-bg-hover);
+  border: 1px solid var(--glass-border-light) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 
+    0 4px 12px var(--accent-glow),
+    var(--inner-glow-strong) !important;
+  transform: scale(1.05);
+}
+
+/* Stacked Glass Panels (from Setproduct Liquid Glass guide) */
+.liquid-glass-stack-wrapper {
+  position: relative;
+  z-index: 1;
+}
+
+.liquid-glass-stack-wrapper::before,
+.liquid-glass-stack-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px; /* Matches standard rounded-2xl */
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  pointer-events: none;
+  transition: all 0.3s var(--ease-apple);
+}
+
+.liquid-glass-stack-wrapper::before {
+  transform: translateY(6px) scale(0.97);
+  z-index: -1;
+  opacity: 0.65;
+}
+
+.liquid-glass-stack-wrapper::after {
+  transform: translateY(12px) scale(0.94);
+  z-index: -2;
+  opacity: 0.35;
+}
+
+/* On hover, let's make the stacked glass panels respond dynamically */
+.liquid-glass-stack-wrapper:hover::before {
+  transform: translateY(4px) scale(0.98);
+  opacity: 0.8;
+}
+
+.liquid-glass-stack-wrapper:hover::after {
+  transform: translateY(8px) scale(0.96);
+  opacity: 0.5;
 }
 
 /* Layout */

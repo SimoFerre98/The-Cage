@@ -48,7 +48,7 @@ export default function LiquidNav({ activePage }: { activePage: string }) {
                 key={index}
                 href={item.href}
                 className={`relative flex flex-col items-center justify-center w-[4.5rem] h-[4.5rem] rounded-[1.8rem] transition-all duration-700 cursor-pointer ${
-                  !isActive ? 'hover:bg-[rgba(255,255,255,0.1)] hover:scale-110' : ''
+                  !isActive ? 'hover:bg-[var(--glass-hover)] hover:scale-110' : ''
                 }`}
                 style={{
                   transformOrigin: 'center center',
@@ -58,17 +58,17 @@ export default function LiquidNav({ activePage }: { activePage: string }) {
               >
                 {isActive && (
                   <div
-                    className="absolute inset-0 bg-[rgba(59,130,246,0.3)] shadow-[inset_0_1px_4px_rgba(255,255,255,0.4)] rounded-[1.8rem] pointer-events-none"
+                    className="absolute inset-0 bg-[var(--accent-glow)] border border-[var(--glass-border-light)] shadow-[var(--inner-glow-strong)] rounded-[1.8rem] pointer-events-none"
                     style={{ viewTransitionName: 'nav-active-bubble' } as React.CSSProperties}
                   />
                 )}
                 <span
                   className="relative z-10 text-[1.8rem] drop-shadow-md"
-                  style={{ filter: isActive ? 'drop-shadow(0 0 8px rgba(255,255,255,0.6))' : 'none' }}
+                  style={{ filter: isActive ? 'drop-shadow(0 0 8px var(--accent-primary))' : 'none' }}
                 >
                   {item.icon}
                 </span>
-                <span className={`relative z-10 text-[0.65rem] mt-1 font-bold tracking-wide ${isActive ? 'text-white drop-shadow-md' : 'text-white/70'}`}>
+                <span className={`relative z-10 text-[0.65rem] mt-1 font-bold tracking-wide ${isActive ? 'text-[var(--text-primary)] font-extrabold' : 'text-[var(--text-secondary)]'}`}>
                   {item.label}
                 </span>
               </a>

@@ -35,7 +35,7 @@ const GlassEffect: React.FC<GlassEffectProps> = ({
     <div
       ref={cardRef}
       onMouseMove={handleMouseMove}
-      className={`relative flex font-semibold overflow-hidden text-white transition-all duration-700 group/glass ${className}`}
+      className={`relative flex font-semibold overflow-hidden text-[var(--text-primary)] transition-all duration-700 group/glass ${className}`}
       style={glassStyle}
     >
       {/* Glass Layers */}
@@ -50,7 +50,7 @@ const GlassEffect: React.FC<GlassEffectProps> = ({
       <div
         className="absolute inset-0 z-10 pointer-events-none"
         style={{
-          background: "rgba(255, 255, 255, 0.18)",
+          background: "var(--glass-bg)",
           borderRadius: "inherit",
         }}
       />
