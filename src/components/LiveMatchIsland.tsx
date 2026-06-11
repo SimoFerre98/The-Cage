@@ -9,6 +9,20 @@ const AVATAR_INITIALS = (name: string) => {
   return name.slice(0, 2).toUpperCase();
 };
 
+const TEAM_IDX: Record<string, number> = {
+  'Amatori Calcio Genova': 0,
+  'Tama': 1,
+  'Mario': 2,
+  'Corsi': 3,
+  'Montarsolo': 4,
+  'Dario': 5,
+  'Taverna': 6,
+  'UCG (Bairon)': 7,
+  'Samu Betti': 8,
+  'chainz Andrea Robbiano': 9,
+  'Martino Gonzalez': 10,
+};
+
 export default function LiveMatchIsland() {
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -265,175 +279,152 @@ export default function LiveMatchIsland() {
 
   return (
     <div className="flex flex-col w-full text-white min-h-screen">
-      {/* Header 3D Container with Perspective */}
+      {/* Header HUD Container with Perspective */}
       <div 
         ref={containerRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="relative w-full overflow-hidden border-b-[3px] border-[#382613]"
+        className="relative w-full overflow-hidden border-b border-white/10"
         style={{ 
-          height: '320px', 
+          height: '280px', 
           perspective: '1000px', 
-          boxShadow: '0 20px 50px rgba(0,0,0,0.9)',
+          boxShadow: '0 10px 40px rgba(0,0,0,0.6)',
           transformStyle: 'preserve-3d',
         }}
       >
-        {/* Layer 1: Background Field Image */}
+        {/* Blurred Stadium Background */}
         <div 
-          className="absolute inset-0 bg-cover bg-bottom bg-no-repeat animate-[fadeIn_1s_var(--ease-apple)]"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat filter blur-[3px] scale-105 opacity-60 animate-[fadeIn_1.2s_var(--ease-apple)]"
           style={{ 
             backgroundImage: `url('/Sfondo/3d-field.webp')`,
           }}
         />
         
-        {/* Layer 2: Ambient Lighting Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[rgba(0,0,0,0.8)] via-[rgba(0,0,0,0.2)] to-transparent" />
+        {/* Dark Vignette Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#03050a]/90 via-[#03050a]/50 to-[#03050a]/95" />
+
+        {/* Ambient team glows */}
+        <div className="absolute top-1/2 left-[15%] -translate-y-1/2 w-48 h-48 rounded-full bg-red-600/15 blur-[60px] pointer-events-none" />
+        <div className="absolute top-1/2 right-[15%] -translate-y-1/2 w-48 h-48 rounded-full bg-blue-500/15 blur-[60px] pointer-events-none" />
 
         {/* Top Navbar */}
         <div className="absolute top-5 left-6 right-6 flex items-center justify-between z-30">
-           <GlassEffect className="w-10 h-10 rounded-full hover:scale-105 active:scale-95 transition-all duration-300">
-             <a 
-               href="/calendario" 
-               className="w-full h-full flex items-center justify-center text-white" 
-               style={{ textDecoration: 'none' }}
-               aria-label="Torna al calendario"
-             >
-               <svg 
-                 xmlns="http://www.w3.org/2000/svg" 
-                 viewBox="0 0 24 24" 
-                 fill="none" 
-                 stroke="currentColor" 
-                 strokeWidth="3.5" 
-                 strokeLinecap="round" 
-                 strokeLinejoin="round" 
-                 className="w-5 h-5 text-white opacity-85 hover:opacity-100 transition-opacity -translate-x-[1px]"
-               >
-                 <polyline points="15 18 9 12 15 6" />
-               </svg>
-             </a>
-           </GlassEffect>
+          <GlassEffect className="w-9 h-9 rounded-full hover:scale-105 active:scale-95 transition-all duration-300">
+            <a 
+              href="/calendario" 
+              className="w-full h-full flex items-center justify-center text-white" 
+              style={{ textDecoration: 'none' }}
+              aria-label="Torna al calendario"
+            >
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="3.5" 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                className="w-4.5 h-4.5 text-white opacity-85 hover:opacity-100 transition-opacity -translate-x-[1px]"
+              >
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </a>
+          </GlassEffect>
 
-           {/* Dynamic match status badge */}
-           <div className="flex items-center gap-2 bg-black/35 backdrop-blur-md py-1.5 px-4 rounded-full border border-white/5 shadow-lg select-none">
-             {liveMatch.status === 'LIVE' ? (
-               <>
-                 <span className="relative flex h-2 w-2">
-                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
-                   <span className="relative inline-flex rounded-full h-2 w-2 bg-red-600 shadow-[0_0_8px_rgba(239,68,68,0.8)]"></span>
-                 </span>
-                 <span className="font-black tracking-widest text-xs md:text-sm text-red-400 drop-shadow-[0_2px_4px_rgba(239,68,68,0.2)] uppercase">
-                   Live
-                 </span>
-               </>
-             ) : liveMatch.status === 'TERMINATA' ? (
-               <>
-                 <span className="text-white/60 text-xs">✓</span>
-                 <span className="font-black tracking-widest text-xs md:text-sm text-white/60 uppercase">
-                   Terminata
-                 </span>
-               </>
-             ) : (
-               <>
-                 <span className="text-blue-400 text-xs">📅</span>
-                 <span className="font-black tracking-widest text-xs md:text-sm text-blue-400 uppercase">
-                   Prossima
-                 </span>
-               </>
-             )}
-           </div>
+          {/* Tournament Badge */}
+          <span className="text-[0.6rem] font-black text-white/40 uppercase tracking-widest bg-white/5 border border-white/10 px-3 py-1 rounded-full backdrop-blur-md">
+            Memorial Gerry • {liveMatch.round}
+          </span>
 
-           <div className="w-10"></div> {/* Spacer for perfect centering */}
+          <div className="w-9"></div> {/* Spacer */}
         </div>
 
-        {/* Tilted Parallax Container */}
+        {/* Parallax Content Container */}
         <div
-          className={`absolute inset-0 w-full h-full z-20 ${!isTilting ? 'live-field-float' : ''}`}
+          className={`absolute inset-0 w-full h-full z-20 flex items-center justify-center pt-8 ${!isTilting ? 'live-field-float' : ''}`}
           style={{
             transform: isTilting ? `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)` : undefined,
             transformStyle: 'preserve-3d',
             transition: isTilting ? 'transform 0.1s ease-out' : 'transform 0.6s ease-out',
           }}
         >
-          {/* Layer 3: Scoreboard */}
+          {/* Main Dashboard Panel */}
           <div 
-            className="absolute top-16 left-0 w-full flex justify-center"
-            style={{
-              transform: 'translateZ(75px)',
-            }}
+            className="flex items-center justify-between w-full max-w-[440px] px-6"
+            style={{ transform: 'translateZ(60px)', transformStyle: 'preserve-3d' }}
           >
-             <div className="flex items-center gap-6 text-6xl font-light drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)] tracking-widest tabular-nums select-none">
-               <span className="font-semibold text-white">{homeScore}</span>
-               <span className="text-white/60 text-4xl -translate-y-1">:</span>
-               <span className="font-semibold text-white">{awayScore}</span>
-             </div>
-          </div>
+            {/* Home Team */}
+            <div className="flex flex-col items-center flex-1 min-w-0" style={{ transformStyle: 'preserve-3d' }}>
+              <div 
+                className="relative group cursor-pointer"
+                style={{ transform: 'translateZ(10px)' }}
+              >
+                {/* Glowing neon ring backdrop */}
+                <div className="absolute -inset-1 rounded-full bg-gradient-to-b from-red-500 to-rose-600 opacity-20 blur-md group-hover:opacity-40 transition duration-500" />
+                <div className={`team-avatar avatar-${TEAM_IDX[homeName] ?? 0} !rounded-full w-16 h-16 border-2 border-red-500/40 text-lg font-black shadow-[0_8px_24px_rgba(239,68,68,0.25)] flex items-center justify-center`}>
+                  {AVATAR_INITIALS(homeName)}
+                </div>
+              </div>
+              <span 
+                className="text-[0.75rem] font-black text-white mt-3 select-none uppercase tracking-wider truncate w-full text-center"
+                style={{ textShadow: '0 2px 4px rgba(0,0,0,0.6)' }}
+              >
+                {homeName}
+              </span>
+            </div>
 
-          {/* Layer 4: Logos and Names */}
-          <div 
-            className="absolute bottom-10 left-0 w-full flex items-end justify-center"
-            style={{
-              transform: 'translateZ(55px)',
-              transformStyle: 'preserve-3d',
-            }}
-          >
-             <div 
-               className="relative flex items-center justify-between w-full max-w-[360px] px-10"
-               style={{ transformStyle: 'preserve-3d' }}
-             >
-                  {/* Home Team */}
-                  <div 
-                    className="relative flex flex-col items-center min-w-24"
-                    style={{ transformStyle: 'preserve-3d' }}
-                  >
-                     {/* Shadow on the grass */}
-                     <div 
-                       className="absolute -bottom-3 w-16 h-3 bg-black/60 blur-[4px] rounded-[100%]"
-                       style={{
-                         transform: 'translateZ(-45px)',
-                       }}
-                     />
-                     {/* Logo Shield */}
-                     <div 
-                       className="relative w-[4.5rem] h-[5.5rem] rounded-b-full bg-gradient-to-b from-red-600 to-red-800 border-[2px] border-yellow-400/80 shadow-2xl flex flex-col items-center justify-center font-black text-2xl text-white"
-                       style={{
-                         transform: 'translateZ(10px)',
-                       }}
-                     >
-                       <span className="text-xs uppercase tracking-widest text-yellow-300 mt-2 text-center leading-tight">{AVATAR_INITIALS(homeName)}</span>
-                     </div>
-                     {/* Full Name */}
-                     <span className="text-[10px] font-black text-white mt-2 select-none uppercase tracking-wider truncate max-w-[110px] text-center" style={{ transform: 'translateZ(15px)', textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>
-                       {homeName}
-                     </span>
-                  </div>
-                 
-                  {/* Away Team */}
-                  <div 
-                    className="relative flex flex-col items-center min-w-24"
-                    style={{ transformStyle: 'preserve-3d' }}
-                  >
-                     {/* Shadow on the grass */}
-                     <div 
-                       className="absolute -bottom-3 w-16 h-3 bg-black/60 blur-[4px] rounded-[100%]"
-                       style={{
-                         transform: 'translateZ(-45px)',
-                       }}
-                     />
-                     {/* Logo Shield */}
-                     <div 
-                       className="relative w-[4.5rem] h-[5.5rem] rounded-b-full bg-gradient-to-b from-blue-600 to-blue-900 border-[2px] border-yellow-400/80 shadow-2xl flex flex-col items-center justify-center font-black text-2xl text-white"
-                       style={{
-                         transform: 'translateZ(10px)',
-                       }}
-                     >
-                       <span className="text-[0.8rem] uppercase tracking-widest text-yellow-300 mt-2 text-center leading-tight">{AVATAR_INITIALS(awayName)}</span>
-                     </div>
-                     {/* Full Name */}
-                     <span className="text-[10px] font-black text-white mt-2 select-none uppercase tracking-wider truncate max-w-[110px] text-center" style={{ transform: 'translateZ(15px)', textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>
-                       {awayName}
-                     </span>
-                  </div>
-             </div>
+            {/* Score & Status Center */}
+            <div className="flex flex-col items-center justify-center px-4" style={{ transform: 'translateZ(20px)' }}>
+              {/* Status Indicator */}
+              <div className="mb-3">
+                {liveMatch.status === 'LIVE' ? (
+                  <span className="flex items-center gap-1.5 bg-red-500/15 border border-red-500/35 py-1 px-3 rounded-full animate-pulse">
+                    <span className="h-1.5 w-1.5 rounded-full bg-red-500"></span>
+                    <span className="text-[0.6rem] font-black uppercase text-red-400 tracking-widest">Live</span>
+                  </span>
+                ) : liveMatch.status === 'TERMINATA' ? (
+                  <span className="bg-white/5 border border-white/10 py-1 px-3 rounded-full text-white/50 text-[0.6rem] font-bold uppercase tracking-widest">
+                    Terminata
+                  </span>
+                ) : (
+                  <span className="bg-blue-500/10 border border-blue-500/25 py-1 px-3 rounded-full text-blue-400 text-[0.6rem] font-bold uppercase tracking-widest">
+                    Prossima
+                  </span>
+                )}
+              </div>
+
+              {/* Glowing LED score */}
+              <div className="flex items-center gap-4 bg-black/45 border border-white/10 py-2.5 px-6 rounded-2xl shadow-[inset_0_1px_2px_rgba(255,255,255,0.05),0_8px_32px_rgba(0,0,0,0.4)] backdrop-blur-md">
+                <span className="text-3xl font-black text-white tabular-nums tracking-normal">{homeScore}</span>
+                <span className="text-white/30 text-xl font-light">-</span>
+                <span className="text-3xl font-black text-white tabular-nums tracking-normal">{awayScore}</span>
+              </div>
+
+              {/* Time display / subtitle */}
+              <span className="text-[0.65rem] font-semibold text-white/50 mt-3 bg-white/5 border border-white/5 py-0.5 px-2 rounded">
+                {liveMatch.status === 'LIVE' ? 'In corso...' : 'Match Terminato'}
+              </span>
+            </div>
+
+            {/* Away Team */}
+            <div className="flex flex-col items-center flex-1 min-w-0" style={{ transformStyle: 'preserve-3d' }}>
+              <div 
+                className="relative group cursor-pointer"
+                style={{ transform: 'translateZ(10px)' }}
+              >
+                {/* Glowing neon ring backdrop */}
+                <div className="absolute -inset-1 rounded-full bg-gradient-to-b from-blue-500 to-indigo-600 opacity-20 blur-md group-hover:opacity-40 transition duration-500" />
+                <div className={`team-avatar avatar-${TEAM_IDX[awayName] ?? 1} !rounded-full w-16 h-16 border-2 border-blue-500/40 text-lg font-black shadow-[0_8px_24px_rgba(59,130,246,0.25)] flex items-center justify-center`}>
+                  {AVATAR_INITIALS(awayName)}
+                </div>
+              </div>
+              <span 
+                className="text-[0.75rem] font-black text-white mt-3 select-none uppercase tracking-wider truncate w-full text-center"
+                style={{ textShadow: '0 2px 4px rgba(0,0,0,0.6)' }}
+              >
+                {awayName}
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -448,10 +439,10 @@ export default function LiveMatchIsland() {
               <button
                 key={t}
                 onClick={() => setTab(t)}
-                className={`flex-1 py-2 rounded-full font-bold text-[0.75rem] uppercase tracking-widest transition-all duration-300 cursor-pointer ${
+                className={`flex-1 py-2.5 rounded-full font-bold text-[0.7rem] uppercase tracking-widest transition-all duration-300 cursor-pointer outline-none ${
                   isActive
-                    ? 'bg-blue-500/25 border border-blue-500/35 text-white shadow-[0_2px_8px_rgba(59,130,246,0.25)]'
-                    : 'text-white/60 hover:text-white border border-transparent'
+                    ? 'bg-gradient-to-r from-blue-600/30 to-indigo-500/30 border border-blue-500/40 text-white shadow-[0_2px_10px_rgba(59,130,246,0.25),inset_0_1px_1px_rgba(255,255,255,0.15)] scale-105'
+                    : 'text-white/50 hover:text-white border border-transparent'
                 }`}
               >
                 {label}
@@ -467,7 +458,7 @@ export default function LiveMatchIsland() {
           {tab === 'timeline' && (
             <div className="relative flex-1 w-full pt-8 pb-24 animate-[slideUpFade_0.4s_var(--ease-apple)]">
               <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-20 pointer-events-none"></div>
-              <div className="absolute top-0 bottom-0 left-1/2 w-[1px] bg-white/20 -translate-x-1/2"></div>
+              <div className="absolute top-0 bottom-0 left-1/2 w-[2px] bg-gradient-to-b from-blue-500/40 via-purple-500/40 to-transparent -translate-x-1/2 shadow-[0_0_8px_rgba(139,92,246,0.3)]"></div>
               
               <div className="flex flex-col gap-8 relative z-10">
                 {events.length === 0 ? (
@@ -549,22 +540,26 @@ export default function LiveMatchIsland() {
                   contentClassName="p-4 flex flex-col gap-2.5 w-full h-full"
                 >
                   <h3 className="text-xs font-black text-red-400 uppercase tracking-widest mb-3 border-b border-white/5 pb-2 text-center truncate">{homeName}</h3>
-                  <div className="flex flex-col gap-2.5">
+                  <div className="flex flex-col gap-2">
                     {homePlayers.length === 0 ? (
                       <div className="text-xs text-white/40 text-center py-4">Nessun giocatore registrato</div>
                     ) : (
                       homePlayers.map((p, idx) => (
-                        <div key={p.id} className="flex items-center justify-between text-xs py-1">
-                          <div className="flex items-center gap-2 min-w-0">
-                            <span className="text-white/30 font-mono text-[9px] w-3 text-center">{idx + 1}</span>
-                            <span onClick={() => setSelectedPlayerId(p.id)} className="font-bold text-white/90 truncate cursor-pointer hover:text-blue-400 transition-colors">
+                        <div 
+                          key={p.id} 
+                          className="relative flex items-center justify-between bg-black/15 hover:bg-black/30 border border-white/5 hover:border-red-500/30 rounded-xl px-3.5 py-3 transition-all duration-300 group/player cursor-pointer"
+                          onClick={() => setSelectedPlayerId(p.id)}
+                        >
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            <span className="text-white/30 font-mono text-[10px] w-3 text-center">{idx + 1}</span>
+                            <span className="font-bold text-white/90 group-hover/player:text-red-400 transition-colors truncate">
                               {p.name}
                             </span>
                           </div>
-                          <div className="flex items-center gap-1 flex-shrink-0">
-                            {playerGoals[p.id] && <span className="text-[9px] bg-white/5 border border-white/10 px-1 py-0.5 rounded font-bold text-white">⚽ {playerGoals[p.id]}</span>}
-                            {playerYellows[p.id] && <div className="w-2 h-3 rounded-[1px] bg-yellow-400" />}
-                            {playerReds[p.id] && <div className="w-2 h-3 rounded-[1px] bg-red-600" />}
+                          <div className="flex items-center gap-2 flex-shrink-0">
+                            {playerGoals[p.id] && <span className="text-[10px] bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-full font-black text-red-400">⚽ {playerGoals[p.id]}</span>}
+                            {playerYellows[p.id] && <div className="w-2.5 h-3.5 rounded-[2px] bg-yellow-400 shadow-[0_0_6px_rgba(250,204,21,0.5)] rotate-12" />}
+                            {playerReds[p.id] && <div className="w-2.5 h-3.5 rounded-[2px] bg-red-600 shadow-[0_0_6px_rgba(220,38,38,0.5)] rotate-12" />}
                           </div>
                         </div>
                       ))
@@ -577,22 +572,26 @@ export default function LiveMatchIsland() {
                   contentClassName="p-4 flex flex-col gap-2.5 w-full h-full"
                 >
                   <h3 className="text-xs font-black text-blue-400 uppercase tracking-widest mb-3 border-b border-white/5 pb-2 text-center truncate">{awayName}</h3>
-                  <div className="flex flex-col gap-2.5">
+                  <div className="flex flex-col gap-2">
                     {awayPlayers.length === 0 ? (
                       <div className="text-xs text-white/40 text-center py-4">Nessun giocatore registrato</div>
                     ) : (
                       awayPlayers.map((p, idx) => (
-                        <div key={p.id} className="flex items-center justify-between text-xs py-1">
-                          <div className="flex items-center gap-2 min-w-0">
-                            <span className="text-white/30 font-mono text-[9px] w-3 text-center">{idx + 1}</span>
-                            <span onClick={() => setSelectedPlayerId(p.id)} className="font-bold text-white/90 truncate cursor-pointer hover:text-blue-400 transition-colors">
+                        <div 
+                          key={p.id} 
+                          className="relative flex items-center justify-between bg-black/15 hover:bg-black/30 border border-white/5 hover:border-blue-500/30 rounded-xl px-3.5 py-3 transition-all duration-300 group/player cursor-pointer"
+                          onClick={() => setSelectedPlayerId(p.id)}
+                        >
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            <span className="text-white/30 font-mono text-[10px] w-3 text-center">{idx + 1}</span>
+                            <span className="font-bold text-white/90 group-hover/player:text-blue-400 transition-colors truncate">
                               {p.name}
                             </span>
                           </div>
-                          <div className="flex items-center gap-1 flex-shrink-0">
-                            {playerGoals[p.id] && <span className="text-[9px] bg-white/5 border border-white/10 px-1 py-0.5 rounded font-bold text-white">⚽ {playerGoals[p.id]}</span>}
-                            {playerYellows[p.id] && <div className="w-2 h-3 rounded-[1px] bg-yellow-400" />}
-                            {playerReds[p.id] && <div className="w-2 h-3 rounded-[1px] bg-red-600" />}
+                          <div className="flex items-center gap-2 flex-shrink-0">
+                            {playerGoals[p.id] && <span className="text-[10px] bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded-full font-black text-blue-400">⚽ {playerGoals[p.id]}</span>}
+                            {playerYellows[p.id] && <div className="w-2.5 h-3.5 rounded-[2px] bg-yellow-400 shadow-[0_0_6px_rgba(250,204,21,0.5)] rotate-12" />}
+                            {playerReds[p.id] && <div className="w-2.5 h-3.5 rounded-[2px] bg-red-600 shadow-[0_0_6px_rgba(220,38,38,0.5)] rotate-12" />}
                           </div>
                         </div>
                       ))
@@ -614,10 +613,10 @@ export default function LiveMatchIsland() {
                   <span className="text-white/30">VS</span>
                   <span className="text-blue-400 truncate max-w-[150px] text-right">{awayName}</span>
                 </div>
-                {renderStatRow('Goal ⚽', stats.home.goals, stats.away.goals, 'from-red-500 to-red-600', 'from-blue-500 to-blue-600')}
-                {renderStatRow('Ammonizioni 🟨', stats.home.yellows, stats.away.yellows, 'from-yellow-400 to-yellow-500', 'from-yellow-400 to-yellow-500')}
-                {renderStatRow('Espulsioni 🟥', stats.home.reds, stats.away.reds, 'from-red-600 to-red-700', 'from-red-600 to-red-700')}
-                {renderStatRow('Carte Giocate 🃏', stats.home.powerCards, stats.away.powerCards, 'from-purple-500 to-purple-600', 'from-purple-500 to-purple-600')}
+                <StatRow label="Gol ⚽" homeVal={stats.home.goals} awayVal={stats.away.goals} homeCol="from-red-500 to-rose-500 shadow-[0_0_8px_rgba(239,68,68,0.3)]" awayCol="from-blue-500 to-indigo-500 shadow-[0_0_8px_rgba(59,130,246,0.3)]" />
+                <StatRow label="Ammonizioni 🟨" homeVal={stats.home.yellows} awayVal={stats.away.yellows} homeCol="from-yellow-400 to-yellow-500" awayCol="from-yellow-400 to-yellow-500" />
+                <StatRow label="Espulsioni 🟥" homeVal={stats.home.reds} awayVal={stats.away.reds} homeCol="from-red-600 to-red-700" awayCol="from-red-600 to-red-700" />
+                <StatRow label="Carte Giocate 🃏" homeVal={stats.home.powerCards} awayVal={stats.away.powerCards} homeCol="from-purple-500 to-pink-500" awayCol="from-purple-500 to-pink-500" />
               </GlassEffect>
             </div>
           )}
@@ -634,18 +633,35 @@ export default function LiveMatchIsland() {
   );
 }
 
-function renderStatRow(label: string, homeVal: number, awayVal: number, homeCol: string, awayCol: string) {
+function StatRow({ label, homeVal, awayVal, homeCol, awayCol }: { label: string; homeVal: number; awayVal: number; homeCol: string; awayCol: string }) {
+  const [widthHome, setWidthHome] = useState(0);
+  const [widthAway, setWidthAway] = useState(0);
   const total = Math.max(homeVal + awayVal, 1);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setWidthHome((homeVal / total) * 100);
+      setWidthAway((awayVal / total) * 100);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [homeVal, awayVal, total]);
+
   return (
-    <div className="flex flex-col gap-1.5">
-      <div className="flex justify-between text-[10px] font-bold text-white/50 uppercase tracking-widest">
-        <span>{homeVal}</span>
-        <span>{label}</span>
-        <span>{awayVal}</span>
+    <div className="flex flex-col gap-2 py-1">
+      <div className="flex justify-between items-center text-[0.65rem] font-black tracking-widest uppercase">
+        <span className="text-red-400 font-mono text-sm">{homeVal}</span>
+        <span className="text-white/60 text-[0.55rem] font-bold">{label}</span>
+        <span className="text-blue-400 font-mono text-sm">{awayVal}</span>
       </div>
-      <div className="flex h-1.5 rounded-full overflow-hidden bg-white/5">
-        <div style={{ width: `${(homeVal / total) * 100}%` }} className={`bg-gradient-to-r ${homeCol}`} />
-        <div style={{ width: `${(awayVal / total) * 100}%` }} className={`bg-gradient-to-l ${awayCol}`} />
+      <div className="flex h-2 rounded-full overflow-hidden bg-white/5 border border-white/5 p-[1px]">
+        <div 
+          style={{ width: `${widthHome}%` }} 
+          className={`h-full rounded-l-full bg-gradient-to-r ${homeCol} transition-all duration-1000 ease-[var(--ease-apple)]`} 
+        />
+        <div 
+          style={{ width: `${widthAway}%` }} 
+          className={`h-full rounded-r-full bg-gradient-to-l ${awayCol} transition-all duration-1000 ease-[var(--ease-apple)]`} 
+        />
       </div>
     </div>
   );
