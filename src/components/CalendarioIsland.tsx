@@ -75,45 +75,61 @@ export default function CalendarioIsland() {
     const homeWon = isTerminata && homeScore !== null && awayScore !== null && homeScore > awayScore;
     const awayWon = isTerminata && homeScore !== null && awayScore !== null && awayScore > homeScore;
 
+    const cardContent = (
+      <>
+        {/* Team 1 */}
+        <div className={`bracket-team ${homeWon ? 'bracket-team-winner' : isTerminata && awayScore !== null ? 'opacity-50' : ''}`}>
+          <div className={`team-avatar avatar-${t1Idx}`} style={{ width: isGold ? 28 : 26, height: isGold ? 28 : 26, borderRadius: isGold ? 8 : 6, fontSize: '0.55rem', fontWeight: 800 }}>
+            {t1Initials}
+          </div>
+          <span className={`bracket-team-name ${isGold ? 'font-black' : ''}`}>
+            {t1Name}
+          </span>
+          {isTerminata && homeScore !== null && (
+            <span className="bracket-team-score ml-auto font-bold">{homeScore}</span>
+          )}
+        </div>
+        
+        <div className="bracket-divider" />
+        
+        {/* Team 2 */}
+        <div className={`bracket-team ${awayWon ? 'bracket-team-winner' : isTerminata && homeScore !== null ? 'opacity-50' : ''}`}>
+          <div className={`team-avatar avatar-${t2Idx}`} style={{ width: isGold ? 28 : 26, height: isGold ? 28 : 26, borderRadius: isGold ? 8 : 6, fontSize: '0.55rem', fontWeight: 800 }}>
+            {t2Initials}
+          </div>
+          <span className={`bracket-team-name ${isGold ? 'font-black' : ''}`}>
+            {t2Name}
+          </span>
+          {isTerminata && awayScore !== null && (
+            <span className="bracket-team-score ml-auto font-bold">{awayScore}</span>
+          )}
+        </div>
+        
+        <div className={`bracket-time ${isGold ? 'final-time' : ''} ${isLive ? 'text-red-400 font-bold animate-pulse' : ''}`}>
+          {isLive ? 'IN DIRETTA' : timeStr}
+        </div>
+      </>
+    );
+
     return (
       <div className={`bracket-card-wrapper ${isGold ? 'final-wrapper' : ''}`}>
         <div className={`bracket-round-title ${isGold ? 'final-title' : ''}`}>
           {isLive && <span className="text-red-500 mr-1 animate-pulse">🔴</span>}
           {roundLabel}
         </div>
-        <div className={`glass-card bracket-card ${isGold ? 'final-card-gold' : ''} ${isLive ? 'bracket-card-live' : ''}`}>
-          {/* Team 1 */}
-          <div className={`bracket-team ${homeWon ? 'bracket-team-winner' : isTerminata && awayScore !== null ? 'opacity-50' : ''}`}>
-            <div className={`team-avatar avatar-${t1Idx}`} style={{ width: isGold ? 28 : 26, height: isGold ? 28 : 26, borderRadius: isGold ? 8 : 6, fontSize: '0.55rem', fontWeight: 800 }}>
-              {t1Initials}
-            </div>
-            <span className={`bracket-team-name ${isGold ? 'font-black' : ''}`}>
-              {t1Name}
-            </span>
-            {isTerminata && homeScore !== null && (
-              <span className="bracket-team-score ml-auto font-bold">{homeScore}</span>
-            )}
+        {match ? (
+          <a 
+            href={`/live?id=${match.id}`}
+            className={`glass-card bracket-card ${isGold ? 'final-card-gold' : ''} ${isLive ? 'bracket-card-live' : ''}`}
+            style={{ display: 'block', textDecoration: 'none', cursor: 'pointer' }}
+          >
+            {cardContent}
+          </a>
+        ) : (
+          <div className={`glass-card bracket-card ${isGold ? 'final-card-gold' : ''}`}>
+            {cardContent}
           </div>
-          
-          <div className="bracket-divider" />
-          
-          {/* Team 2 */}
-          <div className={`bracket-team ${awayWon ? 'bracket-team-winner' : isTerminata && homeScore !== null ? 'opacity-50' : ''}`}>
-            <div className={`team-avatar avatar-${t2Idx}`} style={{ width: isGold ? 28 : 26, height: isGold ? 28 : 26, borderRadius: isGold ? 8 : 6, fontSize: '0.55rem', fontWeight: 800 }}>
-              {t2Initials}
-            </div>
-            <span className={`bracket-team-name ${isGold ? 'font-black' : ''}`}>
-              {t2Name}
-            </span>
-            {isTerminata && awayScore !== null && (
-              <span className="bracket-team-score ml-auto font-bold">{awayScore}</span>
-            )}
-          </div>
-          
-          <div className={`bracket-time ${isGold ? 'final-time' : ''} ${isLive ? 'text-red-400 font-bold animate-pulse' : ''}`}>
-            {isLive ? 'IN DIRETTA' : timeStr}
-          </div>
-        </div>
+        )}
       </div>
     );
   };
@@ -329,7 +345,7 @@ export default function CalendarioIsland() {
                   style={{ marginBottom: '1rem' }}
                 >
                   <a
-                    href="/live"
+                    href={`/live?id=${m.id}`}
                     className="glass-card menu-glow-pulse-red"
                     style={{
                       display: 'block',
@@ -348,9 +364,20 @@ export default function CalendarioIsland() {
             }
 
             return (
-              <div key={i} className="glass-card" style={{ marginBottom: '1rem', padding: '1.2rem 1.25rem' }}>
+              <a
+                key={i}
+                href={`/live?id=${m.id}`}
+                className="glass-card"
+                style={{
+                  display: 'block',
+                  textDecoration: 'none',
+                  cursor: 'pointer',
+                  marginBottom: '1rem',
+                  padding: '1.2rem 1.25rem'
+                }}
+              >
                 {cardContent}
-              </div>
+              </a>
             );
           })}
         </div>

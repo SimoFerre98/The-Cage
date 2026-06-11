@@ -17,21 +17,45 @@ export default function LiveMatchIsland() {
   const [loading, setLoading] = useState(true);
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
 
+  const [matchId, setMatchId] = useState<string | null>(null);
+  const [tab, setTab] = useState<'timeline' | 'lineups' | 'stats'>('timeline');
+  const [homePlayers, setHomePlayers] = useState<any[]>([]);
+  const [awayPlayers, setAwayPlayers] = useState<any[]>([]);
+
+  // Carica il matchId dai query parameters all'avvio
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setMatchId(params.get('id'));
+  }, []);
+
+  // Effect 1: Caricamento iniziale dei dati (match, eventi, giocatori delle due rose)
   useEffect(() => {
     let isMounted = true;
 
     async function loadData() {
-      const { data: match } = await supabase
-        .from('matches')
-        .select('*, home_team:teams!home_team_id(name), away_team:teams!away_team_id(name)')
-        .eq('status', 'LIVE')
-        .single();
+      setLoading(true);
       
+      let query = supabase
+        .from('matches')
+        .select('*, home_team:teams!home_team_id(name), away_team:teams!away_team_id(name)');
+      
+      if (matchId) {
+        query = query.eq('id', matchId);
+      } else {
+        query = query.eq('status', 'LIVE');
+      }
+
+      const { data: match, error: matchError } = await query.maybeSingle();
+
       if (!isMounted) return;
 
+      if (matchError) {
+        console.error('Error loading match:', matchError);
+        setLoading(false);
+        return;
+      }
+
       if (match) {
-        setLiveMatch(match);
-        
         // Aggiorna cache locale 'cage-matches' se presente
         try {
           const lsStr = localStorage.getItem('cage-matches');
@@ -55,101 +79,73 @@ export default function LiveMatchIsland() {
             }
           }
         } catch (e) {
-          console.warn('Errore aggiornamento cache al caricamento live:', e);
+          console.warn('Errore aggiornamento cache:', e);
         }
 
-        const { data: evts } = await supabase
+        // Fetch degli eventi per il match caricato
+        const { data: evts, error: evtsError } = await supabase
           .from('match_events')
           .select('*, player:players!player_id(name, team_id)')
           .eq('match_id', match.id)
           .order('minute', { ascending: false });
-        
-        if (isMounted && evts) setEvents(evts);
+
+        if (evtsError) {
+          console.error('Error loading match events:', evtsError);
+        }
+
+        // Fetch dei giocatori di casa e trasferta per le formazioni
+        const { data: hP } = await supabase
+          .from('players')
+          .select('*')
+          .eq('team_id', match.home_team_id)
+          .order('name');
+
+        const { data: aP } = await supabase
+          .from('players')
+          .select('*')
+          .eq('team_id', match.away_team_id)
+          .order('name');
+
+        if (!isMounted) return;
+
+        setLiveMatch(match);
+        if (evts) setEvents(evts);
+        setHomePlayers(hP || []);
+        setAwayPlayers(aP || []);
       } else {
         setLiveMatch(null);
         setEvents([]);
+        setHomePlayers([]);
+        setAwayPlayers([]);
       }
       setLoading(false);
     }
 
-    if (loading) {
-      loadData();
-    }
+    loadData();
 
+    return () => {
+      isMounted = false;
+    };
+  }, [matchId]);
+
+  // Effect 2: Gestione realtime per aggiornamenti di match ed eventi
+  useEffect(() => {
+    let isMounted = true;
     let channel: any = null;
 
     if (liveMatch?.id) {
-      // 1. Sottoscrizione filtrata per la specifica partita live
       channel = supabase.channel(`live_match_${liveMatch.id}`)
         .on(
           'postgres_changes',
           { event: '*', schema: 'public', table: 'matches', filter: `id=eq.${liveMatch.id}` },
           (payload) => {
-            if (payload.new && (payload.new as any).status !== 'LIVE') {
-              if (isMounted) {
-                setLiveMatch(null);
-                setEvents([]);
-
-                // Aggiorna cache locale per riflettere lo stato non più live (es. TERMINATA)
-                try {
-                  const lsStr = localStorage.getItem('cage-matches');
-                  if (lsStr) {
-                    const cached = JSON.parse(lsStr);
-                    if (cached && cached.data) {
-                      const idx = cached.data.findIndex((m: any) => m.id === (payload.new as any).id);
-                      if (idx !== -1) {
-                        cached.data[idx] = {
-                          ...cached.data[idx],
-                          status: (payload.new as any).status,
-                          home_score: (payload.new as any).home_score,
-                          away_score: (payload.new as any).away_score
-                        };
-                        localStorage.setItem('cage-matches', JSON.stringify(cached));
-                        const win = window as any;
-                        if (win.__cage_cache) {
-                          win.__cage_cache['cage-matches'] = cached;
-                        }
-                      }
-                    }
-                  }
-                } catch (e) {
-                  console.warn('Errore aggiornamento cache a fine partita:', e);
-                }
-              }
-            } else {
-              if (isMounted) {
-                setLiveMatch(prev => {
-                  const updated = { ...prev, ...payload.new };
-
-                  // Aggiorna cache locale per il punteggio live
-                  try {
-                    const lsStr = localStorage.getItem('cage-matches');
-                    if (lsStr) {
-                      const cached = JSON.parse(lsStr);
-                      if (cached && cached.data) {
-                        const idx = cached.data.findIndex((m: any) => m.id === updated.id);
-                        if (idx !== -1) {
-                          cached.data[idx] = {
-                            ...cached.data[idx],
-                            status: updated.status,
-                            home_score: updated.home_score,
-                            away_score: updated.away_score
-                          };
-                          localStorage.setItem('cage-matches', JSON.stringify(cached));
-                          const win = window as any;
-                          if (win.__cage_cache) {
-                            win.__cage_cache['cage-matches'] = cached;
-                          }
-                        }
-                      }
-                    }
-                  } catch (e) {
-                    console.warn('Errore aggiornamento cache punteggio live:', e);
-                  }
-
-                  return updated;
-                });
-              }
+            if (!isMounted) return;
+            // Se non c'è matchId nella URL e il match smette di essere LIVE, lo togliamo dallo schermo
+            if (payload.new && (payload.new as any).status !== 'LIVE' && !matchId) {
+              setLiveMatch(null);
+              setEvents([]);
+            } else if (payload.new) {
+              setLiveMatch(prev => ({ ...prev, ...payload.new }));
             }
           }
         )
@@ -168,8 +164,8 @@ export default function LiveMatchIsland() {
           }
         )
         .subscribe();
-    } else if (!loading) {
-      // 2. Se non c'è una partita live, ascolta solo se una qualsiasi partita passa in stato LIVE
+    } else if (!matchId && !loading) {
+      // Rilevatore di match che diventano LIVE se siamo sulla diretta generica e non c'è live attivo
       channel = supabase.channel('live_match_detector')
         .on(
           'postgres_changes',
@@ -189,7 +185,7 @@ export default function LiveMatchIsland() {
         supabase.removeChannel(channel);
       }
     };
-  }, [liveMatch?.id, loading]);
+  }, [liveMatch?.id, matchId, loading]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
@@ -218,8 +214,8 @@ export default function LiveMatchIsland() {
     return (
       <div className="flex flex-col items-center justify-center min-h-[50vh] text-white">
         <div className="text-4xl mb-4">📺</div>
-        <h2 className="text-xl font-bold mb-2">Nessuna partita in diretta</h2>
-        <p className="text-white/60 mb-6">Non ci sono match attualmente in corso.</p>
+        <h2 className="text-xl font-bold mb-2">Nessun dettaglio partita</h2>
+        <p className="text-white/60 mb-6">Non ci sono match corrispondenti o in corso in questo momento.</p>
         <a href="/calendario" className="install-btn px-6 py-2">Torna al Calendario</a>
       </div>
     );
@@ -229,6 +225,43 @@ export default function LiveMatchIsland() {
   const awayName = liveMatch.away_team?.name || 'Away';
   const homeScore = liveMatch.home_score || 0;
   const awayScore = liveMatch.away_score || 0;
+
+  // Elaborazione statistiche in base agli eventi
+  const playerGoals: Record<string, number> = {};
+  const playerYellows: Record<string, boolean> = {};
+  const playerReds: Record<string, boolean> = {};
+
+  events.forEach(ev => {
+    if (ev.player_id) {
+      if (ev.type === 'GOAL' || ev.type === 'Goal' || ev.type === 'Goal (Penalty)' || ev.type === 'Goal (Stella)' || ev.type === 'Goal (Raddoppiato)') {
+        playerGoals[ev.player_id] = (playerGoals[ev.player_id] || 0) + 1;
+      } else if (ev.type === 'AMMONIZIONE' || ev.type === 'Yellow Card') {
+        playerYellows[ev.player_id] = true;
+      } else if (ev.type === 'ESPULSIONE' || ev.type === 'Red Card') {
+        playerReds[ev.player_id] = true;
+      }
+    }
+  });
+
+  const stats = {
+    home: { goals: 0, yellows: 0, reds: 0, powerCards: 0 },
+    away: { goals: 0, yellows: 0, reds: 0, powerCards: 0 },
+  };
+
+  events.forEach(ev => {
+    const isHome = ev.team_id === liveMatch.home_team_id;
+    const teamKey = isHome ? 'home' : 'away';
+
+    if (ev.type === 'GOAL' || ev.type === 'Goal' || ev.type === 'Goal (Penalty)' || ev.type === 'Goal (Stella)' || ev.type === 'Goal (Raddoppiato)') {
+      stats[teamKey].goals += 1;
+    } else if (ev.type === 'AMMONIZIONE' || ev.type === 'Yellow Card') {
+      stats[teamKey].yellows += 1;
+    } else if (ev.type === 'ESPULSIONE' || ev.type === 'Red Card') {
+      stats[teamKey].reds += 1;
+    } else if (ev.type === 'CARTA' || ev.type === 'Carta Attivata') {
+      stats[teamKey].powerCards += 1;
+    }
+  });
 
   return (
     <div className="flex flex-col w-full text-white min-h-screen">
@@ -245,18 +278,18 @@ export default function LiveMatchIsland() {
           transformStyle: 'preserve-3d',
         }}
       >
-        {/* Layer 1: Background Field Image (STATIC - not scaled, sits behind parallax elements) */}
+        {/* Layer 1: Background Field Image */}
         <div 
-          className="absolute inset-0 bg-cover bg-bottom bg-no-repeat"
+          className="absolute inset-0 bg-cover bg-bottom bg-no-repeat animate-[fadeIn_1s_var(--ease-apple)]"
           style={{ 
-            backgroundImage: `url('/3d-field.webp')`,
+            backgroundImage: `url('/Sfondo/3d-field.webp')`,
           }}
         />
         
-        {/* Layer 2: Ambient Lighting Overlay (STATIC) */}
+        {/* Layer 2: Ambient Lighting Overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-[rgba(0,0,0,0.8)] via-[rgba(0,0,0,0.2)] to-transparent" />
 
-        {/* Top Navbar - STATIC & CLICKABLE (Always flat and on top of tilted layers) */}
+        {/* Top Navbar */}
         <div className="absolute top-5 left-6 right-6 flex items-center justify-between z-30">
            <GlassEffect className="w-10 h-10 rounded-full hover:scale-105 active:scale-95 transition-all duration-300">
              <a 
@@ -280,21 +313,39 @@ export default function LiveMatchIsland() {
              </a>
            </GlassEffect>
 
-           {/* Glowing Animated LIVE title */}
+           {/* Dynamic match status badge */}
            <div className="flex items-center gap-2 bg-black/35 backdrop-blur-md py-1.5 px-4 rounded-full border border-white/5 shadow-lg select-none">
-             <span className="relative flex h-2 w-2">
-               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
-               <span className="relative inline-flex rounded-full h-2 w-2 bg-red-600 shadow-[0_0_8px_rgba(239,68,68,0.8)]"></span>
-             </span>
-             <span className="font-black tracking-widest text-xs md:text-sm text-white drop-shadow-[0_2px_4px_rgba(255,255,255,0.2)] uppercase">
-               Live
-             </span>
+             {liveMatch.status === 'LIVE' ? (
+               <>
+                 <span className="relative flex h-2 w-2">
+                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                   <span className="relative inline-flex rounded-full h-2 w-2 bg-red-600 shadow-[0_0_8px_rgba(239,68,68,0.8)]"></span>
+                 </span>
+                 <span className="font-black tracking-widest text-xs md:text-sm text-red-400 drop-shadow-[0_2px_4px_rgba(239,68,68,0.2)] uppercase">
+                   Live
+                 </span>
+               </>
+             ) : liveMatch.status === 'TERMINATA' ? (
+               <>
+                 <span className="text-white/60 text-xs">✓</span>
+                 <span className="font-black tracking-widest text-xs md:text-sm text-white/60 uppercase">
+                   Terminata
+                 </span>
+               </>
+             ) : (
+               <>
+                 <span className="text-blue-400 text-xs">📅</span>
+                 <span className="font-black tracking-widest text-xs md:text-sm text-blue-400 uppercase">
+                   Prossima
+                 </span>
+               </>
+             )}
            </div>
 
            <div className="w-10"></div> {/* Spacer for perfect centering */}
         </div>
 
-        {/* Tilted Parallax Container (Only scoreboard and logos tilt/float in 3D) */}
+        {/* Tilted Parallax Container */}
         <div
           className={`absolute inset-0 w-full h-full z-20 ${!isTilting ? 'live-field-float' : ''}`}
           style={{
@@ -303,7 +354,7 @@ export default function LiveMatchIsland() {
             transition: isTilting ? 'transform 0.1s ease-out' : 'transform 0.6s ease-out',
           }}
         >
-          {/* Layer 3: Scoreboard (strongly extruded) */}
+          {/* Layer 3: Scoreboard */}
           <div 
             className="absolute top-16 left-0 w-full flex justify-center"
             style={{
@@ -317,9 +368,9 @@ export default function LiveMatchIsland() {
              </div>
           </div>
 
-          {/* Layer 4: Logos (extruded, with shadows projected back onto the field) */}
+          {/* Layer 4: Logos and Names */}
           <div 
-            className="absolute bottom-12 left-0 w-full flex items-end justify-center"
+            className="absolute bottom-10 left-0 w-full flex items-end justify-center"
             style={{
               transform: 'translateZ(55px)',
               transformStyle: 'preserve-3d',
@@ -329,156 +380,273 @@ export default function LiveMatchIsland() {
                className="relative flex items-center justify-between w-full max-w-[360px] px-10"
                style={{ transformStyle: 'preserve-3d' }}
              >
-                
-                 {/* Home Team */}
-                 <div 
-                   className="relative flex flex-col items-center"
-                   style={{ transformStyle: 'preserve-3d' }}
-                 >
-                    {/* Shadow on the grass */}
-                    <div 
-                      className="absolute -bottom-3 w-16 h-3 bg-black/60 blur-[4px] rounded-[100%]"
-                      style={{
-                        transform: 'translateZ(-45px)',
-                      }}
-                    />
-                    {/* Logo */}
-                    <div 
-                      className="relative w-[4.5rem] h-[5.5rem] rounded-b-full bg-gradient-to-b from-red-600 to-red-800 border-[2px] border-yellow-400/80 shadow-2xl flex flex-col items-center justify-center font-black text-2xl text-white"
-                      style={{
-                        transform: 'translateZ(10px)',
-                      }}
-                    >
-                      <span className="text-xs uppercase tracking-widest text-yellow-300 mt-2 text-center leading-tight">{AVATAR_INITIALS(homeName)}</span>
-                    </div>
-                 </div>
+                  {/* Home Team */}
+                  <div 
+                    className="relative flex flex-col items-center min-w-24"
+                    style={{ transformStyle: 'preserve-3d' }}
+                  >
+                     {/* Shadow on the grass */}
+                     <div 
+                       className="absolute -bottom-3 w-16 h-3 bg-black/60 blur-[4px] rounded-[100%]"
+                       style={{
+                         transform: 'translateZ(-45px)',
+                       }}
+                     />
+                     {/* Logo Shield */}
+                     <div 
+                       className="relative w-[4.5rem] h-[5.5rem] rounded-b-full bg-gradient-to-b from-red-600 to-red-800 border-[2px] border-yellow-400/80 shadow-2xl flex flex-col items-center justify-center font-black text-2xl text-white"
+                       style={{
+                         transform: 'translateZ(10px)',
+                       }}
+                     >
+                       <span className="text-xs uppercase tracking-widest text-yellow-300 mt-2 text-center leading-tight">{AVATAR_INITIALS(homeName)}</span>
+                     </div>
+                     {/* Full Name */}
+                     <span className="text-[10px] font-black text-white mt-2 select-none uppercase tracking-wider truncate max-w-[110px] text-center" style={{ transform: 'translateZ(15px)', textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>
+                       {homeName}
+                     </span>
+                  </div>
                  
-                 {/* Away Team */}
-                 <div 
-                   className="relative flex flex-col items-center"
-                   style={{ transformStyle: 'preserve-3d' }}
-                 >
-                    {/* Shadow on the grass */}
-                    <div 
-                      className="absolute -bottom-3 w-16 h-3 bg-black/60 blur-[4px] rounded-[100%]"
-                      style={{
-                        transform: 'translateZ(-45px)',
-                      }}
-                    />
-                    {/* Logo */}
-                    <div 
-                      className="relative w-[4.5rem] h-[5.5rem] rounded-b-full bg-gradient-to-b from-blue-600 to-blue-900 border-[2px] border-yellow-400/80 shadow-2xl flex flex-col items-center justify-center font-black text-2xl text-white"
-                      style={{
-                        transform: 'translateZ(10px)',
-                      }}
-                    >
-                      <span className="text-[0.8rem] uppercase tracking-widest text-yellow-300 mt-2 text-center leading-tight">{AVATAR_INITIALS(awayName)}</span>
-                    </div>
-                 </div>
-
+                  {/* Away Team */}
+                  <div 
+                    className="relative flex flex-col items-center min-w-24"
+                    style={{ transformStyle: 'preserve-3d' }}
+                  >
+                     {/* Shadow on the grass */}
+                     <div 
+                       className="absolute -bottom-3 w-16 h-3 bg-black/60 blur-[4px] rounded-[100%]"
+                       style={{
+                         transform: 'translateZ(-45px)',
+                       }}
+                     />
+                     {/* Logo Shield */}
+                     <div 
+                       className="relative w-[4.5rem] h-[5.5rem] rounded-b-full bg-gradient-to-b from-blue-600 to-blue-900 border-[2px] border-yellow-400/80 shadow-2xl flex flex-col items-center justify-center font-black text-2xl text-white"
+                       style={{
+                         transform: 'translateZ(10px)',
+                       }}
+                     >
+                       <span className="text-[0.8rem] uppercase tracking-widest text-yellow-300 mt-2 text-center leading-tight">{AVATAR_INITIALS(awayName)}</span>
+                     </div>
+                     {/* Full Name */}
+                     <span className="text-[10px] font-black text-white mt-2 select-none uppercase tracking-wider truncate max-w-[110px] text-center" style={{ transform: 'translateZ(15px)', textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>
+                       {awayName}
+                     </span>
+                  </div>
              </div>
           </div>
         </div>
       </div>
 
-      {/* Timeline background gradient */}
-      <div className="relative flex-1 px-4 max-w-[500px] mx-auto w-full pt-12 pb-24">
-         <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-20 pointer-events-none"></div>
-                  <div className="absolute top-0 bottom-0 left-1/2 w-[1px] bg-white/20 -translate-x-1/2"></div>
-          
-          <div className="flex flex-col gap-8 relative z-10">
-            {events.length === 0 ? (
-              <div className="text-center text-white/50 text-sm mt-4">Nessun evento ancora registrato in questa partita.</div>
-            ) : null}
-            {events.map((ev, i) => {
-              const isCard = ev.type === 'CARTA';
-              const isHome = ev.team_id === liveMatch.home_team_id;
-              const playerName = ev.player?.name || 'Sconosciuto';
-              const detailType = ev.detail;
-
-              return (
-                <div key={i} className="flex items-center w-full min-w-0">
-                  {/* Left Side (Home) */}
-                  <div className="flex-1 flex justify-end pr-3.5 min-w-0">
-                    {isHome && (
-                      isCard ? (
-                        <div className="flex flex-col items-end gap-1 max-w-full">
-                          <span 
-                            onClick={() => ev.player_id && setSelectedPlayerId(ev.player_id)}
-                            className={`text-[0.6rem] font-black tracking-widest text-white/40 uppercase truncate w-full text-right ${ev.player_id ? 'cursor-pointer hover:text-blue-400 transition-colors' : ''}`}
-                          >
-                            {playerName}
-                          </span>
-                          {renderEventMedia({ type: 'Carta Attivata', detail: detailType })}
-                        </div>
-                      ) : (
-                        <div className="flex items-center gap-2.5 text-right flex-row-reverse min-w-0">
-                           <div className="flex-shrink-0">
-                             {renderEventMedia(ev)}
-                           </div>
-                           <div className="flex flex-col min-w-0">
-                             <span 
-                               onClick={() => ev.player_id && setSelectedPlayerId(ev.player_id)}
-                               className={`font-extrabold text-[0.8rem] md:text-[0.9rem] tracking-wide text-white drop-shadow-md uppercase leading-tight truncate ${ev.player_id ? 'cursor-pointer hover:text-blue-400 transition-colors' : ''}`}
-                             >
-                               {playerName}
-                             </span>
-                             <span className="text-[0.65rem] text-white/60 font-semibold mt-0.5 truncate">{ev.type}</span>
-                           </div>
-                        </div>
-                      )
-                    )}
-                  </div>
-                  
-                  {/* Center Dot (Minute) */}
-                  <div className="flex-shrink-0 z-10 px-1.5">
-                     <div className="w-10 h-10 rounded-full flex items-center justify-center text-[0.85rem] font-bold text-white border border-white/45 bg-white/10 backdrop-blur-md shadow-[0_0_15px_rgba(0,0,0,0.5)]">
-                       {ev.minute}'
-                     </div>
-                  </div>
-
-                  {/* Right Side (Away) */}
-                  <div className="flex-1 flex justify-start pl-3.5 min-w-0">
-                    {!isHome && (
-                      isCard ? (
-                        <div className="flex flex-col items-start gap-1 max-w-full">
-                          <span 
-                            onClick={() => ev.player_id && setSelectedPlayerId(ev.player_id)}
-                            className={`text-[0.6rem] font-black tracking-widest text-white/40 uppercase truncate w-full text-left ${ev.player_id ? 'cursor-pointer hover:text-blue-400 transition-colors' : ''}`}
-                          >
-                            {playerName}
-                          </span>
-                          {renderEventMedia({ type: 'Carta Attivata', detail: detailType })}
-                        </div>
-                      ) : (
-                        <div className="flex items-center gap-2.5 text-left min-w-0">
-                           <div className="flex-shrink-0">
-                             {renderEventMedia(ev)}
-                           </div>
-                           <div className="flex flex-col min-w-0">
-                             <span 
-                               onClick={() => ev.player_id && setSelectedPlayerId(ev.player_id)}
-                               className={`font-extrabold text-[0.8rem] md:text-[0.9rem] tracking-wide text-white drop-shadow-md uppercase leading-tight truncate ${ev.player_id ? 'cursor-pointer hover:text-blue-400 transition-colors' : ''}`}
-                             >
-                               {playerName}
-                             </span>
-                             <span className="text-[0.65rem] text-white/60 font-semibold mt-0.5 truncate">{ev.type}</span>
-                           </div>
-                        </div>
-                      )
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+      {/* Glassmorphic Tabs Navigation */}
+      <div className="flex justify-center w-full px-4 mt-6 z-10">
+        <div className="flex gap-1.5 bg-white/5 border border-white/10 rounded-full p-1 w-full max-w-[420px] backdrop-blur-md">
+          {(['timeline', 'lineups', 'stats'] as const).map((t) => {
+            const label = t === 'timeline' ? 'Cronologia' : t === 'lineups' ? 'Formazioni' : 'Statistiche';
+            const isActive = tab === t;
+            return (
+              <button
+                key={t}
+                onClick={() => setTab(t)}
+                className={`flex-1 py-2 rounded-full font-bold text-[0.75rem] uppercase tracking-widest transition-all duration-300 cursor-pointer ${
+                  isActive
+                    ? 'bg-blue-500/25 border border-blue-500/35 text-white shadow-[0_2px_8px_rgba(59,130,246,0.25)]'
+                    : 'text-white/60 hover:text-white border border-transparent'
+                }`}
+              >
+                {label}
+              </button>
+            );
+          })}
         </div>
+      </div>
+
+      {/* Centering Wrapper for Tab Contents */}
+      <div className="w-full flex justify-center px-4">
+        <div className="w-full max-w-[500px]">
+          {tab === 'timeline' && (
+            <div className="relative flex-1 w-full pt-8 pb-24 animate-[slideUpFade_0.4s_var(--ease-apple)]">
+              <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-20 pointer-events-none"></div>
+              <div className="absolute top-0 bottom-0 left-1/2 w-[1px] bg-white/20 -translate-x-1/2"></div>
+              
+              <div className="flex flex-col gap-8 relative z-10">
+                {events.length === 0 ? (
+                  <div className="text-center text-white/50 text-xs mt-8 py-8 border border-white/5 bg-black/15 rounded-2xl">
+                    Nessun evento ancora registrato in questa partita.
+                  </div>
+                ) : null}
+                {events.map((ev, i) => {
+                  const isCard = ev.type === 'CARTA';
+                  const isHome = ev.team_id === liveMatch.home_team_id;
+                  const playerName = ev.player?.name || 'Sconosciuto';
+                  const detailType = ev.detail;
+
+                  return (
+                    <div key={i} className="flex items-center w-full min-w-0">
+                      <div className="flex-1 flex justify-end pr-3.5 min-w-0">
+                        {isHome && (
+                          isCard ? (
+                            <div className="flex flex-col items-end gap-1 max-w-full">
+                              <span onClick={() => ev.player_id && setSelectedPlayerId(ev.player_id)} className={`text-[0.6rem] font-black tracking-widest text-white/40 uppercase truncate w-full text-right ${ev.player_id ? 'cursor-pointer hover:text-blue-400 transition-colors' : ''}`}>
+                                {playerName}
+                              </span>
+                              {renderEventMedia({ type: 'Carta Attivata', detail: detailType })}
+                            </div>
+                          ) : (
+                            <div className="flex items-center gap-2.5 text-right flex-row-reverse min-w-0">
+                               <div className="flex-shrink-0">{renderEventMedia(ev)}</div>
+                               <div className="flex flex-col min-w-0">
+                                 <span onClick={() => ev.player_id && setSelectedPlayerId(ev.player_id)} className={`font-extrabold text-[0.8rem] md:text-[0.9rem] tracking-wide text-white drop-shadow-md uppercase leading-tight truncate ${ev.player_id ? 'cursor-pointer hover:text-blue-400 transition-colors' : ''}`}>
+                                   {playerName}
+                                 </span>
+                                 <span className="text-[0.65rem] text-white/60 font-semibold mt-0.5 truncate">{ev.type}</span>
+                               </div>
+                            </div>
+                          )
+                        )}
+                      </div>
+                      
+                      <div className="flex-shrink-0 z-10 px-1.5">
+                         <div className="w-10 h-10 rounded-full flex items-center justify-center text-[0.85rem] font-bold text-white border border-white/45 bg-white/10 backdrop-blur-md shadow-[0_0_15px_rgba(0,0,0,0.5)]">
+                           {ev.minute}'
+                         </div>
+                      </div>
+
+                      <div className="flex-1 flex justify-start pl-3.5 min-w-0">
+                        {!isHome && (
+                          isCard ? (
+                            <div className="flex flex-col items-start gap-1 max-w-full">
+                              <span onClick={() => ev.player_id && setSelectedPlayerId(ev.player_id)} className={`text-[0.6rem] font-black tracking-widest text-white/40 uppercase truncate w-full text-left ${ev.player_id ? 'cursor-pointer hover:text-blue-400 transition-colors' : ''}`}>
+                                {playerName}
+                              </span>
+                              {renderEventMedia({ type: 'Carta Attivata', detail: detailType })}
+                            </div>
+                          ) : (
+                            <div className="flex items-center gap-2.5 text-left min-w-0">
+                               <div className="flex-shrink-0">{renderEventMedia(ev)}</div>
+                               <div className="flex flex-col min-w-0">
+                                 <span onClick={() => ev.player_id && setSelectedPlayerId(ev.player_id)} className={`font-extrabold text-[0.8rem] md:text-[0.9rem] tracking-wide text-white drop-shadow-md uppercase leading-tight truncate ${ev.player_id ? 'cursor-pointer hover:text-blue-400 transition-colors' : ''}`}>
+                                   {playerName}
+                                 </span>
+                                 <span className="text-[0.65rem] text-white/60 font-semibold mt-0.5 truncate">{ev.type}</span>
+                               </div>
+                            </div>
+                          )
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {tab === 'lineups' && (
+            <div className="w-full pt-8 pb-24 flex flex-col gap-6 animate-[slideUpFade_0.4s_var(--ease-apple)]">
+              <div className="grid grid-cols-2 gap-4">
+                <GlassEffect 
+                  className="rounded-2xl border-[var(--glass-border)] flex-1"
+                  contentClassName="p-4 flex flex-col gap-2.5 w-full h-full"
+                >
+                  <h3 className="text-xs font-black text-red-400 uppercase tracking-widest mb-3 border-b border-white/5 pb-2 text-center truncate">{homeName}</h3>
+                  <div className="flex flex-col gap-2.5">
+                    {homePlayers.length === 0 ? (
+                      <div className="text-xs text-white/40 text-center py-4">Nessun giocatore registrato</div>
+                    ) : (
+                      homePlayers.map((p, idx) => (
+                        <div key={p.id} className="flex items-center justify-between text-xs py-1">
+                          <div className="flex items-center gap-2 min-w-0">
+                            <span className="text-white/30 font-mono text-[9px] w-3 text-center">{idx + 1}</span>
+                            <span onClick={() => setSelectedPlayerId(p.id)} className="font-bold text-white/90 truncate cursor-pointer hover:text-blue-400 transition-colors">
+                              {p.name}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-1 flex-shrink-0">
+                            {playerGoals[p.id] && <span className="text-[9px] bg-white/5 border border-white/10 px-1 py-0.5 rounded font-bold text-white">⚽ {playerGoals[p.id]}</span>}
+                            {playerYellows[p.id] && <div className="w-2 h-3 rounded-[1px] bg-yellow-400" />}
+                            {playerReds[p.id] && <div className="w-2 h-3 rounded-[1px] bg-red-600" />}
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </GlassEffect>
+
+                <GlassEffect 
+                  className="rounded-2xl border-[var(--glass-border)] flex-1"
+                  contentClassName="p-4 flex flex-col gap-2.5 w-full h-full"
+                >
+                  <h3 className="text-xs font-black text-blue-400 uppercase tracking-widest mb-3 border-b border-white/5 pb-2 text-center truncate">{awayName}</h3>
+                  <div className="flex flex-col gap-2.5">
+                    {awayPlayers.length === 0 ? (
+                      <div className="text-xs text-white/40 text-center py-4">Nessun giocatore registrato</div>
+                    ) : (
+                      awayPlayers.map((p, idx) => (
+                        <div key={p.id} className="flex items-center justify-between text-xs py-1">
+                          <div className="flex items-center gap-2 min-w-0">
+                            <span className="text-white/30 font-mono text-[9px] w-3 text-center">{idx + 1}</span>
+                            <span onClick={() => setSelectedPlayerId(p.id)} className="font-bold text-white/90 truncate cursor-pointer hover:text-blue-400 transition-colors">
+                              {p.name}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-1 flex-shrink-0">
+                            {playerGoals[p.id] && <span className="text-[9px] bg-white/5 border border-white/10 px-1 py-0.5 rounded font-bold text-white">⚽ {playerGoals[p.id]}</span>}
+                            {playerYellows[p.id] && <div className="w-2 h-3 rounded-[1px] bg-yellow-400" />}
+                            {playerReds[p.id] && <div className="w-2 h-3 rounded-[1px] bg-red-600" />}
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </GlassEffect>
+              </div>
+            </div>
+          )}
+
+          {tab === 'stats' && (
+            <div className="w-full pt-8 pb-24 flex flex-col gap-6 animate-[slideUpFade_0.4s_var(--ease-apple)]">
+              <GlassEffect 
+                className="rounded-2xl border-[var(--glass-border)] w-full"
+                contentClassName="p-5 flex flex-col gap-5 w-full font-semibold"
+              >
+                <div className="flex justify-between items-center text-xs font-black uppercase tracking-wider text-white/50 border-b border-white/5 pb-3">
+                  <span className="text-red-400 truncate max-w-[150px]">{homeName}</span>
+                  <span className="text-white/30">VS</span>
+                  <span className="text-blue-400 truncate max-w-[150px] text-right">{awayName}</span>
+                </div>
+                {renderStatRow('Goal ⚽', stats.home.goals, stats.away.goals, 'from-red-500 to-red-600', 'from-blue-500 to-blue-600')}
+                {renderStatRow('Ammonizioni 🟨', stats.home.yellows, stats.away.yellows, 'from-yellow-400 to-yellow-500', 'from-yellow-400 to-yellow-500')}
+                {renderStatRow('Espulsioni 🟥', stats.home.reds, stats.away.reds, 'from-red-600 to-red-700', 'from-red-600 to-red-700')}
+                {renderStatRow('Carte Giocate 🃏', stats.home.powerCards, stats.away.powerCards, 'from-purple-500 to-purple-600', 'from-purple-500 to-purple-600')}
+              </GlassEffect>
+            </div>
+          )}
+        </div>
+      </div>
+
       {selectedPlayerId && (
         <PlayerStatsModal 
           playerId={selectedPlayerId} 
           onClose={() => setSelectedPlayerId(null)} 
         />
       )}
+    </div>
+  );
+}
+
+function renderStatRow(label: string, homeVal: number, awayVal: number, homeCol: string, awayCol: string) {
+  const total = Math.max(homeVal + awayVal, 1);
+  return (
+    <div className="flex flex-col gap-1.5">
+      <div className="flex justify-between text-[10px] font-bold text-white/50 uppercase tracking-widest">
+        <span>{homeVal}</span>
+        <span>{label}</span>
+        <span>{awayVal}</span>
+      </div>
+      <div className="flex h-1.5 rounded-full overflow-hidden bg-white/5">
+        <div style={{ width: `${(homeVal / total) * 100}%` }} className={`bg-gradient-to-r ${homeCol}`} />
+        <div style={{ width: `${(awayVal / total) * 100}%` }} className={`bg-gradient-to-l ${awayCol}`} />
+      </div>
     </div>
   );
 }

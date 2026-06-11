@@ -211,7 +211,7 @@ export default function HomeIsland() {
         
         {/* Widget 1: Partita in Evidenza */}
         <div className="flex flex-col h-full">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-white/50 mb-3 text-center w-full">Featured Match</h2>
+          <h2 className="text-xs font-bold uppercase tracking-wider text-white/50 mb-3 text-center w-full">Partita in Evidenza</h2>
           {featuredMatch ? (
             <GlassEffect 
               className={`rounded-[24px] flex flex-col h-full min-h-[240px] transition-all duration-300 ${
@@ -219,7 +219,7 @@ export default function HomeIsland() {
                   ? 'live-card-glow' 
                   : 'border-[var(--glass-border)]'
               }`}
-              contentClassName="p-6 flex flex-col justify-between flex-1 w-full"
+              contentClassName="p-6 pb-8 flex flex-col justify-between flex-1 w-full"
             >
               {/* Header del Match Centrato */}
               <div className="flex flex-col items-center gap-2 w-full">
@@ -287,16 +287,24 @@ export default function HomeIsland() {
                 </span>
                 {featuredMatch.type === 'LIVE' ? (
                   <a 
-                    href="/live" 
-                    className="flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-[0.7rem] font-black text-red-400 uppercase tracking-wider transition-all hover:scale-[1.03] active:scale-[0.97] cursor-pointer"
+                    href={`/live?id=${featuredMatch.match.id}`} 
+                    className="flex items-center gap-1.5 px-6 py-2.5 rounded-full bg-gradient-to-r from-red-600 to-rose-500 hover:from-red-500 hover:to-rose-400 border border-red-500/40 text-[0.75rem] font-black text-white uppercase tracking-wider transition-all duration-300 hover:scale-[1.05] active:scale-[0.97] shadow-[0_4px_15px_rgba(239,68,68,0.4)] cursor-pointer"
                   >
                     <span>Segui Diretta</span>
                     <span>📺</span>
                   </a>
+                ) : featuredMatch.type === 'LAST' ? (
+                  <a 
+                    href={`/live?id=${featuredMatch.match.id}`} 
+                    className="flex items-center gap-1.5 px-6 py-2.5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-500 hover:from-blue-500 hover:to-indigo-400 border border-blue-500/40 text-[0.75rem] font-bold text-white uppercase tracking-wider transition-all duration-300 hover:scale-[1.05] active:scale-[0.97] shadow-[0_4px_15px_rgba(59,130,246,0.35)] cursor-pointer"
+                  >
+                    <span>Dettagli Match</span>
+                    <span>📊</span>
+                  </a>
                 ) : (
                   <a 
                     href="/calendario" 
-                    className="flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 text-[0.7rem] font-bold text-blue-400 uppercase tracking-wider transition-all hover:scale-[1.03] active:scale-[0.97] cursor-pointer"
+                    className="flex items-center gap-1.5 px-6 py-2.5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-500 hover:from-blue-500 hover:to-indigo-400 border border-blue-500/40 text-[0.75rem] font-bold text-white uppercase tracking-wider transition-all duration-300 hover:scale-[1.05] active:scale-[0.97] shadow-[0_4px_15px_rgba(59,130,246,0.35)] cursor-pointer"
                   >
                     <span>Calendario</span>
                     <span>📅</span>
@@ -316,10 +324,10 @@ export default function HomeIsland() {
 
         {/* Widget 2: Anteprima Classifica */}
         <div className="flex flex-col h-full">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-white/50 mb-3 text-center w-full">Top Standings</h2>
+          <h2 className="text-xs font-bold uppercase tracking-wider text-white/50 mb-3 text-center w-full">Classifica</h2>
           <GlassEffect 
             className="rounded-[24px] flex flex-col h-full min-h-[240px]"
-            contentClassName="p-6 flex flex-col justify-between flex-1 w-full"
+            contentClassName="p-6 pb-8 flex flex-col justify-between flex-1 w-full"
           >
             {standings.length > 0 ? (
               <div className="w-full flex flex-col flex-1 justify-between">
@@ -355,7 +363,7 @@ export default function HomeIsland() {
                 <div className="pt-4 border-t border-[var(--glass-border)] flex justify-center w-full mt-4">
                   <a 
                     href="/classifica" 
-                    className="flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 text-[0.7rem] font-bold text-blue-400 uppercase tracking-wider transition-all hover:scale-[1.03] active:scale-[0.97] cursor-pointer"
+                    className="flex items-center gap-1.5 px-6 py-2.5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-500 hover:from-blue-500 hover:to-indigo-400 border border-blue-500/40 text-[0.75rem] font-bold text-white uppercase tracking-wider transition-all duration-300 hover:scale-[1.05] active:scale-[0.97] shadow-[0_4px_15px_rgba(59,130,246,0.35)] cursor-pointer"
                   >
                     <span>Classifica Completa</span>
                     <span>🏆</span>
@@ -432,81 +440,81 @@ export default function HomeIsland() {
         </div>
 
         {/* Liste Dati */}
-        {tab === 'squadre' ? (
-          <div className="glass-card animate-stagger">
-            {filteredTeams.length > 0 ? (
-              filteredTeams.map((team, i) => (
-                <div key={i}>
+        <div className="glass-card">
+          <div className="animate-stagger" key={tab}>
+            {tab === 'squadre' ? (
+              filteredTeams.length > 0 ? (
+                filteredTeams.map((team, i) => (
+                  <div key={team.name}>
+                    <div 
+                      className="flex items-center gap-4 p-4 cursor-pointer hover:bg-[rgba(255,255,255,0.03)] transition-colors border-b border-[var(--glass-border)] last:border-b-0" 
+                      onClick={() => toggle(i)}
+                    >
+                      <div className={`team-avatar avatar-${team.idx}`} style={{ width: 38, height: 38, borderRadius: 12 }}>
+                        {AVATAR_INITIALS(team.name)}
+                      </div>
+                      <div style={{ flex: 1 }}>
+                        <div className="font-extrabold text-[0.9rem] text-white leading-tight">{team.name}</div>
+                      </div>
+                      <div 
+                        className="text-white/40 text-xs transition-transform duration-300" 
+                        style={{ transform: expanded === i ? 'rotate(180deg)' : 'rotate(0)' }}
+                      >
+                        ▼
+                      </div>
+                    </div>
+
+                    {/* Lista Giocatori (Accordion) */}
+                    <div
+                      className="transition-all duration-300 ease-[var(--ease-apple)] bg-[rgba(0,0,0,0.25)] shadow-[inset_0_2px_10px_rgba(0,0,0,0.35)]"
+                      style={{
+                        overflow: 'hidden',
+                        maxHeight: expanded === i ? `${team.players.length * 48}px` : '0px',
+                      }}
+                    >
+                      {team.players.map((player, j) => (
+                        <div 
+                          key={player.id} 
+                          onClick={() => setSelectedPlayerId(player.id)}
+                          className="flex items-center gap-4 px-8 py-3 text-[0.85rem] border-b border-[var(--glass-border)] last:border-b-0 cursor-pointer hover:bg-white/[0.02] transition-colors"
+                        >
+                          <div className="text-white/30 font-mono text-xs w-4 text-center">{j + 1}</div>
+                          <span className="font-semibold text-white/90 hover:text-blue-400 transition-colors">{player.name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="p-8 text-center text-white/40 text-xs italic">
+                  Nessuna squadra corrisponde alla ricerca.
+                </div>
+              )
+            ) : (
+              filteredPlayers.length > 0 ? (
+                filteredPlayers.map((p) => (
                   <div 
-                    className="flex items-center gap-4 p-4 cursor-pointer hover:bg-[rgba(255,255,255,0.03)] transition-colors border-b border-[var(--glass-border)] last:border-b-0" 
-                    onClick={() => toggle(i)}
+                    key={p.id} 
+                    onClick={() => setSelectedPlayerId(p.id)}
+                    className="flex items-center gap-4 p-4 border-b border-[var(--glass-border)] last:border-b-0 hover:bg-[rgba(255,255,255,0.02)] transition-colors cursor-pointer"
                   >
-                    <div className={`team-avatar avatar-${team.idx}`} style={{ width: 38, height: 38, borderRadius: 12 }}>
-                      {AVATAR_INITIALS(team.name)}
+                    <div className={`team-avatar avatar-${p.idx}`} style={{ width: 30, height: 30, borderRadius: 8, fontSize: '0.65rem' }}>
+                      {AVATAR_INITIALS(p.team)}
                     </div>
                     <div style={{ flex: 1 }}>
-                      <div className="font-extrabold text-[0.9rem] text-white leading-tight">{team.name}</div>
-                    </div>
-                    <div 
-                      className="text-white/40 text-xs transition-transform duration-300" 
-                      style={{ transform: expanded === i ? 'rotate(180deg)' : 'rotate(0)' }}
-                    >
-                      ▼
+                      <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'white' }} className="hover:text-blue-400 transition-colors">{p.name}</div>
+                      <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }} className="uppercase font-semibold tracking-wider mt-0.5">{p.team}</div>
                     </div>
                   </div>
-
-                  {/* Lista Giocatori (Accordion) */}
-                  <div
-                    className="transition-all duration-300 ease-[var(--ease-apple)] bg-[rgba(0,0,0,0.25)] shadow-[inset_0_2px_10px_rgba(0,0,0,0.35)]"
-                    style={{
-                      overflow: 'hidden',
-                      maxHeight: expanded === i ? `${team.players.length * 48}px` : '0px',
-                    }}
-                  >
-                    {team.players.map((player, j) => (
-                      <div 
-                        key={j} 
-                        onClick={() => setSelectedPlayerId(player.id)}
-                        className="flex items-center gap-4 px-8 py-3 text-[0.85rem] border-b border-[var(--glass-border)] last:border-b-0 cursor-pointer hover:bg-white/[0.02] transition-colors"
-                      >
-                        <div className="text-white/30 font-mono text-xs w-4 text-center">{j + 1}</div>
-                        <span className="font-semibold text-white/90 hover:text-blue-400 transition-colors">{player.name}</span>
-                      </div>
-                    ))}
-                  </div>
+                ))
+              ) : (
+                <div className="p-8 text-center text-white/40 text-xs italic">
+                  Nessun giocatore corrisponde alla ricerca.
                 </div>
-              ))
-            ) : (
-              <div className="p-8 text-center text-white/40 text-xs italic">
-                Nessuna squadra corrisponde alla ricerca.
-              </div>
+              )
             )}
           </div>
-        ) : (
-          <div className="glass-card animate-stagger">
-            {filteredPlayers.length > 0 ? (
-              filteredPlayers.map((p, i) => (
-                <div 
-                  key={i} 
-                  onClick={() => setSelectedPlayerId(p.id)}
-                  className="flex items-center gap-4 p-4 border-b border-[var(--glass-border)] last:border-b-0 hover:bg-[rgba(255,255,255,0.02)] transition-colors cursor-pointer"
-                >
-                  <div className={`team-avatar avatar-${p.idx}`} style={{ width: 30, height: 30, borderRadius: 8, fontSize: '0.65rem' }}>
-                    {AVATAR_INITIALS(p.team)}
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'white' }} className="hover:text-blue-400 transition-colors">{p.name}</div>
-                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }} className="uppercase font-semibold tracking-wider mt-0.5">{p.team}</div>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className="p-8 text-center text-white/40 text-xs italic">
-                Nessun giocatore corrisponde alla ricerca.
-              </div>
-            )}
-          </div>
-        )}
+        </div>
 
       </div>
       {selectedPlayerId && (

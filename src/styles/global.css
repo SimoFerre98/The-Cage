@@ -59,7 +59,7 @@ body {
   width: 100vw;
   height: 100vh; /* Fixed height prevents jumping when mobile URL bar hides */
   z-index: -1;
-  background: linear-gradient(rgba(3, 5, 10, 0.55), rgba(3, 5, 10, 0.85)), url('/Sfondo1.jpg') center/cover no-repeat;
+  background: linear-gradient(rgba(3, 5, 10, 0.55), rgba(3, 5, 10, 0.85)), url('/Sfondo/Campoalternativo.jpg') center/cover no-repeat;
   overflow: hidden;
   view-transition-name: fixed-background;
 }
@@ -573,6 +573,11 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover {
 }
 
 /* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 @keyframes slideUpFade {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }

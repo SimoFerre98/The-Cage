@@ -26,3 +26,6 @@ pnpm-debug.log*
 # raw large card assets
 /cards/
 
+# temporary scratchpad scripts
+scratch/
+

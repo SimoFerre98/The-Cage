@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import GlassEffect from '../GlassEffect';
 import type { AdminChildProps } from './types';
+import ConfirmModal from './ConfirmModal';
 
 export default function MatchesManager({ teams, matches, onRefreshMatches }: AdminChildProps) {
   // Form state
@@ -10,6 +11,10 @@ export default function MatchesManager({ teams, matches, onRefreshMatches }: Adm
   const [matchDate, setMatchDate] = useState('');
   const [matchTime, setMatchTime] = useState('');
   const [round, setRound] = useState('Girone Unico');
+
+  // Deletion modal state
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [matchToDelete, setMatchToDelete] = useState<string | null>(null);
 
   // ── Handlers ─────────────────────────────────────────────────────────────
 
@@ -57,10 +62,18 @@ export default function MatchesManager({ teams, matches, onRefreshMatches }: Adm
     onRefreshMatches();
   };
 
-  const handleDeleteMatch = async (id: string) => {
-    if (!confirm('Sei sicuro di voler eliminare questa partita? (Tutti gli eventi associati andranno persi)')) return;
-    await supabase.from('matches').delete().eq('id', id);
-    onRefreshMatches();
+  const requestDeleteMatch = (id: string) => {
+    setMatchToDelete(id);
+    setDeleteConfirmOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (matchToDelete) {
+      await supabase.from('matches').delete().eq('id', matchToDelete);
+      onRefreshMatches();
+    }
+    setDeleteConfirmOpen(false);
+    setMatchToDelete(null);
   };
 
   // ── Render ─────────────────────────────────────────────────────────────────
@@ -196,7 +209,7 @@ export default function MatchesManager({ teams, matches, onRefreshMatches }: Adm
 
                 {/* Cestino separato a destra */}
                 <button
-                  onClick={() => handleDeleteMatch(match.id)}
+                  onClick={() => requestDeleteMatch(match.id)}
                   className="w-9 h-9 bg-red-500/15 hover:bg-red-500/35 border border-red-500/20 rounded-xl text-red-200 flex items-center justify-center transition-colors cursor-pointer flex-shrink-0"
                   title="Elimina partita"
                 >
@@ -207,6 +220,20 @@ export default function MatchesManager({ teams, matches, onRefreshMatches }: Adm
           );
         })}
       </div>
+
+      <ConfirmModal
+        isOpen={deleteConfirmOpen}
+        title="Elimina Partita"
+        message="Sei sicuro di voler eliminare questa partita? Tutti gli eventi associati andranno persi per sempre."
+        onConfirm={handleConfirmDelete}
+        onCancel={() => {
+          setDeleteConfirmOpen(false);
+          setMatchToDelete(null);
+        }}
+        confirmLabel="Elimina"
+        cancelLabel="Annulla"
+        type="danger"
+      />
     </div>
   );
 }

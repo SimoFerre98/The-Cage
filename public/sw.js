@@ -1,12 +1,12 @@
-const CACHE_NAME = 'the-cage-pwa-v3';
+const CACHE_NAME = 'the-cage-pwa-v5';
 const ASSETS_TO_CACHE = [
   '/',
   '/offline.html',
   '/manifest.json',
   '/favicon.svg',
   '/Logo_Torneo.webp',
-  '/sfondo.webp',
-  '/3d-field.webp'
+  '/Sfondo/Campoalternativo.jpg',
+  '/Sfondo/3d-field.webp'
 ];
 
 // Install Event - Pre-cache the App Shell and fallback

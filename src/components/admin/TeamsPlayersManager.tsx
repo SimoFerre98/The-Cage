@@ -2,11 +2,17 @@ import React, { useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import GlassEffect from '../GlassEffect';
 import type { AdminChildProps } from './types';
+import ConfirmModal from './ConfirmModal';
 
 export default function TeamsPlayersManager({ teams, players, onRefreshTeams }: AdminChildProps) {
   const [newTeamName, setNewTeamName] = useState('');
   const [newPlayerName, setNewPlayerName] = useState('');
   const [activeTeamId, setActiveTeamId] = useState<string | null>(null);
+
+  // Confirm modal state
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [deleteType, setDeleteType] = useState<'team' | 'player' | null>(null);
+  const [idToDelete, setIdToDelete] = useState<string | null>(null);
 
   // ── Handlers ─────────────────────────────────────────────────────────────
 
@@ -22,11 +28,31 @@ export default function TeamsPlayersManager({ teams, players, onRefreshTeams }: 
     }
   };
 
-  const handleDeleteTeam = async (id: string) => {
-    if (!confirm('Sei sicuro di voler eliminare questa squadra e tutti i suoi giocatori?')) return;
-    await supabase.from('teams').delete().eq('id', id);
-    if (activeTeamId === id) setActiveTeamId(null);
-    onRefreshTeams();
+  const requestDeleteTeam = (id: string) => {
+    setIdToDelete(id);
+    setDeleteType('team');
+    setConfirmOpen(true);
+  };
+
+  const requestDeletePlayer = (id: string) => {
+    setIdToDelete(id);
+    setDeleteType('player');
+    setConfirmOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!idToDelete) return;
+    if (deleteType === 'team') {
+      await supabase.from('teams').delete().eq('id', idToDelete);
+      if (activeTeamId === idToDelete) setActiveTeamId(null);
+      onRefreshTeams();
+    } else if (deleteType === 'player') {
+      await supabase.from('players').delete().eq('id', idToDelete);
+      onRefreshTeams();
+    }
+    setConfirmOpen(false);
+    setIdToDelete(null);
+    setDeleteType(null);
   };
 
   const handleAddPlayer = async (e: React.FormEvent, teamId: string) => {
@@ -39,12 +65,6 @@ export default function TeamsPlayersManager({ teams, players, onRefreshTeams }: 
     } else {
       alert("Errore nell'aggiunta del giocatore: " + error.message);
     }
-  };
-
-  const handleDeletePlayer = async (id: string) => {
-    if (!confirm('Sei sicuro di voler eliminare questo giocatore?')) return;
-    await supabase.from('players').delete().eq('id', id);
-    onRefreshTeams();
   };
 
   // ── Render ─────────────────────────────────────────────────────────────────
@@ -86,7 +106,7 @@ export default function TeamsPlayersManager({ teams, players, onRefreshTeams }: 
                   {activeTeamId === team.id ? 'Chiudi' : 'Gestisci'}
                 </button>
                 <button
-                  onClick={() => handleDeleteTeam(team.id)}
+                  onClick={() => requestDeleteTeam(team.id)}
                   className="px-4 py-2 bg-red-500/20 hover:bg-red-500/40 border border-red-500/30 rounded-xl text-sm text-red-200 transition-colors font-bold"
                 >
                   Elimina
@@ -115,7 +135,7 @@ export default function TeamsPlayersManager({ teams, players, onRefreshTeams }: 
                     <div key={player.id} className="flex items-center justify-between bg-white/5 px-5 py-4 rounded-xl border border-white/[0.03]">
                       <span className="text-sm font-medium text-white/90">{player.name}</span>
                       <button
-                        onClick={() => handleDeletePlayer(player.id)}
+                        onClick={() => requestDeletePlayer(player.id)}
                         className="text-red-400 hover:text-red-300 text-xs font-bold px-2 py-1 rounded hover:bg-red-500/10 transition-colors"
                       >
                         Rimuovi
@@ -131,6 +151,25 @@ export default function TeamsPlayersManager({ teams, players, onRefreshTeams }: 
           </GlassEffect>
         ))}
       </div>
+
+      <ConfirmModal
+        isOpen={confirmOpen}
+        title={deleteType === 'team' ? "Elimina Squadra" : "Elimina Giocatore"}
+        message={
+          deleteType === 'team'
+            ? "Sei sicuro di voler eliminare questa squadra e tutti i suoi giocatori? Tutti i dati associati andranno persi per sempre."
+            : "Sei sicuro di voler eliminare questo giocatore? I suoi dati e statistiche verranno rimossi per sempre."
+        }
+        onConfirm={handleConfirmDelete}
+        onCancel={() => {
+          setConfirmOpen(false);
+          setIdToDelete(null);
+          setDeleteType(null);
+        }}
+        confirmLabel="Elimina"
+        cancelLabel="Annulla"
+        type="danger"
+      />
     </div>
   );
 }
