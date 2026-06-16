@@ -22,7 +22,7 @@ const AVATAR_IDX: Record<string, number> = {
   'UCG (Bairon)': 7,
   'Samu Betti': 8,
   'chainz': 9,
-  'Martino Gonzalez': 10,
+  'FcPontos': 10,
 };
 
 export default function HomeIsland() {

@@ -20,7 +20,7 @@ from public.teams h, public.teams a where h.name = 'Samu Betti' and a.name = 'ch
 
 insert into public.matches (home_team_id, away_team_id, match_date, round, status, home_score, away_score)
 select h.id, a.id, '2026-05-22 21:30:00+02'::timestamptz, 'Girone B', 'TERMINATA', 0, 2
-from public.teams h, public.teams a where h.name = 'Martino Gonzalez' and a.name = 'Gli Umili';
+from public.teams h, public.teams a where h.name = 'FcPontos' and a.name = 'Gli Umili';
 
 insert into public.matches (home_team_id, away_team_id, match_date, round, status, home_score, away_score)
 select h.id, a.id, '2026-05-26 21:00:00+02'::timestamptz, 'Girone A', 'PROSSIMA', 0, 0
