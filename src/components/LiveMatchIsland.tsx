@@ -16,7 +16,7 @@ const TEAM_IDX: Record<string, number> = {
   'Tama': 1,
   'Mario': 2,
   'Sezione 104': 3,
-  'Montarsolo': 4,
+  'Gli Umili': 4,
   'Dario': 5,
   'Taverna': 6,
   'UCG (Bairon)': 7,

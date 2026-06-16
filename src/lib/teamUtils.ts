@@ -14,7 +14,7 @@ export const AVATAR_IDX: Record<string, number> = {
   'Tama': 1,
   'Mario': 2,
   'Sezione 104': 3,
-  'Montarsolo': 4,
+  'Gli Umili': 4,
   'Dario': 5,
   'Taverna': 6,
   'UCG (Bairon)': 7,
@@ -29,6 +29,9 @@ export function getTeamLogo(teamName: string): string | null {
   
   if (name.includes('amatori') || name.includes('genova')) return '/Logos/Amatori Calcio Genova.jpeg';
   if (name.includes('ucg') || name.includes('ugc')) return '/Logos/U.C.G.jpeg';
+  if (name.includes('umili')) return '/Logos/GliUmili.jpeg';
+  if (name.includes('taverna')) return '/Logos/Taverna.jpeg';
+  if (name.includes('ceres')) return '/Logos/FCCeres.jpeg';
   if (name.includes('astonbirra')) return '/Logos/Astonbirra.jpeg';
   if (name.includes('chainz')) return '/Logos/Chainz.jpeg';
   if (name.includes('pontos')) return '/Logos/FcPontos.jpeg';

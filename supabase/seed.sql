@@ -8,7 +8,7 @@ insert into public.teams (name) values
   ('Tama'),
   ('Mario'),
   ('Sezione 104'),
-  ('Montarsolo'),
+  ('Gli Umili'),
   ('Dario'),
   ('Taverna'),
   ('UCG (Bairon)'),
@@ -36,10 +36,10 @@ insert into public.players (name, team_id)
 select unnest(array['Davide Corsini', 'Andrea Dominici', 'Samuele Mangano', 'Filippo Turrini', 'Gabriele Robotti', 'Ivan Grispo', 'Riccardo Mazzolini']), id
 from public.teams where name = 'Sezione 104';
 
--- inserisci i giocatori per Montarsolo
+-- inserisci i giocatori per Gli Umili
 insert into public.players (name, team_id)
-select unnest(array['Amato C.', 'Silvestri L.', 'Sanna M.', 'Fabbri P.', 'Marchetti T.', 'De Angelis R.', 'Villa A.', 'Poli G.', 'Gentile S.']), id
-from public.teams where name = 'Montarsolo';
+select unnest(array['Filippo Caselli', 'Matteo Menini', 'Samuele Montarsolo', 'Tommaso Verardo', 'Simone Valle', 'Lorenzo Papiri', 'Paolo Gaglianò', 'Elio Casanova']), id
+from public.teams where name = 'Gli Umili';
 
 -- inserisci i giocatori per Dario
 insert into public.players (name, team_id)
