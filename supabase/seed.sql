@@ -53,7 +53,7 @@ from public.teams where name = 'Taverna';
 
 -- inserisci i giocatori per UCG (Bairon)
 insert into public.players (name, team_id)
-select unnest(array['Ruggiero M.', 'Mazza L.', 'Cattaneo T.', 'Greco P.', 'Ferrario E.', 'Pinto G.', 'Martinelli C.', 'Gatti R.', 'D''Amico A.']), id
+select unnest(array['Bairon Carboni', 'Lavagetto Emanuele', 'Lorenzo Ceresoli', 'Fasce Alessandro', 'Reverberi Tommaso', 'Cipolla Luca', 'Baratta Gabriele', 'Bevegni Francesco']), id
 from public.teams where name = 'UCG (Bairon)';
 
 -- inserisci i giocatori per Samu Betti
