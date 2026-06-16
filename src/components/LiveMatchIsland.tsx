@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import GlassEffect from './GlassEffect';
 import { supabase } from '../lib/supabase';
+import { getTeamLogo } from '../lib/teamUtils';
+
 import PlayerStatsModal from './PlayerStatsModal';
 
 const AVATAR_INITIALS = (name: string) => {
@@ -327,9 +329,16 @@ export default function LiveMatchIsland() {
               <div className="relative group cursor-pointer">
                 {/* Glowing neon ring backdrop */}
                 <div className="absolute -inset-1 rounded-full bg-gradient-to-b from-red-500 to-rose-600 opacity-20 blur-md group-hover:opacity-40 transition duration-500" />
-                <div className={`team-avatar avatar-${TEAM_IDX[homeName] ?? 0} !rounded-full w-16 h-16 border-2 border-red-500/40 text-lg font-black avatar-glow-home flex items-center justify-center`}>
-                  {AVATAR_INITIALS(homeName)}
-                </div>
+                {(() => {
+                  const logo = getTeamLogo(homeName);
+                  return logo ? (
+                    <img src={logo} alt={homeName} className="team-avatar object-cover !rounded-full w-16 h-16 border-2 border-red-500/40 avatar-glow-home" />
+                  ) : (
+                    <div className={`team-avatar avatar-${TEAM_IDX[homeName] ?? 0} !rounded-full w-16 h-16 border-2 border-red-500/40 text-lg font-black avatar-glow-home flex items-center justify-center`}>
+                      {AVATAR_INITIALS(homeName)}
+                    </div>
+                  );
+                })()}
               </div>
               <span 
                 className="text-[0.75rem] font-black text-[var(--text-primary)] mt-3 select-none uppercase tracking-wider truncate w-full text-center"
@@ -384,9 +393,16 @@ export default function LiveMatchIsland() {
               <div className="relative group cursor-pointer">
                 {/* Glowing neon ring backdrop */}
                 <div className="absolute -inset-1 rounded-full bg-gradient-to-b from-blue-500 to-indigo-600 opacity-20 blur-md group-hover:opacity-40 transition duration-500" />
-                <div className={`team-avatar avatar-${TEAM_IDX[awayName] ?? 1} !rounded-full w-16 h-16 border-2 border-blue-500/40 text-lg font-black avatar-glow-away flex items-center justify-center`}>
-                  {AVATAR_INITIALS(awayName)}
-                </div>
+                {(() => {
+                  const logo = getTeamLogo(awayName);
+                  return logo ? (
+                    <img src={logo} alt={awayName} className="team-avatar object-cover !rounded-full w-16 h-16 border-2 border-blue-500/40 avatar-glow-away" />
+                  ) : (
+                    <div className={`team-avatar avatar-${TEAM_IDX[awayName] ?? 1} !rounded-full w-16 h-16 border-2 border-blue-500/40 text-lg font-black avatar-glow-away flex items-center justify-center`}>
+                      {AVATAR_INITIALS(awayName)}
+                    </div>
+                  );
+                })()}
               </div>
               <span 
                 className="text-[0.75rem] font-black text-[var(--text-primary)] mt-3 select-none uppercase tracking-wider truncate w-full text-center"

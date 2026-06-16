@@ -3,6 +3,7 @@ import GlassEffect from './GlassEffect';
 import { supabase } from '../lib/supabase';
 import { fetchWithCache } from '../lib/cache';
 import PlayerStatsModal from './PlayerStatsModal';
+import { getTeamLogo } from '../lib/teamUtils';
 
 const AVATAR_INITIALS = (name: string) => {
   const parts = name.split(' ');
@@ -166,6 +167,12 @@ export default function HomeIsland() {
           const { data } = await supabase.from('standings').select('*');
           if (isMounted && data) {
             setStandings(data.slice(0, 3));
+            
+            // Mantieni allineata la cache locale per evitare flash di dati vecchi alla navigazione
+            const win = window as any;
+            if (!win.__cage_cache) win.__cage_cache = {};
+            win.__cage_cache['cage-standings'] = { data, timestamp: Date.now() };
+            localStorage.setItem('cage-standings', JSON.stringify({ data, timestamp: Date.now() }));
           }
         }
       })
@@ -219,7 +226,7 @@ export default function HomeIsland() {
                   ? 'live-card-glow' 
                   : 'border-[var(--glass-border)]'
               }`}
-              contentClassName="p-6 pb-8 flex flex-col justify-between flex-1 w-full"
+              contentClassName="p-6 pb-12 flex flex-col justify-between flex-1 w-full"
             >
               {/* Header del Match Centrato */}
               <div className="flex flex-col items-center gap-2 w-full">
@@ -246,9 +253,16 @@ export default function HomeIsland() {
               <div className="flex items-center justify-between gap-4 py-4 my-auto">
                 {/* Casa */}
                 <div className="flex flex-col items-center flex-1 min-w-0">
-                  <div className={`team-avatar avatar-${AVATAR_IDX[featuredMatch.match.home_team.name] ?? 0} w-10 h-10 rounded-xl mb-2 text-xs`}>
-                    {AVATAR_INITIALS(featuredMatch.match.home_team.name)}
-                  </div>
+                  {(() => {
+                    const logo = getTeamLogo(featuredMatch.match.home_team.name);
+                    return logo ? (
+                      <img src={logo} alt={featuredMatch.match.home_team.name} className="team-avatar w-10 h-10 rounded-xl mb-2 object-cover" />
+                    ) : (
+                      <div className={`team-avatar avatar-${AVATAR_IDX[featuredMatch.match.home_team.name] ?? 0} w-10 h-10 rounded-xl mb-2 text-xs`}>
+                        {AVATAR_INITIALS(featuredMatch.match.home_team.name)}
+                      </div>
+                    );
+                  })()}
                   <span className="font-extrabold text-[0.8rem] md:text-sm text-white text-center leading-tight truncate w-full">
                     {featuredMatch.match.home_team.name}
                   </span>
@@ -269,9 +283,16 @@ export default function HomeIsland() {
 
                 {/* Trasferta */}
                 <div className="flex flex-col items-center flex-1 min-w-0">
-                  <div className={`team-avatar avatar-${AVATAR_IDX[featuredMatch.match.away_team.name] ?? 1} w-10 h-10 rounded-xl mb-2 text-xs`}>
-                    {AVATAR_INITIALS(featuredMatch.match.away_team.name)}
-                  </div>
+                  {(() => {
+                    const logo = getTeamLogo(featuredMatch.match.away_team.name);
+                    return logo ? (
+                      <img src={logo} alt={featuredMatch.match.away_team.name} className="team-avatar w-10 h-10 rounded-xl mb-2 object-cover" />
+                    ) : (
+                      <div className={`team-avatar avatar-${AVATAR_IDX[featuredMatch.match.away_team.name] ?? 1} w-10 h-10 rounded-xl mb-2 text-xs`}>
+                        {AVATAR_INITIALS(featuredMatch.match.away_team.name)}
+                      </div>
+                    );
+                  })()}
                   <span className="font-extrabold text-[0.8rem] md:text-sm text-white text-center leading-tight truncate w-full">
                     {featuredMatch.match.away_team.name}
                   </span>
@@ -327,7 +348,7 @@ export default function HomeIsland() {
           <h2 className="text-xs font-bold uppercase tracking-wider text-white/50 mb-3 text-center w-full">Classifica</h2>
           <GlassEffect 
             className="rounded-[24px] flex flex-col h-full min-h-[240px]"
-            contentClassName="p-6 pb-8 flex flex-col justify-between flex-1 w-full"
+            contentClassName="p-6 pb-12 flex flex-col justify-between flex-1 w-full"
           >
             {standings.length > 0 ? (
               <div className="w-full flex flex-col flex-1 justify-between">
@@ -348,9 +369,16 @@ export default function HomeIsland() {
                         </td>
                         <td className="py-2.5 font-bold text-xs text-white">
                           <div className="flex items-center gap-2">
-                            <div className={`team-avatar avatar-${AVATAR_IDX[row.team_name] ?? 0} w-5 h-5 rounded-md text-[0.5rem]`}>
-                              {AVATAR_INITIALS(row.team_name)}
-                            </div>
+                            {(() => {
+                              const logo = getTeamLogo(row.team_name);
+                              return logo ? (
+                                <img src={logo} alt={row.team_name} className="team-avatar w-5 h-5 rounded-md object-cover" />
+                              ) : (
+                                <div className={`team-avatar avatar-${AVATAR_IDX[row.team_name] ?? 0} w-5 h-5 rounded-md text-[0.5rem]`}>
+                                  {AVATAR_INITIALS(row.team_name)}
+                                </div>
+                              );
+                            })()}
                             <span className="truncate max-w-[120px] md:max-w-[150px]">{row.team_name}</span>
                           </div>
                         </td>
@@ -450,9 +478,16 @@ export default function HomeIsland() {
                       className="flex items-center gap-4 p-4 cursor-pointer hover:bg-[rgba(255,255,255,0.03)] transition-colors border-b border-[var(--glass-border)] last:border-b-0" 
                       onClick={() => toggle(i)}
                     >
-                      <div className={`team-avatar avatar-${team.idx}`} style={{ width: 38, height: 38, borderRadius: 12 }}>
-                        {AVATAR_INITIALS(team.name)}
-                      </div>
+                      {(() => {
+                        const logo = getTeamLogo(team.name);
+                        return logo ? (
+                          <img src={logo} alt={team.name} className="team-avatar object-cover" style={{ width: 38, height: 38, borderRadius: 12 }} />
+                        ) : (
+                          <div className={`team-avatar avatar-${team.idx}`} style={{ width: 38, height: 38, borderRadius: 12 }}>
+                            {AVATAR_INITIALS(team.name)}
+                          </div>
+                        );
+                      })()}
                       <div style={{ flex: 1 }}>
                         <div className="font-extrabold text-[0.9rem] text-white leading-tight">{team.name}</div>
                       </div>
@@ -498,9 +533,16 @@ export default function HomeIsland() {
                     onClick={() => setSelectedPlayerId(p.id)}
                     className="flex items-center gap-4 p-4 border-b border-[var(--glass-border)] last:border-b-0 hover:bg-[rgba(255,255,255,0.02)] transition-colors cursor-pointer"
                   >
-                    <div className={`team-avatar avatar-${p.idx}`} style={{ width: 30, height: 30, borderRadius: 8, fontSize: '0.65rem' }}>
-                      {AVATAR_INITIALS(p.team)}
-                    </div>
+                    {(() => {
+                      const logo = getTeamLogo(p.team);
+                      return logo ? (
+                        <img src={logo} alt={p.team} className="team-avatar object-cover" style={{ width: 30, height: 30, borderRadius: 8 }} />
+                      ) : (
+                        <div className={`team-avatar avatar-${p.idx}`} style={{ width: 30, height: 30, borderRadius: 8, fontSize: '0.65rem' }}>
+                          {AVATAR_INITIALS(p.team)}
+                        </div>
+                      );
+                    })()}
                     <div style={{ flex: 1 }}>
                       <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'white' }} className="hover:text-blue-400 transition-colors">{p.name}</div>
                       <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }} className="uppercase font-semibold tracking-wider mt-0.5">{p.team}</div>

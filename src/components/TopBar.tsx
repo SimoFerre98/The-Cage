@@ -1,64 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import GlassEffect from './GlassEffect';
 
 /**
- * TopBar con effetto Liquid Glass e Toggle Day/Night:
+ * TopBar con effetto Liquid Glass:
  * - centrata, larghezza contenuta, altezza generosa
- * - pulsante Toggle Tema a sinistra
  * - logo + titolo al centro
  * - icona admin a destra
  */
 export default function TopBar() {
-  const [theme, setTheme] = useState("dark");
-
-  useEffect(() => {
-    // Controllo iniziale del tema
-    const isLight = document.documentElement.classList.contains("light-theme");
-    setTheme(isLight ? "light" : "dark");
-  }, []);
-
-  const toggleTheme = () => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("light-theme");
-      localStorage.setItem("theme", "light");
-      setTheme("light");
-    } else {
-      document.documentElement.classList.remove("light-theme");
-      localStorage.setItem("theme", "dark");
-      setTheme("dark");
-    }
-  };
-
   return (
     <GlassEffect
       className="rounded-[1.6rem] px-5 py-4"
       style={{ border: '1px solid var(--glass-border-light)' }}
     >
       <div className="relative flex items-center justify-center w-full">
-        {/* Theme Toggle Button (Left) */}
-        <button
-          onClick={toggleTheme}
-          aria-label="Cambia tema"
-          style={{
-            position: 'absolute',
-            left: 0,
-            background: 'transparent',
-            border: 'none',
-            fontSize: '1.1rem',
-            cursor: 'pointer',
-            opacity: 0.6,
-            transition: 'opacity 0.3s, transform 0.3s',
-            display: 'inline-flex',
-            alignItems: 'center',
-            padding: '4px',
-          }}
-          onMouseOver={(e) => (e.currentTarget.style.opacity = '1')}
-          onMouseOut={(e) => (e.currentTarget.style.opacity = '0.6')}
-          className="hover:scale-115 active:scale-90 transition-all duration-300"
-        >
-          {theme === "dark" ? "☀️" : "🌙"}
-        </button>
-
         {/* Logo + titolo */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <img

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import GlassEffect from './GlassEffect';
 import { supabase } from '../lib/supabase';
 import PlayerStatsModal from './PlayerStatsModal';
+import { getTeamLogo } from '../lib/teamUtils';
 
 const LEGEND = [
   { label: 'PT', desc: 'Punti totali' },
@@ -301,9 +302,16 @@ export default function ClassificaIsland() {
                   </td>
                   <td className="px-2 py-3.5">
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                      <div className={`team-avatar avatar-${AVATAR_IDX[row.team_name] ?? 0}`} style={{ width: 26, height: 26, borderRadius: 7, fontSize: '0.55rem', flexShrink: 0 }}>
-                        {AVATAR_INITIALS(row.team_name)}
-                      </div>
+                      {(() => {
+                        const logo = getTeamLogo(row.team_name);
+                        return logo ? (
+                          <img src={logo} alt={row.team_name} className="team-avatar object-cover" style={{ width: 26, height: 26, borderRadius: 7, flexShrink: 0 }} />
+                        ) : (
+                          <div className={`team-avatar avatar-${AVATAR_IDX[row.team_name] ?? 0}`} style={{ width: 26, height: 26, borderRadius: 7, fontSize: '0.55rem', flexShrink: 0 }}>
+                            {AVATAR_INITIALS(row.team_name)}
+                          </div>
+                        );
+                      })()}
                       <span className="text-[0.85rem] font-bold text-[var(--text-primary)]">{row.team_name}</span>
                     </div>
                   </td>

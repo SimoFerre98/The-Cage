@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import GlassEffect from './GlassEffect';
 import { supabase } from '../lib/supabase';
+import { getTeamLogo } from '../lib/teamUtils';
+
 
 const AVATAR_INITIALS = (name: string) => {
   const parts = name.split(' ');
@@ -79,9 +81,16 @@ export default function CalendarioIsland() {
       <>
         {/* Team 1 */}
         <div className={`bracket-team ${homeWon ? 'bracket-team-winner' : isTerminata && awayScore !== null ? 'opacity-50' : ''}`}>
-          <div className={`team-avatar avatar-${t1Idx}`} style={{ width: isGold ? 28 : 26, height: isGold ? 28 : 26, borderRadius: isGold ? 8 : 6, fontSize: '0.55rem', fontWeight: 800 }}>
-            {t1Initials}
-          </div>
+          {(() => {
+            const logo = getTeamLogo(t1Name);
+            return logo ? (
+              <img src={logo} alt={t1Name} className="team-avatar object-cover" style={{ width: isGold ? 28 : 26, height: isGold ? 28 : 26, borderRadius: isGold ? 8 : 6 }} />
+            ) : (
+              <div className={`team-avatar avatar-${t1Idx}`} style={{ width: isGold ? 28 : 26, height: isGold ? 28 : 26, borderRadius: isGold ? 8 : 6, fontSize: '0.55rem', fontWeight: 800 }}>
+                {t1Initials}
+              </div>
+            );
+          })()}
           <span className={`bracket-team-name ${isGold ? 'font-black' : ''}`}>
             {t1Name}
           </span>
@@ -94,9 +103,16 @@ export default function CalendarioIsland() {
         
         {/* Team 2 */}
         <div className={`bracket-team ${awayWon ? 'bracket-team-winner' : isTerminata && homeScore !== null ? 'opacity-50' : ''}`}>
-          <div className={`team-avatar avatar-${t2Idx}`} style={{ width: isGold ? 28 : 26, height: isGold ? 28 : 26, borderRadius: isGold ? 8 : 6, fontSize: '0.55rem', fontWeight: 800 }}>
-            {t2Initials}
-          </div>
+          {(() => {
+            const logo = getTeamLogo(t2Name);
+            return logo ? (
+              <img src={logo} alt={t2Name} className="team-avatar object-cover" style={{ width: isGold ? 28 : 26, height: isGold ? 28 : 26, borderRadius: isGold ? 8 : 6 }} />
+            ) : (
+              <div className={`team-avatar avatar-${t2Idx}`} style={{ width: isGold ? 28 : 26, height: isGold ? 28 : 26, borderRadius: isGold ? 8 : 6, fontSize: '0.55rem', fontWeight: 800 }}>
+                {t2Initials}
+              </div>
+            );
+          })()}
           <span className={`bracket-team-name ${isGold ? 'font-black' : ''}`}>
             {t2Name}
           </span>
@@ -308,9 +324,16 @@ export default function CalendarioIsland() {
                 <div className="flex items-center justify-center gap-3">
                   {/* Home */}
                   <div className="flex items-center gap-2 flex-1 justify-end flex-row-reverse text-right">
-                    <div className={`team-avatar avatar-${TEAM_IDX[homeName] ?? 0}`} style={{ width: 34, height: 34, borderRadius: 10 }}>
-                      {AVATAR_INITIALS(homeName)}
-                    </div>
+                    {(() => {
+                      const logo = getTeamLogo(homeName);
+                      return logo ? (
+                        <img src={logo} alt={homeName} className="team-avatar object-cover" style={{ width: 34, height: 34, borderRadius: 10 }} />
+                      ) : (
+                        <div className={`team-avatar avatar-${TEAM_IDX[homeName] ?? 0}`} style={{ width: 34, height: 34, borderRadius: 10 }}>
+                          {AVATAR_INITIALS(homeName)}
+                        </div>
+                      );
+                    })()}
                     <span className="text-[0.875rem] font-bold text-[var(--text-primary)] leading-tight">{homeName}</span>
                   </div>
 
@@ -327,9 +350,16 @@ export default function CalendarioIsland() {
 
                   {/* Away */}
                   <div className="flex items-center gap-2 flex-1 text-left">
-                    <div className={`team-avatar avatar-${TEAM_IDX[awayName] ?? 1}`} style={{ width: 34, height: 34, borderRadius: 10 }}>
-                      {AVATAR_INITIALS(awayName)}
-                    </div>
+                    {(() => {
+                      const logo = getTeamLogo(awayName);
+                      return logo ? (
+                        <img src={logo} alt={awayName} className="team-avatar object-cover" style={{ width: 34, height: 34, borderRadius: 10 }} />
+                      ) : (
+                        <div className={`team-avatar avatar-${TEAM_IDX[awayName] ?? 1}`} style={{ width: 34, height: 34, borderRadius: 10 }}>
+                          {AVATAR_INITIALS(awayName)}
+                        </div>
+                      );
+                    })()}
                     <span className="text-[0.875rem] font-bold text-[var(--text-primary)] leading-tight">{awayName}</span>
                   </div>
                 </div>

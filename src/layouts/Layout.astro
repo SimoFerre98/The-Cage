@@ -31,30 +31,12 @@ const navItems = [
     <link rel="preload" href="/Logo_Torneo.png" as="image" />
     <title>{title} | Memorial Gerry The Cage</title>
     <script is:inline>
-      const getTheme = () => {
-        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-          return localStorage.getItem('theme');
-        }
-        return 'dark'; // default theme is dark
-      };
-      const theme = getTheme();
-      if (theme === 'light') {
-        document.documentElement.classList.add('light-theme');
-      } else {
-        document.documentElement.classList.remove('light-theme');
+      document.documentElement.classList.remove('light-theme');
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('theme', 'dark');
       }
     </script>
-    <script>
-      // Apply theme after view transition swap
-      document.addEventListener('astro:after-swap', () => {
-        const theme = localStorage.getItem('theme') || 'dark';
-        if (theme === 'light') {
-          document.documentElement.classList.add('light-theme');
-        } else {
-          document.documentElement.classList.remove('light-theme');
-        }
-      });
-    </script>
+
     <ClientRouter />
   </head>
 
