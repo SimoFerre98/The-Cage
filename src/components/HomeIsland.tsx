@@ -20,9 +20,12 @@ const AVATAR_IDX: Record<string, number> = {
   'Aston Birra': 5,
   'Taverna': 6,
   'UCG (Bairon)': 7,
+  'U.C.G': 7,
   'Lo Dico FC': 8,
   'chainz': 9,
+  'Chainz': 9,
   'FcPontos': 10,
+  'Fc Pontos': 10,
 };
 
 export default function HomeIsland() {
@@ -202,114 +205,122 @@ export default function HomeIsland() {
   const renderRosterContent = () => {
     if (tab === 'squadre') {
       if (filteredTeams.length > 0) {
-        return filteredTeams.map((team, i) => (
-          <div key={team.name}>
-            <div 
-              className="flex items-center gap-4 p-4 cursor-pointer hover:bg-[rgba(255,255,255,0.03)] transition-colors border-b border-[var(--glass-border)] last:border-b-0" 
-              onClick={() => toggle(i)}
-            >
-              {(() => {
-                const logo = getTeamLogo(team.name);
-                return logo ? (
-                  <img src={logo} alt={team.name} className="team-avatar object-cover" style={{ width: 38, height: 38, borderRadius: 12 }} />
-                ) : (
-                  <div className={`team-avatar avatar-${team.idx}`} style={{ width: 38, height: 38, borderRadius: 12 }}>
-                    {AVATAR_INITIALS(team.name)}
+        return (
+          <div className="flex flex-col gap-5 w-full">
+            {filteredTeams.map((team, i) => (
+              <div key={team.name} className="glass-card overflow-hidden transition-all duration-300 hover:border-white/20">
+                <div 
+                  className="flex items-center gap-4 p-5 cursor-pointer hover:bg-[rgba(255,255,255,0.03)] transition-colors" 
+                  onClick={() => toggle(i)}
+                >
+                  {(() => {
+                    const logo = getTeamLogo(team.name);
+                    return logo ? (
+                      <img src={logo} alt={team.name} className="team-avatar object-cover" style={{ width: 38, height: 38, borderRadius: 12 }} />
+                    ) : (
+                      <div className={`team-avatar avatar-${team.idx}`} style={{ width: 38, height: 38, borderRadius: 12 }}>
+                        {AVATAR_INITIALS(team.name)}
+                      </div>
+                    );
+                  })()}
+                  <div style={{ flex: 1 }}>
+                    <div className="font-extrabold text-[0.98rem] text-white leading-tight">{team.name}</div>
                   </div>
-                );
-              })()}
-              <div style={{ flex: 1 }}>
-                <div className="font-extrabold text-[0.9rem] text-white leading-tight">{team.name}</div>
-              </div>
-              <div 
-                className="text-white/40 text-xs transition-transform duration-300" 
-                style={{ transform: expanded === i ? 'rotate(180deg)' : 'rotate(0)' }}
-              >
-                ▼
-              </div>
-            </div>
-
-            {/* Lista Giocatori (Accordion) */}
-            <div
-              className="transition-all duration-300 ease-[var(--ease-apple)] bg-[rgba(0,0,0,0.25)] shadow-[inset_0_2px_10px_rgba(0,0,0,0.35)]"
-              style={{
-                overflow: 'hidden',
-                maxHeight: expanded === i ? `${team.players.length * 48}px` : '0px',
-              }}
-            >
-              {team.players.map((player: any, j: number) => {
-                const { displayName, isExtra } = parsePlayerName(player.name);
-                return (
                   <div 
-                    key={player.id} 
-                    onClick={() => setSelectedPlayerId(player.id)}
-                    className={`flex items-center gap-4 px-8 py-3 text-[0.85rem] border-b border-[var(--glass-border)] last:border-b-0 cursor-pointer hover:bg-white/[0.02] transition-colors ${
-                      isExtra ? 'bg-amber-500/[0.02] border-t border-dashed border-amber-500/10' : ''
-                    }`}
+                    className="text-white/40 text-xs transition-transform duration-300" 
+                    style={{ transform: expanded === i ? 'rotate(180deg)' : 'rotate(0)' }}
                   >
-                    <div className="text-white/30 font-mono text-xs w-4 text-center">
-                      {isExtra ? '★' : j + 1}
-                    </div>
-                    <div className="flex-1 flex items-center justify-between">
-                      <span className="font-semibold text-white/90 hover:text-blue-400 transition-colors truncate">{displayName}</span>
-                      {isExtra && (
-                        <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/20 uppercase tracking-wider">
-                          Slot Extra
-                        </span>
-                      )}
-                    </div>
+                    ▼
                   </div>
-                );
-              })}
-            </div>
+                </div>
+
+                {/* Lista Giocatori (Accordion) */}
+                <div
+                  className="transition-all duration-300 ease-[var(--ease-apple)] bg-[rgba(0,0,0,0.25)] shadow-[inset_0_2px_10px_rgba(0,0,0,0.35)]"
+                  style={{
+                    overflow: 'hidden',
+                    maxHeight: expanded === i ? `${team.players.length * 64}px` : '0px',
+                  }}
+                >
+                  {team.players.map((player: any, j: number) => {
+                    const { displayName, isExtra } = parsePlayerName(player.name);
+                    return (
+                      <div 
+                        key={player.id} 
+                        onClick={() => setSelectedPlayerId(player.id)}
+                        className={`flex items-center gap-4 px-8 py-4 text-[0.98rem] border-b border-[var(--glass-border)] last:border-b-0 cursor-pointer hover:bg-white/[0.04] transition-colors ${
+                          isExtra ? 'bg-amber-500/[0.02] border-t border-dashed border-amber-500/10' : ''
+                        }`}
+                      >
+                        <div className="text-white/30 font-mono text-xs w-4 text-center">
+                          {isExtra ? '★' : j + 1}
+                        </div>
+                        <div className="flex-1 flex items-center justify-between">
+                          <span className="font-bold text-white/95 hover:text-blue-400 transition-colors truncate">{displayName}</span>
+                          {isExtra && (
+                            <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/20 uppercase tracking-wider">
+                              Slot Extra
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </div>
-        ));
+        );
       } else {
         return (
-          <div className="p-8 text-center text-white/40 text-xs italic">
+          <div className="glass-card p-8 text-center text-white/40 text-xs italic w-full">
             Nessuna squadra corrisponde alla ricerca.
           </div>
         );
       }
     } else {
       if (filteredPlayers.length > 0) {
-        return filteredPlayers.map((p) => {
-          const { displayName, isExtra } = parsePlayerName(p.name);
-          return (
-            <div 
-              key={p.id} 
-              onClick={() => setSelectedPlayerId(p.id)}
-              className="flex items-center gap-4 p-4 border-b border-[var(--glass-border)] last:border-b-0 hover:bg-[rgba(255,255,255,0.02)] transition-colors cursor-pointer"
-            >
-              {(() => {
-                const logo = getTeamLogo(p.team);
-                return logo ? (
-                  <img src={logo} alt={p.team} className="team-avatar object-cover" style={{ width: 30, height: 30, borderRadius: 8 }} />
-                ) : (
-                  <div className={`team-avatar avatar-${p.idx}`} style={{ width: 30, height: 30, borderRadius: 8, fontSize: '0.65rem' }}>
-                    {AVATAR_INITIALS(p.team)}
+        return (
+          <div className="glass-card overflow-hidden w-full">
+            {filteredPlayers.map((p) => {
+              const { displayName, isExtra } = parsePlayerName(p.name);
+              return (
+                <div 
+                  key={p.id} 
+                  onClick={() => setSelectedPlayerId(p.id)}
+                  className="flex items-center gap-4 py-4 px-5 border-b border-[var(--glass-border)] last:border-b-0 hover:bg-[rgba(255,255,255,0.02)] transition-colors cursor-pointer"
+                >
+                  {(() => {
+                    const logo = getTeamLogo(p.team);
+                    return logo ? (
+                      <img src={logo} alt={p.team} className="team-avatar object-cover" style={{ width: 30, height: 30, borderRadius: 8 }} />
+                    ) : (
+                      <div className={`team-avatar avatar-${p.idx}`} style={{ width: 30, height: 30, borderRadius: 8, fontSize: '0.65rem' }}>
+                        {AVATAR_INITIALS(p.team)}
+                      </div>
+                    );
+                  })()}
+                  <div style={{ flex: 1 }}>
+                    <div className="flex items-center gap-2">
+                      <span style={{ fontSize: '0.98rem', fontWeight: 800, color: 'white' }} className="hover:text-blue-400 transition-colors">
+                        {displayName}
+                      </span>
+                      {isExtra && (
+                        <span className="px-1.5 py-0.5 rounded-full text-[8px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/20 uppercase tracking-wider">
+                          Slot Extra
+                        </span>
+                      )}
+                    </div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }} className="uppercase font-semibold tracking-wider mt-0.5">{p.team}</div>
                   </div>
-                );
-              })()}
-              <div style={{ flex: 1 }}>
-                <div className="flex items-center gap-2">
-                  <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'white' }} className="hover:text-blue-400 transition-colors">
-                    {displayName}
-                  </span>
-                  {isExtra && (
-                    <span className="px-1.5 py-0.5 rounded-full text-[8px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/20 uppercase tracking-wider">
-                      Slot Extra
-                    </span>
-                  )}
                 </div>
-                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }} className="uppercase font-semibold tracking-wider mt-0.5">{p.team}</div>
-              </div>
-            </div>
-          );
-        });
+              );
+            })}
+          </div>
+        );
       } else {
         return (
-          <div className="p-8 text-center text-white/40 text-xs italic">
+          <div className="glass-card p-8 text-center text-white/40 text-xs italic w-full">
             Nessun giocatore corrisponde alla ricerca.
           </div>
         );
@@ -586,10 +597,8 @@ export default function HomeIsland() {
         </div>
 
         {/* Liste Dati */}
-        <div className="glass-card">
-          <div className="animate-stagger" key={tab}>
-            {renderRosterContent()}
-          </div>
+        <div className="animate-stagger w-full" key={tab}>
+          {renderRosterContent()}
         </div>
 
       </div>
