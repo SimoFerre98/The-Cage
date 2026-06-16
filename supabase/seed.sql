@@ -7,7 +7,7 @@ insert into public.teams (name) values
   ('Amatori Calcio Genova'),
   ('Tama'),
   ('Mario'),
-  ('Sezione 104'),
+  ('Sezione 164'),
   ('Gli Umili'),
   ('Aston Birra'),
   ('Taverna'),
@@ -31,10 +31,10 @@ insert into public.players (name, team_id)
 select unnest(array['Fontana C.', 'Santoro R.', 'Mariani L.', 'Rinaldi M.', 'Caruso A.', 'Ferretti D.', 'Galli S.', 'Palumbo F.', 'Mancini L.']), id
 from public.teams where name = 'Mario';
 
--- inserisci i giocatori per Sezione 104
+-- inserisci i giocatori per Sezione 164
 insert into public.players (name, team_id)
 select unnest(array['Davide Corsini', 'Andrea Dominici', 'Samuele Mangano', 'Filippo Turrini', 'Gabriele Robotti', 'Ivan Grispo', 'Riccardo Mazzolini', 'Emanuele Serpentini (Slot Extra)']), id
-from public.teams where name = 'Sezione 104';
+from public.teams where name = 'Sezione 164';
 
 -- inserisci i giocatori per Gli Umili
 insert into public.players (name, team_id)

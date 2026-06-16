@@ -38,9 +38,9 @@ In questo sprint abbiamo ristrutturato la **Home Page** del portale per implemen
   - Aggiornati [seed.sql](file:///c:/Users/s.ferrero/Code/The%20Cage/supabase/seed.sql) e [20260528232948_seed_data.sql](file:///c:/Users/s.ferrero/Code/The%20Cage/supabase/migrations/20260528232948_seed_data.sql) per inizializzare `Lo Dico FC` e i relativi giocatori.
   - Aggiornati [seed_matches.js](file:///c:/Users/s.ferrero/Code/The%20Cage/seed_matches.js) e [20260528233534_seed_matches.sql](file:///c:/Users/s.ferrero/Code/The%20Cage/supabase/migrations/20260528233534_seed_matches.sql) per associare i match a `Lo Dico FC` invece di `Samu Betti`.
 
-### Gestione Giocatore Extra (Slot Extra) - Sezione 104
+### Gestione Giocatore Extra (Slot Extra) - Sezione 164
 - **Database (Supabase)**:
-  - Aggiunto **Emanuele Serpentini** come giocatore extra alla squadra **Sezione 104**. Nel database è salvato come `Emanuele Serpentini (Slot Extra)`.
+  - Aggiunto **Emanuele Serpentini** come giocatore extra alla squadra **Sezione 164**. Nel database è salvato come `Emanuele Serpentini (Slot Extra)`.
   - Aggiornati `seed.sql` e la migrazione `20260528232948_seed_data.sql` per riflettere questo inserimento strutturale.
 - **Implementazione UI e Stile Premium**:
   - Creato un parser `parsePlayerName` in `src/lib/teamUtils.ts` per rilevare la presenza della stringa `(Slot Extra)` o `(Extra)` nel nome del giocatore.

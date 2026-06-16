@@ -13,7 +13,7 @@ export const AVATAR_IDX: Record<string, number> = {
   'Amatori Calcio Genova': 0,
   'Tama': 1,
   'Mario': 2,
-  'Sezione 104': 3,
+  'Sezione 164': 3,
   'Gli Umili': 4,
   'Aston Birra': 5,
   'Taverna': 6,
