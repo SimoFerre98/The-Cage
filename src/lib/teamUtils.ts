@@ -27,6 +27,8 @@ export function getTeamLogo(teamName: string): string | null {
   if (!teamName) return null;
   const name = teamName.toLowerCase().trim();
   
+  if (name.includes('amatori') || name.includes('genova')) return '/Logos/Amatori Calcio Genova.jpeg';
+  if (name.includes('ucg') || name.includes('ugc')) return '/Logos/U.C.G.jpeg';
   if (name.includes('astonbirra')) return '/Logos/Astonbirra.jpeg';
   if (name.includes('chainz')) return '/Logos/Chainz.jpeg';
   if (name.includes('pontos')) return '/Logos/FcPontos.jpeg';
