@@ -13,7 +13,7 @@ insert into public.teams (name) values
   ('Taverna'),
   ('UCG (Bairon)'),
   ('Samu Betti'),
-  ('chainz Andrea Robbiano'),
+  ('chainz'),
   ('Martino Gonzalez');
 
 -- inserisci i giocatori per Amatori Calcio Genova
@@ -61,10 +61,10 @@ insert into public.players (name, team_id)
 select unnest(array['Betti S.', 'Moretti L.', 'Tosi T.', 'Messina P.', 'Coppola E.', 'Sartori G.', 'Rizzi C.', 'Vitali R.', 'Piazza A.']), id
 from public.teams where name = 'Samu Betti';
 
--- inserisci i giocatori per chainz Andrea Robbiano
+-- inserisci i giocatori per chainz
 insert into public.players (name, team_id)
-select unnest(array['Robbiano A.', 'Sacco M.', 'Valenti L.', 'Ferretti T.', 'Cini P.', 'Donati E.', 'Proietti G.', 'Milani C.', 'Guerra R.']), id
-from public.teams where name = 'chainz Andrea Robbiano';
+select unnest(array['Andrea Robbiano', 'Louis Dolcini', 'Francesco Fossati', 'Alessio Carena', 'Francesco Tassone', 'Edoardo Forghieri', 'Roberto Bobbio', 'Tommaso Gizzarelli', 'Mattia Rinaldi']), id
+from public.teams where name = 'chainz';
 
 -- inserisci i giocatori per Martino Gonzalez
 insert into public.players (name, team_id)

@@ -20,7 +20,7 @@ const TEAM_IDX: Record<string, number> = {
   'Taverna': 6,
   'UCG (Bairon)': 7,
   'Samu Betti': 8,
-  'chainz Andrea Robbiano': 9,
+  'chainz': 9,
   'Martino Gonzalez': 10,
 };
 
