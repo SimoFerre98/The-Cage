@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import GlassEffect from './GlassEffect';
 import { supabase } from '../lib/supabase';
-import { getTeamLogo } from '../lib/teamUtils';
+import { getTeamLogo, parsePlayerName } from '../lib/teamUtils';
 
 import PlayerStatsModal from './PlayerStatsModal';
 
@@ -17,10 +17,10 @@ const TEAM_IDX: Record<string, number> = {
   'Mario': 2,
   'Sezione 104': 3,
   'Gli Umili': 4,
-  'Dario': 5,
+  'Aston Birra': 5,
   'Taverna': 6,
   'UCG (Bairon)': 7,
-  'Samu Betti': 8,
+  'Lo Dico FC': 8,
   'chainz': 9,
   'FcPontos': 10,
 };
@@ -547,27 +547,37 @@ export default function LiveMatchIsland() {
                       {homePlayers.length === 0 ? (
                         <div className="text-xs text-[var(--text-muted)] text-center py-4">Nessun Giocatore</div>
                       ) : (
-                        homePlayers.map((p, idx) => (
-                          <div 
-                            key={p.id} 
-                            className="relative flex items-center bg-black/10 hover:bg-black/20 dark:hover:bg-white/5 border border-transparent hover:border-red-500/30 rounded-xl px-3.5 py-3 transition-all duration-300 group/player cursor-pointer"
-                            onClick={() => setSelectedPlayerId(p.id)}
-                          >
-                            <div className="flex-1 flex justify-start items-center text-[var(--text-muted)] font-mono text-[10px]">
-                              {idx + 1}
+                        homePlayers.map((p, idx) => {
+                          const { displayName, isExtra } = parsePlayerName(p.name);
+                          return (
+                            <div 
+                              key={p.id} 
+                              className={`relative flex items-center bg-black/10 hover:bg-black/20 dark:hover:bg-white/5 border border-transparent hover:border-red-500/30 rounded-xl px-3.5 py-3 transition-all duration-300 group/player cursor-pointer ${
+                                isExtra ? 'bg-amber-500/[0.02] border-t border-dashed border-amber-500/10' : ''
+                              }`}
+                              onClick={() => setSelectedPlayerId(p.id)}
+                            >
+                              <div className="flex-1 flex justify-start items-center text-[var(--text-muted)] font-mono text-[10px]">
+                                {isExtra ? '★' : idx + 1}
+                              </div>
+                              <div className="flex-[2] flex flex-col justify-center items-center text-center min-w-0 px-2">
+                                <span className="font-bold text-[var(--text-primary)] group-hover/player:text-red-400 transition-colors truncate">
+                                  {displayName}
+                                </span>
+                                {isExtra && (
+                                  <span className="text-[8px] font-bold text-amber-400 uppercase tracking-wider mt-0.5">
+                                    Slot Extra
+                                  </span>
+                                )}
+                              </div>
+                              <div className="flex-1 flex justify-end items-center gap-2 flex-shrink-0">
+                                {playerGoals[p.id] && <span className="text-[10px] bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-full font-black text-red-400">⚽ {playerGoals[p.id]}</span>}
+                                {playerYellows[p.id] && <div className="w-2.5 h-3.5 rounded-[2px] bg-yellow-400 shadow-[0_0_6px_rgba(250,204,21,0.5)] rotate-12" />}
+                                {playerReds[p.id] && <div className="w-2.5 h-3.5 rounded-[2px] bg-red-600 shadow-[0_0_6px_rgba(220,38,38,0.5)] rotate-12" />}
+                              </div>
                             </div>
-                            <div className="flex-[2] flex justify-center items-center text-center min-w-0 px-2">
-                              <span className="font-bold text-[var(--text-primary)] group-hover/player:text-red-400 transition-colors truncate">
-                                {p.name}
-                              </span>
-                            </div>
-                            <div className="flex-1 flex justify-end items-center gap-2 flex-shrink-0">
-                              {playerGoals[p.id] && <span className="text-[10px] bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-full font-black text-red-400">⚽ {playerGoals[p.id]}</span>}
-                              {playerYellows[p.id] && <div className="w-2.5 h-3.5 rounded-[2px] bg-yellow-400 shadow-[0_0_6px_rgba(250,204,21,0.5)] rotate-12" />}
-                              {playerReds[p.id] && <div className="w-2.5 h-3.5 rounded-[2px] bg-red-600 shadow-[0_0_6px_rgba(220,38,38,0.5)] rotate-12" />}
-                            </div>
-                          </div>
-                        ))
+                          );
+                        })
                       )}
                     </div>
                   </GlassEffect>
@@ -595,27 +605,37 @@ export default function LiveMatchIsland() {
                       {awayPlayers.length === 0 ? (
                         <div className="text-xs text-[var(--text-muted)] text-center py-4">Nessun Giocatore</div>
                       ) : (
-                        awayPlayers.map((p, idx) => (
-                          <div 
-                            key={p.id} 
-                            className="relative flex items-center bg-black/10 hover:bg-black/20 dark:hover:bg-white/5 border border-transparent hover:border-blue-500/30 rounded-xl px-3.5 py-3 transition-all duration-300 group/player cursor-pointer"
-                            onClick={() => setSelectedPlayerId(p.id)}
-                          >
-                            <div className="flex-1 flex justify-start items-center text-[var(--text-muted)] font-mono text-[10px]">
-                              {idx + 1}
+                        awayPlayers.map((p, idx) => {
+                          const { displayName, isExtra } = parsePlayerName(p.name);
+                          return (
+                            <div 
+                              key={p.id} 
+                              className={`relative flex items-center bg-black/10 hover:bg-black/20 dark:hover:bg-white/5 border border-transparent hover:border-blue-500/30 rounded-xl px-3.5 py-3 transition-all duration-300 group/player cursor-pointer ${
+                                isExtra ? 'bg-amber-500/[0.02] border-t border-dashed border-amber-500/10' : ''
+                              }`}
+                              onClick={() => setSelectedPlayerId(p.id)}
+                            >
+                              <div className="flex-1 flex justify-start items-center text-[var(--text-muted)] font-mono text-[10px]">
+                                {isExtra ? '★' : idx + 1}
+                              </div>
+                              <div className="flex-[2] flex flex-col justify-center items-center text-center min-w-0 px-2">
+                                <span className="font-bold text-[var(--text-primary)] group-hover/player:text-blue-400 transition-colors truncate">
+                                  {displayName}
+                                </span>
+                                {isExtra && (
+                                  <span className="text-[8px] font-bold text-amber-400 uppercase tracking-wider mt-0.5">
+                                    Slot Extra
+                                  </span>
+                                )}
+                              </div>
+                              <div className="flex-1 flex justify-end items-center gap-2 flex-shrink-0">
+                                {playerGoals[p.id] && <span className="text-[10px] bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded-full font-black text-blue-400">⚽ {playerGoals[p.id]}</span>}
+                                {playerYellows[p.id] && <div className="w-2.5 h-3.5 rounded-[2px] bg-yellow-400 shadow-[0_0_6px_rgba(250,204,21,0.5)] rotate-12" />}
+                                {playerReds[p.id] && <div className="w-2.5 h-3.5 rounded-[2px] bg-red-600 shadow-[0_0_6px_rgba(220,38,38,0.5)] rotate-12" />}
+                              </div>
                             </div>
-                            <div className="flex-[2] flex justify-center items-center text-center min-w-0 px-2">
-                              <span className="font-bold text-[var(--text-primary)] group-hover/player:text-blue-400 transition-colors truncate">
-                                {p.name}
-                              </span>
-                            </div>
-                            <div className="flex-1 flex justify-end items-center gap-2 flex-shrink-0">
-                              {playerGoals[p.id] && <span className="text-[10px] bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded-full font-black text-blue-400">⚽ {playerGoals[p.id]}</span>}
-                              {playerYellows[p.id] && <div className="w-2.5 h-3.5 rounded-[2px] bg-yellow-400 shadow-[0_0_6px_rgba(250,204,21,0.5)] rotate-12" />}
-                              {playerReds[p.id] && <div className="w-2.5 h-3.5 rounded-[2px] bg-red-600 shadow-[0_0_6px_rgba(220,38,38,0.5)] rotate-12" />}
-                            </div>
-                          </div>
-                        ))
+                          );
+                        })
                       )}
                     </div>
                   </GlassEffect>

@@ -2,7 +2,52 @@
 
 In questo sprint abbiamo ristrutturato la **Home Page** del portale per implementare una dashboard dinamica ad alto impatto visivo mantenendo l'accesso alla lista delle squadre e dei giocatori, risolvendo al contempo diverse problematiche di layout.
 
-## Modifiche Apportate:
+## Modifiche apportate
+
+### Configurazione e Roster Squadra Aston Birra
+- **Database (Supabase)**:
+  - Ho rinominato la squadra **Dario** in **Aston Birra** (identificata tramite ID `ec7649c8-b329-4736-b234-6398be1091f2`).
+  - Ho eliminato i 9 vecchi giocatori segnaposto e inserito i 7 membri effettivi del roster:
+    - Tommaso Boccardo
+    - Endi Pasho
+    - Giacomo Patrone
+    - Riccardo Carboni
+    - Mirko Pili
+    - Ivan Moretti
+    - Diego Traverso
+- **Associazione Logo**:
+  - La squadra è stata associata correttamente al logo `/Logos/Astonbirra.jpeg` grazie all'aggiornamento del mapping in [teamUtils.ts](file:///c:/Users/s.ferrero/Code/The%20Cage/src/lib/teamUtils.ts) che ora riconosce "aston" sia per "Aston Birra" che per "Astonbirra".
+- **File di Inizializzazione (Seed e Migrazioni)**:
+  - Aggiornati [seed.sql](file:///c:/Users/s.ferrero/Code/The%20Cage/supabase/seed.sql) e [20260528232948_seed_data.sql](file:///c:/Users/s.ferrero/Code/The%20Cage/supabase/migrations/20260528232948_seed_data.sql) per inizializzare `Aston Birra` e i relativi giocatori.
+  - Aggiornati [seed_matches.js](file:///c:/Users/s.ferrero/Code/The%20Cage/seed_matches.js) e [20260528233534_seed_matches.sql](file:///c:/Users/s.ferrero/Code/The%20Cage/supabase/migrations/20260528233534_seed_matches.sql) per associare i match ad `Aston Birra` invece di `Dario`.
+
+### Configurazione e Roster Squadra Lo Dico FC
+- **Database (Supabase)**:
+  - Ho rinominato la squadra **Samu Betti** in **Lo Dico FC** (identificata tramite ID `75c4d928-b99d-492e-85e5-6d32d9fb4013`).
+  - Ho eliminato i 9 vecchi giocatori segnaposto e inserito i 9 membri effettivi del roster:
+    - Samuele Bettinelli
+    - Andrea Semec
+    - Leonardo Brengio
+    - Davide Puddu
+    - Alphonse Diaye
+    - Pietre Arteaga
+    - Christian Ravenna
+    - Mohamed Niang
+    - Mattia Lamari
+- **File di Inizializzazione (Seed e Migrazioni)**:
+  - Aggiornati [seed.sql](file:///c:/Users/s.ferrero/Code/The%20Cage/supabase/seed.sql) e [20260528232948_seed_data.sql](file:///c:/Users/s.ferrero/Code/The%20Cage/supabase/migrations/20260528232948_seed_data.sql) per inizializzare `Lo Dico FC` e i relativi giocatori.
+  - Aggiornati [seed_matches.js](file:///c:/Users/s.ferrero/Code/The%20Cage/seed_matches.js) e [20260528233534_seed_matches.sql](file:///c:/Users/s.ferrero/Code/The%20Cage/supabase/migrations/20260528233534_seed_matches.sql) per associare i match a `Lo Dico FC` invece di `Samu Betti`.
+
+### Gestione Giocatore Extra (Slot Extra) - Sezione 104
+- **Database (Supabase)**:
+  - Aggiunto **Emanuele Serpentini** come giocatore extra alla squadra **Sezione 104**. Nel database è salvato come `Emanuele Serpentini (Slot Extra)`.
+  - Aggiornati `seed.sql` e la migrazione `20260528232948_seed_data.sql` per riflettere questo inserimento strutturale.
+- **Implementazione UI e Stile Premium**:
+  - Creato un parser `parsePlayerName` in `src/lib/teamUtils.ts` per rilevare la presenza della stringa `(Slot Extra)` o `(Extra)` nel nome del giocatore.
+  - **Visualizzazione Roster**: Sulla Home Page (`HomeIsland.tsx`), i giocatori contrassegnati come extra vengono separati visivamente, non mostrano il numero incrementale (sostituito da una stella `★`), presentano una leggera colorazione di sfondo ambrata (`bg-amber-500/[0.02]`) e mostrano un badge pillola dorato con testo **Slot Extra**.
+  - **Formazioni Live**: Nella pagina del Live (`LiveMatchIsland.tsx`), gli extra player vengono renderizzati con la stella `★` e un'etichetta testuale arancione/ambra sotto il nome.
+  - **Modal Statistiche**: Nel dettaglio statistiche del singolo giocatore (`PlayerStatsModal.tsx`), il nome viene ripulito dal suffisso e viene mostrato il medesimo badge "Slot Extra" nell'intestazione della modale.
+
 1. **Riorganizzazione Home Page ([HomeIsland.tsx](file:///c:/Users/s.ferrero/Code/The%20Cage/src/components/HomeIsland.tsx))**:
    - Creata una **sezione superiore (Dashboard)** con:
      - **Featured Match Widget**: Carica in tempo reale la partita in diretta (LIVE) con un bordo rosso pulsante ed un link per seguire la diretta. Se non ci sono partite in diretta, mostra il prossimo incontro in programma (PROSSIMA) o il risultato dell'ultimo match concluso (TERMINATA).

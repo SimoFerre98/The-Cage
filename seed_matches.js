@@ -3,13 +3,13 @@ const { Client } = require('pg');
 const MATCHES = [
   { date: '2026-05-19 21:00:00+02', round: 'Girone A', status: 'TERMINATA', home: 'Gli Umili', away: 'Tama', score: '4 - 2' },
   { date: '2026-05-19 21:30:00+02', round: 'Girone A', status: 'TERMINATA', home: 'Amatori Calcio Genova', away: 'Sezione 104', score: '3 - 1' },
-  { date: '2026-05-21 21:00:00+02', round: 'Girone A', status: 'TERMINATA', home: 'Dario', away: 'UCG (Bairon)', score: '2 - 2' },
+  { date: '2026-05-21 21:00:00+02', round: 'Girone A', status: 'TERMINATA', home: 'Aston Birra', away: 'UCG (Bairon)', score: '2 - 2' },
   { date: '2026-05-21 21:30:00+02', round: 'Girone A', status: 'TERMINATA', home: 'Taverna', away: 'Mario', score: '1 - 3' },
-  { date: '2026-05-22 21:00:00+02', round: 'Girone B', status: 'TERMINATA', home: 'Samu Betti', away: 'chainz', score: '5 - 2' },
+  { date: '2026-05-22 21:00:00+02', round: 'Girone B', status: 'TERMINATA', home: 'Lo Dico FC', away: 'chainz', score: '5 - 2' },
   { date: '2026-05-22 21:30:00+02', round: 'Girone B', status: 'TERMINATA', home: 'FcPontos', away: 'Gli Umili', score: '0 - 2' },
   { date: '2026-05-26 21:00:00+02', round: 'Girone A', status: 'PROSSIMA', home: 'Tama', away: 'Sezione 104', score: null },
   { date: '2026-05-28 21:30:00+02', round: 'Girone A', status: 'LIVE', home: 'Amatori Calcio Genova', away: 'Gli Umili', score: '2 - 1' },
-  { date: '2026-05-28 21:00:00+02', round: 'Girone B', status: 'PROSSIMA', home: 'UCG (Bairon)', away: 'Samu Betti', score: null },
+  { date: '2026-05-28 21:00:00+02', round: 'Girone B', status: 'PROSSIMA', home: 'UCG (Bairon)', away: 'Lo Dico FC', score: null },
   { date: '2026-05-28 21:30:00+02', round: 'Girone B', status: 'PROSSIMA', home: 'chainz', away: 'Mario', score: null },
 ];
 

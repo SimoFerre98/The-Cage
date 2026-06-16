@@ -15,10 +15,10 @@ export const AVATAR_IDX: Record<string, number> = {
   'Mario': 2,
   'Sezione 104': 3,
   'Gli Umili': 4,
-  'Dario': 5,
+  'Aston Birra': 5,
   'Taverna': 6,
   'UCG (Bairon)': 7,
-  'Samu Betti': 8,
+  'Lo Dico FC': 8,
   'chainz': 9,
   'FcPontos': 10,
 };
@@ -32,13 +32,24 @@ export function getTeamLogo(teamName: string): string | null {
   if (name.includes('umili')) return '/Logos/GliUmili.jpeg';
   if (name.includes('taverna')) return '/Logos/Taverna.jpeg';
   if (name.includes('ceres')) return '/Logos/FCCeres.jpeg';
-  if (name.includes('astonbirra')) return '/Logos/Astonbirra.jpeg';
+  if (name.includes('aston')) return '/Logos/Astonbirra.jpeg';
   if (name.includes('chainz')) return '/Logos/Chainz.jpeg';
   if (name.includes('pontos')) return '/Logos/FcPontos.jpeg';
   if (name.includes('gilly')) return '/Logos/GillyBoys.jpeg';
   if (name.includes('murta')) return '/Logos/Murta.jpeg';
   if (name.includes('ketzmaja') || name.includes('teodoro')) return '/Logos/SanTeodoroKetzmaja.jpeg';
   if (name.includes('sezione')) return '/Logos/Sezione.jpeg';
+  if (name.includes('dico')) return '/Logos/loDicoFC.jpeg';
   
   return null;
+}
+
+export function parsePlayerName(name: string): { displayName: string; isExtra: boolean } {
+  if (!name) return { displayName: '', isExtra: false };
+  const hasExtra = name.includes('(Slot Extra)') || name.includes('(Extra)');
+  let displayName = name;
+  if (hasExtra) {
+    displayName = name.replace(/\(Slot Extra\)/g, '').replace(/\(Extra\)/g, '').trim();
+  }
+  return { displayName, isExtra: hasExtra };
 }

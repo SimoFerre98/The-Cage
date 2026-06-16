@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import GlassEffect from './GlassEffect';
+import { parsePlayerName } from '../lib/teamUtils';
 
 interface PlayerStatsModalProps {
   playerId: string;
@@ -224,10 +225,22 @@ export default function PlayerStatsModal({ playerId, onClose, themeColor = 'neut
               <div className="relative z-10 flex flex-col w-full">
                 {/* Header */}
                 <div className="flex flex-col items-center text-center mb-6">
-                  <h3 className="text-xl font-extrabold tracking-tight text-white drop-shadow">
-                    {playerInfo.name}
-                  </h3>
-                  <span className={`text-xs font-black uppercase tracking-widest mt-1.5 px-3 py-1 rounded-full border ${
+                  {(() => {
+                    const { displayName, isExtra } = parsePlayerName(playerInfo.name);
+                    return (
+                      <div className="flex flex-col items-center gap-1.5">
+                        <h3 className="text-xl font-extrabold tracking-tight text-white drop-shadow">
+                          {displayName}
+                        </h3>
+                        {isExtra && (
+                          <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/20 uppercase tracking-wider">
+                            Slot Extra
+                          </span>
+                        )}
+                      </div>
+                    );
+                  })()}
+                  <span className={`text-xs font-black uppercase tracking-widest mt-2 px-3 py-1 rounded-full border ${
                     isHome 
                       ? 'text-red-400 bg-red-500/10 border-red-500/20' 
                       : isAway 

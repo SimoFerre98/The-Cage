@@ -9,10 +9,10 @@ insert into public.teams (name) values
   ('Mario'),
   ('Sezione 104'),
   ('Gli Umili'),
-  ('Dario'),
+  ('Aston Birra'),
   ('Taverna'),
   ('UCG (Bairon)'),
-  ('Samu Betti'),
+  ('Lo Dico FC'),
   ('chainz'),
   ('FcPontos');
 
@@ -33,7 +33,7 @@ from public.teams where name = 'Mario';
 
 -- inserisci i giocatori per Sezione 104
 insert into public.players (name, team_id)
-select unnest(array['Davide Corsini', 'Andrea Dominici', 'Samuele Mangano', 'Filippo Turrini', 'Gabriele Robotti', 'Ivan Grispo', 'Riccardo Mazzolini']), id
+select unnest(array['Davide Corsini', 'Andrea Dominici', 'Samuele Mangano', 'Filippo Turrini', 'Gabriele Robotti', 'Ivan Grispo', 'Riccardo Mazzolini', 'Emanuele Serpentini (Slot Extra)']), id
 from public.teams where name = 'Sezione 104';
 
 -- inserisci i giocatori per Gli Umili
@@ -41,10 +41,10 @@ insert into public.players (name, team_id)
 select unnest(array['Filippo Caselli', 'Matteo Menini', 'Samuele Montarsolo', 'Tommaso Verardo', 'Simone Valle', 'Lorenzo Papiri', 'Paolo Gaglianò', 'Elio Casanova']), id
 from public.teams where name = 'Gli Umili';
 
--- inserisci i giocatori per Dario
+-- inserisci i giocatori per Aston Birra
 insert into public.players (name, team_id)
-select unnest(array['Ferrara M.', 'Neri C.', 'Basile L.', 'Riva T.', 'Croci P.', 'Bianco E.', 'Monti G.', 'Pagano R.', 'Guerra A.']), id
-from public.teams where name = 'Dario';
+select unnest(array['Tommaso Boccardo', 'Endi Pasho', 'Giacomo Patrone', 'Riccardo Carboni', 'Mirko Pili', 'Ivan Moretti', 'Diego Traverso']), id
+from public.teams where name = 'Aston Birra';
 
 -- inserisci i giocatori per Taverna
 insert into public.players (name, team_id)
@@ -56,10 +56,10 @@ insert into public.players (name, team_id)
 select unnest(array['Bairon Carboni', 'Lavagetto Emanuele', 'Lorenzo Ceresoli', 'Fasce Alessandro', 'Reverberi Tommaso', 'Cipolla Luca', 'Baratta Gabriele', 'Bevegni Francesco']), id
 from public.teams where name = 'UCG (Bairon)';
 
--- inserisci i giocatori per Samu Betti
+-- inserisci i giocatori per Lo Dico FC
 insert into public.players (name, team_id)
-select unnest(array['Betti S.', 'Moretti L.', 'Tosi T.', 'Messina P.', 'Coppola E.', 'Sartori G.', 'Rizzi C.', 'Vitali R.', 'Piazza A.']), id
-from public.teams where name = 'Samu Betti';
+select unnest(array['Samuele Bettinelli', 'Andrea Semec', 'Leonardo Brengio', 'Davide Puddu', 'Alphonse Diaye', 'Pietre Arteaga', 'Christian Ravenna', 'Mohamed Niang', 'Mattia Lamari']), id
+from public.teams where name = 'Lo Dico FC';
 
 -- inserisci i giocatori per chainz
 insert into public.players (name, team_id)

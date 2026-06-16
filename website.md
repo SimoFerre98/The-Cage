@@ -25,10 +25,10 @@ Build a frontend-only prototype using **Astro** (static-first approach) with the
   - Mario
   - Corsi
   - Montarsolo
-  - Dario
+  - Aston Birra
   - Taverna
   - UCG (Bairon)
-  - Samu Betti
+  - Lo Dico FC
   - chainz Andrea Robbiano
   - Martino Gonzalez
 - Interaction: Tapping a team should expand a mock roster (list of 9 player names per team) with a smooth animation.

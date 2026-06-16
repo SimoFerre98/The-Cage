@@ -26,10 +26,10 @@ const AVATAR_IDX: Record<string, number> = {
   'Mario': 2,
   'Sezione 104': 3,
   'Gli Umili': 4,
-  'Dario': 5,
+  'Aston Birra': 5,
   'Taverna': 6,
   'UCG (Bairon)': 7,
-  'Samu Betti': 8,
+  'Lo Dico FC': 8,
   'chainz': 9,
   'FcPontos': 10,
 };
