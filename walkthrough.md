@@ -38,15 +38,11 @@ In questo sprint abbiamo ristrutturato la **Home Page** del portale per implemen
   - Aggiornati [seed.sql](file:///c:/Users/s.ferrero/Code/The%20Cage/supabase/seed.sql) e [20260528232948_seed_data.sql](file:///c:/Users/s.ferrero/Code/The%20Cage/supabase/migrations/20260528232948_seed_data.sql) per inizializzare `Lo Dico FC` e i relativi giocatori.
   - Aggiornati [seed_matches.js](file:///c:/Users/s.ferrero/Code/The%20Cage/seed_matches.js) e [20260528233534_seed_matches.sql](file:///c:/Users/s.ferrero/Code/The%20Cage/supabase/migrations/20260528233534_seed_matches.sql) per associare i match a `Lo Dico FC` invece di `Samu Betti`.
 
-### Gestione Giocatore Extra (Slot Extra) - Sezione 164
-- **Database (Supabase)**:
-  - Aggiunto **Emanuele Serpentini** come giocatore extra alla squadra **Sezione 164**. Nel database è salvato come `Emanuele Serpentini (Slot Extra)`.
-  - Aggiornati `seed.sql` e la migrazione `20260528232948_seed_data.sql` per riflettere questo inserimento strutturale.
-- **Implementazione UI e Stile Premium**:
-  - Creato un parser `parsePlayerName` in `src/lib/teamUtils.ts` per rilevare la presenza della stringa `(Slot Extra)` o `(Extra)` nel nome del giocatore.
-  - **Visualizzazione Roster**: Sulla Home Page (`HomeIsland.tsx`), i giocatori contrassegnati come extra vengono separati visivamente, non mostrano il numero incrementale (sostituito da una stella `★`), presentano una leggera colorazione di sfondo ambrata (`bg-amber-500/[0.02]`) e mostrano un badge pillola dorato con testo **Slot Extra**.
-  - **Formazioni Live**: Nella pagina del Live (`LiveMatchIsland.tsx`), gli extra player vengono renderizzati con la stella `★` e un'etichetta testuale arancione/ambra sotto il nome.
-  - **Modal Statistiche**: Nel dettaglio statistiche del singolo giocatore (`PlayerStatsModal.tsx`), il nome viene ripulito dal suffisso e viene mostrato il medesimo badge "Slot Extra" nell'intestazione della modale.
+### Gestione Giocatore Extra (Slot Extra) - Sezione 164 & Emanuele Serpentini
+- **Aggiunta Giocatore**:
+  - Aggiunto **Emanuele Serpentini** alla squadra **Sezione 164**. Inizialmente inserito come giocatore extra (`Emanuele Serpentini (Slot Extra)`), è stato successivamente modificato in **giocatore regolare della rosa** su richiesta dell'utente (eliminando il suffisso sia nel DB che in `seed.sql`/migrazioni).
+- **Implementazione UI e Stile Premium (predisposizione futura)**:
+  - Il parser `parsePlayerName` in `src/lib/teamUtils.ts`, così come le gestioni grafiche (badge "Slot Extra" ambrato, visualizzazione con stella `★` e sfondo coordinato) implementate in `HomeIsland.tsx`, `LiveMatchIsland.tsx` e `PlayerStatsModal.tsx`, rimangono attivi nel codice per supportare automaticamente qualsiasi futuro inserimento di giocatori extra contrassegnati con `(Slot Extra)` o `(Extra)`.
 
 1. **Riorganizzazione Home Page ([HomeIsland.tsx](file:///c:/Users/s.ferrero/Code/The%20Cage/src/components/HomeIsland.tsx))**:
    - Creata una **sezione superiore (Dashboard)** con:

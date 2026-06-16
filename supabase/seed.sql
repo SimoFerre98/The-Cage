@@ -33,7 +33,7 @@ from public.teams where name = 'Mario';
 
 -- inserisci i giocatori per Sezione 164
 insert into public.players (name, team_id)
-select unnest(array['Davide Corsini', 'Andrea Dominici', 'Samuele Mangano', 'Filippo Turrini', 'Gabriele Robotti', 'Ivan Grispo', 'Riccardo Mazzolini', 'Emanuele Serpentini (Slot Extra)']), id
+select unnest(array['Davide Corsini', 'Andrea Dominici', 'Samuele Mangano', 'Filippo Turrini', 'Gabriele Robotti', 'Ivan Grispo', 'Riccardo Mazzolini', 'Emanuele Serpentini']), id
 from public.teams where name = 'Sezione 164';
 
 -- inserisci i giocatori per Gli Umili
