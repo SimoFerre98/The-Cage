@@ -36,6 +36,7 @@ export default function LiquidNav({ activePage }: { activePage: string }) {
           pointerEvents: 'none',
           zIndex: 10,
         }}
+        suppressHydrationWarning={true}
       />
 
       {/* Inner Glass Pill — GlassEffect handles blur/tint on its own */}

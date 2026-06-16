@@ -37,6 +37,7 @@ const GlassEffect: React.FC<GlassEffectProps> = ({
       onMouseMove={handleMouseMove}
       className={`relative flex font-semibold overflow-hidden text-[var(--text-primary)] transition-all duration-700 group/glass ${className}`}
       style={glassStyle}
+      suppressHydrationWarning={true}
     >
       {/* Glass Layers */}
       <div
@@ -46,6 +47,7 @@ const GlassEffect: React.FC<GlassEffectProps> = ({
           WebkitBackdropFilter: "blur(16px) saturate(180%)",
           borderRadius: "inherit",
         }}
+        suppressHydrationWarning={true}
       />
       <div
         className="absolute inset-0 z-10 pointer-events-none"
@@ -53,6 +55,7 @@ const GlassEffect: React.FC<GlassEffectProps> = ({
           background: "var(--glass-bg)",
           borderRadius: "inherit",
         }}
+        suppressHydrationWarning={true}
       />
 
       {/* Spotlight Hover Glow Layer */}
@@ -62,6 +65,7 @@ const GlassEffect: React.FC<GlassEffectProps> = ({
           background: "radial-gradient(150px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), var(--spotlight-color, rgba(255, 255, 255, 0.08)), transparent 80%)",
           borderRadius: "inherit",
         }}
+        suppressHydrationWarning={true}
       />
 
       {/* Glowing Border Layer */}
@@ -75,6 +79,7 @@ const GlassEffect: React.FC<GlassEffectProps> = ({
           WebkitMaskComposite: "destination-out",
           maskComposite: "exclude",
         }}
+        suppressHydrationWarning={true}
       />
 
       {/* Inner Glow Border */}
@@ -85,6 +90,7 @@ const GlassEffect: React.FC<GlassEffectProps> = ({
             "var(--card-inner-glow, inset 1px 1px 1px 0 rgba(255, 255, 255, 0.15), inset -1px -1px 1px 0 rgba(255, 255, 255, 0.08))",
           borderRadius: "inherit",
         }}
+        suppressHydrationWarning={true}
       />
 
       {/* Content */}
