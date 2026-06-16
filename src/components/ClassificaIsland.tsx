@@ -29,9 +29,12 @@ const AVATAR_IDX: Record<string, number> = {
   'Aston Birra': 5,
   'Taverna': 6,
   'UCG (Bairon)': 7,
+  'U.C.G': 7,
   'Lo Dico FC': 8,
   'chainz': 9,
+  'Chainz': 9,
   'FcPontos': 10,
+  'Fc Pontos': 10,
 };
 
 import { fetchWithCache } from '../lib/cache';
