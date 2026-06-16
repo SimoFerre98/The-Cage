@@ -199,6 +199,98 @@ export default function HomeIsland() {
     t.players.some((p: any) => p.name.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
+  const renderRosterContent = () => {
+    if (tab === 'squadre') {
+      if (filteredTeams.length > 0) {
+        return filteredTeams.map((team, i) => (
+          <div key={team.name}>
+            <div 
+              className="flex items-center gap-4 p-4 cursor-pointer hover:bg-[rgba(255,255,255,0.03)] transition-colors border-b border-[var(--glass-border)] last:border-b-0" 
+              onClick={() => toggle(i)}
+            >
+              {(() => {
+                const logo = getTeamLogo(team.name);
+                return logo ? (
+                  <img src={logo} alt={team.name} className="team-avatar object-cover" style={{ width: 38, height: 38, borderRadius: 12 }} />
+                ) : (
+                  <div className={`team-avatar avatar-${team.idx}`} style={{ width: 38, height: 38, borderRadius: 12 }}>
+                    {AVATAR_INITIALS(team.name)}
+                  </div>
+                );
+              })()}
+              <div style={{ flex: 1 }}>
+                <div className="font-extrabold text-[0.9rem] text-white leading-tight">{team.name}</div>
+              </div>
+              <div 
+                className="text-white/40 text-xs transition-transform duration-300" 
+                style={{ transform: expanded === i ? 'rotate(180deg)' : 'rotate(0)' }}
+              >
+                ▼
+              </div>
+            </div>
+
+            {/* Lista Giocatori (Accordion) */}
+            <div
+              className="transition-all duration-300 ease-[var(--ease-apple)] bg-[rgba(0,0,0,0.25)] shadow-[inset_0_2px_10px_rgba(0,0,0,0.35)]"
+              style={{
+                overflow: 'hidden',
+                maxHeight: expanded === i ? `${team.players.length * 48}px` : '0px',
+              }}
+            >
+              {team.players.map((player: any, j: number) => (
+                <div 
+                  key={player.id} 
+                  onClick={() => setSelectedPlayerId(player.id)}
+                  className="flex items-center gap-4 px-8 py-3 text-[0.85rem] border-b border-[var(--glass-border)] last:border-b-0 cursor-pointer hover:bg-white/[0.02] transition-colors"
+                >
+                  <div className="text-white/30 font-mono text-xs w-4 text-center">{j + 1}</div>
+                  <span className="font-semibold text-white/90 hover:text-blue-400 transition-colors">{player.name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ));
+      } else {
+        return (
+          <div className="p-8 text-center text-white/40 text-xs italic">
+            Nessuna squadra corrisponde alla ricerca.
+          </div>
+        );
+      }
+    } else {
+      if (filteredPlayers.length > 0) {
+        return filteredPlayers.map((p) => (
+          <div 
+            key={p.id} 
+            onClick={() => setSelectedPlayerId(p.id)}
+            className="flex items-center gap-4 p-4 border-b border-[var(--glass-border)] last:border-b-0 hover:bg-[rgba(255,255,255,0.02)] transition-colors cursor-pointer"
+          >
+            {(() => {
+              const logo = getTeamLogo(p.team);
+              return logo ? (
+                <img src={logo} alt={p.team} className="team-avatar object-cover" style={{ width: 30, height: 30, borderRadius: 8 }} />
+              ) : (
+                <div className={`team-avatar avatar-${p.idx}`} style={{ width: 30, height: 30, borderRadius: 8, fontSize: '0.65rem' }}>
+                  {AVATAR_INITIALS(p.team)}
+                </div>
+              );
+            })()}
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'white' }} className="hover:text-blue-400 transition-colors">{p.name}</div>
+              <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }} className="uppercase font-semibold tracking-wider mt-0.5">{p.team}</div>
+            </div>
+          </div>
+        ));
+      } else {
+        return (
+          <div className="p-8 text-center text-white/40 text-xs italic">
+            Nessun giocatore corrisponde alla ricerca.
+          </div>
+        );
+      }
+    }
+  };
+
   return (
     <div className="flex flex-col gap-10">
       {/* ── Page Header / Branding ── */}
@@ -470,91 +562,7 @@ export default function HomeIsland() {
         {/* Liste Dati */}
         <div className="glass-card">
           <div className="animate-stagger" key={tab}>
-            {tab === 'squadre' ? (
-              filteredTeams.length > 0 ? (
-                filteredTeams.map((team, i) => (
-                  <div key={team.name}>
-                    <div 
-                      className="flex items-center gap-4 p-4 cursor-pointer hover:bg-[rgba(255,255,255,0.03)] transition-colors border-b border-[var(--glass-border)] last:border-b-0" 
-                      onClick={() => toggle(i)}
-                    >
-                      {(() => {
-                        const logo = getTeamLogo(team.name);
-                        return logo ? (
-                          <img src={logo} alt={team.name} className="team-avatar object-cover" style={{ width: 38, height: 38, borderRadius: 12 }} />
-                        ) : (
-                          <div className={`team-avatar avatar-${team.idx}`} style={{ width: 38, height: 38, borderRadius: 12 }}>
-                            {AVATAR_INITIALS(team.name)}
-                          </div>
-                        );
-                      })()}
-                      <div style={{ flex: 1 }}>
-                        <div className="font-extrabold text-[0.9rem] text-white leading-tight">{team.name}</div>
-                      </div>
-                      <div 
-                        className="text-white/40 text-xs transition-transform duration-300" 
-                        style={{ transform: expanded === i ? 'rotate(180deg)' : 'rotate(0)' }}
-                      >
-                        ▼
-                      </div>
-                    </div>
-
-                    {/* Lista Giocatori (Accordion) */}
-                    <div
-                      className="transition-all duration-300 ease-[var(--ease-apple)] bg-[rgba(0,0,0,0.25)] shadow-[inset_0_2px_10px_rgba(0,0,0,0.35)]"
-                      style={{
-                        overflow: 'hidden',
-                        maxHeight: expanded === i ? `${team.players.length * 48}px` : '0px',
-                      }}
-                    >
-                      {team.players.map((player, j) => (
-                        <div 
-                          key={player.id} 
-                          onClick={() => setSelectedPlayerId(player.id)}
-                          className="flex items-center gap-4 px-8 py-3 text-[0.85rem] border-b border-[var(--glass-border)] last:border-b-0 cursor-pointer hover:bg-white/[0.02] transition-colors"
-                        >
-                          <div className="text-white/30 font-mono text-xs w-4 text-center">{j + 1}</div>
-                          <span className="font-semibold text-white/90 hover:text-blue-400 transition-colors">{player.name}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="p-8 text-center text-white/40 text-xs italic">
-                  Nessuna squadra corrisponde alla ricerca.
-                </div>
-              )
-            ) : (
-              filteredPlayers.length > 0 ? (
-                filteredPlayers.map((p) => (
-                  <div 
-                    key={p.id} 
-                    onClick={() => setSelectedPlayerId(p.id)}
-                    className="flex items-center gap-4 p-4 border-b border-[var(--glass-border)] last:border-b-0 hover:bg-[rgba(255,255,255,0.02)] transition-colors cursor-pointer"
-                  >
-                    {(() => {
-                      const logo = getTeamLogo(p.team);
-                      return logo ? (
-                        <img src={logo} alt={p.team} className="team-avatar object-cover" style={{ width: 30, height: 30, borderRadius: 8 }} />
-                      ) : (
-                        <div className={`team-avatar avatar-${p.idx}`} style={{ width: 30, height: 30, borderRadius: 8, fontSize: '0.65rem' }}>
-                          {AVATAR_INITIALS(p.team)}
-                        </div>
-                      );
-                    })()}
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'white' }} className="hover:text-blue-400 transition-colors">{p.name}</div>
-                      <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }} className="uppercase font-semibold tracking-wider mt-0.5">{p.team}</div>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="p-8 text-center text-white/40 text-xs italic">
-                  Nessun giocatore corrisponde alla ricerca.
-                </div>
-              )
-            )}
+            {renderRosterContent()}
           </div>
         </div>
 
