@@ -206,7 +206,7 @@ export default function HomeIsland() {
     if (tab === 'squadre') {
       if (filteredTeams.length > 0) {
         return (
-          <div className="flex flex-col gap-5 w-full">
+          <div className="flex flex-col gap-3 w-full">
             {filteredTeams.map((team, i) => (
               <div key={team.name} className="glass-card overflow-hidden transition-all duration-300 hover:border-white/20">
                 <div 
