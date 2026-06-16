@@ -44,6 +44,12 @@ In questo sprint abbiamo ristrutturato la **Home Page** del portale per implemen
 - **Implementazione UI e Stile Premium (predisposizione futura)**:
   - Il parser `parsePlayerName` in `src/lib/teamUtils.ts`, così come le gestioni grafiche (badge "Slot Extra" ambrato, visualizzazione con stella `★` e sfondo coordinato) implementate in `HomeIsland.tsx`, `LiveMatchIsland.tsx` e `PlayerStatsModal.tsx`, rimangono attivi nel codice per supportare automaticamente qualsiasi futuro inserimento di giocatori extra contrassegnati con `(Slot Extra)` o `(Extra)`.
 
+### Area Admin: Ridenominazione Squadre
+- **Nuovo Form in TeamsPlayersManager**:
+  - Aggiunta la possibilità di modificare il nome di una squadra direttamente dal pannello admin. Cliccando su **Gestisci** per una specifica squadra in [TeamsPlayersManager.tsx](file:///c:/Users/s.ferrero/Code/The%20Cage/src/components/admin/TeamsPlayersManager.tsx), in cima alle opzioni di dettaglio compare un input precompilato con il nome corrente della squadra e un pulsante verde **Rinomina**.
+  - All'invio del form, viene eseguita una query `UPDATE` per aggiornare il nome della squadra nel database live di Supabase ed esegue un refresh silenzioso dei dati senza ricaricare la pagina.
+  - La logica di caricamento degli avatar e loghi è stata predisposta per rimanere tollerante e robusta a modifiche del nome.
+
 1. **Riorganizzazione Home Page ([HomeIsland.tsx](file:///c:/Users/s.ferrero/Code/The%20Cage/src/components/HomeIsland.tsx))**:
    - Creata una **sezione superiore (Dashboard)** con:
      - **Featured Match Widget**: Carica in tempo reale la partita in diretta (LIVE) con un bordo rosso pulsante ed un link per seguire la diretta. Se non ci sono partite in diretta, mostra il prossimo incontro in programma (PROSSIMA) o il risultato dell'ultimo match concluso (TERMINATA).

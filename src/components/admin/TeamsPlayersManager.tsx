@@ -8,6 +8,7 @@ export default function TeamsPlayersManager({ teams, players, onRefreshTeams }: 
   const [newTeamName, setNewTeamName] = useState('');
   const [newPlayerName, setNewPlayerName] = useState('');
   const [activeTeamId, setActiveTeamId] = useState<string | null>(null);
+  const [editTeamName, setEditTeamName] = useState('');
 
   // Confirm modal state
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -15,6 +16,31 @@ export default function TeamsPlayersManager({ teams, players, onRefreshTeams }: 
   const [idToDelete, setIdToDelete] = useState<string | null>(null);
 
   // ── Handlers ─────────────────────────────────────────────────────────────
+
+  const toggleManageTeam = (team: any) => {
+    if (activeTeamId === team.id) {
+      setActiveTeamId(null);
+      setEditTeamName('');
+    } else {
+      setActiveTeamId(team.id);
+      setEditTeamName(team.name);
+    }
+  };
+
+  const handleEditTeamName = async (e: React.FormEvent, teamId: string) => {
+    e.preventDefault();
+    if (!editTeamName.trim()) return;
+    const { error } = await supabase
+      .from('teams')
+      .update({ name: editTeamName.trim() })
+      .eq('id', teamId);
+      
+    if (!error) {
+      onRefreshTeams();
+    } else {
+      alert("Errore nella modifica del nome della squadra: " + error.message);
+    }
+  };
 
   const handleAddTeam = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -91,7 +117,7 @@ export default function TeamsPlayersManager({ teams, players, onRefreshTeams }: 
             <div className="flex items-center justify-between">
               <div
                 className="font-bold text-lg md:text-xl text-white cursor-pointer flex-1"
-                onClick={() => setActiveTeamId(activeTeamId === team.id ? null : team.id)}
+                onClick={() => toggleManageTeam(team)}
               >
                 {team.name}
                 <span className="text-xs md:text-sm text-white/40 ml-3 font-normal">
@@ -100,7 +126,7 @@ export default function TeamsPlayersManager({ teams, players, onRefreshTeams }: 
               </div>
               <div className="flex gap-3">
                 <button
-                  onClick={() => setActiveTeamId(activeTeamId === team.id ? null : team.id)}
+                  onClick={() => toggleManageTeam(team)}
                   className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-xl text-sm text-white/80 transition-colors font-bold border border-white/5"
                 >
                   {activeTeamId === team.id ? 'Chiudi' : 'Gestisci'}
@@ -115,8 +141,24 @@ export default function TeamsPlayersManager({ teams, players, onRefreshTeams }: 
             </div>
 
             {activeTeamId === team.id && (
-              <div className="mt-8 pt-8 border-t border-white/10">
-                <form onSubmit={(e) => handleAddPlayer(e, team.id)} className="flex gap-4 mb-6">
+              <div className="mt-8 pt-8 border-t border-white/10 flex flex-col gap-6">
+                {/* Rinomina Squadra */}
+                <form onSubmit={(e) => handleEditTeamName(e, team.id)} className="flex gap-4 pb-6 border-b border-white/10">
+                  <input
+                    type="text"
+                    value={editTeamName}
+                    onChange={(e) => setEditTeamName(e.target.value)}
+                    className="flex-1 bg-[rgba(0,0,0,0.2)] border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-blue-500/50"
+                    placeholder="Nuovo nome squadra..."
+                    required
+                  />
+                  <button type="submit" className="px-5 py-3 bg-green-500 hover:bg-green-600 rounded-xl text-sm font-bold text-white transition-colors">
+                    Rinomina
+                  </button>
+                </form>
+
+                {/* Aggiungi Giocatore */}
+                <form onSubmit={(e) => handleAddPlayer(e, team.id)} className="flex gap-4 mb-2">
                   <input
                     type="text"
                     value={newPlayerName}
