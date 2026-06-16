@@ -415,9 +415,9 @@ export default function LiveMatchIsland() {
         </div>
       </div>
 
-      {/* Glassmorphic Tabs Navigation */}
+      {/* Tab Navigation Chips */}
       <div className="flex justify-center w-full px-4 mt-6 z-10">
-        <div className="flex gap-1.5 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-full p-1 w-full max-w-[420px] backdrop-blur-md">
+        <div className="flex justify-center gap-3 w-full max-w-[450px]">
           {(['timeline', 'lineups', 'stats'] as const).map((t) => {
             const label = t === 'timeline' ? 'Cronologia' : t === 'lineups' ? 'Formazioni' : 'Statistiche';
             const isActive = tab === t;
@@ -425,10 +425,10 @@ export default function LiveMatchIsland() {
               <button
                 key={t}
                 onClick={() => setTab(t)}
-                className={`flex-1 py-2.5 rounded-full font-bold text-[0.7rem] uppercase tracking-widest transition-all duration-300 cursor-pointer outline-none ${
+                className={`flex-1 py-3 rounded-full font-bold text-[0.85rem] transition-all border duration-300 cursor-pointer outline-none backdrop-blur-md backdrop-saturate-[180%] ${
                   isActive
-                    ? 'liquid-glass-tab-active'
-                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-transparent'
+                    ? 'bg-[rgba(59,130,246,0.3)] text-white border-[rgba(59,130,246,0.5)] shadow-[0_2px_8px_rgba(59,130,246,0.3),inset_0_1px_4px_rgba(255,255,255,0.2)] scale-105'
+                    : 'bg-white/5 text-white/60 border-white/10 hover:text-white hover:bg-white/10 hover:border-white/20'
                 }`}
               >
                 {label}
@@ -550,16 +550,18 @@ export default function LiveMatchIsland() {
                         homePlayers.map((p, idx) => (
                           <div 
                             key={p.id} 
-                            className="relative flex items-center justify-between bg-black/10 hover:bg-black/20 dark:hover:bg-white/5 border border-transparent hover:border-red-500/30 rounded-xl px-3.5 py-3 transition-all duration-300 group/player cursor-pointer"
+                            className="relative flex items-center bg-black/10 hover:bg-black/20 dark:hover:bg-white/5 border border-transparent hover:border-red-500/30 rounded-xl px-3.5 py-3 transition-all duration-300 group/player cursor-pointer"
                             onClick={() => setSelectedPlayerId(p.id)}
                           >
-                            <div className="flex items-center gap-2.5 min-w-0">
-                              <span className="text-[var(--text-muted)] font-mono text-[10px] w-3 text-center">{idx + 1}</span>
+                            <div className="flex-1 flex justify-start items-center text-[var(--text-muted)] font-mono text-[10px]">
+                              {idx + 1}
+                            </div>
+                            <div className="flex-[2] flex justify-center items-center text-center min-w-0 px-2">
                               <span className="font-bold text-[var(--text-primary)] group-hover/player:text-red-400 transition-colors truncate">
                                 {p.name}
                               </span>
                             </div>
-                            <div className="flex items-center gap-2 flex-shrink-0">
+                            <div className="flex-1 flex justify-end items-center gap-2 flex-shrink-0">
                               {playerGoals[p.id] && <span className="text-[10px] bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-full font-black text-red-400">⚽ {playerGoals[p.id]}</span>}
                               {playerYellows[p.id] && <div className="w-2.5 h-3.5 rounded-[2px] bg-yellow-400 shadow-[0_0_6px_rgba(250,204,21,0.5)] rotate-12" />}
                               {playerReds[p.id] && <div className="w-2.5 h-3.5 rounded-[2px] bg-red-600 shadow-[0_0_6px_rgba(220,38,38,0.5)] rotate-12" />}
@@ -596,16 +598,18 @@ export default function LiveMatchIsland() {
                         awayPlayers.map((p, idx) => (
                           <div 
                             key={p.id} 
-                            className="relative flex items-center justify-between bg-black/10 hover:bg-black/20 dark:hover:bg-white/5 border border-transparent hover:border-blue-500/30 rounded-xl px-3.5 py-3 transition-all duration-300 group/player cursor-pointer"
+                            className="relative flex items-center bg-black/10 hover:bg-black/20 dark:hover:bg-white/5 border border-transparent hover:border-blue-500/30 rounded-xl px-3.5 py-3 transition-all duration-300 group/player cursor-pointer"
                             onClick={() => setSelectedPlayerId(p.id)}
                           >
-                            <div className="flex items-center gap-2.5 min-w-0">
-                              <span className="text-[var(--text-muted)] font-mono text-[10px] w-3 text-center">{idx + 1}</span>
+                            <div className="flex-1 flex justify-start items-center text-[var(--text-muted)] font-mono text-[10px]">
+                              {idx + 1}
+                            </div>
+                            <div className="flex-[2] flex justify-center items-center text-center min-w-0 px-2">
                               <span className="font-bold text-[var(--text-primary)] group-hover/player:text-blue-400 transition-colors truncate">
                                 {p.name}
                               </span>
                             </div>
-                            <div className="flex items-center gap-2 flex-shrink-0">
+                            <div className="flex-1 flex justify-end items-center gap-2 flex-shrink-0">
                               {playerGoals[p.id] && <span className="text-[10px] bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded-full font-black text-blue-400">⚽ {playerGoals[p.id]}</span>}
                               {playerYellows[p.id] && <div className="w-2.5 h-3.5 rounded-[2px] bg-yellow-400 shadow-[0_0_6px_rgba(250,204,21,0.5)] rotate-12" />}
                               {playerReds[p.id] && <div className="w-2.5 h-3.5 rounded-[2px] bg-red-600 shadow-[0_0_6px_rgba(220,38,38,0.5)] rotate-12" />}
