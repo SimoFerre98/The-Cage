@@ -4,7 +4,7 @@ from public.teams h, public.teams a where h.name = 'Montarsolo' and a.name = 'Ta
 
 insert into public.matches (home_team_id, away_team_id, match_date, round, status, home_score, away_score)
 select h.id, a.id, '2026-05-19 21:30:00+02'::timestamptz, 'Girone A', 'TERMINATA', 3, 1
-from public.teams h, public.teams a where h.name = 'Amatori Calcio Genova' and a.name = 'Corsi';
+from public.teams h, public.teams a where h.name = 'Amatori Calcio Genova' and a.name = 'Sezione 104';
 
 insert into public.matches (home_team_id, away_team_id, match_date, round, status, home_score, away_score)
 select h.id, a.id, '2026-05-21 21:00:00+02'::timestamptz, 'Girone A', 'TERMINATA', 2, 2
@@ -24,7 +24,7 @@ from public.teams h, public.teams a where h.name = 'Martino Gonzalez' and a.name
 
 insert into public.matches (home_team_id, away_team_id, match_date, round, status, home_score, away_score)
 select h.id, a.id, '2026-05-26 21:00:00+02'::timestamptz, 'Girone A', 'PROSSIMA', 0, 0
-from public.teams h, public.teams a where h.name = 'Tama' and a.name = 'Corsi';
+from public.teams h, public.teams a where h.name = 'Tama' and a.name = 'Sezione 104';
 
 insert into public.matches (home_team_id, away_team_id, match_date, round, status, home_score, away_score)
 select h.id, a.id, '2026-05-28 21:30:00+02'::timestamptz, 'Girone A', 'LIVE', 2, 1
