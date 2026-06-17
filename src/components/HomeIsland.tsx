@@ -5,6 +5,67 @@ import { fetchWithCache } from '../lib/cache';
 import PlayerStatsModal from './PlayerStatsModal';
 import { getTeamLogo, parsePlayerName } from '../lib/teamUtils';
 
+const ROLE_ORDER: Record<string, number> = {
+  'portiere': 1,
+  'difensore': 2,
+  'centrocampista': 3,
+  'attaccante': 4
+};
+
+export const getRoleBadge = (role: string) => {
+  if (!role) return null;
+  const normalized = role.toLowerCase();
+  
+  let config = {
+    label: 'Giocatore',
+    icon: '🏃',
+    bg: 'bg-white/5',
+    text: 'text-white/60',
+    border: 'border-white/10'
+  };
+  
+  if (normalized === 'portiere') {
+    config = {
+      label: 'Portiere',
+      icon: '🧤',
+      bg: 'bg-orange-500/10',
+      text: 'text-orange-400',
+      border: 'border-orange-500/20'
+    };
+  } else if (normalized === 'difensore') {
+    config = {
+      label: 'Difensore',
+      icon: '🛡️',
+      bg: 'bg-blue-500/10',
+      text: 'text-blue-400',
+      border: 'border-blue-500/20'
+    };
+  } else if (normalized === 'centrocampista') {
+    config = {
+      label: 'Centrocampista',
+      icon: '🪄',
+      bg: 'bg-purple-500/10',
+      text: 'text-purple-400',
+      border: 'border-purple-500/20'
+    };
+  } else if (normalized === 'attaccante') {
+    config = {
+      label: 'Attaccante',
+      icon: '⚡',
+      bg: 'bg-rose-500/10',
+      text: 'text-rose-400',
+      border: 'border-rose-500/20'
+    };
+  }
+
+  return (
+    <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[9px] font-black tracking-wider uppercase border shadow-sm ${config.bg} ${config.text} ${config.border}`}>
+      <span>{config.icon}</span>
+      <span>{config.label}</span>
+    </span>
+  );
+};
+
 const AVATAR_INITIALS = (name: string) => {
   const parts = name.split(' ');
   if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
@@ -50,7 +111,7 @@ export default function HomeIsland() {
         async () => {
           const { data } = await supabase
             .from('teams')
-            .select('id, name, players(id, name)')
+            .select('id, name, players(id, name, role)')
             .order('name');
           return data || [];
         },
@@ -120,20 +181,23 @@ export default function HomeIsland() {
       if (!tData || tData.length === 0) return;
 
       const processedTeams = tData.map((t, i) => {
-        const sortedPlayers = [...(t.players || [])].sort((a: any, b: any) => 
-          a.name.localeCompare(b.name)
-        );
+        const sortedPlayers = [...(t.players || [])].sort((a: any, b: any) => {
+          const orderA = ROLE_ORDER[a.role?.toLowerCase() || ''] || 5;
+          const orderB = ROLE_ORDER[b.role?.toLowerCase() || ''] || 5;
+          if (orderA !== orderB) return orderA - orderB;
+          return a.name.localeCompare(b.name);
+        });
         
         return {
           name: t.name,
           idx: AVATAR_IDX[t.name] ?? i,
-          players: sortedPlayers.map(p => ({ id: p.id, name: p.name }))
+          players: sortedPlayers.map(p => ({ id: p.id, name: p.name, role: p.role }))
         };
       });
       setTeams(processedTeams);
 
       const allP = processedTeams.flatMap((t) =>
-        t.players.map((p) => ({ id: p.id, name: p.name, team: t.name, idx: t.idx }))
+        t.players.map((p) => ({ id: p.id, name: p.name, role: p.role, team: t.name, idx: t.idx }))
       );
       setPlayersAll(allP);
     };
@@ -256,7 +320,10 @@ export default function HomeIsland() {
                           {isExtra ? '★' : j + 1}
                         </div>
                         <div className="flex-1 flex items-center justify-between">
-                          <span className="font-bold text-white/95 hover:text-blue-400 transition-colors truncate">{displayName}</span>
+                          <div className="flex items-center gap-2">
+                            <span className="font-bold text-white/95 hover:text-blue-400 transition-colors truncate">{displayName}</span>
+                            {getRoleBadge(player.role)}
+                          </div>
                           {isExtra && (
                             <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/20 uppercase tracking-wider">
                               Slot Extra
@@ -305,6 +372,7 @@ export default function HomeIsland() {
                       <span style={{ fontSize: '0.98rem', fontWeight: 800, color: 'white' }} className="hover:text-blue-400 transition-colors">
                         {displayName}
                       </span>
+                      {getRoleBadge(p.role)}
                       {isExtra && (
                         <span className="px-1.5 py-0.5 rounded-full text-[8px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/20 uppercase tracking-wider">
                           Slot Extra

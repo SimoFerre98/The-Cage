@@ -19,7 +19,7 @@ export default function Dashboard() {
   const refreshTeams = useCallback(async () => {
     const { data } = await supabase
       .from('teams')
-      .select('id, name, players(id, name, team_id)')
+      .select('id, name, players(id, name, team_id, role)')
       .order('name');
     if (data) {
       setTeams(data as Team[]);

@@ -9,6 +9,60 @@ interface PlayerStatsModalProps {
   themeColor?: 'home' | 'away' | 'neutral';
 }
 
+const getRoleBadge = (role: string) => {
+  if (!role) return null;
+  const normalized = role.toLowerCase();
+  
+  let config = {
+    label: 'Giocatore',
+    icon: '🏃',
+    bg: 'bg-white/5',
+    text: 'text-white/60',
+    border: 'border-white/10'
+  };
+  
+  if (normalized === 'portiere') {
+    config = {
+      label: 'Portiere',
+      icon: '🧤',
+      bg: 'bg-orange-500/10',
+      text: 'text-orange-400',
+      border: 'border-orange-500/20'
+    };
+  } else if (normalized === 'difensore') {
+    config = {
+      label: 'Difensore',
+      icon: '🛡️',
+      bg: 'bg-blue-500/10',
+      text: 'text-blue-400',
+      border: 'border-blue-500/20'
+    };
+  } else if (normalized === 'centrocampista') {
+    config = {
+      label: 'Centrocampista',
+      icon: '🪄',
+      bg: 'bg-purple-500/10',
+      text: 'text-purple-400',
+      border: 'border-purple-500/20'
+    };
+  } else if (normalized === 'attaccante') {
+    config = {
+      label: 'Attaccante',
+      icon: '⚡',
+      bg: 'bg-rose-500/10',
+      text: 'text-rose-400',
+      border: 'border-rose-500/20'
+    };
+  }
+
+  return (
+    <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[9px] font-black tracking-wider uppercase border shadow-sm ${config.bg} ${config.text} ${config.border}`}>
+      <span>{config.icon}</span>
+      <span>{config.label}</span>
+    </span>
+  );
+};
+
 export default function PlayerStatsModal({ playerId, onClose, themeColor = 'neutral' }: PlayerStatsModalProps) {
   const isHome = themeColor === 'home';
   const isAway = themeColor === 'away';
@@ -49,8 +103,8 @@ export default function PlayerStatsModal({ playerId, onClose, themeColor = 'neut
       ? 'rgba(59, 130, 246, 0.03)'
       : 'rgba(139, 92, 246, 0.03)';
   const [loading, setLoading] = useState(true);
-  const [playerInfo, setPlayerInfo] = useState<{ name: string; teamName: string } | null>(null);
-  const [stats, setStats] = useState({ goals: 0, yellows: 0, reds: 0, powerCards: 0 });
+  const [playerInfo, setPlayerInfo] = useState<{ name: string; teamName: string; role?: string | null } | null>(null);
+  const [stats, setStats] = useState({ goals: 0, assists: 0, yellows: 0, reds: 0, powerCards: 0 });
   const [history, setHistory] = useState<any[]>([]);
 
   useEffect(() => {
@@ -62,7 +116,7 @@ export default function PlayerStatsModal({ playerId, onClose, themeColor = 'neut
         // 1. Fetch player & team info
         const { data: player, error: pError } = await supabase
           .from('players')
-          .select('name, team:teams(name)')
+          .select('name, role, team:teams(name)')
           .eq('id', playerId)
           .single();
 
@@ -71,7 +125,8 @@ export default function PlayerStatsModal({ playerId, onClose, themeColor = 'neut
         if (isMounted && player) {
           setPlayerInfo({
             name: player.name,
-            teamName: (player.team as any)?.name || 'Svincolato'
+            teamName: (player.team as any)?.name || 'Svincolato',
+            role: (player as any).role
           });
         }
 
@@ -101,12 +156,14 @@ export default function PlayerStatsModal({ playerId, onClose, themeColor = 'neut
         if (isMounted && events) {
           // Calculate aggregate stats
           let goals = 0;
+          let assists = 0;
           let yellows = 0;
           let reds = 0;
           let powerCards = 0;
 
           const processedHistory = events.map(ev => {
             if (ev.type === 'GOAL') goals++;
+            else if (ev.type === 'ASSIST') assists++;
             else if (ev.type === 'YELLOW_CARD') yellows++;
             else if (ev.type === 'RED_CARD') reds++;
             else if (ev.type === 'POWER_CARD' || ev.type === 'CARTA') powerCards++;
@@ -129,7 +186,7 @@ export default function PlayerStatsModal({ playerId, onClose, themeColor = 'neut
             };
           });
 
-          setStats({ goals, yellows, reds, powerCards });
+          setStats({ goals, assists, yellows, reds, powerCards });
           setHistory(processedHistory);
         }
       } catch (error) {
@@ -232,11 +289,14 @@ export default function PlayerStatsModal({ playerId, onClose, themeColor = 'neut
                         <h3 className="text-xl font-extrabold tracking-tight text-white drop-shadow">
                           {displayName}
                         </h3>
-                        {isExtra && (
-                          <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/20 uppercase tracking-wider">
-                            Slot Extra
-                          </span>
-                        )}
+                        <div className="flex items-center gap-2">
+                          {getRoleBadge(playerInfo.role || '')}
+                          {isExtra && (
+                            <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/20 uppercase tracking-wider">
+                              Slot Extra
+                            </span>
+                          )}
+                        </div>
                       </div>
                     );
                   })()}
@@ -261,6 +321,13 @@ export default function PlayerStatsModal({ playerId, onClose, themeColor = 'neut
                     <span className="text-lg font-black text-white mt-0.5">{stats.goals}</span>
                   </div>
 
+                  {/* Assist */}
+                  <div className="flex flex-col items-center justify-center text-center bg-white/5 border border-white/[0.04] p-3 rounded-xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
+                    <span className="text-2xl mb-1">🎯</span>
+                    <span className="text-[0.65rem] font-bold text-white/40 uppercase tracking-wide">Assist</span>
+                    <span className="text-lg font-black text-white mt-0.5">{stats.assists}</span>
+                  </div>
+
                   {/* Ammonizioni */}
                   <div className="flex flex-col items-center justify-center text-center bg-white/5 border border-white/[0.04] p-3 rounded-xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
                     <span className="text-2xl mb-1">🟨</span>
@@ -274,13 +341,6 @@ export default function PlayerStatsModal({ playerId, onClose, themeColor = 'neut
                     <span className="text-[0.65rem] font-bold text-white/40 uppercase tracking-wide">Espulsioni</span>
                     <span className="text-lg font-black text-red-500 mt-0.5">{stats.reds}</span>
                   </div>
-
-                  {/* Carte Speciali */}
-                  <div className="flex flex-col items-center justify-center text-center bg-white/5 border border-white/[0.04] p-3 rounded-xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
-                    <span className="text-2xl mb-1">🃏</span>
-                    <span className="text-[0.65rem] font-bold text-white/40 uppercase tracking-wide">Carte Giocate</span>
-                    <span className="text-lg font-black text-purple-400 mt-0.5">{stats.powerCards}</span>
-                  </div>
                 </div>
 
                 {/* Match History / Timeline */}
@@ -293,14 +353,16 @@ export default function PlayerStatsModal({ playerId, onClose, themeColor = 'neut
                     {history.length > 0 ? (
                       history.map((h, i) => {
                         const dateStr = h.date ? h.date.toLocaleDateString('it-IT', { day: '2-digit', month: 'short' }) : '';
-                        const emoji = h.type === 'GOAL' ? '⚽' : h.type === 'YELLOW_CARD' ? '🟨' : h.type === 'RED_CARD' ? '🟥' : '🃏';
+                        const emoji = h.type === 'GOAL' ? '⚽' : h.type === 'ASSIST' ? '🎯' : h.type === 'YELLOW_CARD' ? '🟨' : h.type === 'RED_CARD' ? '🟥' : '🃏';
                         const desc = h.type === 'GOAL' 
                           ? 'Gol' 
-                          : h.type === 'YELLOW_CARD' 
-                            ? 'Ammonizione' 
-                            : h.type === 'RED_CARD' 
-                              ? 'Espulsione' 
-                              : `Power Card (${h.detail || 'Attivata'})`;
+                          : h.type === 'ASSIST' 
+                            ? 'Assist'
+                            : h.type === 'YELLOW_CARD' 
+                              ? 'Ammonizione' 
+                              : h.type === 'RED_CARD' 
+                                ? 'Espulsione' 
+                                : `Power Card (${h.detail || 'Attivata'})`;
 
                         return (
                           <div key={i} className="flex items-center justify-between bg-black/15 border border-white/5 p-3 rounded-xl w-[80%] flex-shrink-0">

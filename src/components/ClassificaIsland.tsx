@@ -284,49 +284,53 @@ export default function ClassificaIsland() {
           <table className="w-full border-collapse" style={{ borderSpacing: '0 4px' }}>
             <thead>
               <tr>
-                <th className="text-[0.65rem] font-semibold text-[var(--text-muted)] uppercase tracking-wider px-2 py-3 text-center">#</th>
-                <th className="text-[0.65rem] font-semibold text-[var(--text-muted)] uppercase tracking-wider px-2 py-3 text-left">Squadra</th>
-                <th className="text-[0.65rem] font-semibold text-[var(--text-muted)] uppercase tracking-wider px-1 py-3 text-center">G</th>
-                <th className="text-[0.65rem] font-semibold text-[var(--text-muted)] uppercase tracking-wider px-1 py-3 text-center">V</th>
-                <th className="text-[0.65rem] font-semibold text-[var(--text-muted)] uppercase tracking-wider px-1 py-3 text-center">N</th>
-                <th className="text-[0.65rem] font-semibold text-[var(--text-muted)] uppercase tracking-wider px-1 py-3 text-center">P</th>
-                <th className="text-[0.65rem] font-semibold text-[var(--text-muted)] uppercase tracking-wider px-1 py-3 text-center">GF</th>
-                <th className="text-[0.65rem] font-semibold text-[var(--text-muted)] uppercase tracking-wider px-1 py-3 text-center">GS</th>
-                <th className="text-[0.65rem] font-semibold text-[var(--accent-primary)] uppercase tracking-wider px-2 py-3 text-center">PT</th>
+                <th className="text-[0.7rem] font-semibold text-[var(--text-muted)] uppercase tracking-wider px-3 py-4 text-left">Squadra</th>
+                <th className="text-[0.7rem] font-semibold text-[var(--text-muted)] uppercase tracking-wider px-2 py-4 text-center">G</th>
+                <th className="text-[0.7rem] font-semibold text-[var(--text-muted)] uppercase tracking-wider px-2 py-4 text-center">V</th>
+                <th className="text-[0.7rem] font-semibold text-[var(--text-muted)] uppercase tracking-wider px-2 py-4 text-center">N</th>
+                <th className="text-[0.7rem] font-semibold text-[var(--text-muted)] uppercase tracking-wider px-2 py-4 text-center">P</th>
+                <th className="text-[0.7rem] font-semibold text-[var(--text-muted)] uppercase tracking-wider px-2 py-4 text-center">GF</th>
+                <th className="text-[0.7rem] font-semibold text-[var(--text-muted)] uppercase tracking-wider px-2 py-4 text-center">GS</th>
+                <th className="text-[0.7rem] font-semibold text-[var(--accent-primary)] uppercase tracking-wider px-3 py-4 text-center">PT</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[rgba(255,255,255,0.07)]">
-              {standings.map((row, i) => (
-                <tr key={i} className="hover:bg-[rgba(255,255,255,0.05)] transition-colors duration-300">
-                  <td className="px-2 py-3.5 text-center">
-                    <span className={`text-[0.8rem] font-bold ${i < 3 ? 'text-[var(--accent-primary)]' : 'text-[var(--text-muted)]'}`}>
-                      {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : i + 1}
-                    </span>
-                  </td>
-                  <td className="px-2 py-3.5">
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                      {(() => {
-                        const logo = getTeamLogo(row.team_name);
-                        return logo ? (
-                          <img src={logo} alt={row.team_name} className="team-avatar object-cover" style={{ width: 26, height: 26, borderRadius: 7, flexShrink: 0 }} />
-                        ) : (
-                          <div className={`team-avatar avatar-${AVATAR_IDX[row.team_name] ?? 0}`} style={{ width: 26, height: 26, borderRadius: 7, fontSize: '0.55rem', flexShrink: 0 }}>
-                            {AVATAR_INITIALS(row.team_name)}
-                          </div>
-                        );
-                      })()}
-                      <span className="text-[0.85rem] font-bold text-[var(--text-primary)]">{row.team_name}</span>
-                    </div>
-                  </td>
-                  <td className="px-1 py-3.5 text-center text-sm text-[var(--text-secondary)]">{row.g}</td>
-                  <td className="px-1 py-3.5 text-center text-sm text-[var(--text-secondary)]">{row.v}</td>
-                  <td className="px-1 py-3.5 text-center text-sm text-[var(--text-secondary)]">{row.n}</td>
-                  <td className="px-1 py-3.5 text-center text-sm text-[var(--text-secondary)]">{row.p}</td>
-                  <td className="px-1 py-3.5 text-center text-sm text-[var(--text-secondary)]">{row.gf}</td>
-                  <td className="px-1 py-3.5 text-center text-sm text-[var(--text-secondary)]">{row.gs}</td>
-                  <td className="px-2 py-3.5 text-center"><span className="font-black text-white text-[0.95rem]">{row.pt}</span></td>
-                </tr>
-              ))}
+              {standings.map((row, i) => {
+                const isTop8 = i < 8;
+                return (
+                  <tr 
+                    key={i} 
+                    className={`transition-colors duration-300 ${
+                      isTop8 
+                        ? 'bg-[rgba(59,130,246,0.08)] hover:bg-[rgba(59,130,246,0.15)]' 
+                        : 'bg-transparent hover:bg-[rgba(255,255,255,0.05)]'
+                    }`}
+                  >
+                    <td className={`px-3 py-4 ${isTop8 ? 'border-l-[3px] border-blue-500/80' : 'border-l-[3px] border-transparent'}`}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                        {(() => {
+                          const logo = getTeamLogo(row.team_name);
+                          return logo ? (
+                            <img src={logo} alt={row.team_name} className="team-avatar object-cover" style={{ width: 32, height: 32, borderRadius: 8, flexShrink: 0 }} />
+                          ) : (
+                            <div className={`team-avatar avatar-${AVATAR_IDX[row.team_name] ?? 0}`} style={{ width: 32, height: 32, borderRadius: 8, fontSize: '0.7rem', flexShrink: 0 }}>
+                              {AVATAR_INITIALS(row.team_name)}
+                            </div>
+                          );
+                        })()}
+                        <span className="text-[0.95rem] font-bold text-[var(--text-primary)]">{row.team_name}</span>
+                      </div>
+                    </td>
+                    <td className="px-2 py-4 text-center text-[0.95rem] text-[var(--text-secondary)]">{row.g}</td>
+                    <td className="px-2 py-4 text-center text-[0.95rem] text-[var(--text-secondary)]">{row.v}</td>
+                    <td className="px-2 py-4 text-center text-[0.95rem] text-[var(--text-secondary)]">{row.n}</td>
+                    <td className="px-2 py-4 text-center text-[0.95rem] text-[var(--text-secondary)]">{row.p}</td>
+                    <td className="px-2 py-4 text-center text-[0.95rem] text-[var(--text-secondary)]">{row.gf}</td>
+                    <td className="px-2 py-4 text-center text-[0.95rem] text-[var(--text-secondary)]">{row.gs}</td>
+                    <td className="px-3 py-4 text-center"><span className="font-black text-white text-[1.1rem]">{row.pt}</span></td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
