@@ -316,8 +316,9 @@ export default function CalendarioIsland() {
 
       {/* Day Filter */}
       {tab === 'calendario' && availableDays.length > 0 && (
-        <div className="flex w-full overflow-x-auto pb-4 px-4 mb-2 gap-2 snap-x scrollbar-hide" style={{ WebkitOverflowScrolling: 'touch' }}>
-          <button
+        <div style={{ marginTop: '10px', marginBottom: '40px', width: '100%' }}>
+          <div className="flex justify-center w-full overflow-x-auto py-2 px-4 gap-2 snap-x scrollbar-hide" style={{ WebkitOverflowScrolling: 'touch' }}>
+            <button
             onClick={() => setSelectedDay('all')}
             className={`snap-center shrink-0 px-4 py-1.5 rounded-full text-sm font-bold transition-all border outline-none ${
               selectedDay === 'all'
@@ -340,6 +341,7 @@ export default function CalendarioIsland() {
               {day}
             </button>
           ))}
+          </div>
         </div>
       )}
 
