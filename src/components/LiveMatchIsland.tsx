@@ -770,7 +770,8 @@ function renderEventMedia(ev: any) {
           <span className="text-xs">🚑</span>
         </div>
       );
-    case 'Carta Attivata':
+    case 'Carta Attivata': {
+      const [baseDetail, outcome] = (ev.detail || '').split('::');
       const cardGlows: Record<string, string> = {
         penalty: 'shadow-[0_0_12px_rgba(239,68,68,0.35)] border-red-500/30',
         shootout: 'shadow-[0_0_12px_rgba(245,158,11,0.35)] border-amber-500/30',
@@ -789,8 +790,8 @@ function renderEventMedia(ev: any) {
         joker: 'Joker 🃏',
       };
 
-      const glowClass = cardGlows[ev.detail] || 'shadow-[0_0_8px_rgba(255,255,255,0.15)] border-[rgba(255,255,255,0.06)]';
-      const cardName = cardNames[ev.detail] || 'Carta Speciale';
+      const glowClass = cardGlows[baseDetail] || 'shadow-[0_0_8px_rgba(255,255,255,0.15)] border-[rgba(255,255,255,0.06)]';
+      const cardName = cardNames[baseDetail] || 'Carta Speciale';
       
       return (
         <div className="relative group">
@@ -798,17 +799,22 @@ function renderEventMedia(ev: any) {
           
           <div className={`relative flex items-center gap-2 bg-[rgba(10,15,30,0.35)] border border-[rgba(255,255,255,0.06)] rounded-[8px] p-1 pr-2.5 ${glowClass}`}>
             <img 
-              src={`/cards/${ev.detail}.webp`} 
+              src={`/cards/${baseDetail}.webp`} 
               alt={cardName} 
               className="w-7 h-10 rounded-[3px] object-cover shadow-[0_2px_6px_rgba(0,0,0,0.4)] border border-[rgba(255,255,255,0.06)]"
             />
             <div className="flex flex-col text-left min-w-0">
               <span className="text-[0.55rem] font-bold text-white/40 uppercase tracking-widest leading-none">Carta Giocata</span>
-              <span className="text-[0.65rem] font-black text-white mt-1 uppercase tracking-wide truncate">{cardName}</span>
+              <div className="flex items-center gap-1.5 mt-1">
+                <span className="text-[0.65rem] font-black text-white uppercase tracking-wide truncate">{cardName}</span>
+                {outcome === 'success' && <span className="text-xs" title="Gol segnato">✅</span>}
+                {outcome === 'fail' && <span className="text-xs" title="Gol mancato">❌</span>}
+              </div>
             </div>
           </div>
         </div>
       );
+    }
     default:
       return <span className="text-white">•</span>;
   }

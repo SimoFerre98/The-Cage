@@ -48,7 +48,7 @@ const getRoleBadge = (role: string) => {
   } else if (normalized === 'attaccante') {
     config = {
       label: 'Attaccante',
-      icon: '⚡',
+      icon: '🎯',
       bg: 'bg-rose-500/10',
       text: 'text-rose-400',
       border: 'border-rose-500/20'
@@ -353,6 +353,7 @@ export default function PlayerStatsModal({ playerId, onClose, themeColor = 'neut
                     {history.length > 0 ? (
                       history.map((h, i) => {
                         const dateStr = h.date ? h.date.toLocaleDateString('it-IT', { day: '2-digit', month: 'short' }) : '';
+                        const [baseDetail, outcome] = (h.detail || '').split('::');
                         const emoji = h.type === 'GOAL' ? '⚽' : h.type === 'ASSIST' ? '🎯' : h.type === 'YELLOW_CARD' ? '🟨' : h.type === 'RED_CARD' ? '🟥' : '🃏';
                         const desc = h.type === 'GOAL' 
                           ? 'Gol' 
@@ -362,7 +363,7 @@ export default function PlayerStatsModal({ playerId, onClose, themeColor = 'neut
                               ? 'Ammonizione' 
                               : h.type === 'RED_CARD' 
                                 ? 'Espulsione' 
-                                : `Power Card (${h.detail || 'Attivata'})`;
+                                : `Power Card (${baseDetail || 'Attivata'})${outcome === 'success' ? ' ✅' : outcome === 'fail' ? ' ❌' : ''}`;
 
                         return (
                           <div key={i} className="flex items-center justify-between bg-black/15 border border-white/5 p-3 rounded-xl w-[80%] flex-shrink-0">

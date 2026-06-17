@@ -50,7 +50,7 @@ const getRoleBadge = (role: string) => {
   } else if (normalized === 'attaccante') {
     config = {
       label: 'Attaccante',
-      icon: '⚡',
+      icon: '🎯',
       bg: 'bg-rose-500/10',
       text: 'text-rose-400',
       border: 'border-rose-500/20'

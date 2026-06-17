@@ -152,6 +152,18 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
     }
   };
 
+  const updateEventOutcome = async (eventId: string, newDetail: string) => {
+    const previousEvents = [...events];
+    // Aggiornamento ottimistico
+    setEvents(prev => prev.map(e => e.id === eventId ? { ...e, detail: newDetail } : e));
+    
+    const { error } = await supabase.from('match_events').update({ detail: newDetail }).eq('id', eventId);
+    if (error) {
+      setEvents(previousEvents);
+      alert('Errore: ' + error.message);
+    }
+  };
+
   // ── Render ─────────────────────────────────────────────────────────────────
 
   if (!liveMatch) {
@@ -313,6 +325,9 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
           {events.length > 0 ? (
             events.map((ev, i) => {
               const emoji = ev.type === 'GOAL' ? '⚽' : ev.type === 'YELLOW_CARD' || ev.type === 'AMMONIZIONE' ? '🟨' : ev.type === 'RED_CARD' || ev.type === 'ESPULSIONE' ? '🟥' : '🃏';
+              const [baseDetail, outcome] = (ev.detail || '').split('::');
+              const isPenaltyOrShootout = ev.type === 'CARTA' && (baseDetail === 'penalty' || baseDetail === 'shootout');
+              
               const desc = ev.type === 'GOAL' 
                 ? 'Gol' 
                 : ev.type === 'ASSIST' 
@@ -321,7 +336,7 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
                     ? 'Ammonizione' 
                     : ev.type === 'RED_CARD' || ev.type === 'ESPULSIONE' 
                       ? 'Espulsione' 
-                      : `Carta (${ev.detail || 'Attivata'})`;
+                      : `Carta (${baseDetail || 'Attivata'})${outcome === 'success' ? ' ✅ Gol' : outcome === 'fail' ? ' ❌ No Gol' : ''}`;
               const playerName = ev.player?.name || 'Giocatore Sconosciuto';
 
               return (
@@ -333,12 +348,34 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
                       <span className="text-xs text-white/50">{playerName} ({ev.minute}')</span>
                     </div>
                   </div>
-                  <button
-                    onClick={() => setConfirmDeleteEvent(ev)}
-                    className="px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/25 border border-red-500/20 text-red-400 hover:text-red-300 text-xs font-bold transition-all cursor-pointer"
-                  >
-                    Elimina 🗑
-                  </button>
+                  <div className="flex items-center gap-2">
+                    {isPenaltyOrShootout && (
+                      <div className="flex items-center gap-1 mr-2 bg-black/20 p-1 rounded-lg">
+                        <button
+                          type="button"
+                          onClick={() => updateEventOutcome(ev.id, `${baseDetail}::success`)}
+                          className={`w-7 h-7 flex items-center justify-center rounded-md ${outcome === 'success' ? 'bg-green-500/40 border-green-500 text-white' : 'bg-green-500/10 border-green-500/20 text-green-400 hover:bg-green-500/25'} border text-xs font-bold transition-all`}
+                          title="Gol segnato"
+                        >
+                          V
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => updateEventOutcome(ev.id, `${baseDetail}::fail`)}
+                          className={`w-7 h-7 flex items-center justify-center rounded-md ${outcome === 'fail' ? 'bg-red-500/40 border-red-500 text-white' : 'bg-red-500/10 border-red-500/20 text-red-400 hover:bg-red-500/25'} border text-xs font-bold transition-all`}
+                          title="Gol mancato"
+                        >
+                          X
+                        </button>
+                      </div>
+                    )}
+                    <button
+                      onClick={() => setConfirmDeleteEvent(ev)}
+                      className="px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/25 border border-red-500/20 text-red-400 hover:text-red-300 text-xs font-bold transition-all cursor-pointer"
+                    >
+                      Elimina 🗑
+                    </button>
+                  </div>
                 </div>
               );
             })
@@ -388,7 +425,9 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
                   </span>
                   <div className="flex flex-col">
                     <span className="text-sm font-bold text-white">
-                      {confirmDeleteEvent.type === 'GOAL' 
+                      {(() => {
+                        const [baseDetail] = (confirmDeleteEvent.detail || '').split('::');
+                        return confirmDeleteEvent.type === 'GOAL' 
                         ? 'Gol' 
                         : confirmDeleteEvent.type === 'ASSIST' 
                           ? 'Assist' 
@@ -396,7 +435,8 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
                             ? 'Ammonizione' 
                             : confirmDeleteEvent.type === 'RED_CARD' || confirmDeleteEvent.type === 'ESPULSIONE' 
                               ? 'Espulsione' 
-                              : `Carta (${confirmDeleteEvent.detail || 'Attivata'})`}
+                              : `Carta (${baseDetail || 'Attivata'})`;
+                      })()}
                     </span>
                     <span className="text-xs text-white/50">
                       {confirmDeleteEvent.player?.name || 'Giocatore Sconosciuto'} ({confirmDeleteEvent.minute}')
