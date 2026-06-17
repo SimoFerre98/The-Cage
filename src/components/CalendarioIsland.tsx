@@ -12,19 +12,27 @@ const AVATAR_INITIALS = (name: string) => {
 
 const TEAM_IDX: Record<string, number> = {
   'Amatori Calcio Genova': 0,
+  'Amatori Calcio Rugby': 0,
   'Tama': 1,
+  'FC Ceres': 1,
   'Mario': 2,
+  'FC Murta': 2,
   'Sezione 164': 3,
   'Gli Umili': 4,
   'Aston Birra': 5,
   'Taverna': 6,
   'UCG (Bairon)': 7,
   'U.C.G': 7,
+  'UCG': 7,
   'Lo Dico FC': 8,
   'chainz': 9,
   'Chainz': 9,
   'FcPontos': 10,
   'Fc Pontos': 10,
+  'FC Pontos': 10,
+  'Gilly Boys': 11,
+  'Pontex Pirates': 12,
+  'San Teodoro Ketzmaja': 13,
 };
 
 import { fetchWithCache } from '../lib/cache';
@@ -36,9 +44,25 @@ const sortMatches = (list: any[]) => list.slice().sort((a, b) => {
   return new Date(a.match_date).getTime() - new Date(b.match_date).getTime();
 });
 
+import { useMemo } from 'react';
+
 export default function CalendarioIsland() {
   const [tab, setTab] = useState<'calendario' | 'tabellone'>('calendario');
   const [matches, setMatches] = useState<any[]>([]);
+  const [selectedDay, setSelectedDay] = useState<string>('all');
+
+  const availableDays = useMemo(() => {
+    const days = new Set(matches.map(m => new Date(m.match_date).toLocaleDateString('it-IT', { weekday: 'short', day: 'numeric', month: 'short' })));
+    return Array.from(days);
+  }, [matches]);
+
+  const filteredMatches = useMemo(() => {
+    if (selectedDay === 'all') return matches;
+    return matches.filter(m => {
+      const matchDay = new Date(m.match_date).toLocaleDateString('it-IT', { weekday: 'short', day: 'numeric', month: 'short' });
+      return matchDay === selectedDay;
+    });
+  }, [matches, selectedDay]);
 
   const findMatchByRound = (roundKey: string) => {
     return matches.find(m => {
@@ -298,10 +322,39 @@ export default function CalendarioIsland() {
         </div>
       </div>
 
+      {/* Day Filter */}
+      {tab === 'calendario' && availableDays.length > 0 && (
+        <div className="flex w-full overflow-x-auto pb-4 px-4 mb-2 gap-2 snap-x scrollbar-hide" style={{ WebkitOverflowScrolling: 'touch' }}>
+          <button
+            onClick={() => setSelectedDay('all')}
+            className={`snap-center shrink-0 px-4 py-1.5 rounded-full text-sm font-bold transition-all border outline-none ${
+              selectedDay === 'all'
+                ? 'bg-[rgba(59,130,246,0.3)] text-white border-[rgba(59,130,246,0.5)] shadow-[0_2px_8px_rgba(59,130,246,0.3)] scale-105'
+                : 'bg-white/5 text-white/60 border-white/10 hover:text-white hover:bg-white/10 hover:border-white/20'
+            }`}
+          >
+            Tutte
+          </button>
+          {availableDays.map(day => (
+            <button
+              key={day}
+              onClick={() => setSelectedDay(day)}
+              className={`snap-center shrink-0 px-4 py-1.5 rounded-full text-sm font-bold transition-all border outline-none capitalize ${
+                selectedDay === day
+                  ? 'bg-[rgba(59,130,246,0.3)] text-white border-[rgba(59,130,246,0.5)] shadow-[0_2px_8px_rgba(59,130,246,0.3)] scale-105'
+                  : 'bg-white/5 text-white/60 border-white/10 hover:text-white hover:bg-white/10 hover:border-white/20'
+              }`}
+            >
+              {day}
+            </button>
+          ))}
+        </div>
+      )}
+
       {/* Calendario Matches List */}
       {tab === 'calendario' && (
-        <div className="animate-stagger">
-          {matches.map((m, i) => {
+        <div className="animate-stagger px-4 pb-4">
+          {filteredMatches.map((m, i) => {
             const homeName = m.home_team?.name ?? 'N/D';
             const awayName = m.away_team?.name ?? 'N/D';
             const scoreStr = (m.home_score !== null && m.away_score !== null && m.status !== 'PROSSIMA') ? `${m.home_score} - ${m.away_score}` : null;

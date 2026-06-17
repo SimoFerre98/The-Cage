@@ -43,6 +43,7 @@ export function getTeamLogo(teamName: string): string | null {
   if (name.includes('ketzmaja') || name.includes('teodoro')) return '/Logos/SanTeodoroKetzmaja.jpeg';
   if (name.includes('sezione')) return '/Logos/Sezione.jpeg';
   if (name.includes('dico')) return '/Logos/loDicoFC.jpeg';
+  if (name.includes('pontex') || name.includes('pirates')) return '/Logos/PontexPirates.jpeg';
   
   return null;
 }
