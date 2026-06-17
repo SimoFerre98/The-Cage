@@ -316,7 +316,7 @@ export default function CalendarioIsland() {
 
       {/* Day Filter */}
       {tab === 'calendario' && availableDays.length > 0 && (
-        <div style={{ marginTop: '10px', marginBottom: '40px', width: '100%' }}>
+        <div style={{ marginTop: '5px', marginBottom: '20px', width: '100%' }}>
           <div className="flex justify-center w-full overflow-x-auto py-2 px-4 gap-2 snap-x scrollbar-hide" style={{ WebkitOverflowScrolling: 'touch' }}>
             <button
             onClick={() => setSelectedDay('all')}
