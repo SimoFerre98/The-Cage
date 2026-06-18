@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import GlassEffect from '../GlassEffect';
-import type { AdminChildProps } from './types';
+import type { AdminChildProps, Match } from './types';
 import ConfirmModal from './ConfirmModal';
+import MatchEventsModal from './MatchEventsModal';
 
-export default function MatchesManager({ teams, matches, onRefreshMatches }: AdminChildProps) {
+export default function MatchesManager({ teams, players, matches, onRefreshMatches }: AdminChildProps) {
   // Form state
   const [homeTeamId, setHomeTeamId] = useState('');
   const [awayTeamId, setAwayTeamId] = useState('');
@@ -15,6 +16,10 @@ export default function MatchesManager({ teams, matches, onRefreshMatches }: Adm
   // Deletion modal state
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [matchToDelete, setMatchToDelete] = useState<string | null>(null);
+
+  // Match events modal state
+  const [selectedMatchForEvents, setSelectedMatchForEvents] = useState<Match | null>(null);
+  const [eventsModalOpen, setEventsModalOpen] = useState(false);
 
   // ── Handlers ─────────────────────────────────────────────────────────────
 
@@ -204,6 +209,16 @@ export default function MatchesManager({ teams, matches, onRefreshMatches }: Adm
                   TERMINATA
                 </button>
 
+                <button
+                  onClick={() => {
+                    setSelectedMatchForEvents(match);
+                    setEventsModalOpen(true);
+                  }}
+                  className="px-4 py-2.5 text-xs font-bold rounded-xl transition-all border duration-300 cursor-pointer bg-white/5 text-white/70 border-white/10 hover:text-white hover:bg-white/10"
+                >
+                  📝 Eventi
+                </button>
+
                 {/* Separatore visivo */}
                 <div className="w-px h-6 bg-white/10 mx-1" />
 
@@ -233,6 +248,17 @@ export default function MatchesManager({ teams, matches, onRefreshMatches }: Adm
         confirmLabel="Elimina"
         cancelLabel="Annulla"
         type="danger"
+      />
+
+      <MatchEventsModal
+        isOpen={eventsModalOpen}
+        onClose={() => {
+          setEventsModalOpen(false);
+          setSelectedMatchForEvents(null);
+        }}
+        match={selectedMatchForEvents}
+        players={players}
+        onRefreshMatches={onRefreshMatches}
       />
     </div>
   );

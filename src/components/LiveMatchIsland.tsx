@@ -28,14 +28,33 @@ const TEAM_IDX: Record<string, number> = {
   'Fc Pontos': 10,
 };
 
+const ROLE_ORDER: Record<string, number> = {
+  'portiere': 1,
+  'difensore': 2,
+  'centrocampista': 3,
+  'attaccante': 4,
+};
+
+const sortPlayersByRole = (list: any[]) => {
+  return list.slice().sort((a, b) => {
+    const roleA = a.role ? a.role.toLowerCase() : '';
+    const roleB = b.role ? b.role.toLowerCase() : '';
+    const rankA = ROLE_ORDER[roleA] ?? 5;
+    const rankB = ROLE_ORDER[roleB] ?? 5;
+    if (rankA !== rankB) return rankA - rankB;
+    return a.name.localeCompare(b.name);
+  });
+};
+
 export default function LiveMatchIsland() {
   const [liveMatch, setLiveMatch] = useState<any>(null);
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
+  const [selectedCardDetail, setSelectedCardDetail] = useState<string | null>(null);
 
   const [matchId, setMatchId] = useState<string | null>(null);
-  const [tab, setTab] = useState<'timeline' | 'lineups' | 'stats'>('timeline');
+  const [tab, setTab] = useState<'timeline' | 'lineups'>('timeline');
   const [homePlayers, setHomePlayers] = useState<any[]>([]);
   const [awayPlayers, setAwayPlayers] = useState<any[]>([]);
 
@@ -127,8 +146,8 @@ export default function LiveMatchIsland() {
 
         setLiveMatch(match);
         if (evts) setEvents(evts);
-        setHomePlayers(hP || []);
-        setAwayPlayers(aP || []);
+        setHomePlayers(sortPlayersByRole(hP || []));
+        setAwayPlayers(sortPlayersByRole(aP || []));
       } else {
         setLiveMatch(null);
         setEvents([]);
@@ -238,26 +257,6 @@ export default function LiveMatchIsland() {
       } else if (ev.type === 'ESPULSIONE' || ev.type === 'Red Card') {
         playerReds[ev.player_id] = true;
       }
-    }
-  });
-
-  const stats = {
-    home: { goals: 0, yellows: 0, reds: 0, powerCards: 0 },
-    away: { goals: 0, yellows: 0, reds: 0, powerCards: 0 },
-  };
-
-  events.forEach(ev => {
-    const isHome = ev.team_id === liveMatch.home_team_id;
-    const teamKey = isHome ? 'home' : 'away';
-
-    if (ev.type === 'GOAL' || ev.type === 'Goal' || ev.type === 'Goal (Penalty)' || ev.type === 'Goal (Stella)' || ev.type === 'Goal (Raddoppiato)') {
-      stats[teamKey].goals += 1;
-    } else if (ev.type === 'AMMONIZIONE' || ev.type === 'Yellow Card') {
-      stats[teamKey].yellows += 1;
-    } else if (ev.type === 'ESPULSIONE' || ev.type === 'Red Card') {
-      stats[teamKey].reds += 1;
-    } else if (ev.type === 'CARTA' || ev.type === 'Carta Attivata') {
-      stats[teamKey].powerCards += 1;
     }
   });
 
@@ -387,7 +386,7 @@ export default function LiveMatchIsland() {
 
               {/* Time display / subtitle */}
               <span className="text-[0.65rem] font-semibold text-[var(--text-secondary)] mt-3 bg-[var(--glass-bg)] border border-[var(--glass-border)] py-0.5 px-2 rounded">
-                {liveMatch.status === 'LIVE' ? 'In corso...' : 'Match Terminato'}
+                {liveMatch.status === 'LIVE' ? 'In corso...' : liveMatch.status === 'TERMINATA' ? 'Match Terminato' : 'In programmazione'}
               </span>
             </div>
 
@@ -421,8 +420,8 @@ export default function LiveMatchIsland() {
       {/* Tab Navigation Chips */}
       <div className="flex justify-center w-full px-4 mt-6 z-10">
         <div className="flex justify-center gap-3 w-full max-w-[450px]">
-          {(['timeline', 'lineups', 'stats'] as const).map((t) => {
-            const label = t === 'timeline' ? 'Cronologia' : t === 'lineups' ? 'Formazioni' : 'Statistiche';
+          {(['timeline', 'lineups'] as const).map((t) => {
+            const label = t === 'timeline' ? 'Eventi' : 'Formazioni';
             const isActive = tab === t;
             return (
               <button
@@ -470,7 +469,9 @@ export default function LiveMatchIsland() {
                               <span onClick={() => ev.player_id && setSelectedPlayerId(ev.player_id)} className={`text-[0.6rem] font-black tracking-widest text-white/40 uppercase truncate w-full text-right ${ev.player_id ? 'cursor-pointer hover:text-blue-400 transition-colors' : ''}`}>
                                 {playerName}
                               </span>
-                              {renderEventMedia({ type: 'Carta Attivata', detail: detailType })}
+                              <div onClick={() => setSelectedCardDetail(detailType)} className="cursor-pointer hover:scale-105 transition-transform origin-right">
+                                {renderEventMedia({ type: 'Carta Attivata', detail: detailType })}
+                              </div>
                             </div>
                           ) : (
                             <div className="flex items-center gap-2.5 text-right flex-row-reverse min-w-0">
@@ -503,7 +504,9 @@ export default function LiveMatchIsland() {
                               <span onClick={() => ev.player_id && setSelectedPlayerId(ev.player_id)} className={`text-[0.6rem] font-black tracking-widest text-white/40 uppercase truncate w-full text-left ${ev.player_id ? 'cursor-pointer hover:text-blue-400 transition-colors' : ''}`}>
                                 {playerName}
                               </span>
-                              {renderEventMedia({ type: 'Carta Attivata', detail: detailType })}
+                              <div onClick={() => setSelectedCardDetail(detailType)} className="cursor-pointer hover:scale-105 transition-transform origin-left">
+                                {renderEventMedia({ type: 'Carta Attivata', detail: detailType })}
+                              </div>
                             </div>
                           ) : (
                             <div className="flex items-center gap-2.5 text-left min-w-0">
@@ -567,6 +570,11 @@ export default function LiveMatchIsland() {
                                 <span className="font-bold text-[var(--text-primary)] group-hover/player:text-red-400 transition-colors truncate">
                                   {displayName}
                                 </span>
+                                {p.role && (
+                                  <span className="text-[9px] font-semibold text-white/50 capitalize mt-0.5">
+                                    {p.role}
+                                  </span>
+                                )}
                                 {isExtra && (
                                   <span className="text-[8px] font-bold text-amber-400 uppercase tracking-wider mt-0.5">
                                     Slot Extra
@@ -625,6 +633,11 @@ export default function LiveMatchIsland() {
                                 <span className="font-bold text-[var(--text-primary)] group-hover/player:text-blue-400 transition-colors truncate">
                                   {displayName}
                                 </span>
+                                {p.role && (
+                                  <span className="text-[9px] font-semibold text-white/50 capitalize mt-0.5">
+                                    {p.role}
+                                  </span>
+                                )}
                                 {isExtra && (
                                   <span className="text-[8px] font-bold text-amber-400 uppercase tracking-wider mt-0.5">
                                     Slot Extra
@@ -647,38 +660,6 @@ export default function LiveMatchIsland() {
             </div>
           )}
 
-          {tab === 'stats' && (
-            <div className="w-full pt-8 pb-24 flex flex-col gap-6 animate-[slideUpFade_0.4s_var(--ease-apple)]">
-              <div 
-                className="liquid-glass-stack-wrapper w-full"
-                style={{
-                  '--stack-border-color': 'rgba(139, 92, 246, 0.18)',
-                  '--stack-glow-color': 'rgba(139, 92, 246, 0.03)',
-                } as React.CSSProperties}
-              >
-                <GlassEffect 
-                  className="rounded-2xl w-full"
-                  contentClassName="pt-6 px-5 pb-5 flex flex-col gap-5 w-full font-semibold"
-                  style={{ 
-                    border: '1px solid rgba(139, 92, 246, 0.25)',
-                    '--hover-glow-start': 'rgba(139, 92, 246, 0.35)',
-                    '--hover-glow-end': 'rgba(139, 92, 246, 0.05)',
-                    '--card-inner-glow': 'inset 1.5px 1.5px 1.5px 0 rgba(139, 92, 246, 0.25), inset -1px -1px 1px 0 rgba(255, 255, 255, 0.04)'
-                  } as React.CSSProperties}
-                >
-                  <div className="flex justify-between items-center text-xs font-black uppercase tracking-wider text-[var(--text-muted)] border-b border-[var(--glass-border)] pb-3">
-                    <span className="text-red-400 truncate max-w-[150px]">{homeName}</span>
-                    <span className="text-[var(--text-muted)]">VS</span>
-                    <span className="text-blue-400 truncate max-w-[150px] text-right">{awayName}</span>
-                  </div>
-                  <StatRow label="Gol ⚽" homeVal={stats.home.goals} awayVal={stats.away.goals} homeCol="from-red-500 to-rose-500 shadow-[0_0_8px_rgba(239,68,68,0.3)]" awayCol="from-blue-500 to-indigo-500 shadow-[0_0_8px_rgba(59,130,246,0.3)]" />
-                  <StatRow label="Ammonizioni 🟨" homeVal={stats.home.yellows} awayVal={stats.away.yellows} homeCol="from-yellow-400 to-yellow-500" awayCol="from-yellow-400 to-yellow-500" />
-                  <StatRow label="Espulsioni 🟥" homeVal={stats.home.reds} awayVal={stats.away.reds} homeCol="from-red-600 to-red-700" awayCol="from-red-600 to-red-700" />
-                  <StatRow label="Carte Giocate 🃏" homeVal={stats.home.powerCards} awayVal={stats.away.powerCards} homeCol="from-purple-500 to-pink-500" awayCol="from-purple-500 to-pink-500" />
-                </GlassEffect>
-              </div>
-            </div>
-          )}
         </div>
       </div>
 
@@ -695,39 +676,105 @@ export default function LiveMatchIsland() {
           }
         />
       )}
+
+      {selectedCardDetail && (
+        <CardInfoModal
+          detail={selectedCardDetail}
+          onClose={() => setSelectedCardDetail(null)}
+        />
+      )}
     </div>
   );
 }
 
-function StatRow({ label, homeVal, awayVal, homeCol, awayCol }: { label: string; homeVal: number; awayVal: number; homeCol: string; awayCol: string }) {
-  const [widthHome, setWidthHome] = useState(0);
-  const [widthAway, setWidthAway] = useState(0);
-  const total = Math.max(homeVal + awayVal, 1);
+function CardInfoModal({ detail, onClose }: { detail: string, onClose: () => void }) {
+  const [baseDetail, outcome] = detail.split('::');
+  
+  const cardInfo: Record<string, { title: string, desc: string, icon: string, color: string }> = {
+    penalty: {
+      title: 'Penalty',
+      icon: '🎯',
+      color: 'text-red-400',
+      desc: 'Concede un calcio di rigore alla squadra che gioca la carta.'
+    },
+    shootout: {
+      title: 'Shootout',
+      icon: '⚡',
+      color: 'text-amber-400',
+      desc: 'Concede uno shootout (1 contro 1 col portiere partendo da centrocampo).'
+    },
+    suspension: {
+      title: 'Suspension',
+      icon: '⛔',
+      color: 'text-gray-300',
+      desc: 'Sospende un giocatore avversario per 3 minuti.'
+    },
+    goalx2: {
+      title: 'Goal X2',
+      icon: '🔥',
+      color: 'text-pink-400',
+      desc: 'Raddoppia il valore del prossimo goal segnato entro 3 minuti (se attivata).'
+    },
+    starplayer: {
+      title: 'Star Player',
+      icon: '🌟',
+      color: 'text-purple-400',
+      desc: 'Un giocatore diventa Star Player per 3 minuti: i suoi goal valgono doppio.'
+    },
+    joker: {
+      title: 'Joker',
+      icon: '🃏',
+      color: 'text-blue-400',
+      desc: 'Imprevisto! Può essere un effetto positivo o negativo a sorpresa per una delle due squadre.'
+    }
+  };
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setWidthHome((homeVal / total) * 100);
-      setWidthAway((awayVal / total) * 100);
-    }, 100);
-    return () => clearTimeout(timer);
-  }, [homeVal, awayVal, total]);
+  const info = cardInfo[baseDetail] || {
+    title: 'Carta Speciale',
+    icon: '🃏',
+    color: 'text-white',
+    desc: 'Effetto speciale applicato alla partita.'
+  };
 
   return (
-    <div className="flex flex-col gap-2 py-1">
-      <div className="flex justify-between items-center text-[0.65rem] font-black tracking-widest uppercase">
-        <span className="text-red-400 font-mono text-sm">{homeVal}</span>
-        <span className="text-white/60 text-[0.55rem] font-bold">{label}</span>
-        <span className="text-blue-400 font-mono text-sm">{awayVal}</span>
-      </div>
-      <div className="flex h-2 rounded-full overflow-hidden bg-white/5 border border-white/5 p-[1px]">
-        <div 
-          style={{ width: `${widthHome}%` }} 
-          className={`h-full rounded-l-full bg-gradient-to-r ${homeCol} transition-all duration-1000 ease-[var(--ease-apple)]`} 
-        />
-        <div 
-          style={{ width: `${widthAway}%` }} 
-          className={`h-full rounded-r-full bg-gradient-to-l ${awayCol} transition-all duration-1000 ease-[var(--ease-apple)]`} 
-        />
+    <div className="modal-overlay" onClick={onClose} style={{ zIndex: 1000 }}>
+      <div onClick={e => e.stopPropagation()} className="w-full max-w-[320px] animate-[modalSlideUp_0.4s_var(--ease-spring)] px-4">
+        <GlassEffect className="w-full p-6 relative overflow-hidden rounded-[24px]" style={{ display: 'block' }}>
+          <button 
+            className="absolute top-4 right-4 w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-white/60 hover:text-white transition-all cursor-pointer outline-none z-10"
+            onClick={onClose}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+          
+          <div className="flex flex-col items-center text-center mt-2">
+            <div className={`text-4xl mb-3 ${info.color} drop-shadow-md`}>{info.icon}</div>
+            <h3 className={`text-xl font-black uppercase tracking-wider mb-2 ${info.color}`}>{info.title}</h3>
+            <p className="text-sm text-white/80 leading-relaxed mb-4">{info.desc}</p>
+            
+            {(baseDetail === 'penalty' || baseDetail === 'shootout' || baseDetail === 'suspension') && (
+              <div className="w-full bg-black/20 rounded-xl p-3 border border-white/5 flex flex-col gap-2 mt-2">
+                <div className="flex items-start gap-2 text-xs">
+                  <span className="font-black text-green-400 mt-0.5">✓</span>
+                  <span className="text-white/70 text-left leading-tight"><strong className="text-white">Riuscito:</strong> l'effetto della carta ha avuto successo (es. goal segnato).</span>
+                </div>
+                <div className="flex items-start gap-2 text-xs">
+                  <span className="font-black text-red-400 mt-0.5">✗</span>
+                  <span className="text-white/70 text-left leading-tight"><strong className="text-white">Fallito:</strong> l'effetto è fallito (es. goal sbagliato o parato).</span>
+                </div>
+              </div>
+            )}
+            
+            {(outcome === 'success' || outcome === 'fail') && (
+              <div className={`mt-4 w-full py-2 rounded-lg font-black uppercase tracking-widest text-xs border ${outcome === 'success' ? 'bg-green-500/10 text-green-400 border-green-500/30' : 'bg-red-500/10 text-red-400 border-red-500/30'}`}>
+                Esito: {outcome === 'success' ? 'Riuscito ✓' : 'Fallito ✗'}
+              </div>
+            )}
+          </div>
+        </GlassEffect>
       </div>
     </div>
   );
