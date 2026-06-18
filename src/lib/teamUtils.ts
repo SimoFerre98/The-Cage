@@ -30,20 +30,20 @@ export function getTeamLogo(teamName: string): string | null {
   if (!teamName) return null;
   const name = teamName.toLowerCase().trim().replace(/\./g, '');
   
-  if (name.includes('amatori') || name.includes('genova')) return '/Logos/Amatori Calcio Genova.jpeg';
-  if (name.includes('ucg') || name.includes('ugc')) return '/Logos/U.C.G.jpeg';
-  if (name.includes('umili')) return '/Logos/GliUmili.jpeg';
-  if (name.includes('taverna')) return '/Logos/Taverna.jpeg';
-  if (name.includes('ceres')) return '/Logos/FCCeres.jpeg';
-  if (name.includes('aston')) return '/Logos/Astonbirra.jpeg';
-  if (name.includes('chainz')) return '/Logos/Chainz.jpeg';
+  if (name.includes('amatori') || name.includes('genova')) return '/Logos/amatoricalcio.png';
+  if (name.includes('ucg') || name.includes('ugc')) return '/Logos/UCG.png';
+  if (name.includes('umili')) return '/Logos/umili.png';
+  if (name.includes('taverna')) return '/Logos/taverna.png';
+  if (name.includes('ceres')) return '/Logos/ceres.png';
+  if (name.includes('aston')) return '/Logos/aston birra.png';
+  if (name.includes('chainz')) return '/Logos/chainz.png';
   if (name.includes('pontos')) return '/Logos/FcPontos.jpeg';
-  if (name.includes('gilly')) return '/Logos/GillyBoys.jpeg';
-  if (name.includes('murta')) return '/Logos/Murta.jpeg';
-  if (name.includes('ketzmaja') || name.includes('teodoro')) return '/Logos/SanTeodoroKetzmaja.jpeg';
-  if (name.includes('sezione')) return '/Logos/Sezione.jpeg';
-  if (name.includes('dico')) return '/Logos/loDicoFC.jpeg';
-  if (name.includes('pontex') || name.includes('pirates')) return '/Logos/PontexPirates.jpeg';
+  if (name.includes('gilly')) return '/Logos/gilly.png';
+  if (name.includes('murta')) return '/Logos/murta.png';
+  if (name.includes('ketzmaja') || name.includes('teodoro')) return '/Logos/teodoro.png';
+  if (name.includes('sezione')) return '/Logos/sezione.png';
+  if (name.includes('dico')) return '/Logos/lodico.png';
+  if (name.includes('pontex') || name.includes('pirates')) return '/Logos/pirates.png';
   
   return null;
 }
