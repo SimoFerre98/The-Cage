@@ -1,0 +1,42 @@
+# Arduino / C++ build outputs
+build/
+bin/
+out/
+.build/
+
+# Compiled object and executable files
+*.elf
+*.hex
+*.bin
+*.o
+*.a
+*.d
+*.ko
+*.so
+*.la
+*.lo
+
+# IDEs and Editors settings / local files
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosync
+*.bak
+*.local
+
+# Temporary and OS-specific files
+Thumbs.db
+db.db
+.DS_Store
+desktop.ini
+
+# PlatformIO and other toolchain files
+.pio/
+.pioenvs/
+.piolibdeps/
+.clangd/
+compile_commands.json
+
+# Local Arduino libraries
+libraries/
