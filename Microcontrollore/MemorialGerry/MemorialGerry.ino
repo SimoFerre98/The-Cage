@@ -175,7 +175,6 @@ void initWebSocket() {
   
   Serial.println("[WebSocket] Connessione a Supabase Realtime...");
   webSocket.beginSSL(SECRET_SUPABASE_HOST, 443, path.c_str());
-  webSocket.setInsecure(); // Bypassa la validazione SSL di mbedTLS
   webSocket.onEvent(webSocketEvent);
   webSocket.setReconnectInterval(5000); // Tenta di riconnettersi ogni 5 secondi in caso di cadute
 }
