@@ -36,6 +36,7 @@ int awayScore = 0;
 // --- WEBSOCKET & TIMING ---
 WebSocketsClient webSocket;
 unsigned long lastHeartbeat = 0;
+unsigned long lastDevicePing = 0;
 int refCount = 2; // Contatore dei ref Phoenix (phx_join usa "1")
 
 // --- PROTOTIPI DELLE FUNZIONI ---
@@ -45,6 +46,7 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length);
 void handleWebSocketMessage(uint8_t * payload, size_t length);
 void joinRealtimeChannel();
 void sendHeartbeat();
+void sendDevicePing();
 void updateLEDs();
 void triggerGoalEffect(bool isHome);
 void triggerStartMatchEffect();
@@ -53,9 +55,9 @@ void triggerEndMatchEffect();
 void setup() {
   Serial.begin(115200);
   
-  // Aspetta fino a 3 secondi che il Serial Monitor venga aperto (fondamentale per USB CDC su ESP32-S3)
+  // Aspetta fino a 5 secondi che il Serial Monitor venga aperto (fondamentale per USB CDC su ESP32-S3)
   unsigned long startSerial = millis();
-  while (!Serial && (millis() - startSerial < 3000)) {
+  while (!Serial && (millis() - startSerial < 5000)) {
     delay(10);
   }
   
@@ -93,6 +95,9 @@ void setup() {
   boardLed[0] = CRGB::Orange; 
   FastLED.show();
 
+  // Invia il primo ping di presenza immediatamente
+  sendDevicePing();
+
   // Recupera lo stato iniziale del match dal database
   checkLiveMatch();
 
@@ -104,12 +109,14 @@ void loop() {
   // Gestisce i pacchetti del WebSocket
   webSocket.loop();
 
-  // Verifica e stampa lo stato del Wi-Fi in caso di perdite
+  // Gestione attiva della connessione Wi-Fi in caso di perdite
   static unsigned long lastWiFiCheck = 0;
   if (millis() - lastWiFiCheck > 10000) {
     lastWiFiCheck = millis();
     if (WiFi.status() != WL_CONNECTED) {
-      Serial.println("[Wi-Fi] Connessione persa, tentativo di riconnessione automatico...");
+      Serial.println("[Wi-Fi] Connessione persa! Tentativo di riconnessione manuale...");
+      WiFi.disconnect();
+      WiFi.begin(SECRET_SSID, SECRET_PASS);
     }
   }
 
@@ -118,6 +125,12 @@ void loop() {
   if (now - lastHeartbeat >= 30000) {
     lastHeartbeat = now;
     sendHeartbeat();
+  }
+
+  // Invio heartbeat di presenza a Supabase (ogni 30 secondi)
+  if (now - lastDevicePing >= 30000) {
+    lastDevicePing = now;
+    sendDevicePing();
   }
 
   // Gestione ed esecuzione dell'effetto LED attivo (non bloccante)
@@ -247,11 +260,23 @@ void handleWebSocketMessage(uint8_t * payload, size_t length) {
   
   if (event == "postgres_changes") {
     JsonObject payloadObj = doc["payload"].as<JsonObject>();
-    String eventType = payloadObj["type"] | "";
+    String eventType = payloadObj["eventType"] | payloadObj["type"] | "";
     String table = payloadObj["table"] | "";
     
     if (table == "matches" && eventType == "UPDATE") {
-      JsonObject record = payloadObj["data"]["record"].as<JsonObject>();
+      JsonObject record;
+      if (payloadObj.containsKey("record")) {
+        record = payloadObj["record"].as<JsonObject>();
+      } else if (payloadObj["data"].is<JsonObject>()) {
+        record = payloadObj["data"].as<JsonObject>();
+      } else if (payloadObj["data"].containsKey("record")) {
+        record = payloadObj["data"]["record"].as<JsonObject>();
+      }
+      
+      if (record.isNull()) {
+        Serial.println("[WebSocket] Errore: record non trovato nel payload.");
+        return;
+      }
       
       String matchId = record["id"] | "";
       String status = record["status"] | "";
@@ -404,6 +429,41 @@ void updateLEDs() {
     }
   }
   
+  // Se il Wi-Fi non è connesso, sovrascrivi il LED di bordo con un lampeggio Arancione di avviso
+  if (WiFi.status() != WL_CONNECTED) {
+    bool flashOn = (now / 500) % 2 == 0;
+    boardLed[0] = flashOn ? CRGB::Orange : CRGB::Black;
+  }
+
   // Applica le modifiche a tutti i LED
   FastLED.show();
+}
+
+// Invia un ping HTTP di presenza a Supabase per aggiornare il timestamp 'last_seen'
+void sendDevicePing() {
+  if (WiFi.status() != WL_CONNECTED) {
+    return;
+  }
+  
+  WiFiClientSecure client;
+  client.setInsecure(); // Salta la verifica del certificato SSL per semplicità su ESP32
+  
+  HTTPClient http;
+  String url = "https://" + String(SECRET_SUPABASE_HOST) + "/rest/v1/device_status";
+  
+  Serial.println("[HTTP] Invio heartbeat di presenza a Supabase...");
+  if (http.begin(client, url)) {
+    http.addHeader("apikey", SECRET_SUPABASE_ANON_KEY);
+    http.addHeader("Authorization", "Bearer " + String(SECRET_SUPABASE_ANON_KEY));
+    http.addHeader("Content-Type", "application/json");
+    http.addHeader("Prefer", "resolution=merge-duplicates");
+    
+    int httpCode = http.POST("{\"id\":\"esp32_centralina\"}");
+    if (httpCode >= 200 && httpCode < 300) {
+      Serial.printf("[HTTP] Heartbeat di presenza inviato (Codice: %d)\n", httpCode);
+    } else {
+      Serial.printf("[HTTP] Errore invio heartbeat di presenza (Codice: %d)\n", httpCode);
+    }
+    http.end();
+  }
 }

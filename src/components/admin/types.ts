@@ -34,4 +34,6 @@ export interface AdminChildProps {
   matches: Match[];
   onRefreshTeams: () => Promise<void>;
   onRefreshMatches: () => Promise<void>;
+  isDeviceOnline?: boolean;
+  deviceLastSeen?: string | null;
 }

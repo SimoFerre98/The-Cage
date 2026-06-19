@@ -3,7 +3,12 @@ import { supabase } from '../../lib/supabase';
 import GlassEffect from '../GlassEffect';
 import type { AdminChildProps, Player } from './types';
 
-export default function LiveController({ matches, onRefreshMatches }: AdminChildProps) {
+export default function LiveController({ 
+  matches, 
+  onRefreshMatches, 
+  isDeviceOnline, 
+  deviceLastSeen 
+}: AdminChildProps) {
   // Deriva il match LIVE direttamente dai props — 0 query DB
   const liveMatch = matches.find(m => m.status === 'LIVE') ?? null;
 
@@ -166,20 +171,68 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
 
   // ── Render ─────────────────────────────────────────────────────────────────
 
-  if (!liveMatch) {
-    return (
-      <GlassEffect className="p-10 md:p-12 text-center rounded-2xl">
-        <div className="text-4xl mb-4">📺</div>
-        <h2 className="text-xl font-bold text-white mb-4 text-center">Nessuna partita LIVE</h2>
-        <p className="text-white/60 mb-6">Vai nella sezione "Calendario" e imposta una partita su LIVE per iniziare la regia.</p>
-      </GlassEffect>
-    );
-  }
-
-  const activePlayers = eventTeamId === liveMatch.home_team_id ? homePlayers : awayPlayers;
+  const activePlayers = liveMatch 
+    ? (eventTeamId === liveMatch.home_team_id ? homePlayers : awayPlayers) 
+    : [];
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-6">
+      {/* Stato Centralina ESP32 */}
+      <GlassEffect className="p-4 md:p-6 rounded-[24px] relative overflow-hidden">
+        {isDeviceOnline ? (
+          <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-green-500/10 blur-[40px] pointer-events-none" />
+        ) : (
+          <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-red-500/10 blur-[40px] pointer-events-none" />
+        )}
+
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 z-10 relative">
+          <div className="flex items-center gap-4">
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center border ${
+              isDeviceOnline 
+                ? 'bg-green-500/10 border-green-500/20 text-green-400' 
+                : 'bg-white/5 border-white/10 text-white/50'
+            }`}>
+              <span className="text-xl font-bold">⚡</span>
+            </div>
+            <div>
+              <h3 className="text-sm font-black text-white uppercase tracking-wider">Centralina LED (ESP32)</h3>
+              <p className="text-xs text-white/50 mt-0.5">
+                {deviceLastSeen 
+                  ? `Ultimo segnale: ${new Date(deviceLastSeen).toLocaleTimeString('it-IT')} (${new Date(deviceLastSeen).toLocaleDateString('it-IT')})` 
+                  : 'Nessun segnale registrato'}
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            {isDeviceOnline ? (
+              <span className="flex items-center gap-1.5 bg-green-500/10 border border-green-500/35 px-4 py-2 rounded-full text-xs text-green-400 font-extrabold uppercase tracking-wider animate-[pulse_2s_infinite]">
+                <span className="h-2 w-2 rounded-full bg-green-400"></span>
+                Online
+              </span>
+            ) : (
+              <span className="flex items-center gap-1.5 bg-red-500/10 border border-red-500/30 px-4 py-2 rounded-full text-xs text-red-400 font-extrabold uppercase tracking-wider">
+                <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse"></span>
+                Offline
+              </span>
+            )}
+          </div>
+        </div>
+
+        {!isDeviceOnline && (
+          <div className="mt-4 pt-3 border-t border-white/5 text-[11px] text-white/40 leading-relaxed">
+            💡 <strong>Troubleshooting:</strong> Se la centralina lampeggia in <span className="text-amber-400 font-bold">Arancione</span>, significa che non è connessa alla rete Wi-Fi locale. Verifica che l'ESP32 sia alimentato e che la rete "WIFI HOME" sia raggiungibile.
+          </div>
+        )}
+      </GlassEffect>
+
+      {!liveMatch ? (
+        <GlassEffect className="p-10 md:p-12 text-center rounded-2xl">
+          <div className="text-4xl mb-4">📺</div>
+          <h2 className="text-xl font-bold text-white mb-4 text-center">Nessuna partita LIVE</h2>
+          <p className="text-white/60 mb-6">Vai nella sezione "Calendario" e imposta una partita su LIVE per iniziare la regia.</p>
+        </GlassEffect>
+      ) : (
+        <div className="flex flex-col gap-8 w-full">
       {/* Scoreboard Controller */}
       <GlassEffect className="p-8 md:p-10 rounded-[24px] relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-1 bg-red-500 animate-pulse"></div>
@@ -386,6 +439,8 @@ export default function LiveController({ matches, onRefreshMatches }: AdminChild
           )}
         </div>
       </GlassEffect>
+      </div>
+      )}
 
       {/* Custom Confirmation Modal */}
       {confirmDeleteEvent && (

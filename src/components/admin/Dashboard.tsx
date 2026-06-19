@@ -13,6 +13,8 @@ export default function Dashboard() {
   const [teams, setTeams] = useState<Team[]>([]);
   const [players, setPlayers] = useState<Player[]>([]);
   const [matches, setMatches] = useState<Match[]>([]);
+  const [deviceLastSeen, setDeviceLastSeen] = useState<string | null>(null);
+  const [isDeviceOnline, setIsDeviceOnline] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
 
   // ── Fetch teams + players (join unico) ────────────────────────────────────
@@ -40,14 +42,26 @@ export default function Dashboard() {
     if (data) setMatches(data as Match[]);
   }, []);
 
+  // ── Fetch stato centralina ESP32 ──────────────────────────────────────────
+  const refreshDeviceStatus = useCallback(async () => {
+    const { data } = await supabase
+      .from('device_status')
+      .select('last_seen')
+      .eq('id', 'esp32_centralina')
+      .maybeSingle();
+    if (data) {
+      setDeviceLastSeen(data.last_seen);
+    }
+  }, []);
+
   const [realtimeStatus, setRealtimeStatus] = useState<'connecting' | 'connected'>('connecting');
 
   // ── Caricamento iniziale ──────────────────────────────────────────────────
   useEffect(() => {
-    Promise.all([refreshTeams(), refreshMatches()]).finally(() =>
+    Promise.all([refreshTeams(), refreshMatches(), refreshDeviceStatus()]).finally(() =>
       setInitialLoading(false)
     );
-  }, [refreshTeams, refreshMatches]);
+  }, [refreshTeams, refreshMatches, refreshDeviceStatus]);
 
   // ── Sincronizzazione Realtime Centralizzata ────────────────────────────────
   useEffect(() => {
@@ -61,6 +75,11 @@ export default function Dashboard() {
       .on('postgres_changes', { event: '*', schema: 'public', table: 'matches' }, () => {
         refreshMatches();
       })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'device_status', filter: 'id=eq.esp32_centralina' }, (payload) => {
+        if (payload.new && (payload.new as any).last_seen) {
+          setDeviceLastSeen((payload.new as any).last_seen);
+        }
+      })
       .subscribe((status) => {
         if (status === 'SUBSCRIBED') {
           setRealtimeStatus('connected');
@@ -72,7 +91,27 @@ export default function Dashboard() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [refreshTeams, refreshMatches]);
+  }, [refreshTeams, refreshMatches, refreshDeviceStatus]);
+
+  // ── Calcolo stato Online/Offline della centralina ────────────────────────
+  useEffect(() => {
+    if (!deviceLastSeen) {
+      setIsDeviceOnline(false);
+      return;
+    }
+    
+    const checkOnline = () => {
+      const lastSeenTime = new Date(deviceLastSeen).getTime();
+      const now = new Date().getTime();
+      // Mostra online se l'heartbeat è stato inviato negli ultimi 75 secondi
+      setIsDeviceOnline(now - lastSeenTime < 75000);
+    };
+
+    checkOnline();
+    const interval = setInterval(checkOnline, 10000);
+    
+    return () => clearInterval(interval);
+  }, [deviceLastSeen]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -87,14 +126,36 @@ export default function Dashboard() {
   }
 
   // Props condivise per tutti i componenti figli
-  const childProps = { teams, players, matches, onRefreshTeams: refreshTeams, onRefreshMatches: refreshMatches };
+  const childProps = { 
+    teams, 
+    players, 
+    matches, 
+    onRefreshTeams: refreshTeams, 
+    onRefreshMatches: refreshMatches,
+    isDeviceOnline,
+    deviceLastSeen
+  };
 
   return (
     <div className="w-full flex flex-col gap-6">
       <div className="flex items-center justify-between pb-4 border-b border-white/10 mt-4">
         <div>
           <h1 className="text-3xl font-black text-white drop-shadow-md">Dashboard</h1>
-          <p className="text-white/60 text-sm mt-1">Gestione dati e regia</p>
+          <div className="flex items-center gap-3 mt-1.5">
+            <p className="text-white/60 text-sm">Gestione dati e regia</p>
+            <span className="text-white/20 text-xs">•</span>
+            {isDeviceOnline ? (
+              <span className="flex items-center gap-1.5 bg-green-500/10 border border-green-500/35 px-2.5 py-0.5 rounded-full text-[10px] text-green-400 font-extrabold uppercase tracking-wider animate-[pulse_2s_infinite]">
+                <span className="h-1.5 w-1.5 rounded-full bg-green-400"></span>
+                ESP32 Online
+              </span>
+            ) : (
+              <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 px-2.5 py-0.5 rounded-full text-[10px] text-white/40 font-extrabold uppercase tracking-wider">
+                <span className="h-1.5 w-1.5 rounded-full bg-white/30"></span>
+                ESP32 Offline
+              </span>
+            )}
+          </div>
         </div>
         <button
           onClick={handleLogout}
