@@ -25,43 +25,25 @@ void setup() {
 }
 
 void loop() {
-  // --- EFFETTO: Collisione Cyberpunk (Comete Gemelle) ---
-  // Due comete (una Ciano e una Magenta) partono dagli estremi opposti della striscia,
-  // si scontrano nel mezzo (miscelandosi in Bianco) e tornano indietro, lasciando
-  // una scia morbida e qualche scintilla (glitter) bianca casuale.
+  // --- EFFETTO: Arcobaleno Twinkle (Scintille a Gruppi di 3) ---
+  // Sfondo arcobaleno dinamico e in movimento su tutta la striscia, 
+  // interrotto casualmente da flash di 3 LED contigui di colore bianco puro a massima intensità.
 
-  static int pos1 = 0;
-  static int pos2 = NUM_LEDS - 1;
-  static int dir1 = 1;
-  static int dir2 = -1;
+  static uint8_t gHue = 0; // Tonalità di partenza dell'arcobaleno
+  
+  // 1. Genera l'effetto arcobaleno su tutti i LED
+  fill_rainbow(leds, NUM_LEDS, gHue, 5); // deltaHue = 5 stende l'arcobaleno lungo la striscia
+  gHue += 2; // Fa scorrere lentamente l'arcobaleno
 
-  // 1. Dissolve leggermente i LED del frame precedente per creare la scia
-  fadeToBlackBy(leds, NUM_LEDS, 45);
-
-  // 2. Disegna la prima cometa (Ciano) usando l'operatore += per consentire la miscelazione colore
-  leds[pos1] += CRGB::Cyan;
-
-  // 3. Disegna la seconda cometa (Magenta)
-  leds[pos2] += CRGB::Magenta;
-
-  // 4. Aggiungi un luccichio/scintilla bianca casuale (glitter)
-  if (random8() < 25) { // circa il 10% di probabilità per ogni frame
-    leds[random16(NUM_LEDS)] += CRGB::White;
+  // 2. Accendi casualmente gruppi di 3 LED contigui in bianco puro a massima intensità
+  if (random8() < 20) { // circa l'8% di possibilità per frame di generare il flash
+    int startIndex = random16(NUM_LEDS - 2); // Assicura che ci sia spazio per 3 LED
+    leds[startIndex]     = CRGB::White;
+    leds[startIndex + 1] = CRGB::White;
+    leds[startIndex + 2] = CRGB::White;
   }
 
-  // Mostra l'effetto sulla striscia LED
+  // Mostra i colori sulla striscia LED
   FastLED.show();
-  delay(25); // Velocità di aggiornamento dell'effetto (più basso = più veloce)
-
-  // 5. Aggiorna le posizioni delle comete
-  pos1 += dir1;
-  pos2 += dir2;
-
-  // Inverti la direzione quando raggiungono i limiti della striscia
-  if (pos1 == NUM_LEDS - 1 || pos1 == 0) {
-    dir1 = -dir1;
-  }
-  if (pos2 == NUM_LEDS - 1 || pos2 == 0) {
-    dir2 = -dir2;
-  }
+  delay(30); // Regola per variare la fluidità del movimento dell'arcobaleno
 }
