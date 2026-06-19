@@ -35,15 +35,15 @@ const bool digitSegments[10][7] = {
   { false, true,  true,  true,  true,  true,  true  }  // Cifra 9
 };
 
-// Variabili per alternare gli effetti del countdown
-enum CountdownEffect {
-  EFFECT_RAINBOW = 0,
-  EFFECT_FIRE = 1,
-  EFFECT_NEON_BREATH = 2,
+// Variabili per alternare gli effetti del contatore
+enum CounterEffect {
+  EFFECT_WHITE_MAX = 0,
+  EFFECT_RAINBOW = 1,
+  EFFECT_CYBERPUNK = 2,
   EFFECT_COUNT // Numero totale di effetti
 };
 
-CountdownEffect currentEffect = EFFECT_RAINBOW;
+CounterEffect currentEffect = EFFECT_WHITE_MAX;
 
 void setup() {
   Serial.begin(115200);
@@ -54,19 +54,20 @@ void setup() {
     delay(10);
   }
   
-  Serial.println("\n=== Avvio Test Countdown 7 Segmenti (Multi-Effetto) ===");
+  Serial.println("\n=== Avvio Test Contatore 7 Segmenti (0-9) ===");
   Serial.printf("Configurazione: %d LED (%d per segmento), Pin dati: %d\n", NUM_LEDS, LEDS_PER_SEGMENT, DATA_PIN);
 
   // Inizializzazione FastLED (Striscia display + LED di bordo)
   FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, NUM_LEDS);
   FastLED.addLeds<NEOPIXEL, BOARD_LED_PIN>(boardLed, NUM_BOARD_LEDS);
 
-  // --- GESTORE DI POTENZA (IMPORTANTE) ---
-  // Limita l'assorbimento a 5V e 500mA per evitare cali di tensione (sags) e sbalzi di luminosità 
-  // quando si accendono molti LED, proteggendo la porta USB del PC e l'ESP32.
-  // Nota: Se usate un alimentatore esterno da 2A (2000mA), potete impostare (5, 2000).
-  FastLED.setMaxPowerInVoltsAndMilliamps(5, 500);
-  FastLED.setBrightness(120); // Luminosità base più alta (FastLED la scalerà se necessario per sicurezza)
+  // --- GESTORE DI POTENZA (BIANCO MASSIMO) ---
+  // Alziamo il limite di corrente a 1000mA (1 Ampere) per consentire alla luce bianca di essere molto luminosa.
+  // NOTA DI SICUREZZA: Se la scheda ESP32 si riavvia o si spegne durante il test del Bianco (specialmente sull'8),
+  // significa che la porta USB del PC non eroga abbastanza corrente. In tal caso, alimenta la scheda con 
+  // un caricatore da muro per smartphone oppure abbassa questo valore a 500.
+  FastLED.setMaxPowerInVoltsAndMilliamps(5, 1000);
+  FastLED.setBrightness(255); // Impostiamo la luminosità software al massimo (255)
 
   // Spegne tutto all'avvio
   FastLED.clear();
@@ -84,7 +85,7 @@ void setSegment(int segmentIndex, CRGB color) {
 }
 
 // =========================================================================
-// FUNZIONI DEGLI EFFETTI GRAFICI SULLE CIFRE
+// FUNZIONI DEGLI EFFETTI GRAFICI
 // =========================================================================
 
 // 1. EFFETTO ARCOBALENO SCORREVOLE (Rainbow Flow)
@@ -102,45 +103,29 @@ void updateRainbowDigit(int digit, uint8_t baseHue) {
   FastLED.show();
 }
 
-// 2. EFFETTO FUOCO OSCILLANTE (Fire Flicker)
-void updateFireDigit(int digit, uint32_t frameTime) {
+// 2. EFFETTO CYBERPUNK SYNTHWAVE (Ciano e Magenta sfumati in movimento)
+void updateCyberpunkDigit(int digit, uint8_t baseHue) {
   FastLED.clear();
   for (int seg = 0; seg < 7; seg++) {
     if (digitSegments[digit][seg]) {
       int startLed = seg * LEDS_PER_SEGMENT;
       for (int i = 0; i < LEDS_PER_SEGMENT; i++) {
-        // Genera rumore di calore dinamico
-        uint8_t noise = inoise8(frameTime / 4, (startLed + i) * 35);
-        // Tonalità calda: 0 (Rosso) fino a 32 (Arancione/Giallo)
-        uint8_t hue = map(noise, 0, 255, 0, 32); 
-        uint8_t val = map(noise, 0, 255, 80, 255);
-        leds[startLed + i] = CHSV(hue, 255, val);
+        // Calcola una tonalità oscillatoria tra Ciano (130) e Magenta (224)
+        uint8_t factor = baseHue + (startLed + i) * 5;
+        uint8_t mappedHue = map(sin8(factor), 0, 255, 130, 224);
+        leds[startLed + i] = CHSV(mappedHue, 255, 255);
       }
     }
   }
-  boardLed[0] = CRGB::Red;
-  FastLED.show();
-}
-
-// 3. EFFETTO NEON PULSANTE (Neon Breath)
-void updateNeonBreathDigit(int digit, uint8_t breathBrightness) {
-  FastLED.clear();
-  CRGB neonCyan = CHSV(130, 240, breathBrightness); // Azzurro ghiaccio pulsante
-  
-  for (int seg = 0; seg < 7; seg++) {
-    if (digitSegments[digit][seg]) {
-      setSegment(seg, neonCyan);
-    }
-  }
-  boardLed[0] = neonCyan;
+  boardLed[0] = CHSV(baseHue, 255, 255);
   FastLED.show();
 }
 
 // =========================================================================
-// EFFETTI DI TRANSIZIONE E CELEBRAZIONE
+// TRANSIZIONE E CELEBRAZIONE
 // =========================================================================
 
-// Flash di transizione (Neon Spark) di 80ms prima del cambio cifra
+// Flash di transizione (Neon Spark) prima del cambio cifra
 void triggerFlashEffect(int digit) {
   FastLED.clear();
   for (int seg = 0; seg < 7; seg++) {
@@ -156,9 +141,9 @@ void triggerFlashEffect(int digit) {
   delay(80);
 }
 
-// Celebrazione allo zero (durata 4 secondi)
+// Celebrazione finale quando si raggiunge il 9 (durata 4 secondi)
 void runCelebrationEffect() {
-  Serial.println("[Countdown] ZERO! GOOOL!");
+  Serial.println("[Contatore] 9 raggiunto! Celebrazione!");
   unsigned long startCel = millis();
   uint8_t hue = 0;
   
@@ -188,57 +173,60 @@ void runCelebrationEffect() {
 }
 
 void loop() {
-  // Stampa l'effetto grafico correntemente utilizzato per questo ciclo
-  Serial.print("\n--- Inizio Countdown con Effetto: ");
-  if (currentEffect == EFFECT_RAINBOW) Serial.println("ONDA ARCOBALENO ---");
-  else if (currentEffect == EFFECT_FIRE) Serial.println("FUOCO OSCILLANTE ---");
-  else if (currentEffect == EFFECT_NEON_BREATH) Serial.println("RESPIRO NEON ---");
+  // Stampa l'effetto grafico del ciclo corrente
+  Serial.print("\n--- Inizio Contatore (0-9) con Effetto: ");
+  if (currentEffect == EFFECT_WHITE_MAX) Serial.println("BIANCO MASSIMA INTENSITÀ ---");
+  else if (currentEffect == EFFECT_RAINBOW) Serial.println("ONDA ARCOBALENO ---");
+  else if (currentEffect == EFFECT_CYBERPUNK) Serial.println("SFUMATURA CYBERPUNK (EFFETTO FIGO) ---");
 
-  // Conteggio da 9 a 0
-  for (int num = 9; num >= 0; num--) {
-    Serial.printf("[Countdown] Cifra: %d\n", num);
-    
-    if (num == 0) {
-      runCelebrationEffect();
-      break; 
-    }
+  // Conteggio progressivo da 0 a 9
+  for (int num = 0; num <= 9; num++) {
+    Serial.printf("[Contatore] Cifra: %d\n", num);
     
     // Flash bianco del cambio cifra
     triggerFlashEffect(num);
     
     unsigned long startDigitTime = millis();
-    uint8_t hue = num * 25; // per effetto arcobaleno
+    uint8_t hue = num * 25; 
     
-    while (millis() - startDigitTime < 1000) {
+    while (millis() - startDigitTime < 1500) { // Mostra ogni numero per 1.5 secondi
       uint32_t nowMs = millis();
       
       switch (currentEffect) {
+        case EFFECT_WHITE_MAX:
+          // Accende i segmenti attivi a bianco puro senza sfumature
+          FastLED.clear();
+          for (int seg = 0; seg < 7; seg++) {
+            if (digitSegments[num][seg]) {
+              setSegment(seg, CRGB::White);
+            }
+          }
+          boardLed[0] = CRGB::White;
+          FastLED.show();
+          break;
+          
         case EFFECT_RAINBOW:
           updateRainbowDigit(num, hue);
           hue += 2;
           break;
           
-        case EFFECT_FIRE:
-          updateFireDigit(num, nowMs);
-          break;
-          
-        case EFFECT_NEON_BREATH: {
-          // Oscillazione sinusoidale per l'effetto respiro (luminosità 80 -> 255)
-          uint8_t brightness = beatsin8(45, 80, 255); // 45 battiti al minuto
-          updateNeonBreathDigit(num, brightness);
-          break;
-        }
-        
-        default:
+        case EFFECT_CYBERPUNK:
+          updateCyberpunkDigit(num, hue);
+          hue += 1.5;
           break;
       }
       delay(15); // ~60 FPS
     }
+    
+    // Al 9, eseguiamo l'effetto celebrazione
+    if (num == 9) {
+      runCelebrationEffect();
+    }
   }
 
-  // Cambia l'effetto per il prossimo ciclo di conto alla rovescia
-  currentEffect = (CountdownEffect)((currentEffect + 1) % EFFECT_COUNT);
+  // Cambia l'effetto per il prossimo ciclo di contatore
+  currentEffect = (CounterEffect)((currentEffect + 1) % EFFECT_COUNT);
   
-  Serial.println("[Countdown] Riavvio conto alla rovescia in corso...");
+  Serial.println("[Contatore] Riavvio conteggio da 0 tra 2 secondi...");
   delay(2000);
 }
