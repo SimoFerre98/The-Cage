@@ -301,13 +301,22 @@ void handleWebSocketMessage(uint8_t * payload, size_t length) {
   
   if (event == "postgres_changes") {
     JsonObject payloadObj = doc["payload"].as<JsonObject>();
-    String eventType = payloadObj["eventType"] | payloadObj["type"] | "";
+    String eventType = "";
+    if (payloadObj.containsKey("eventType")) {
+      eventType = payloadObj["eventType"].as<String>();
+    } else if (payloadObj.containsKey("event")) {
+      eventType = payloadObj["event"].as<String>();
+    } else if (payloadObj.containsKey("type")) {
+      eventType = payloadObj["type"].as<String>();
+    }
     String table = payloadObj["table"] | "";
     
     // --- GESTIONE AGGIORNAMENTI TABELLA MATCHES (GOL) ---
     if (table == "matches" && eventType == "UPDATE") {
       JsonObject record;
-      if (payloadObj.containsKey("record")) {
+      if (payloadObj.containsKey("new")) {
+        record = payloadObj["new"].as<JsonObject>();
+      } else if (payloadObj.containsKey("record")) {
         record = payloadObj["record"].as<JsonObject>();
       } else if (payloadObj["data"].is<JsonObject>()) {
         record = payloadObj["data"].as<JsonObject>();
@@ -354,7 +363,9 @@ void handleWebSocketMessage(uint8_t * payload, size_t length) {
     // --- GESTIONE AGGIORNAMENTI TABELLA TIMER_CONTROL (TIMER) ---
     else if (table == "timer_control" && eventType == "UPDATE") {
       JsonObject record;
-      if (payloadObj.containsKey("record")) {
+      if (payloadObj.containsKey("new")) {
+        record = payloadObj["new"].as<JsonObject>();
+      } else if (payloadObj.containsKey("record")) {
         record = payloadObj["record"].as<JsonObject>();
       } else if (payloadObj["data"].is<JsonObject>()) {
         record = payloadObj["data"].as<JsonObject>();
