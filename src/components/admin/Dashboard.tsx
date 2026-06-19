@@ -75,8 +75,8 @@ export default function Dashboard() {
       .on('postgres_changes', { event: '*', schema: 'public', table: 'matches' }, () => {
         refreshMatches();
       })
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'device_status', filter: 'id=eq.esp32_centralina' }, (payload) => {
-        if (payload.new && (payload.new as any).last_seen) {
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'device_status' }, (payload) => {
+        if (payload.new && (payload.new as any).id === 'esp32_centralina' && (payload.new as any).last_seen) {
           setDeviceLastSeen((payload.new as any).last_seen);
         }
       })

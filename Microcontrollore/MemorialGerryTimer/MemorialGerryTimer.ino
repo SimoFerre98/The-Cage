@@ -422,17 +422,9 @@ void updateLEDs() {
   unsigned long elapsed = now - stateStartTime;
   
   switch(currentState) {
-    // 1. STATO DI IDLE: Arcobaleno di sfondo + scintille bianche
+    // 1. STATO DI IDLE: Display spento, solo LED di bordo attivo per segnalare lo stato di pronto
     case STATE_IDLE: {
-      static uint8_t gHue = 0;
-      fill_rainbow(leds, NUM_LEDS, gHue, 6);
-      gHue += 2;
-
-      if (random8() < 20) {
-        int startIndex = random16(NUM_LEDS - 2);
-        leds[startIndex]     = CRGB::White;
-        leds[startIndex + 1] = CRGB::White;
-      }
+      FastLED.clear(); // Spegne tutti i segmenti del display a 7 segmenti
       
       // LED di bordo oscilla in viola (standby pronto)
       boardLed[0] = CHSV(192, 255, beatsin8(10, 30, 150));
@@ -494,51 +486,36 @@ void updateLEDs() {
       break;
     }
     
-    // 6. STATO TIMER: Conto alla rovescia animato da 9 a 0
+    // 6. STATO TIMER: Conto alla rovescia semplice e solido (senza effetti strani)
     case STATE_TIMER: {
       unsigned long timerElapsed = now - timerStartMillis;
       int currentSec = timerDuration - (timerElapsed / 1000);
       
       // Quando il timer finisce (tocca lo 0 ed scende sotto)
       if (currentSec < 0) {
-        triggerEndMatchEffect(); // triggera l'effetto sirena rossa per festeggiare la fine del timer
+        // Al termine del timer ripristina lo stato di IDLE (display spento)
+        currentState = STATE_IDLE;
         break;
       }
       
-      // Rilevamento cambio secondo per avviare il flash bianco
       if (currentSec != timerLastVal) {
         timerLastVal = currentSec;
-        flashStartMillis = now;
         Serial.printf("[Timer] Secondo corrente: %d\n", currentSec);
       }
       
-      // Gestione del flash bianco neon di 80ms
-      bool isFlashing = (now - flashStartMillis < 80);
-      
       FastLED.clear();
-      if (isFlashing) {
-        // Accende di bianco puro i segmenti della cifra corrente
-        for (int seg = 0; seg < 7; seg++) {
-          if (digitSegments[currentSec][seg]) {
-            setSegment(seg, CRGB::White);
-          }
-        }
-        boardLed[0] = CRGB::White;
+      if (currentSec > 9) {
+        // Se il tempo residuo è maggiore di 9, mostra un trattino centrale (segmento G, indice 3)
+        setSegment(3, CRGB::Red);
       } else {
-        // Disegna la cifra con una sfumatura cyberpunk ciano-magenta in movimento
+        // Disegna la cifra corrente (0-9) in Rosso solido e nitido
         for (int seg = 0; seg < 7; seg++) {
           if (digitSegments[currentSec][seg]) {
-            int startLed = seg * LEDS_PER_SEGMENT;
-            for (int i = 0; i < LEDS_PER_SEGMENT; i++) {
-              uint8_t factor = (now / 12) + (startLed + i) * 6;
-              uint8_t mappedHue = map(sin8(factor), 0, 255, 130, 224); // Ciano (130) -> Magenta (224)
-              leds[startLed + i] = CHSV(mappedHue, 255, 255);
-            }
+            setSegment(seg, CRGB::Red);
           }
         }
-        // Il LED di bordo segue l'animazione sfumando
-        boardLed[0] = CHSV(now / 15, 255, 255);
       }
+      boardLed[0] = CRGB::Red; // LED di bordo rosso coerente
       break;
     }
   }

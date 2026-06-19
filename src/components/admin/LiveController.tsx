@@ -53,9 +53,9 @@ export default function LiveController({
       .channel('timer_control_sync')
       .on(
         'postgres_changes',
-        { event: 'UPDATE', schema: 'public', table: 'timer_control', filter: 'id=eq.timer_1' },
+        { event: 'UPDATE', schema: 'public', table: 'timer_control' },
         (payload) => {
-          if (payload.new) {
+          if (payload.new && (payload.new as any).id === 'timer_1') {
             const record = payload.new as any;
             setTimerCommand(record.command);
             setTimerDuration(record.duration);
