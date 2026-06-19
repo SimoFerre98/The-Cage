@@ -141,6 +141,9 @@ void setup() {
   Serial.print("[Wi-Fi] Indirizzo IP: ");
   Serial.println(WiFi.localIP());
 
+  // Attendi 1.5 secondi per stabilizzare il socket di rete
+  delay(1500);
+
   // Arancione sul LED di bordo: Connesso a Wi-Fi, in attesa di Supabase
   boardLed[0] = CRGB::Orange; 
   FastLED.show();
@@ -190,8 +193,10 @@ void loop() {
 void checkLiveMatch() {
   WiFiClientSecure client;
   client.setInsecure(); 
+  client.setTimeout(5); // 5 secondi timeout socket
   
   HTTPClient http;
+  http.setTimeout(5000); // 5 secondi timeout HTTP
   String url = "https://" + String(SECRET_SUPABASE_HOST) + "/rest/v1/matches?status=eq.LIVE&select=*";
   
   Serial.println("[HTTP] Verifica partite LIVE attive su Supabase...");
@@ -200,6 +205,7 @@ void checkLiveMatch() {
     http.addHeader("Authorization", "Bearer " + String(SECRET_SUPABASE_ANON_KEY));
     
     int httpCode = http.GET();
+    Serial.printf("[HTTP] Codice risposta GET matches: %d\n", httpCode);
     if (httpCode == 200) {
       String payload = http.getString();
       Serial.println("[HTTP] Risposta ricevuta: " + payload);
@@ -545,13 +551,17 @@ void updateLEDs() {
 // Invia un ping HTTP di presenza a Supabase per aggiornare il timestamp 'last_seen'
 void sendDevicePing() {
   if (WiFi.status() != WL_CONNECTED) {
+    Serial.println("[HTTP] Ping di presenza saltato (Wi-Fi disconnesso).");
     return;
   }
   
+  Serial.println("[HTTP] Invio ping di presenza a Supabase (device_status)...");
   WiFiClientSecure client;
   client.setInsecure(); 
+  client.setTimeout(5); // 5 secondi timeout socket
   
   HTTPClient http;
+  http.setTimeout(5000); // 5 secondi timeout HTTP
   String url = "https://" + String(SECRET_SUPABASE_HOST) + "/rest/v1/device_status";
   
   if (http.begin(client, url)) {
@@ -561,6 +571,9 @@ void sendDevicePing() {
     http.addHeader("Prefer", "resolution=merge-duplicates");
     
     int httpCode = http.POST("{\"id\":\"esp32_centralina\"}");
+    Serial.printf("[HTTP] Risposta ping di presenza: %d\n", httpCode);
     http.end();
+  } else {
+    Serial.println("[HTTP] Errore inizializzazione client per ping.");
   }
 }

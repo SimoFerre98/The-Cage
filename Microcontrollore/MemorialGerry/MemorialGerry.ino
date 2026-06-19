@@ -94,6 +94,9 @@ void setup() {
   Serial.print("[Wi-Fi] Indirizzo IP: ");
   Serial.println(WiFi.localIP());
 
+  // Attendi 1.5 secondi per stabilizzare il socket di rete
+  delay(1500);
+
   // Arancione sul LED di bordo: Connesso a Wi-Fi, in attesa di Supabase
   boardLed[0] = CRGB::Orange; 
   FastLED.show();
@@ -143,8 +146,10 @@ void loop() {
 void checkLiveMatch() {
   WiFiClientSecure client;
   client.setInsecure(); // Salta la verifica del certificato SSL per semplicità su ESP32
+  client.setTimeout(5); // 5 secondi timeout socket
   
   HTTPClient http;
+  http.setTimeout(5000); // 5 secondi timeout HTTP
   String url = "https://" + String(SECRET_SUPABASE_HOST) + "/rest/v1/matches?status=eq.LIVE&select=*";
   
   Serial.println("[HTTP] Verifica partite LIVE attive su Supabase...");
@@ -153,6 +158,7 @@ void checkLiveMatch() {
     http.addHeader("Authorization", "Bearer " + String(SECRET_SUPABASE_ANON_KEY));
     
     int httpCode = http.GET();
+    Serial.printf("[HTTP] Codice risposta GET matches: %d\n", httpCode);
     if (httpCode == 200) {
       String payload = http.getString();
       Serial.println("[HTTP] Risposta ricevuta: " + payload);
@@ -453,16 +459,19 @@ void updateLEDs() {
 // Invia un ping HTTP di presenza a Supabase per aggiornare il timestamp 'last_seen'
 void sendDevicePing() {
   if (WiFi.status() != WL_CONNECTED) {
+    Serial.println("[HTTP] Heartbeat di presenza saltato (Wi-Fi disconnesso).");
     return;
   }
   
+  Serial.println("[HTTP] Invio heartbeat di presenza a Supabase...");
   WiFiClientSecure client;
   client.setInsecure(); // Salta la verifica del certificato SSL per semplicità su ESP32
+  client.setTimeout(5); // 5 secondi timeout socket
   
   HTTPClient http;
+  http.setTimeout(5000); // 5 secondi timeout HTTP
   String url = "https://" + String(SECRET_SUPABASE_HOST) + "/rest/v1/device_status";
   
-  Serial.println("[HTTP] Invio heartbeat di presenza a Supabase...");
   if (http.begin(client, url)) {
     http.addHeader("apikey", SECRET_SUPABASE_ANON_KEY);
     http.addHeader("Authorization", "Bearer " + String(SECRET_SUPABASE_ANON_KEY));
@@ -476,5 +485,7 @@ void sendDevicePing() {
       Serial.printf("[HTTP] Errore invio heartbeat di presenza (Codice: %d)\n", httpCode);
     }
     http.end();
+  } else {
+    Serial.println("[HTTP] Errore inizializzazione client per heartbeat.");
   }
 }
