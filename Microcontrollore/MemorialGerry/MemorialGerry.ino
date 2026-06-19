@@ -1,10 +1,13 @@
 #include <WiFi.h>
+#include <WiFiMulti.h>
 #include <HTTPClient.h>
 #include <WiFiClientSecure.h>
 #include <WebSocketsClient.h>
 #include <ArduinoJson.h>
 #include <FastLED.h>
 #include "secrets.h"
+
+WiFiMulti wifiMulti;
 
 // --- CONFIGURAZIONE HARDWARE ---
 #define NUM_LEDS          60    // Numero di LED sulla striscia WS2812B
@@ -72,12 +75,12 @@ void setup() {
   boardLed[0] = CRGB::Yellow;
   FastLED.show();
 
-  // Connessione Wi-Fi
-  Serial.printf("Connessione a rete Wi-Fi: %s\n", SECRET_SSID);
-  WiFi.begin(SECRET_SSID, SECRET_PASS);
-  WiFi.setAutoReconnect(true);
+  // Connessione Wi-Fi con WiFiMulti
+  Serial.println("Inizializzazione connessione Wi-Fi (WiFiMulti)...");
+  wifiMulti.addAP(SECRET_SSID_1, SECRET_PASS_1);
+  wifiMulti.addAP(SECRET_SSID_2, SECRET_PASS_2);
 
-  while (WiFi.status() != WL_CONNECTED) {
+  while (wifiMulti.run() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
     // Lampeggio giallo sul LED di bordo
@@ -114,9 +117,8 @@ void loop() {
   if (millis() - lastWiFiCheck > 10000) {
     lastWiFiCheck = millis();
     if (WiFi.status() != WL_CONNECTED) {
-      Serial.println("[Wi-Fi] Connessione persa! Tentativo di riconnessione manuale...");
-      WiFi.disconnect();
-      WiFi.begin(SECRET_SSID, SECRET_PASS);
+      Serial.println("[Wi-Fi] Connessione persa! Tentativo di riconnessione tramite WiFiMulti...");
+      wifiMulti.run();
     }
   }
 
