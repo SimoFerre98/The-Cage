@@ -1,3 +1,4 @@
+#define FASTLED_USES_ESP32S3_I2S  // Abilita il driver I2S ad alte prestazioni per ESP32-S3
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <WiFiClientSecure.h>
@@ -9,11 +10,8 @@
 // --- CONFIGURAZIONE HARDWARE ---
 #define NUM_LEDS          60    // Numero di LED sulla striscia WS2812B
 #define DATA_PIN          16    // Pin dati per la striscia LED
-#define BOARD_LED_PIN     48    // Pin dati per il LED RGB integrato nella board ESP32-S3
-#define NUM_BOARD_LEDS    1     // Numero di LED di bordo
 
 CRGB leds[NUM_LEDS];
-CRGB boardLed[NUM_BOARD_LEDS];
 
 // --- STATO DELLE ANIMAZIONI (NON BLOCCANTE) ---
 enum LedState {
@@ -57,11 +55,10 @@ void setup() {
 
   // Inizializzazione FastLED
   FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, NUM_LEDS);
-  FastLED.addLeds<NEOPIXEL, BOARD_LED_PIN>(boardLed, NUM_BOARD_LEDS);
   FastLED.setBrightness(50); // Luminosità di sicurezza
 
-  // Inizializzazione LED di bordo in giallo (attesa Wi-Fi)
-  boardLed[0] = CRGB::Yellow;
+  // Accendiamo il primo LED della striscia in giallo per segnalare attesa Wi-Fi
+  leds[0] = CRGB::Yellow;
   FastLED.show();
 
   // Connessione Wi-Fi
@@ -72,9 +69,9 @@ void setup() {
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
-    // Lampeggio giallo durante il caricamento del Wi-Fi
+    // Lampeggio giallo sul primo LED della striscia durante il caricamento del Wi-Fi
     static bool toggle = false;
-    boardLed[0] = toggle ? CRGB::Yellow : CRGB::Black;
+    leds[0] = toggle ? CRGB::Yellow : CRGB::Black;
     FastLED.show();
     toggle = !toggle;
   }
@@ -83,7 +80,7 @@ void setup() {
   Serial.print("[Wi-Fi] Indirizzo IP: ");
   Serial.println(WiFi.localIP());
 
-  boardLed[0] = CRGB::Orange; // Arancione: Connesso a Wi-Fi, in attesa del DB
+  leds[0] = CRGB::Orange; // Arancione sul primo LED: Connesso a Wi-Fi, in attesa del DB
   FastLED.show();
 
   // Recupera lo stato iniziale del match dal database
@@ -334,9 +331,6 @@ void updateLEDs() {
         leds[startIndex + 1] = CRGB::White;
         leds[startIndex + 2] = CRGB::White;
       }
-      
-      // LED di bordo oscilla in viola (standby pronto)
-      boardLed[0] = CHSV(192, 255, beatsin8(10, 30, 150));
       break;
     }
     
@@ -350,7 +344,6 @@ void updateLEDs() {
       CRGB color = on ? CRGB::Red : CRGB::Black;
       
       fill_solid(leds, NUM_LEDS, color);
-      boardLed[0] = color;
       break;
     }
     
@@ -364,7 +357,6 @@ void updateLEDs() {
       CRGB color = on ? CRGB::Blue : CRGB::Black;
       
       fill_solid(leds, NUM_LEDS, color);
-      boardLed[0] = color;
       break;
     }
     
@@ -377,8 +369,6 @@ void updateLEDs() {
       int numGreen = map(elapsed, 0, 2000, 0, NUM_LEDS);
       fill_solid(leds, numGreen, CRGB::Green);
       fill_solid(leds + numGreen, NUM_LEDS - numGreen, CRGB::Black);
-      
-      boardLed[0] = CRGB::Green;
       break;
     }
     
@@ -392,7 +382,6 @@ void updateLEDs() {
       CRGB color = on ? CRGB::Red : CRGB::Black;
       
       fill_solid(leds, NUM_LEDS, color);
-      boardLed[0] = color;
       break;
     }
   }
