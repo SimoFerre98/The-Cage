@@ -27,6 +27,72 @@ export default function LiveController({
   // Modale di conferma eliminazione
   const [confirmDeleteEvent, setConfirmDeleteEvent] = useState<any | null>(null);
 
+  // --- GESTIONE TIMER CENTRALINA ---
+  const [timerCommand, setTimerCommand] = useState<'START' | 'STOP'>('STOP');
+  const [timerDuration, setTimerDuration] = useState<number>(9);
+  const [selectedDuration, setSelectedDuration] = useState<number>(9);
+  const [timerLoading, setTimerLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    // Caricamento dello stato iniziale del timer
+    supabase
+      .from('timer_control')
+      .select('*')
+      .eq('id', 'timer_1')
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data) {
+          setTimerCommand(data.command as 'START' | 'STOP');
+          setTimerDuration(data.duration);
+          setSelectedDuration(data.duration);
+        }
+      });
+
+    // Sottoscrizione realtime
+    const channel = supabase
+      .channel('timer_control_sync')
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'timer_control', filter: 'id=eq.timer_1' },
+        (payload) => {
+          if (payload.new) {
+            const record = payload.new as any;
+            setTimerCommand(record.command);
+            setTimerDuration(record.duration);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  const handleStartTimer = async () => {
+    setTimerLoading(true);
+    const { error } = await supabase
+      .from('timer_control')
+      .update({ command: 'START', duration: selectedDuration })
+      .eq('id', 'timer_1');
+    setTimerLoading(false);
+    if (error) {
+      alert('Errore nell\'avvio del timer: ' + error.message);
+    }
+  };
+
+  const handleStopTimer = async () => {
+    setTimerLoading(true);
+    const { error } = await supabase
+      .from('timer_control')
+      .update({ command: 'STOP' })
+      .eq('id', 'timer_1');
+    setTimerLoading(false);
+    if (error) {
+      alert('Errore nell\'arresto del timer: ' + error.message);
+    }
+  };
+
   // Carica i giocatori solo quando cambia il match LIVE
   useEffect(() => {
     if (!liveMatch) {
@@ -218,11 +284,114 @@ export default function LiveController({
           </div>
         </div>
 
+        {/* Legenda LED */}
+        <details className="mt-4 pt-3 border-t border-white/5 text-xs text-white/60 cursor-pointer select-none">
+          <summary className="font-bold hover:text-white transition-colors">🔍 Legenda LED di Bordo (Diagnostica)</summary>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2 pl-4 text-[11px] leading-relaxed">
+            <div className="flex items-center gap-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-yellow-400 animate-pulse flex-shrink-0"></span>
+              <span><strong>Giallo Lampeggiante</strong>: Connessione Wi-Fi...</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-orange-500 flex-shrink-0"></span>
+              <span><strong>Arancione Fisso</strong>: Attesa risposta Supabase...</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-purple-500 flex-shrink-0"></span>
+              <span><strong>Viola Pulsante</strong>: Pronto (Idle)</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-green-500 flex-shrink-0"></span>
+              <span><strong>Verde Scorrimento</strong>: Partita LIVE agganciata</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-orange-500 animate-pulse flex-shrink-0"></span>
+              <span><strong>Arancione Lampeggiante</strong>: Errore rete (Riconnessione...)</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-red-500 animate-pulse flex-shrink-0"></span>
+              <span><strong>Rosso/Blu Strobe</strong>: Segnalazione Gol (Casa/Trasferta)</span>
+            </div>
+          </div>
+        </details>
+
         {!isDeviceOnline && (
           <div className="mt-4 pt-3 border-t border-white/5 text-[11px] text-white/40 leading-relaxed">
-            💡 <strong>Troubleshooting:</strong> Se la centralina lampeggia in <span className="text-amber-400 font-bold">Arancione</span>, significa che non è connessa alla rete Wi-Fi locale. Verifica che l'ESP32 sia alimentato e che la rete "WIFI HOME" sia raggiungibile.
+            💡 <strong>Troubleshooting:</strong> Se la centralina lampeggia in <span className="text-amber-400/80 font-bold">Arancione</span>, significa che non è connessa alla rete Wi-Fi locale. Verifica che l'ESP32 sia alimentato e che la rete "WIFI HOME" sia raggiungibile.
           </div>
         )}
+      </GlassEffect>
+
+      {/* Gestione Timer */}
+      <GlassEffect className="p-6 rounded-[24px] relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/60" />
+        
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex-1">
+            <h3 className="text-base font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              ⏰ Gestione Timer Carte / Effetti
+            </h3>
+            <p className="text-xs text-white/50 mt-1">
+              Controlla il display a 7 segmenti della centralina per attivare i countdown degli effetti speciali.
+            </p>
+            
+            <div className="flex items-center gap-3 mt-4">
+              <span className="text-xs text-white/60 font-bold">Stato Corrente:</span>
+              {timerCommand === 'START' ? (
+                <span className="flex items-center gap-1.5 bg-amber-500/10 border border-amber-500/35 px-2.5 py-0.5 rounded-full text-[10px] text-amber-400 font-extrabold uppercase tracking-wider animate-pulse">
+                  <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-ping"></span>
+                  In Corso ({timerDuration}s)
+                </span>
+              ) : (
+                <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 px-2.5 py-0.5 rounded-full text-[10px] text-white/40 font-extrabold uppercase tracking-wider">
+                  <span className="h-1.5 w-1.5 rounded-full bg-white/30"></span>
+                  Fermo / Inattivo
+                </span>
+              )}
+            </div>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
+            {/* Selettore Durata */}
+            <div className="flex flex-col gap-1 w-full sm:w-auto">
+              <label className="text-[10px] text-white/40 font-bold uppercase tracking-wider">Durata (Secondi)</label>
+              <select
+                value={selectedDuration}
+                onChange={(e) => setSelectedDuration(parseInt(e.target.value))}
+                className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-2.5 text-white outline-none focus:border-amber-500/50 text-sm font-bold w-full sm:w-[120px] custom-select"
+                disabled={timerCommand === 'START' || timerLoading}
+              >
+                <option value={9}>9 secondi</option>
+                <option value={5}>5 secondi</option>
+                <option value={15}>15 secondi</option>
+                <option value={30}>30 secondi</option>
+              </select>
+            </div>
+            
+            {/* Pulsanti di Controllo */}
+            <div className="flex gap-2 w-full sm:w-auto pt-4 sm:pt-0">
+              {timerCommand === 'STOP' ? (
+                <button
+                  type="button"
+                  onClick={handleStartTimer}
+                  disabled={timerLoading}
+                  className="flex-1 sm:flex-initial px-6 py-3 bg-amber-500 hover:bg-amber-400 disabled:bg-amber-500/50 text-black font-extrabold rounded-xl transition-all shadow-[0_0_12px_rgba(245,158,11,0.3)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer text-sm"
+                >
+                  {timerLoading ? 'Invio...' : 'Avvia Timer 🚀'}
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleStopTimer}
+                  disabled={timerLoading}
+                  className="flex-1 sm:flex-initial px-6 py-3 bg-red-500/20 hover:bg-red-500/40 border border-red-500/30 text-red-200 disabled:opacity-50 font-extrabold rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer text-sm"
+                >
+                  {timerLoading ? 'Invio...' : 'Ferma / Reset ⏹️'}
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
       </GlassEffect>
 
       {!liveMatch ? (
