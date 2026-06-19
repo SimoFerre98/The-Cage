@@ -1,69 +1,67 @@
 #include <FastLED.h>
 
-// Definiamo il numero di LED (1 per il test sulla scheda) e il pin
-#define NUM_LEDS    1
-#define DATA_PIN    48  // Cambialo in 38 se noti che rimane spento dopo il reset
+// Imposta il numero effettivo di LED presenti sulla tua striscia WS2812B
+#define NUM_LEDS    60  
+// Pin DIN della striscia collegato al GPIO 16 (IO16) dell'ESP32-S3
+#define DATA_PIN    16  
 
-// Creiamo l'array di LED richiesto da FastLED
+// Definizione dell'array di LED
 CRGB leds[NUM_LEDS];
 
 void setup() {
+  // Inizializzazione della porta seriale a 115200 baud per il debug
   Serial.begin(115200);
-  delay(1000);
-  Serial.println("--- Test FastLED avviato! ---");
+  delay(1500); // Piccolo delay per stabilizzare la seriale all'avvio
+  
+  Serial.println("--- Test Striscia LED WS2812B Avviato! ---");
+  Serial.printf("Configurazione: GPIO %d | Numero LED: %d\n", DATA_PIN, NUM_LEDS);
 
-  // Configurazione iniziale di FastLED per il chip WS2812B
-  // Usiamo l'ordine dei colori GRB standard
+  // Inizializzazione della striscia WS2812B tramite FastLED
   FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, NUM_LEDS);
   
-  // Impostiamo la luminosità generale (da 0 a 255)
-  FastLED.setBrightness(40);
+  // Limita la luminosità generale a 50 (da 0 a 255) per sicurezza energetica 
+  // (evita di sovraccaricare la porta USB del PC / pin 5V dell'ESP32)
+  FastLED.setBrightness(50);
 }
 
 void loop() {
-  
-  // --- EFFETTO 1: Dissolvenza fluida (Breathing/Respiro) di un colore ---
-  Serial.println("Effetto: Respiro Blu");
-  for(int i = 0; i < 255; i++) {
-    // Impostiamo il LED su Blu, ma scalando l'intensità in base a 'i'
-    leds[0] = CRGB::Blue;
-    leds[0].nscale8(i); 
-    FastLED.show();
-    delay(4);
-  }
-  for(int i = 255; i > 0; i--) {
-    leds[0] = CRGB::Blue;
-    leds[0].nscale8(i); // Funzione nativa per scalare la luminosità matematicamente
-    FastLED.show();
-    delay(4);
-  }
-  delay(500);
+  // --- EFFETTO: Collisione Cyberpunk (Comete Gemelle) ---
+  // Due comete (una Ciano e una Magenta) partono dagli estremi opposti della striscia,
+  // si scontrano nel mezzo (miscelandosi in Bianco) e tornano indietro, lasciando
+  // una scia morbida e qualche scintilla (glitter) bianca casuale.
 
+  static int pos1 = 0;
+  static int pos2 = NUM_LEDS - 1;
+  static int dir1 = 1;
+  static int dir2 = -1;
 
-  // --- EFFETTO 2: Arcobaleno dinamico (Rainbow) ---
-  Serial.println("Effetto: Arcobaleno Continuo");
-  unsigned long startTime = millis();
-  // Fa girare l'arcobaleno per 5 secondi
-  while(millis() - startTime < 5000) {
-    // beat8 e beatsin8 sono funzioni matematiche di FastLED che creano oscillazioni temporali
-    uint8_t hue = beat8(30); // Genera una tonalità di colore che cambia costantemente nel tempo
-    leds[0] = CHSV(hue, 255, 255); // Usa il formato HSV (Tonalità, Saturazione, Valore/Luminosità)
-    FastLED.show();
-    delay(10);
+  // 1. Dissolve leggermente i LED del frame precedente per creare la scia
+  fadeToBlackBy(leds, NUM_LEDS, 45);
+
+  // 2. Disegna la prima cometa (Ciano) usando l'operatore += per consentire la miscelazione colore
+  leds[pos1] += CRGB::Cyan;
+
+  // 3. Disegna la seconda cometa (Magenta)
+  leds[pos2] += CRGB::Magenta;
+
+  // 4. Aggiungi un luccichio/scintilla bianca casuale (glitter)
+  if (random8() < 25) { // circa il 10% di probabilità per ogni frame
+    leds[random16(NUM_LEDS)] += CRGB::White;
   }
-  delay(500);
 
+  // Mostra l'effetto sulla striscia LED
+  FastLED.show();
+  delay(25); // Velocità di aggiornamento dell'effetto (più basso = più veloce)
 
-  // --- EFFETTO 3: Flash Stroboscopico (Utile per quando scade il tempo!) ---
-  Serial.println("Effetto: Flash Rosso");
-  for(int f = 0; f < 5; f++) {
-    leds[0] = CRGB::Red;   // Accendi Rosso pieno
-    FastLED.show();
-    delay(80);
-    
-    leds[0] = CRGB::Black; // Spegni (Il nero equivale a spento)
-    FastLED.show();
-    delay(80);
+  // 5. Aggiorna le posizioni delle comete
+  pos1 += dir1;
+  pos2 += dir2;
+
+  // Inverti la direzione quando raggiungono i limiti della striscia
+  if (pos1 == NUM_LEDS - 1 || pos1 == 0) {
+    dir1 = -dir1;
   }
-  delay(1000);
+  if (pos2 == NUM_LEDS - 1 || pos2 == 0) {
+    dir2 = -dir2;
+  }
 }
