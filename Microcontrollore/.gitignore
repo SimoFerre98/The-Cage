@@ -40,3 +40,6 @@ compile_commands.json
 
 # Local Arduino libraries
 libraries/
+
+# Credentials and private keys
+secrets.h
