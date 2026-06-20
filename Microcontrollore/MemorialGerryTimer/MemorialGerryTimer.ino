@@ -305,29 +305,66 @@ void handleWebSocketMessage(uint8_t * payload, size_t length) {
 
   String event = doc["event"] | "";
   
+  // DEBUG: Stampa il messaggio raw per diagnostica
+  if (event != "phx_reply" && event != "heartbeat") {
+    Serial.println("[WebSocket] === MESSAGGIO RAW ===");
+    String rawMsg;
+    serializeJson(doc, rawMsg);
+    // Stampa i primi 500 caratteri per evitare overflow seriale
+    if (rawMsg.length() > 500) {
+      Serial.println(rawMsg.substring(0, 500) + "...(troncato)");
+    } else {
+      Serial.println(rawMsg);
+    }
+    Serial.println("[WebSocket] === FINE MESSAGGIO ===");
+  }
+  
   if (event == "postgres_changes") {
     JsonObject payloadObj = doc["payload"].as<JsonObject>();
+    
+    // Il protocollo Phoenix di Supabase annida i dati dentro payload.data
+    // Controlliamo sia il livello diretto (payload.table) sia il nested (payload.data.table)
+    JsonObject dataObj;
+    if (payloadObj.containsKey("data") && payloadObj["data"].is<JsonObject>()) {
+      dataObj = payloadObj["data"].as<JsonObject>();
+    }
+    
+    // Estrai eventType: cerca prima nel livello diretto, poi in data
     String eventType = "";
     if (payloadObj.containsKey("eventType")) {
       eventType = payloadObj["eventType"].as<String>();
-    } else if (payloadObj.containsKey("event")) {
-      eventType = payloadObj["event"].as<String>();
     } else if (payloadObj.containsKey("type")) {
       eventType = payloadObj["type"].as<String>();
+    } else if (!dataObj.isNull()) {
+      if (dataObj.containsKey("eventType")) {
+        eventType = dataObj["eventType"].as<String>();
+      } else if (dataObj.containsKey("type")) {
+        eventType = dataObj["type"].as<String>();
+      }
     }
+    
+    // Estrai table: cerca prima nel livello diretto, poi in data
     String table = payloadObj["table"] | "";
+    if (table == "" && !dataObj.isNull()) {
+      table = dataObj["table"] | "";
+    }
+    
+    Serial.printf("[WebSocket] Evento rilevato: table='%s' eventType='%s'\n", table.c_str(), eventType.c_str());
     
     // --- GESTIONE AGGIORNAMENTI TABELLA MATCHES (GOL) ---
     if (table == "matches" && eventType == "UPDATE") {
       JsonObject record;
+      // Cerca il record nei vari formati possibili di Supabase Realtime
       if (payloadObj.containsKey("new")) {
         record = payloadObj["new"].as<JsonObject>();
       } else if (payloadObj.containsKey("record")) {
         record = payloadObj["record"].as<JsonObject>();
-      } else if (payloadObj["data"].is<JsonObject>()) {
-        record = payloadObj["data"].as<JsonObject>();
-      } else if (payloadObj["data"].containsKey("record")) {
-        record = payloadObj["data"]["record"].as<JsonObject>();
+      } else if (!dataObj.isNull() && dataObj.containsKey("record")) {
+        record = dataObj["record"].as<JsonObject>();
+      } else if (!dataObj.isNull() && dataObj.containsKey("new")) {
+        record = dataObj["new"].as<JsonObject>();
+      } else if (!dataObj.isNull()) {
+        record = dataObj;
       }
       
       if (record.isNull()) return;
@@ -369,14 +406,17 @@ void handleWebSocketMessage(uint8_t * payload, size_t length) {
     // --- GESTIONE AGGIORNAMENTI TABELLA TIMER_CONTROL (TIMER) ---
     else if (table == "timer_control" && eventType == "UPDATE") {
       JsonObject record;
+      // Cerca il record nei vari formati possibili di Supabase Realtime
       if (payloadObj.containsKey("new")) {
         record = payloadObj["new"].as<JsonObject>();
       } else if (payloadObj.containsKey("record")) {
         record = payloadObj["record"].as<JsonObject>();
-      } else if (payloadObj["data"].is<JsonObject>()) {
-        record = payloadObj["data"].as<JsonObject>();
-      } else if (payloadObj["data"].containsKey("record")) {
-        record = payloadObj["data"]["record"].as<JsonObject>();
+      } else if (!dataObj.isNull() && dataObj.containsKey("record")) {
+        record = dataObj["record"].as<JsonObject>();
+      } else if (!dataObj.isNull() && dataObj.containsKey("new")) {
+        record = dataObj["new"].as<JsonObject>();
+      } else if (!dataObj.isNull()) {
+        record = dataObj;
       }
       
       if (record.isNull()) return;
