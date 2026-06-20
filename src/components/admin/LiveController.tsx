@@ -286,8 +286,8 @@ export default function LiveController({
 
         {/* Legenda LED */}
         <details className="mt-4 pt-3 border-t border-white/5 text-xs text-white/60 cursor-pointer select-none">
-          <summary className="font-bold hover:text-white transition-colors">🔍 Legenda LED di Bordo (Diagnostica)</summary>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2 pl-4 text-[11px] leading-relaxed">
+          <summary className="font-bold hover:text-white transition-colors text-center">🔍 Legenda LED di Bordo (Diagnostica)</summary>
+          <div className="flex flex-col items-center gap-2 mt-3 text-[11px] leading-relaxed">
             <div className="flex items-center gap-2">
               <span className="h-2.5 w-2.5 rounded-full bg-yellow-400 animate-pulse flex-shrink-0"></span>
               <span><strong>Giallo Lampeggiante</strong>: Connessione Wi-Fi...</span>
