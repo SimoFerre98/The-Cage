@@ -142,7 +142,7 @@ export default function Dashboard() {
         <div>
           <h1 className="text-3xl font-black text-white drop-shadow-md">Dashboard</h1>
           <div className="flex items-center gap-3 mt-1.5">
-            <p className="text-white/60 text-sm">Gestione dati e regia</p>
+            <p className="text-white/60 text-sm">Timer</p>
             <span className="text-white/20 text-xs">•</span>
             {isDeviceOnline ? (
               <span className="flex items-center gap-1.5 bg-green-500/10 border border-green-500/35 px-2.5 py-0.5 rounded-full text-[10px] text-green-400 font-extrabold uppercase tracking-wider animate-[pulse_2s_infinite]">

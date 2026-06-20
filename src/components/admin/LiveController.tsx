@@ -251,8 +251,8 @@ export default function LiveController({
           <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-red-500/10 blur-[40px] pointer-events-none" />
         )}
 
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 z-10 relative">
-          <div className="flex items-center gap-4">
+        <div className="flex flex-col items-center gap-4 z-10 relative">
+          <div className="flex flex-col items-center gap-2">
             <div className={`w-12 h-12 rounded-full flex items-center justify-center border ${
               isDeviceOnline 
                 ? 'bg-green-500/10 border-green-500/20 text-green-400' 
@@ -260,7 +260,7 @@ export default function LiveController({
             }`}>
               <span className="text-xl font-bold">⚡</span>
             </div>
-            <div>
+            <div className="text-center">
               <h3 className="text-sm font-black text-white uppercase tracking-wider">Centralina LED (ESP32)</h3>
               <p className="text-xs text-white/50 mt-0.5">
                 {deviceLastSeen 
@@ -315,20 +315,15 @@ export default function LiveController({
           </div>
         </details>
 
-        {!isDeviceOnline && (
-          <div className="mt-4 pt-3 border-t border-white/5 text-[11px] text-white/40 leading-relaxed">
-            💡 <strong>Troubleshooting:</strong> Se la centralina lampeggia in <span className="text-amber-400/80 font-bold">Arancione</span>, significa che non è connessa alla rete Wi-Fi locale. Verifica che l'ESP32 sia alimentato e che la rete "WIFI HOME" sia raggiungibile.
-          </div>
-        )}
       </GlassEffect>
 
       {/* Gestione Timer */}
       <GlassEffect className="p-6 rounded-[24px] relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/60" />
         
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex-1">
-            <h3 className="text-base font-bold text-white uppercase tracking-wider flex items-center gap-2">
+        <div className="flex flex-col items-center gap-6">
+          <div className="text-center">
+            <h3 className="text-base font-bold text-white uppercase tracking-wider flex items-center justify-center gap-2">
               ⏰ Gestione Timer Carte / Effetti
             </h3>
             <p className="text-xs text-white/50 mt-1">
