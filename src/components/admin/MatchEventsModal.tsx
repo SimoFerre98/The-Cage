@@ -64,12 +64,12 @@ export default function MatchEventsModal({
     setLoadingEvents(false);
   }, [match.id]);
 
-  // Load events and subscribe to realtime changes
   useEffect(() => {
     fetchEvents();
 
+    const uniqueChannelName = `modal_events_${match.id}_${Math.random().toString(36).substring(2, 9)}`;
     const channel = supabase
-      .channel(`modal_events_${match.id}`)
+      .channel(uniqueChannelName)
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'match_events', filter: `match_id=eq.${match.id}` },

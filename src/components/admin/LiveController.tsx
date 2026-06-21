@@ -143,7 +143,8 @@ export default function LiveController({
     fetchEvents();
 
     // Sottoscrizione non filtrata per match_id in Supabase Realtime per intercettare i DELETE (payload.old.id)
-    const channel = supabase.channel(`live_controller_events_${liveMatch.id}`)
+    const uniqueChannelName = `live_controller_events_${liveMatch.id}_${Math.random().toString(36).substring(2, 9)}`;
+    const channel = supabase.channel(uniqueChannelName)
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'match_events' },
