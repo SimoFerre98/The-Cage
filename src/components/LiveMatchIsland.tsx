@@ -444,7 +444,7 @@ export default function LiveMatchIsland() {
       <div className="w-full flex justify-center px-4">
         <div className="w-full max-w-[500px]">
           {tab === 'timeline' && (
-            <div className="relative flex-1 w-full pt-8 pb-36 animate-[slideUpFade_0.4s_var(--ease-apple)]">
+            <div className="relative flex-1 w-full pt-8 pb-56 animate-[slideUpFade_0.4s_var(--ease-apple)]">
               <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-20 pointer-events-none"></div>
               <div className="absolute top-0 bottom-0 left-1/2 w-[2px] bg-gradient-to-b from-blue-500/40 via-purple-500/40 to-transparent -translate-x-1/2 shadow-[0_0_8px_rgba(139,92,246,0.3)]"></div>
               
@@ -529,7 +529,7 @@ export default function LiveMatchIsland() {
           )}
 
           {tab === 'lineups' && (
-            <div className="w-full pt-8 pb-36 flex flex-col gap-6 animate-[slideUpFade_0.4s_var(--ease-apple)]">
+            <div className="w-full pt-8 pb-56 flex flex-col gap-6 animate-[slideUpFade_0.4s_var(--ease-apple)]">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div 
                   className="liquid-glass-stack-wrapper w-full h-full"
