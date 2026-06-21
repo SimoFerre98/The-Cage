@@ -400,7 +400,7 @@ export default function HomeIsland() {
   return (
     <div className="flex flex-col gap-10">
       {/* ── Page Header / Branding ── */}
-      <div className="page-header animate-[slideUpFade_0.6s_var(--ease-apple)]">
+      <div className="page-header animate-[slideUpFade_0.6s_var(--ease-apple)] flex flex-col items-center">
         <img 
           src="/Logo_Torneo.png" 
           alt="Logo Torneo" 
@@ -409,6 +409,24 @@ export default function HomeIsland() {
         <h1 className="page-title text-3xl font-extrabold tracking-tight">Memorial Gerry</h1>
         <p className="page-subtitle text-sm text-[var(--text-muted)] mt-1">Torneo di Calcio a 5 • The Cage</p>
         <div className="accent-line mx-auto mt-3"></div>
+
+        {/* Quick Info Chips */}
+        <div className="flex flex-wrap justify-center gap-3 mt-5 w-full max-w-[400px] px-4">
+          <button
+            onClick={() => setSelectedImage('/MenuTvernaCibo.jpeg')}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-black text-white/90 uppercase tracking-wider bg-white/5 hover:bg-white/10 hover:text-white border border-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur active:scale-95 cursor-pointer outline-none shadow-[0_2px_8px_rgba(255,255,255,0.03)]"
+          >
+            <span>🍔</span>
+            <span>Menu Taverna</span>
+          </button>
+          <button
+            onClick={() => setSelectedImage('/Graficaquiz.jpeg')}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-black text-white/90 uppercase tracking-wider bg-white/5 hover:bg-white/10 hover:text-white border border-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur active:scale-95 cursor-pointer outline-none shadow-[0_2px_8px_rgba(255,255,255,0.03)]"
+          >
+            <span>🧠</span>
+            <span>Il Quizzone</span>
+          </button>
+        </div>
       </div>
 
       {/* ── Dashboard: Grid di Widget ── */}
@@ -606,78 +624,10 @@ export default function HomeIsland() {
 
       </div>
 
-      {/* ── Sezione Eventi e Menu ── */}
-      <div className="w-full mt-6 flex flex-col items-stretch animate-[slideUpFade_0.6s_var(--ease-apple)] delay-100">
-        <div className="flex flex-col items-center" style={{ marginBottom: '16px' }}>
-          <h2 className="text-lg font-black text-white uppercase tracking-wider text-center">Menu & Info Evento</h2>
-          <div className="h-[2px] w-8 mt-1.5 rounded bg-gradient-to-r from-blue-500 to-purple-500" />
-        </div>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
-          {/* Card 1: Menu Ristorazione */}
-          <GlassEffect className="rounded-[24px] overflow-hidden flex flex-col justify-between border-[var(--glass-border)] group">
-            <div className="p-5 flex flex-col gap-4">
-              <div className="flex items-center gap-2">
-                <span className="text-xl">🍔</span>
-                <h3 className="text-sm font-bold text-white uppercase tracking-wider">Cosa si mangia? (Taverna)</h3>
-              </div>
-              <p className="text-xs text-white/60">
-                Scopri cosa mangiare e bere durante le partite del torneo. Birra, panini e sfiziosità ti aspettano!
-              </p>
-              {/* Image Preview */}
-              <div className="relative aspect-video rounded-xl overflow-hidden border border-white/5 bg-black/30 cursor-pointer group-hover:border-white/10 transition-all duration-300" onClick={() => setSelectedImage('/MenuTvernaCibo.jpeg')}>
-                <img src="/MenuTvernaCibo.jpeg" alt="Menu Cibo" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
-                  <span className="text-white text-xs font-bold bg-white/10 backdrop-blur px-3 py-1.5 rounded-full border border-white/10">🔍 Ingrandisci</span>
-                </div>
-              </div>
-            </div>
-            <div className="px-5 pb-5 pt-3 border-t border-white/5 flex gap-3">
-              <button onClick={() => setSelectedImage('/MenuTvernaCibo.jpeg')} className="flex-1 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-[0.75rem] font-bold text-white text-center cursor-pointer transition-colors outline-none">
-                Visualizza
-              </button>
-              <a href="/MenuTvernaCibo.jpeg" download="Menu_Taverna_Memorial_Gerry.jpeg" className="flex-1 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 border border-blue-500/30 text-[0.75rem] font-bold text-white text-center cursor-pointer transition-colors flex items-center justify-center gap-1.5 shadow-[0_2px_8px_rgba(59,130,246,0.2)]">
-                <span>Scarica</span>
-                <span>⬇️</span>
-              </a>
-            </div>
-          </GlassEffect>
-
-          {/* Card 2: Il Quizzone */}
-          <GlassEffect className="rounded-[24px] overflow-hidden flex flex-col justify-between border-[var(--glass-border)] group">
-            <div className="p-5 flex flex-col gap-4">
-              <div className="flex items-center gap-2">
-                <span className="text-xl">🧠</span>
-                <h3 className="text-sm font-bold text-white uppercase tracking-wider">Il Quizzone di Domenica 28</h3>
-              </div>
-              <p className="text-xs text-white/60">
-                Non perderti il grande quiz del torneo! Metti alla prova le tue conoscenze calcistiche e non solo.
-              </p>
-              {/* Image Preview */}
-              <div className="relative aspect-video rounded-xl overflow-hidden border border-white/5 bg-black/30 cursor-pointer group-hover:border-white/10 transition-all duration-300" onClick={() => setSelectedImage('/Graficaquiz.jpeg')}>
-                <img src="/Graficaquiz.jpeg" alt="Grafica Quiz" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
-                  <span className="text-white text-xs font-bold bg-white/10 backdrop-blur px-3 py-1.5 rounded-full border border-white/10">🔍 Ingrandisci</span>
-                </div>
-              </div>
-            </div>
-            <div className="px-5 pb-5 pt-3 border-t border-white/5 flex gap-3">
-              <button onClick={() => setSelectedImage('/Graficaquiz.jpeg')} className="flex-1 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-[0.75rem] font-bold text-white text-center cursor-pointer transition-colors outline-none">
-                Visualizza
-              </button>
-              <a href="/Graficaquiz.jpeg" download="Quizzone_Memorial_Gerry.jpeg" className="flex-1 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 border border-blue-500/30 text-[0.75rem] font-bold text-white text-center cursor-pointer transition-colors flex items-center justify-center gap-1.5 shadow-[0_2px_8px_rgba(59,130,246,0.2)]">
-                <span>Scarica</span>
-                <span>⬇️</span>
-              </a>
-            </div>
-          </GlassEffect>
-        </div>
-      </div>
-
       {/* ── Sezione Inferiore: Rose e Giocatori ── */}
       <div className="w-full mt-10 flex flex-col items-stretch animate-[slideUpFade_0.6s_var(--ease-apple)] delay-150">
-        
-        {/* Intestazione Sezione */}
+         
+         {/* Intestazione Sezione */}
         <div className="flex flex-col items-center" style={{ marginBottom: '12px' }}>
           <h2 className="text-lg font-black text-white uppercase tracking-wider text-center">Esplora il Torneo</h2>
           <div className="h-[2px] w-8 mt-1.5 rounded bg-gradient-to-r from-blue-500 to-purple-500" />
@@ -747,23 +697,37 @@ export default function HomeIsland() {
       )}
       {selectedImage && (
         <div 
-          className="modal-overlay cursor-pointer" 
+          className="modal-overlay cursor-pointer flex flex-col justify-center items-center gap-4" 
           onClick={() => setSelectedImage(null)}
-          style={{ zIndex: 99999, backgroundColor: 'rgba(0, 0, 0, 0.85)' }}
+          style={{ zIndex: 99999, backgroundColor: 'rgba(0, 0, 0, 0.9)' }}
         >
-          <div className="relative max-w-[90%] max-h-[85vh] flex items-center justify-center" onClick={e => e.stopPropagation()}>
+          {/* Controls Bar */}
+          <div className="flex items-center justify-between w-full max-w-[90%] md:max-w-[600px] px-2" onClick={e => e.stopPropagation()}>
+            <a 
+              href={selectedImage} 
+              download={selectedImage.includes('Menu') ? 'Menu_Taverna_Memorial_Gerry.jpeg' : 'Quizzone_Memorial_Gerry.jpeg'}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-500 border border-blue-500/30 text-xs font-bold text-white transition-colors cursor-pointer outline-none shadow-[0_2px_8px_rgba(59,130,246,0.2)]"
+            >
+              <span>Scarica File</span>
+              <span>⬇️</span>
+            </a>
             <button 
               onClick={() => setSelectedImage(null)}
-              className="absolute -top-12 right-0 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors border border-white/20 cursor-pointer text-lg font-bold outline-none"
+              className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors border border-white/20 cursor-pointer text-sm font-bold outline-none"
               aria-label="Chiudi"
             >
               ✕
             </button>
+          </div>
+
+          {/* Image Container */}
+          <div className="relative max-w-[90%] max-h-[75vh] flex items-center justify-center" onClick={e => e.stopPropagation()}>
             <img 
               src={selectedImage} 
               alt="Ingrandimento" 
-              className="rounded-2xl max-w-full max-h-[80vh] object-contain shadow-2xl border border-white/10"
+              className="rounded-2xl max-w-full max-h-[75vh] object-contain shadow-2xl border border-white/10"
               style={{ animation: 'modalSlideUp 0.3s var(--ease-spring)' }}
+              onClick={() => setSelectedImage(null)}
             />
           </div>
         </div>
