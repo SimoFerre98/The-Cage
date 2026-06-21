@@ -285,13 +285,13 @@ export default function ClassificaIsland() {
             <thead>
               <tr>
                 <th className="w-full text-[0.7rem] font-semibold text-[var(--text-muted)] uppercase tracking-wider px-3 py-4 text-left">Squadra</th>
-                <th className="w-[32px] md:w-[44px] text-[0.7rem] font-semibold text-[var(--text-muted)] uppercase tracking-wider px-1 py-4 text-center">G</th>
-                <th className="w-[32px] md:w-[44px] text-[0.7rem] font-semibold text-[var(--text-muted)] uppercase tracking-wider px-1 py-4 text-center">V</th>
-                <th className="w-[32px] md:w-[44px] text-[0.7rem] font-semibold text-[var(--text-muted)] uppercase tracking-wider px-1 py-4 text-center">N</th>
-                <th className="w-[32px] md:w-[44px] text-[0.7rem] font-semibold text-[var(--text-muted)] uppercase tracking-wider px-1 py-4 text-center">P</th>
-                <th className="w-[32px] md:w-[44px] text-[0.7rem] font-semibold text-[var(--text-muted)] uppercase tracking-wider px-1 py-4 text-center">GF</th>
-                <th className="w-[32px] md:w-[44px] text-[0.7rem] font-semibold text-[var(--text-muted)] uppercase tracking-wider px-1 py-4 text-center">GS</th>
-                <th className="w-[32px] md:w-[44px] text-[0.7rem] font-semibold text-[var(--accent-primary)] uppercase tracking-wider px-1 py-4 text-center">PT</th>
+                <th className="w-[36px] min-w-[36px] max-w-[36px] md:w-[48px] md:min-w-[48px] md:max-w-[48px] text-[0.7rem] font-semibold text-[var(--text-muted)] uppercase tracking-wider px-1 py-4 text-center">G</th>
+                <th className="w-[36px] min-w-[36px] max-w-[36px] md:w-[48px] md:min-w-[48px] md:max-w-[48px] text-[0.7rem] font-semibold text-[var(--text-muted)] uppercase tracking-wider px-1 py-4 text-center">V</th>
+                <th className="w-[36px] min-w-[36px] max-w-[36px] md:w-[48px] md:min-w-[48px] md:max-w-[48px] text-[0.7rem] font-semibold text-[var(--text-muted)] uppercase tracking-wider px-1 py-4 text-center">N</th>
+                <th className="w-[36px] min-w-[36px] max-w-[36px] md:w-[48px] md:min-w-[48px] md:max-w-[48px] text-[0.7rem] font-semibold text-[var(--text-muted)] uppercase tracking-wider px-1 py-4 text-center">P</th>
+                <th className="w-[36px] min-w-[36px] max-w-[36px] md:w-[48px] md:min-w-[48px] md:max-w-[48px] text-[0.7rem] font-semibold text-[var(--text-muted)] uppercase tracking-wider px-1 py-4 text-center">GF</th>
+                <th className="w-[36px] min-w-[36px] max-w-[36px] md:w-[48px] md:min-w-[48px] md:max-w-[48px] text-[0.7rem] font-semibold text-[var(--text-muted)] uppercase tracking-wider px-1 py-4 text-center">GS</th>
+                <th className="w-[36px] min-w-[36px] max-w-[36px] md:w-[48px] md:min-w-[48px] md:max-w-[48px] text-[0.7rem] font-semibold text-[var(--accent-primary)] uppercase tracking-wider px-1 py-4 text-center">PT</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[rgba(255,255,255,0.07)]">
@@ -321,13 +321,13 @@ export default function ClassificaIsland() {
                         <span className="text-[0.95rem] font-bold text-[var(--text-primary)]">{row.team_name}</span>
                       </div>
                     </td>
-                    <td className="px-1 py-4 text-center text-[0.95rem] text-[var(--text-secondary)]">{row.g}</td>
-                    <td className="px-1 py-4 text-center text-[0.95rem] text-[var(--text-secondary)]">{row.v}</td>
-                    <td className="px-1 py-4 text-center text-[0.95rem] text-[var(--text-secondary)]">{row.n}</td>
-                    <td className="px-1 py-4 text-center text-[0.95rem] text-[var(--text-secondary)]">{row.p}</td>
-                    <td className="px-1 py-4 text-center text-[0.95rem] text-[var(--text-secondary)]">{row.gf}</td>
-                    <td className="px-1 py-4 text-center text-[0.95rem] text-[var(--text-secondary)]">{row.gs}</td>
-                    <td className="px-1 py-4 text-center"><span className="font-black text-white text-[1.1rem]">{row.pt}</span></td>
+                    <td className="w-[36px] min-w-[36px] max-w-[36px] md:w-[48px] md:min-w-[48px] md:max-w-[48px] px-1 py-4 text-center text-[0.95rem] text-[var(--text-secondary)]">{row.g}</td>
+                    <td className="w-[36px] min-w-[36px] max-w-[36px] md:w-[48px] md:min-w-[48px] md:max-w-[48px] px-1 py-4 text-center text-[0.95rem] text-[var(--text-secondary)]">{row.v}</td>
+                    <td className="w-[36px] min-w-[36px] max-w-[36px] md:w-[48px] md:min-w-[48px] md:max-w-[48px] px-1 py-4 text-center text-[0.95rem] text-[var(--text-secondary)]">{row.n}</td>
+                    <td className="w-[36px] min-w-[36px] max-w-[36px] md:w-[48px] md:min-w-[48px] md:max-w-[48px] px-1 py-4 text-center text-[0.95rem] text-[var(--text-secondary)]">{row.p}</td>
+                    <td className="w-[36px] min-w-[36px] max-w-[36px] md:w-[48px] md:min-w-[48px] md:max-w-[48px] px-1 py-4 text-center text-[0.95rem] text-[var(--text-secondary)]">{row.gf}</td>
+                    <td className="w-[36px] min-w-[36px] max-w-[36px] md:w-[48px] md:min-w-[48px] md:max-w-[48px] px-1 py-4 text-center text-[0.95rem] text-[var(--text-secondary)]">{row.gs}</td>
+                    <td className="w-[36px] min-w-[36px] max-w-[36px] md:w-[48px] md:min-w-[48px] md:max-w-[48px] px-1 py-4 text-center text-[0.95rem]"><span className="font-black text-white text-[1.1rem]">{row.pt}</span></td>
                   </tr>
                 );
               })}
