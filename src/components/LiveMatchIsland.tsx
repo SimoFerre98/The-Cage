@@ -270,25 +270,55 @@ export default function LiveMatchIsland() {
           boxShadow: '0 10px 40px rgba(0,0,0,0.6)',
         }}
       >
-        {/* Blurred Stadium Background */}
+        {/* Deep Abstract Mesh Background */}
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat filter blur-[3px] scale-105 opacity-60 animate-[fadeIn_1.2s_var(--ease-apple)]"
-          style={{ 
-            backgroundImage: `url('/Sfondo/3d-field.webp')`,
-          }}
-        />
-        
-        {/* Theme Vignette Overlay */}
-        <div 
-          className="absolute inset-0" 
+          className="absolute inset-0 bg-[#0a0f1d]"
           style={{
-            background: 'linear-gradient(to bottom, var(--vignette-start) 40%, var(--vignette-mid) 75%, var(--vignette-end) 98%)'
+            background: 'radial-gradient(circle at 50% -20%, #1a233d 0%, #0a0f1d 100%)'
           }}
         />
 
-        {/* Ambient team glows */}
-        <div className="absolute top-1/2 left-[15%] -translate-y-1/2 w-48 h-48 rounded-full bg-red-600/15 blur-[60px] pointer-events-none animate-glow-pulse-red" />
-        <div className="absolute top-1/2 right-[15%] -translate-y-1/2 w-48 h-48 rounded-full bg-blue-500/15 blur-[60px] pointer-events-none animate-glow-pulse-blue" />
+        {/* High-Tech Tactical Grid Overlay */}
+        <div 
+          className="absolute inset-0 opacity-[0.12] pointer-events-none mix-blend-overlay"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255, 255, 255, 0.15) 1px, transparent 1px)
+            `,
+            backgroundSize: '24px 24px',
+            backgroundPosition: 'center top',
+            maskImage: 'linear-gradient(to bottom, black 20%, transparent 95%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, black 20%, transparent 95%)'
+          }}
+        />
+
+        {/* Morphing Fluid Ambient Blobs */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {/* Home Team Red Glow (left side) */}
+          <div 
+            className="absolute top-[-10%] left-[5%] w-[320px] h-[320px] rounded-full bg-gradient-to-tr from-red-600/20 to-rose-500/10 blur-[80px] animate-glow-pulse-red"
+            style={{ mixBlendMode: 'screen' }}
+          />
+          {/* Away Team Blue Glow (right side) */}
+          <div 
+            className="absolute top-[-10%] right-[5%] w-[320px] h-[320px] rounded-full bg-gradient-to-tl from-blue-600/25 to-indigo-500/10 blur-[80px] animate-glow-pulse-blue"
+            style={{ mixBlendMode: 'screen' }}
+          />
+          {/* Central Purple Transition Glow */}
+          <div 
+            className="absolute top-[20%] left-[30%] w-[380px] h-[250px] rounded-full bg-purple-600/10 blur-[90px] animate-[ambientGlowPulse_9s_ease-in-out_infinite_1.5s]"
+            style={{ mixBlendMode: 'screen' }}
+          />
+        </div>
+        
+        {/* Vignette Overlay for smooth edges */}
+        <div 
+          className="absolute inset-0 pointer-events-none" 
+          style={{
+            background: 'linear-gradient(to bottom, rgba(10,15,29,0) 40%, rgba(10,15,29,0.6) 75%, var(--vignette-end) 98%)'
+          }}
+        />
 
         {/* Top Navbar */}
         <div className="absolute top-5 left-6 right-6 flex items-center justify-between z-30">
