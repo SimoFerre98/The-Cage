@@ -100,6 +100,7 @@ export default function HomeIsland() {
   const [featuredMatch, setFeaturedMatch] = useState<any>(null); // { type: 'LIVE'|'UPCOMING'|'LAST', match: any }
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -605,6 +606,74 @@ export default function HomeIsland() {
 
       </div>
 
+      {/* ── Sezione Eventi e Menu ── */}
+      <div className="w-full mt-6 flex flex-col items-stretch animate-[slideUpFade_0.6s_var(--ease-apple)] delay-100">
+        <div className="flex flex-col items-center" style={{ marginBottom: '16px' }}>
+          <h2 className="text-lg font-black text-white uppercase tracking-wider text-center">Menu & Info Evento</h2>
+          <div className="h-[2px] w-8 mt-1.5 rounded bg-gradient-to-r from-blue-500 to-purple-500" />
+        </div>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
+          {/* Card 1: Menu Ristorazione */}
+          <GlassEffect className="rounded-[24px] overflow-hidden flex flex-col justify-between border-[var(--glass-border)] group">
+            <div className="p-5 flex flex-col gap-4">
+              <div className="flex items-center gap-2">
+                <span className="text-xl">🍔</span>
+                <h3 className="text-sm font-bold text-white uppercase tracking-wider">Cosa si mangia? (Taverna)</h3>
+              </div>
+              <p className="text-xs text-white/60">
+                Scopri cosa mangiare e bere durante le partite del torneo. Birra, panini e sfiziosità ti aspettano!
+              </p>
+              {/* Image Preview */}
+              <div className="relative aspect-video rounded-xl overflow-hidden border border-white/5 bg-black/30 cursor-pointer group-hover:border-white/10 transition-all duration-300" onClick={() => setSelectedImage('/MenuTvernaCibo.jpeg')}>
+                <img src="/MenuTvernaCibo.jpeg" alt="Menu Cibo" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
+                  <span className="text-white text-xs font-bold bg-white/10 backdrop-blur px-3 py-1.5 rounded-full border border-white/10">🔍 Ingrandisci</span>
+                </div>
+              </div>
+            </div>
+            <div className="px-5 pb-5 pt-3 border-t border-white/5 flex gap-3">
+              <button onClick={() => setSelectedImage('/MenuTvernaCibo.jpeg')} className="flex-1 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-[0.75rem] font-bold text-white text-center cursor-pointer transition-colors outline-none">
+                Visualizza
+              </button>
+              <a href="/MenuTvernaCibo.jpeg" download="Menu_Taverna_Memorial_Gerry.jpeg" className="flex-1 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 border border-blue-500/30 text-[0.75rem] font-bold text-white text-center cursor-pointer transition-colors flex items-center justify-center gap-1.5 shadow-[0_2px_8px_rgba(59,130,246,0.2)]">
+                <span>Scarica</span>
+                <span>⬇️</span>
+              </a>
+            </div>
+          </GlassEffect>
+
+          {/* Card 2: Il Quizzone */}
+          <GlassEffect className="rounded-[24px] overflow-hidden flex flex-col justify-between border-[var(--glass-border)] group">
+            <div className="p-5 flex flex-col gap-4">
+              <div className="flex items-center gap-2">
+                <span className="text-xl">🧠</span>
+                <h3 className="text-sm font-bold text-white uppercase tracking-wider">Il Quizzone di Domenica 28</h3>
+              </div>
+              <p className="text-xs text-white/60">
+                Non perderti il grande quiz del torneo! Metti alla prova le tue conoscenze calcistiche e non solo.
+              </p>
+              {/* Image Preview */}
+              <div className="relative aspect-video rounded-xl overflow-hidden border border-white/5 bg-black/30 cursor-pointer group-hover:border-white/10 transition-all duration-300" onClick={() => setSelectedImage('/Graficaquiz.jpeg')}>
+                <img src="/Graficaquiz.jpeg" alt="Grafica Quiz" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
+                  <span className="text-white text-xs font-bold bg-white/10 backdrop-blur px-3 py-1.5 rounded-full border border-white/10">🔍 Ingrandisci</span>
+                </div>
+              </div>
+            </div>
+            <div className="px-5 pb-5 pt-3 border-t border-white/5 flex gap-3">
+              <button onClick={() => setSelectedImage('/Graficaquiz.jpeg')} className="flex-1 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-[0.75rem] font-bold text-white text-center cursor-pointer transition-colors outline-none">
+                Visualizza
+              </button>
+              <a href="/Graficaquiz.jpeg" download="Quizzone_Memorial_Gerry.jpeg" className="flex-1 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 border border-blue-500/30 text-[0.75rem] font-bold text-white text-center cursor-pointer transition-colors flex items-center justify-center gap-1.5 shadow-[0_2px_8px_rgba(59,130,246,0.2)]">
+                <span>Scarica</span>
+                <span>⬇️</span>
+              </a>
+            </div>
+          </GlassEffect>
+        </div>
+      </div>
+
       {/* ── Sezione Inferiore: Rose e Giocatori ── */}
       <div className="w-full mt-10 flex flex-col items-stretch animate-[slideUpFade_0.6s_var(--ease-apple)] delay-150">
         
@@ -675,6 +744,29 @@ export default function HomeIsland() {
           playerId={selectedPlayerId} 
           onClose={() => setSelectedPlayerId(null)} 
         />
+      )}
+      {selectedImage && (
+        <div 
+          className="modal-overlay cursor-pointer" 
+          onClick={() => setSelectedImage(null)}
+          style={{ zIndex: 99999, backgroundColor: 'rgba(0, 0, 0, 0.85)' }}
+        >
+          <div className="relative max-w-[90%] max-h-[85vh] flex items-center justify-center" onClick={e => e.stopPropagation()}>
+            <button 
+              onClick={() => setSelectedImage(null)}
+              className="absolute -top-12 right-0 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors border border-white/20 cursor-pointer text-lg font-bold outline-none"
+              aria-label="Chiudi"
+            >
+              ✕
+            </button>
+            <img 
+              src={selectedImage} 
+              alt="Ingrandimento" 
+              className="rounded-2xl max-w-full max-h-[80vh] object-contain shadow-2xl border border-white/10"
+              style={{ animation: 'modalSlideUp 0.3s var(--ease-spring)' }}
+            />
+          </div>
+        </div>
       )}
     </div>
   );
