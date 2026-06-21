@@ -37,7 +37,7 @@ export function getTeamLogo(teamName: string): string | null {
   if (name.includes('ceres')) return '/Logos/ceres.png';
   if (name.includes('aston')) return '/Logos/aston birra.png';
   if (name.includes('chainz')) return '/Logos/chainz.png';
-  if (name.includes('pontos')) return '/Logos/FcPontos.jpeg';
+  if (name.includes('pontos')) return '/Logos/FcPontos.png';
   if (name.includes('gilly')) return '/Logos/gilly.png';
   if (name.includes('murta')) return '/Logos/murta.png';
   if (name.includes('ketzmaja') || name.includes('teodoro')) return '/Logos/teodoro.png';
