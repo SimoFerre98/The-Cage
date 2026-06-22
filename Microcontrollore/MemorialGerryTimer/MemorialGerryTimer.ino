@@ -132,6 +132,7 @@ void setup() {
   Serial.println("Inizializzazione connessione Wi-Fi (WiFiMulti)...");
   wifiMulti.addAP(SECRET_SSID_1, SECRET_PASS_1);
   wifiMulti.addAP(SECRET_SSID_2, SECRET_PASS_2);
+  wifiMulti.addAP(SECRET_SSID_3, SECRET_PASS_3);
 
   while (wifiMulti.run() != WL_CONNECTED) {
     delay(500);
