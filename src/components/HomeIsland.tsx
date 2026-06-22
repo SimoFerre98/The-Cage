@@ -413,7 +413,7 @@ export default function HomeIsland() {
         {/* Quick Info Chips */}
         <div className="flex flex-wrap justify-center gap-3 mt-5 w-full max-w-[400px] px-4">
           <button
-            onClick={() => setSelectedImage('/MenuTvernaCibo.jpeg')}
+            onClick={() => setSelectedImage('/menudefinitivo.jpeg')}
             className="flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-black text-white/90 uppercase tracking-wider bg-white/5 hover:bg-white/10 hover:text-white border border-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur active:scale-95 cursor-pointer outline-none shadow-[0_2px_8px_rgba(255,255,255,0.03)]"
           >
             <span>🍔</span>
@@ -705,7 +705,7 @@ export default function HomeIsland() {
           <div className="flex items-center justify-between w-full max-w-[90%] md:max-w-[600px] px-2" onClick={e => e.stopPropagation()}>
             <a 
               href={selectedImage} 
-              download={selectedImage.includes('Menu') ? 'Menu_Taverna_Memorial_Gerry.jpeg' : 'Quizzone_Memorial_Gerry.jpeg'}
+              download={selectedImage.toLowerCase().includes('menu') ? 'Menu_Taverna_Memorial_Gerry.jpeg' : 'Quizzone_Memorial_Gerry.jpeg'}
               className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-500 border border-blue-500/30 text-xs font-bold text-white transition-colors cursor-pointer outline-none shadow-[0_2px_8px_rgba(59,130,246,0.2)]"
             >
               <span>Scarica File</span>
