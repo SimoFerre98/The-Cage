@@ -10,16 +10,13 @@
 WiFiMulti wifiMulti;
 
 // --- CONFIGURAZIONE HARDWARE ---
-#define NUM_LEDS          28    // 7 segmenti * 4 LED per segmento = 28 LED totali
+#define NUM_LEDS          130   // 4 display LED (28+28+35+35) + Colon (4) = 130 LED totali
 #define DATA_PIN          16    // Pin dati per la striscia LED del display a 7 segmenti
 #define BOARD_LED_PIN     48    // Pin dati per il LED RGB integrato nella board ESP32-S3
 #define NUM_BOARD_LEDS    1     // Numero di LED di bordo
 
 CRGB leds[NUM_LEDS];
 CRGB boardLed[NUM_BOARD_LEDS];
-
-// Numero di LED per ciascun segmento
-#define LEDS_PER_SEGMENT  4
 
 // --- STATO DELLE ANIMAZIONI (NON BLOCCANTE) ---
 enum LedState {
@@ -28,7 +25,8 @@ enum LedState {
   STATE_GOAL_AWAY,
   STATE_START_MATCH,
   STATE_END_MATCH,
-  STATE_TIMER
+  STATE_TIMER,
+  STATE_TIMER_PAUSED
 };
 
 LedState currentState = STATE_IDLE;
@@ -98,7 +96,9 @@ void updateLEDs();
 void triggerGoalEffect(bool isHome);
 void triggerStartMatchEffect();
 void triggerEndMatchEffect();
-void setSegment(int segmentIndex, CRGB color);
+void setDigitSegment(int digitIndex, int segmentIndex, CRGB color);
+void setColon(CRGB color);
+void displayTime(int totalSeconds, CRGB color);
 
 void setup() {
   Serial.begin(115200);
@@ -430,6 +430,9 @@ void handleWebSocketMessage(uint8_t * payload, size_t length) {
         timerStartMillis = millis();
         timerLastVal = -1; // Forza il flash di transizione iniziale
         currentState = STATE_TIMER;
+      } else if (command == "PAUSE") {
+        timerDuration = duration;
+        currentState = STATE_TIMER_PAUSED;
       } else if (command == "STOP") {
         currentState = STATE_IDLE;
       }
@@ -460,12 +463,86 @@ void triggerEndMatchEffect() {
   stateStartTime = millis();
 }
 
-// Imposta un segmento a un colore
-void setSegment(int segmentIndex, CRGB color) {
+// Imposta un segmento a un colore per una determinata cifra
+void setDigitSegment(int digitIndex, int segmentIndex, CRGB color) {
+  if (digitIndex < 0 || digitIndex >= 4) return;
   if (segmentIndex < 0 || segmentIndex >= 7) return;
-  int startLed = segmentIndex * LEDS_PER_SEGMENT;
-  for (int i = 0; i < LEDS_PER_SEGMENT; i++) {
+  
+  int startLed = 0;
+  int ledsPerSeg = 0;
+  
+  if (digitIndex == 0) {
+    startLed = segmentIndex * 4;
+    ledsPerSeg = 4;
+  } else if (digitIndex == 1) {
+    startLed = 28 + (segmentIndex * 4);
+    ledsPerSeg = 4;
+  } else if (digitIndex == 2) {
+    startLed = 60 + (segmentIndex * 5);
+    ledsPerSeg = 5;
+  } else if (digitIndex == 3) {
+    startLed = 95 + (segmentIndex * 5);
+    ledsPerSeg = 5;
+  }
+  
+  for (int i = 0; i < ledsPerSeg; i++) {
     leds[startLed + i] = color;
+  }
+}
+
+// Imposta i LED del colon centrale (separatore ':')
+void setColon(CRGB color) {
+  // Il colon inizia all'indice 56 e ha 4 LED in totale
+  for (int i = 0; i < 4; i++) {
+    leds[56 + i] = color;
+  }
+}
+
+// Suddivide e visualizza il tempo su tutti e 4 i display in formato MM:SS
+void displayTime(int totalSeconds, CRGB color) {
+  int minutes = totalSeconds / 60;
+  int seconds = totalSeconds % 60;
+  
+  int d0 = (minutes / 10) % 10;
+  int d1 = minutes % 10;
+  int d2 = (seconds / 10) % 10;
+  int d3 = seconds % 10;
+  
+  // Digit 0 (Decine Minuti): Sopprime lo zero iniziale
+  bool showD0 = (minutes >= 10);
+  for (int seg = 0; seg < 7; seg++) {
+    if (showD0 && digitSegments[d0][seg]) {
+      setDigitSegment(0, seg, color);
+    } else {
+      setDigitSegment(0, seg, CRGB::Black);
+    }
+  }
+  
+  // Digit 1 (Unità Minuti)
+  for (int seg = 0; seg < 7; seg++) {
+    if (digitSegments[d1][seg]) {
+      setDigitSegment(1, seg, color);
+    } else {
+      setDigitSegment(1, seg, CRGB::Black);
+    }
+  }
+  
+  // Digit 2 (Decine Secondi)
+  for (int seg = 0; seg < 7; seg++) {
+    if (digitSegments[d2][seg]) {
+      setDigitSegment(2, seg, color);
+    } else {
+      setDigitSegment(2, seg, CRGB::Black);
+    }
+  }
+  
+  // Digit 3 (Unità Secondi)
+  for (int seg = 0; seg < 7; seg++) {
+    if (digitSegments[d3][seg]) {
+      setDigitSegment(3, seg, color);
+    } else {
+      setDigitSegment(3, seg, CRGB::Black);
+    }
   }
 }
 
@@ -563,18 +640,29 @@ void updateLEDs() {
       }
       
       FastLED.clear();
-      if (currentSec > 9) {
-        // Se il tempo residuo è maggiore di 9, mostra un trattino centrale (segmento G, indice 3)
-        setSegment(3, CRGB::Red);
-      } else {
-        // Disegna la cifra corrente (0-9) in Rosso solido e nitido
-        for (int seg = 0; seg < 7; seg++) {
-          if (digitSegments[currentSec][seg]) {
-            setSegment(seg, CRGB::Red);
-          }
-        }
-      }
+      // Disegna il tempo residuo MM:SS
+      displayTime(currentSec, CRGB::Red);
+      
+      // Il colon centralina lampeggia a frequenza di 1Hz
+      bool colonOn = (now / 500) % 2 == 0;
+      setColon(colonOn ? CRGB::Red : CRGB::Black);
+      
       boardLed[0] = CRGB::Red; // LED di bordo rosso coerente
+      break;
+    }
+    
+    // 7. STATO TIMER PAUSATO: Visualizza il tempo congelato con colon fisso acceso
+    case STATE_TIMER_PAUSED: {
+      FastLED.clear();
+      // Disegna il tempo di pausa
+      displayTime(timerDuration, CRGB::Red);
+      
+      // Il colon rimane fisso acceso in rosso
+      setColon(CRGB::Red);
+      
+      // LED di bordo lampeggia lentamente in rosso
+      bool flashOn = (now / 1000) % 2 == 0;
+      boardLed[0] = flashOn ? CRGB::Red : CRGB::Black;
       break;
     }
   }

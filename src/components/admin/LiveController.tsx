@@ -28,13 +28,20 @@ export default function LiveController({
   const [confirmDeleteEvent, setConfirmDeleteEvent] = useState<any | null>(null);
 
   // --- GESTIONE TIMER CENTRALINA ---
-  const [timerCommand, setTimerCommand] = useState<'START' | 'STOP'>('STOP');
-  const [timerDuration, setTimerDuration] = useState<number>(9);
+  const [dbTimer, setDbTimer] = useState<{
+    command: 'START' | 'PAUSE' | 'STOP';
+    duration: number;
+    updated_at: string;
+  } | null>(null);
+  const [displaySeconds, setDisplaySeconds] = useState<number>(9);
   const [selectedDuration, setSelectedDuration] = useState<number>(9);
   const [timerLoading, setTimerLoading] = useState<boolean>(false);
 
+  const [inputMins, setInputMins] = useState<number>(0);
+  const [inputSecs, setInputSecs] = useState<number>(9);
+
+  // Caricamento dello stato iniziale e sottoscrizione realtime
   useEffect(() => {
-    // Caricamento dello stato iniziale del timer
     supabase
       .from('timer_control')
       .select('*')
@@ -42,13 +49,12 @@ export default function LiveController({
       .maybeSingle()
       .then(({ data }) => {
         if (data) {
-          setTimerCommand(data.command as 'START' | 'STOP');
-          setTimerDuration(data.duration);
-          setSelectedDuration(data.duration);
+          const rec = data as { command: 'START' | 'PAUSE' | 'STOP'; duration: number; updated_at: string };
+          setDbTimer(rec);
+          setSelectedDuration(rec.duration);
         }
       });
 
-    // Sottoscrizione realtime
     const channel = supabase
       .channel('timer_control_sync')
       .on(
@@ -56,9 +62,8 @@ export default function LiveController({
         { event: 'UPDATE', schema: 'public', table: 'timer_control' },
         (payload) => {
           if (payload.new && (payload.new as any).id === 'timer_1') {
-            const record = payload.new as any;
-            setTimerCommand(record.command);
-            setTimerDuration(record.duration);
+            const record = payload.new as { id: string; command: 'START' | 'PAUSE' | 'STOP'; duration: number; updated_at: string };
+            setDbTimer(record);
           }
         }
       )
@@ -69,11 +74,43 @@ export default function LiveController({
     };
   }, []);
 
+  // Countdown locale non-drift basato su Date.now() e updated_at
+  useEffect(() => {
+    if (!dbTimer) return;
+
+    if (dbTimer.command === 'START') {
+      const calculateRemaining = () => {
+        const elapsedMs = Date.now() - new Date(dbTimer.updated_at).getTime();
+        const elapsedSecs = Math.floor(elapsedMs / 1000);
+        const rem = Math.max(0, dbTimer.duration - elapsedSecs);
+        setDisplaySeconds(rem);
+      };
+
+      calculateRemaining();
+      const interval = setInterval(calculateRemaining, 1000);
+      return () => clearInterval(interval);
+    } else if (dbTimer.command === 'PAUSE') {
+      setDisplaySeconds(dbTimer.duration);
+    } else { // STOP
+      setDisplaySeconds(selectedDuration);
+    }
+  }, [dbTimer, selectedDuration]);
+
+  // Sincronizza gli input numerici quando cambia la durata selezionata e lo stato è STOP
+  useEffect(() => {
+    if (dbTimer?.command === 'STOP') {
+      setInputMins(Math.floor(selectedDuration / 60));
+      setInputSecs(selectedDuration % 60);
+    }
+  }, [selectedDuration, dbTimer?.command]);
+
   const handleStartTimer = async () => {
     setTimerLoading(true);
+    // Se siamo in pausa, ripartiamo dai secondi correnti sul display. Altrimenti dalla durata base.
+    const targetDuration = dbTimer?.command === 'PAUSE' ? displaySeconds : selectedDuration;
     const { error } = await supabase
       .from('timer_control')
-      .update({ command: 'START', duration: selectedDuration })
+      .update({ command: 'START', duration: targetDuration })
       .eq('id', 'timer_1');
     setTimerLoading(false);
     if (error) {
@@ -81,17 +118,105 @@ export default function LiveController({
     }
   };
 
+  const handlePauseTimer = async () => {
+    setTimerLoading(true);
+    const { error } = await supabase
+      .from('timer_control')
+      .update({ command: 'PAUSE', duration: displaySeconds })
+      .eq('id', 'timer_1');
+    setTimerLoading(false);
+    if (error) {
+      alert('Errore nella pausa del timer: ' + error.message);
+    }
+  };
+
   const handleStopTimer = async () => {
     setTimerLoading(true);
     const { error } = await supabase
       .from('timer_control')
-      .update({ command: 'STOP' })
+      .update({ command: 'STOP', duration: selectedDuration })
       .eq('id', 'timer_1');
     setTimerLoading(false);
     if (error) {
       alert('Errore nell\'arresto del timer: ' + error.message);
     }
   };
+
+  const handleModifyTime = async (secondsToAdd: number) => {
+    if (!dbTimer) return;
+    
+    // Calcoliamo i secondi rimanenti
+    let currentRemaining = displaySeconds;
+    if (dbTimer.command === 'START') {
+      const elapsedMs = Date.now() - new Date(dbTimer.updated_at).getTime();
+      const elapsedSecs = Math.floor(elapsedMs / 1000);
+      currentRemaining = Math.max(0, dbTimer.duration - elapsedSecs);
+    }
+
+    const newRemaining = Math.max(0, currentRemaining + secondsToAdd);
+
+    setTimerLoading(true);
+    if (dbTimer.command === 'START') {
+      const { error } = await supabase
+        .from('timer_control')
+        .update({ duration: newRemaining })
+        .eq('id', 'timer_1');
+      if (error) alert('Errore nella modifica del tempo: ' + error.message);
+    } else if (dbTimer.command === 'PAUSE') {
+      const { error } = await supabase
+        .from('timer_control')
+        .update({ duration: newRemaining })
+        .eq('id', 'timer_1');
+      if (error) alert('Errore nella modifica del tempo: ' + error.message);
+    } else {
+      // STOP
+      setSelectedDuration(prev => Math.max(0, prev + secondsToAdd));
+    }
+    setTimerLoading(false);
+  };
+
+  const handleSelectPreset = async (seconds: number) => {
+    setSelectedDuration(seconds);
+    if (dbTimer?.command === 'STOP') {
+      setTimerLoading(true);
+      const { error } = await supabase
+        .from('timer_control')
+        .update({ duration: seconds })
+        .eq('id', 'timer_1');
+      setTimerLoading(false);
+      if (error) alert('Errore nell\'impostazione della durata: ' + error.message);
+    }
+  };
+
+  const handleSetCustomTime = async () => {
+    const total = inputMins * 60 + inputSecs;
+    setSelectedDuration(total);
+    if (dbTimer?.command === 'STOP') {
+      setTimerLoading(true);
+      const { error } = await supabase
+        .from('timer_control')
+        .update({ duration: total })
+        .eq('id', 'timer_1');
+      setTimerLoading(false);
+      if (error) alert('Errore nell\'impostazione del tempo: ' + error.message);
+    } else {
+      // Se il timer è attivo o in pausa, modifichiamo direttamente lo stato sul database
+      setTimerLoading(true);
+      const { error } = await supabase
+        .from('timer_control')
+        .update({ duration: total })
+        .eq('id', 'timer_1');
+      setTimerLoading(false);
+      if (error) alert('Errore nella modifica del tempo: ' + error.message);
+    }
+  };
+
+  const formatTime = (totalSeconds: number) => {
+    const mins = Math.floor(totalSeconds / 60);
+    const secs = totalSeconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
 
   // Carica i giocatori solo quando cambia il match LIVE
   useEffect(() => {
@@ -323,7 +448,7 @@ export default function LiveController({
         <div className="absolute top-0 left-0 w-full h-1 bg-amber-500/60" />
         
         <div className="flex flex-col items-center gap-6">
-          <div className="text-center">
+          <div className="text-center w-full">
             <h3 className="text-base font-bold text-white uppercase tracking-wider flex items-center justify-center gap-2">
               ⏰ Gestione Timer Carte / Effetti
             </h3>
@@ -331,60 +456,217 @@ export default function LiveController({
               Controlla il display a 7 segmenti della centralina per attivare i countdown degli effetti speciali.
             </p>
             
-            <div className="flex items-center gap-3 mt-4">
-              <span className="text-xs text-white/60 font-bold">Stato Corrente:</span>
-              {timerCommand === 'START' ? (
-                <span className="flex items-center gap-1.5 bg-amber-500/10 border border-amber-500/35 px-2.5 py-0.5 rounded-full text-[10px] text-amber-400 font-extrabold uppercase tracking-wider animate-pulse">
-                  <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-ping"></span>
-                  In Corso ({timerDuration}s)
-                </span>
-              ) : (
-                <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 px-2.5 py-0.5 rounded-full text-[10px] text-white/40 font-extrabold uppercase tracking-wider">
-                  <span className="h-1.5 w-1.5 rounded-full bg-white/30"></span>
-                  Fermo / Inattivo
-                </span>
-              )}
+            <div className="flex flex-col items-center gap-4 mt-6">
+              {/* OROLOGIO DIGITALE NEON */}
+              <div className="flex flex-col items-center bg-black/60 border border-white/10 rounded-[20px] px-8 py-4 shadow-[inset_0_2px_4px_rgba(0,0,0,0.6)] min-w-[200px] relative overflow-hidden">
+                <div className="absolute top-1.5 right-2 flex gap-1">
+                  {dbTimer?.command === 'START' && (
+                    <span className="h-2 w-2 rounded-full bg-green-500 animate-ping"></span>
+                  )}
+                  {dbTimer?.command === 'PAUSE' && (
+                    <span className="h-2 w-2 rounded-full bg-yellow-500"></span>
+                  )}
+                  {dbTimer?.command === 'STOP' && (
+                    <span className="h-2 w-2 rounded-full bg-white/20"></span>
+                  )}
+                </div>
+                <div className="font-mono text-5xl md:text-6xl font-bold tracking-widest text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.7)] select-none">
+                  {formatTime(displaySeconds)}
+                </div>
+                <div className="text-[10px] text-white/30 font-black uppercase tracking-widest mt-1">
+                  {dbTimer?.command === 'START' ? 'In Corso' : dbTimer?.command === 'PAUSE' ? 'In Pausa' : 'Inattivo'}
+                </div>
+              </div>
             </div>
           </div>
-          
-          <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
-            {/* Selettore Durata */}
-            <div className="flex flex-col gap-1 w-full sm:w-auto">
-              <label className="text-[10px] text-white/40 font-bold uppercase tracking-wider">Durata (Secondi)</label>
-              <select
-                value={selectedDuration}
-                onChange={(e) => setSelectedDuration(parseInt(e.target.value))}
-                className="bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-4 py-2.5 text-white outline-none focus:border-amber-500/50 text-sm font-bold w-full sm:w-[120px] custom-select"
-                disabled={timerCommand === 'START' || timerLoading}
+
+          {/* PULSANTI DI TIMING PRINCIPALI */}
+          <div className="flex flex-wrap justify-center gap-3 w-full">
+            {dbTimer?.command !== 'START' ? (
+              <button
+                type="button"
+                onClick={handleStartTimer}
+                disabled={timerLoading}
+                className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-500 disabled:opacity-50 text-white font-extrabold rounded-xl transition-all shadow-[0_0_12px_rgba(22,163,74,0.3)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer text-sm"
               >
-                <option value={9}>9 secondi</option>
-                <option value={5}>5 secondi</option>
-                <option value={15}>15 secondi</option>
-                <option value={30}>30 secondi</option>
-              </select>
-            </div>
+                <span>▶️</span> {dbTimer?.command === 'PAUSE' ? 'Riprendi' : 'Avvia'}
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={handlePauseTimer}
+                disabled={timerLoading}
+                className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-6 py-3 bg-yellow-600 hover:bg-yellow-500 disabled:opacity-50 text-white font-extrabold rounded-xl transition-all shadow-[0_0_12px_rgba(202,138,4,0.3)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer text-sm"
+              >
+                <span>⏸️</span> Pausa
+              </button>
+            )}
             
-            {/* Pulsanti di Controllo */}
-            <div className="flex gap-2 w-full sm:w-auto pt-4 sm:pt-0">
-              {timerCommand === 'STOP' ? (
-                <button
-                  type="button"
-                  onClick={handleStartTimer}
-                  disabled={timerLoading}
-                  className="flex-1 sm:flex-initial px-6 py-3 bg-amber-500 hover:bg-amber-400 disabled:bg-amber-500/50 text-black font-extrabold rounded-xl transition-all shadow-[0_0_12px_rgba(245,158,11,0.3)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer text-sm"
-                >
-                  {timerLoading ? 'Invio...' : 'Avvia Timer 🚀'}
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={handleStopTimer}
-                  disabled={timerLoading}
-                  className="flex-1 sm:flex-initial px-6 py-3 bg-red-500/20 hover:bg-red-500/40 border border-red-500/30 text-red-200 disabled:opacity-50 font-extrabold rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer text-sm"
-                >
-                  {timerLoading ? 'Invio...' : 'Ferma / Reset ⏹️'}
-                </button>
-              )}
+            <button
+              type="button"
+              onClick={handleStopTimer}
+              disabled={timerLoading || dbTimer?.command === 'STOP'}
+              className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-6 py-3 bg-red-500/20 hover:bg-red-500/40 border border-red-500/30 text-red-200 disabled:opacity-30 font-extrabold rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer text-sm"
+            >
+              <span>⏹️</span> Reset / Spegni
+            </button>
+          </div>
+
+          {/* MODIFICATORI TEMPO AL VOLO */}
+          <div className="flex flex-col items-center gap-1.5 w-full border-t border-white/5 pt-4">
+            <span className="text-[10px] text-white/40 font-bold uppercase tracking-wider">Modificatori al volo</span>
+            <div className="flex flex-wrap justify-center gap-2">
+              <button
+                type="button"
+                onClick={() => handleModifyTime(-60)}
+                disabled={timerLoading || displaySeconds < 60}
+                className="px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold text-xs rounded-lg transition-colors cursor-pointer disabled:opacity-30"
+              >
+                -1m
+              </button>
+              <button
+                type="button"
+                onClick={() => handleModifyTime(-10)}
+                disabled={timerLoading || displaySeconds < 10}
+                className="px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold text-xs rounded-lg transition-colors cursor-pointer disabled:opacity-30"
+              >
+                -10s
+              </button>
+              <button
+                type="button"
+                onClick={() => handleModifyTime(10)}
+                disabled={timerLoading}
+                className="px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold text-xs rounded-lg transition-colors cursor-pointer"
+              >
+                +10s
+              </button>
+              <button
+                type="button"
+                onClick={() => handleModifyTime(60)}
+                disabled={timerLoading}
+                className="px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold text-xs rounded-lg transition-colors cursor-pointer"
+              >
+                +1m
+              </button>
+            </div>
+          </div>
+
+          {/* PRESET CARTE SPECIALI */}
+          <div className="flex flex-col items-center gap-1.5 w-full border-t border-white/5 pt-4">
+            <span className="text-[10px] text-white/40 font-bold uppercase tracking-wider">Preset Rapidi Carte</span>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 w-full max-w-md">
+              <button
+                type="button"
+                onClick={() => handleSelectPreset(30)}
+                disabled={timerLoading}
+                className={`py-2 px-3 border rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                  selectedDuration === 30
+                    ? 'bg-amber-500 border-amber-400 text-black shadow-[0_0_10px_rgba(245,158,11,0.2)]'
+                    : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'
+                }`}
+              >
+                🃏 Joker (30s)
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSelectPreset(180)}
+                disabled={timerLoading}
+                className={`py-2 px-3 border rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                  selectedDuration === 180 && dbTimer?.command === 'STOP' // simple highlight
+                    ? 'bg-amber-500 border-amber-400 text-black shadow-[0_0_10px_rgba(245,158,11,0.2)]'
+                    : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'
+                }`}
+              >
+                🌟 Stella (3m)
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSelectPreset(180)}
+                disabled={timerLoading}
+                className={`py-2 px-3 border rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                  selectedDuration === 180 && dbTimer?.command === 'STOP'
+                    ? 'bg-amber-500 border-amber-400 text-black shadow-[0_0_10px_rgba(245,158,11,0.2)]'
+                    : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'
+                }`}
+              >
+                🔥 Goal X2 (3m)
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSelectPreset(180)}
+                disabled={timerLoading}
+                className={`py-2 px-3 border rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                  selectedDuration === 180 && dbTimer?.command === 'STOP'
+                    ? 'bg-amber-500 border-amber-400 text-black shadow-[0_0_10px_rgba(245,158,11,0.2)]'
+                    : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'
+                }`}
+              >
+                ⛔ Sosp. (3m)
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSelectPreset(15)}
+                disabled={timerLoading}
+                className={`py-2 px-3 border rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                  selectedDuration === 15 && dbTimer?.command === 'STOP'
+                    ? 'bg-amber-500 border-amber-400 text-black shadow-[0_0_10px_rgba(245,158,11,0.2)]'
+                    : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'
+                }`}
+              >
+                ⚡ Shootout (15s)
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSelectPreset(15)}
+                disabled={timerLoading}
+                className={`py-2 px-3 border rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                  selectedDuration === 15 && dbTimer?.command === 'STOP'
+                    ? 'bg-amber-500 border-amber-400 text-black shadow-[0_0_10px_rgba(245,158,11,0.2)]'
+                    : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'
+                }`}
+              >
+                🎯 Rigore (15s)
+              </button>
+            </div>
+          </div>
+
+          {/* IMPOSTAZIONE MANUALE TEMPO */}
+          <div className="flex flex-col items-center gap-2 w-full border-t border-white/5 pt-4">
+            <span className="text-[10px] text-white/40 font-bold uppercase tracking-wider">Impostazione manuale</span>
+            <div className="flex items-center gap-2">
+              <div className="flex items-center bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-2 py-1 w-20">
+                <input
+                  type="number"
+                  min="0"
+                  max="99"
+                  value={inputMins}
+                  onChange={(e) => setInputMins(Math.max(0, Math.min(99, parseInt(e.target.value) || 0)))}
+                  className="bg-transparent text-white text-sm font-bold text-center w-full outline-none"
+                  placeholder="Min"
+                />
+                <span className="text-white/40 text-xs font-bold pr-1">m</span>
+              </div>
+              <span className="text-white/40 font-bold">:</span>
+              <div className="flex items-center bg-[rgba(0,0,0,0.3)] border border-white/10 rounded-xl px-2 py-1 w-20">
+                <input
+                  type="number"
+                  min="0"
+                  max="59"
+                  value={inputSecs}
+                  onChange={(e) => setInputSecs(Math.max(0, Math.min(59, parseInt(e.target.value) || 0)))}
+                  className="bg-transparent text-white text-sm font-bold text-center w-full outline-none"
+                  placeholder="Sec"
+                />
+                <span className="text-white/40 text-xs font-bold pr-1">s</span>
+              </div>
+              <button
+                type="button"
+                onClick={handleSetCustomTime}
+                disabled={timerLoading}
+                className="px-4 py-2 bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-black font-extrabold rounded-xl text-xs transition-colors cursor-pointer"
+              >
+                Applica
+              </button>
             </div>
           </div>
         </div>
