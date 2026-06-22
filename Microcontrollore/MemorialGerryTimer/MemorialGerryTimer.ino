@@ -180,9 +180,15 @@ void loop() {
   }
 
   // Invio heartbeat di presenza a Supabase (ogni 30 secondi)
+  // Lo inviamo solo se il timer NON sta correndo attivamente (per evitare lag/blocchi dovuti all'handshake SSL sincrono)
   if (now - lastDevicePing >= 30000) {
-    lastDevicePing = now;
-    sendDevicePing();
+    if (currentState != STATE_TIMER) {
+      lastDevicePing = now;
+      sendDevicePing();
+    } else {
+      // Se il timer sta correndo, posticipiamo il controllo di 5 secondi
+      lastDevicePing = now - 25000;
+    }
   }
 
   // Gestione ed esecuzione dell'effetto LED attivo (non bloccante)
