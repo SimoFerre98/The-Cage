@@ -10,10 +10,10 @@ const MATCHES = [
   { date: '2026-06-22 22:25:00+02', round: 'Fase a Gironi', status: 'PROSSIMA', home: 'FC Ceres', away: 'Gli Umili', score: null },
   // Martedì 23
   { date: '2026-06-23 18:55:00+02', round: 'Fase a Gironi', status: 'PROSSIMA', home: 'UCG', away: 'Gilly Boys', score: null },
-  { date: '2026-06-23 19:30:00+02', round: 'Fase a Gironi', status: 'PROSSIMA', home: 'Taverna', away: 'Aston Birra', score: null },
+  { date: '2026-06-23 19:30:00+02', round: 'Fase a Gironi', status: 'PROSSIMA', home: 'Taverna FC', away: 'Aston Birra', score: null },
   { date: '2026-06-23 20:05:00+02', round: 'Fase a Gironi', status: 'PROSSIMA', home: 'Pontex Pirates', away: 'Lo Dico FC', score: null },
   { date: '2026-06-23 20:40:00+02', round: 'Fase a Gironi', status: 'PROSSIMA', home: 'Gilly Boys', away: 'San Teodoro Ketzmaja', score: null },
-  { date: '2026-06-23 21:15:00+02', round: 'Fase a Gironi', status: 'PROSSIMA', home: 'Chainz', away: 'Taverna', score: null },
+  { date: '2026-06-23 21:15:00+02', round: 'Fase a Gironi', status: 'PROSSIMA', home: 'Chainz', away: 'Taverna FC', score: null },
   { date: '2026-06-23 21:50:00+02', round: 'Fase a Gironi', status: 'PROSSIMA', home: 'Aston Birra', away: 'UCG', score: null },
   { date: '2026-06-23 22:25:00+02', round: 'Fase a Gironi', status: 'PROSSIMA', home: 'San Teodoro Ketzmaja', away: 'Pontex Pirates', score: null },
   { date: '2026-06-23 23:00:00+02', round: 'Fase a Gironi', status: 'PROSSIMA', home: 'Lo Dico FC', away: 'Chainz', score: null },
@@ -29,10 +29,10 @@ const MATCHES = [
   // Giovedì 25
   { date: '2026-06-25 19:30:00+02', round: 'Fase a Gironi', status: 'PROSSIMA', home: 'Sezione 164', away: 'Gilly Boys', score: null },
   { date: '2026-06-25 20:05:00+02', round: 'Fase a Gironi', status: 'PROSSIMA', home: 'Pontex Pirates', away: 'Amatori Calcio Genova', score: null },
-  { date: '2026-06-25 20:40:00+02', round: 'Fase a Gironi', status: 'PROSSIMA', home: 'FC Pontos', away: 'Taverna', score: null },
+  { date: '2026-06-25 20:40:00+02', round: 'Fase a Gironi', status: 'PROSSIMA', home: 'FC Pontos', away: 'Taverna FC', score: null },
   { date: '2026-06-25 21:15:00+02', round: 'Fase a Gironi', status: 'PROSSIMA', home: 'Sezione 164', away: 'Pontex Pirates', score: null },
   { date: '2026-06-25 21:50:00+02', round: 'Fase a Gironi', status: 'PROSSIMA', home: 'FC Pontos', away: 'Gilly Boys', score: null },
-  { date: '2026-06-25 22:25:00+02', round: 'Fase a Gironi', status: 'PROSSIMA', home: 'Amatori Calcio Genova', away: 'Taverna', score: null }
+  { date: '2026-06-25 22:25:00+02', round: 'Fase a Gironi', status: 'PROSSIMA', home: 'Amatori Calcio Genova', away: 'Taverna FC', score: null }
 ];
 
 async function seed() {
