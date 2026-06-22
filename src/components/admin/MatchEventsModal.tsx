@@ -3,6 +3,16 @@ import { supabase } from '../../lib/supabase';
 import GlassEffect from '../GlassEffect';
 import type { Match, Team, Player } from './types';
 
+const formatEventTime = (createdAtStr?: string) => {
+  if (!createdAtStr) return '';
+  const date = new Date(createdAtStr);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  return `${day}/${month} ${hours}:${minutes}`;
+};
+
 interface MatchEventsModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -54,6 +64,7 @@ export default function MatchEventsModal({
         minute,
         type,
         detail,
+        created_at,
         player:players(name)
       `)
       .eq('match_id', match.id)
@@ -301,7 +312,14 @@ export default function MatchEventsModal({
                             <span className="text-base flex-shrink-0">{emoji}</span>
                             <div className="flex flex-col min-w-0">
                               <span className="text-xs font-bold text-white leading-tight">{desc}</span>
-                              <span className="text-[10px] text-white/50 truncate max-w-[160px]">{playerName} ({ev.minute}')</span>
+                              <div className="flex items-center gap-1.5 flex-wrap">
+                                <span className="text-[10px] text-white/50 truncate max-w-[150px]">{playerName} ({ev.minute}')</span>
+                                {ev.created_at && (
+                                  <span className="text-[9px] text-white/30 font-medium whitespace-nowrap">
+                                    🕒 {formatEventTime(ev.created_at)}
+                                  </span>
+                                )}
+                              </div>
                             </div>
                           </div>
                           <div className="flex items-center gap-1.5 flex-shrink-0">
