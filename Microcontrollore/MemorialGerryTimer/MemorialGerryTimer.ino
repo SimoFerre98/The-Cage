@@ -44,11 +44,11 @@ unsigned long timerStartMillis = 0;
 int timerLastVal = -1;
 unsigned long flashStartMillis = 0;
 
-// --- WEBSOCKET & TIMING ---
+// --- WEBSOCKET & TIMING & MULTI-CORE ---
 WebSocketsClient webSocket;
 unsigned long lastHeartbeat = 0;
-unsigned long lastDevicePing = 0;
 int refCount = 2; // Contatore dei ref Phoenix (phx_join usa "1")
+TaskHandle_t pingTaskHandle = NULL;
 
 // Mappatura dei segmenti attivi per ciascuna cifra (0-9)
 // I segmenti sono in ordine di cablaggio fisico sulla striscia:
@@ -99,6 +99,7 @@ void triggerEndMatchEffect();
 void setDigitSegment(int digitIndex, int segmentIndex, CRGB color);
 void setColon(CRGB color);
 void displayTime(int totalSeconds, CRGB color);
+void pingTask(void * pvParameters);
 
 void setup() {
   Serial.begin(115200);
@@ -156,6 +157,17 @@ void setup() {
 
   // Inizializza e avvia la connessione WebSocket a Supabase
   initWebSocket();
+
+  // Crea la task per il ping di presenza in background su Core 0
+  xTaskCreatePinnedToCore(
+    pingTask,
+    "PingTask",
+    10240, // Stack size (10KB) sicuro per client SSL
+    NULL,
+    1,     // Priorità bassa
+    &pingTaskHandle,
+    0      // Eseguito su Core 0
+  );
 }
 
 void loop() {
@@ -179,17 +191,6 @@ void loop() {
     sendHeartbeat();
   }
 
-  // Invio heartbeat di presenza a Supabase (ogni 30 secondi)
-  // Lo inviamo solo se il timer NON sta correndo attivamente (per evitare lag/blocchi dovuti all'handshake SSL sincrono)
-  if (now - lastDevicePing >= 30000) {
-    if (currentState != STATE_TIMER) {
-      lastDevicePing = now;
-      sendDevicePing();
-    } else {
-      // Se il timer sta correndo, posticipiamo il controllo di 5 secondi
-      lastDevicePing = now - 25000;
-    }
-  }
 
   // Gestione ed esecuzione dell'effetto LED attivo (non bloccante)
   updateLEDs();
@@ -709,5 +710,15 @@ void sendDevicePing() {
     http.end();
   } else {
     Serial.println("[HTTP] Errore inizializzazione client per ping.");
+  }
+}
+
+// Task per inviare periodicamente il ping di presenza sul Core 0
+void pingTask(void * pvParameters) {
+  // Aspetta 30 secondi prima del primo ping in background (il primo ping viene eseguito sincrono nel setup)
+  vTaskDelay(pdMS_TO_TICKS(30000));
+  for (;;) {
+    sendDevicePing();
+    vTaskDelay(pdMS_TO_TICKS(30000));
   }
 }
