@@ -297,17 +297,17 @@ export default function LiveMatchIsland() {
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {/* Home Team Red Glow (left side) */}
           <div 
-            className="absolute top-[-10%] left-[5%] w-[320px] h-[320px] rounded-full bg-gradient-to-tr from-red-600/20 to-rose-500/10 blur-[80px] animate-glow-pulse-red"
+            className="absolute top-[-15%] left-[-5%] w-[380px] h-[380px] rounded-full bg-gradient-to-tr from-red-500/40 to-rose-600/15 blur-[90px] animate-glow-pulse-red"
             style={{ mixBlendMode: 'screen' }}
           />
           {/* Away Team Blue Glow (right side) */}
           <div 
-            className="absolute top-[-10%] right-[5%] w-[320px] h-[320px] rounded-full bg-gradient-to-tl from-blue-600/25 to-indigo-500/10 blur-[80px] animate-glow-pulse-blue"
+            className="absolute top-[-15%] right-[-5%] w-[380px] h-[380px] rounded-full bg-gradient-to-tl from-blue-500/45 to-indigo-600/15 blur-[90px] animate-glow-pulse-blue"
             style={{ mixBlendMode: 'screen' }}
           />
           {/* Central Purple Transition Glow */}
           <div 
-            className="absolute top-[20%] left-[30%] w-[380px] h-[250px] rounded-full bg-purple-600/10 blur-[90px] animate-[ambientGlowPulse_9s_ease-in-out_infinite_1.5s]"
+            className="absolute top-[10%] left-[25%] w-[420px] h-[280px] rounded-full bg-purple-500/25 blur-[100px] animate-[ambientGlowPulse_9s_ease-in-out_infinite_1.5s]"
             style={{ mixBlendMode: 'screen' }}
           />
         </div>
@@ -360,7 +360,7 @@ export default function LiveMatchIsland() {
             <div className="flex flex-col items-center flex-1 min-w-0">
               <div className="relative group cursor-pointer">
                 {/* Glowing neon ring backdrop */}
-                <div className="absolute -inset-1 rounded-full bg-gradient-to-b from-red-500 to-rose-600 opacity-20 blur-md group-hover:opacity-40 transition duration-500" />
+                <div className="absolute -inset-1.5 rounded-full bg-gradient-to-r from-red-500 to-rose-600 opacity-45 blur-md group-hover:opacity-75 transition duration-500" />
                 {(() => {
                   const logo = getTeamLogo(homeName);
                   return logo ? (
@@ -405,8 +405,8 @@ export default function LiveMatchIsland() {
                 className="flex items-center gap-4 py-2.5 px-6 rounded-2xl border backdrop-blur-md shimmer-sweep-container"
                 style={{
                   background: 'var(--score-bg)',
-                  borderColor: 'var(--score-border)',
-                  boxShadow: 'var(--score-shadow)',
+                  borderColor: 'rgba(139, 92, 246, 0.45)',
+                  boxShadow: 'inset 0 1px 2px rgba(255, 255, 255, 0.15), 0 0 20px rgba(139, 92, 246, 0.25), 0 8px 32px rgba(0, 0, 0, 0.55)',
                 }}
               >
                 <span className="text-3xl font-black text-[var(--text-primary)] tabular-nums tracking-normal">{homeScore}</span>
@@ -424,7 +424,7 @@ export default function LiveMatchIsland() {
             <div className="flex flex-col items-center flex-1 min-w-0">
               <div className="relative group cursor-pointer">
                 {/* Glowing neon ring backdrop */}
-                <div className="absolute -inset-1 rounded-full bg-gradient-to-b from-blue-500 to-indigo-600 opacity-20 blur-md group-hover:opacity-40 transition duration-500" />
+                <div className="absolute -inset-1.5 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 opacity-45 blur-md group-hover:opacity-75 transition duration-500" />
                 {(() => {
                   const logo = getTeamLogo(awayName);
                   return logo ? (
