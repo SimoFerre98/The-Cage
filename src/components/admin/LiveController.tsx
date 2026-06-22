@@ -32,10 +32,15 @@ export default function LiveController({
     command: 'START' | 'PAUSE' | 'STOP';
     duration: number;
     updated_at: string;
+    color: string;
+    effect: string;
   } | null>(null);
   const [displaySeconds, setDisplaySeconds] = useState<number>(9);
   const [selectedDuration, setSelectedDuration] = useState<number>(9);
   const [timerLoading, setTimerLoading] = useState<boolean>(false);
+
+  const [selectedColor, setSelectedColor] = useState<string>('RED');
+  const [selectedEffect, setSelectedEffect] = useState<string>('SOLID');
 
   const [inputMins, setInputMins] = useState<number>(0);
   const [inputSecs, setInputSecs] = useState<number>(9);
@@ -49,9 +54,11 @@ export default function LiveController({
       .maybeSingle()
       .then(({ data }) => {
         if (data) {
-          const rec = data as { command: 'START' | 'PAUSE' | 'STOP'; duration: number; updated_at: string };
+          const rec = data as { command: 'START' | 'PAUSE' | 'STOP'; duration: number; updated_at: string; color: string; effect: string };
           setDbTimer(rec);
           setSelectedDuration(rec.duration);
+          setSelectedColor(rec.color || 'RED');
+          setSelectedEffect(rec.effect || 'SOLID');
         }
       });
 
@@ -62,8 +69,10 @@ export default function LiveController({
         { event: 'UPDATE', schema: 'public', table: 'timer_control' },
         (payload) => {
           if (payload.new && (payload.new as any).id === 'timer_1') {
-            const record = payload.new as { id: string; command: 'START' | 'PAUSE' | 'STOP'; duration: number; updated_at: string };
+            const record = payload.new as { id: string; command: 'START' | 'PAUSE' | 'STOP'; duration: number; updated_at: string; color: string; effect: string };
             setDbTimer(record);
+            setSelectedColor(record.color || 'RED');
+            setSelectedEffect(record.effect || 'SOLID');
           }
         }
       )
@@ -73,6 +82,32 @@ export default function LiveController({
       supabase.removeChannel(channel);
     };
   }, []);
+
+  const handleUpdateColor = async (color: string) => {
+    setSelectedColor(color);
+    setTimerLoading(true);
+    const { error } = await supabase
+      .from('timer_control')
+      .update({ color })
+      .eq('id', 'timer_1');
+    setTimerLoading(false);
+    if (error) {
+      alert('Errore nell\'aggiornamento del colore: ' + error.message);
+    }
+  };
+
+  const handleUpdateEffect = async (effect: string) => {
+    setSelectedEffect(effect);
+    setTimerLoading(true);
+    const { error } = await supabase
+      .from('timer_control')
+      .update({ effect })
+      .eq('id', 'timer_1');
+    setTimerLoading(false);
+    if (error) {
+      alert('Errore nell\'aggiornamento dell\'effetto: ' + error.message);
+    }
+  };
 
   // Countdown locale non-drift basato su Date.now() e updated_at
   useEffect(() => {
@@ -215,6 +250,45 @@ export default function LiveController({
     const mins = Math.floor(totalSeconds / 60);
     const secs = totalSeconds % 60;
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const getClockStyle = () => {
+    const isRainbow = selectedEffect === 'RAINBOW' || selectedEffect === 'RAINBOW_BREATHE';
+    const isBreathe = selectedEffect === 'BREATHE' || selectedEffect === 'RAINBOW_BREATHE';
+
+    let colorClasses = '';
+    let inlineStyle: React.CSSProperties = {};
+
+    if (isRainbow) {
+      inlineStyle = {
+        background: 'linear-gradient(to right, #ef4444, #f59e0b, #10b981, #3b82f6, #8b5cf6, #ec4899, #ef4444)',
+        backgroundSize: '200% auto',
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+        animation: `rainbow-text 3s linear infinite${isBreathe ? ', pulse-slow 2s ease-in-out infinite' : ''}`,
+      };
+    } else {
+      const colorsMap: Record<string, { text: string; shadow: string }> = {
+        RED: { text: 'text-red-500', shadow: 'rgba(239, 68, 68, 0.7)' },
+        GREEN: { text: 'text-green-500', shadow: 'rgba(16, 185, 129, 0.7)' },
+        BLUE: { text: 'text-blue-500', shadow: 'rgba(59, 130, 246, 0.7)' },
+        YELLOW: { text: 'text-amber-400', shadow: 'rgba(245, 158, 11, 0.7)' },
+        CYAN: { text: 'text-cyan-400', shadow: 'rgba(34, 211, 238, 0.7)' },
+        MAGENTA: { text: 'text-fuchsia-500', shadow: 'rgba(217, 70, 239, 0.7)' },
+        WHITE: { text: 'text-slate-100', shadow: 'rgba(241, 245, 249, 0.5)' },
+      };
+
+      const cfg = colorsMap[selectedColor] || colorsMap.RED;
+      colorClasses = cfg.text;
+      inlineStyle = {
+        filter: `drop-shadow(0 0 8px ${cfg.shadow})`,
+      };
+      if (isBreathe) {
+        colorClasses += ' animate-[pulse_2s_infinite]';
+      }
+    }
+
+    return { colorClasses, inlineStyle };
   };
 
 
@@ -458,24 +532,113 @@ export default function LiveController({
             
             <div className="flex flex-col items-center gap-4 mt-6">
               {/* OROLOGIO DIGITALE NEON */}
-              <div className="flex flex-col items-center bg-black/60 border border-white/10 rounded-[20px] px-8 py-4 shadow-[inset_0_2px_4px_rgba(0,0,0,0.6)] min-w-[200px] relative overflow-hidden">
-                <div className="absolute top-1.5 right-2 flex gap-1">
-                  {dbTimer?.command === 'START' && (
-                    <span className="h-2 w-2 rounded-full bg-green-500 animate-ping"></span>
-                  )}
-                  {dbTimer?.command === 'PAUSE' && (
-                    <span className="h-2 w-2 rounded-full bg-yellow-500"></span>
-                  )}
-                  {dbTimer?.command === 'STOP' && (
-                    <span className="h-2 w-2 rounded-full bg-white/20"></span>
-                  )}
-                </div>
-                <div className="font-mono text-5xl md:text-6xl font-bold tracking-widest text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.7)] select-none">
-                  {formatTime(displaySeconds)}
-                </div>
-                <div className="text-[10px] text-white/30 font-black uppercase tracking-widest mt-1">
-                  {dbTimer?.command === 'START' ? 'In Corso' : dbTimer?.command === 'PAUSE' ? 'In Pausa' : 'Inattivo'}
-                </div>
+              {(() => {
+                const clockStyle = getClockStyle();
+                return (
+                  <div className="flex flex-col items-center bg-black/60 border border-white/10 rounded-[20px] px-8 py-4 shadow-[inset_0_2px_4px_rgba(0,0,0,0.6)] min-w-[200px] relative overflow-hidden">
+                    <style>{`
+                      @keyframes rainbow-text {
+                        0% { background-position: 0% center; }
+                        100% { background-position: 200% center; }
+                      }
+                      @keyframes pulse-slow {
+                        0%, 100% { opacity: 1; }
+                        50% { opacity: 0.4; }
+                      }
+                    `}</style>
+                    <div className="absolute top-1.5 right-2 flex gap-1">
+                      {dbTimer?.command === 'START' && (
+                        <span className="h-2 w-2 rounded-full bg-green-500 animate-ping"></span>
+                      )}
+                      {dbTimer?.command === 'PAUSE' && (
+                        <span className="h-2 w-2 rounded-full bg-yellow-500"></span>
+                      )}
+                      {dbTimer?.command === 'STOP' && (
+                        <span className="h-2 w-2 rounded-full bg-white/20"></span>
+                      )}
+                    </div>
+                    <div 
+                      className={`font-mono text-5xl md:text-6xl font-bold tracking-widest select-none transition-all duration-300 ${clockStyle.colorClasses}`}
+                      style={clockStyle.inlineStyle}
+                    >
+                      {formatTime(displaySeconds)}
+                    </div>
+                    <div className="text-[10px] text-white/30 font-black uppercase tracking-widest mt-1">
+                      {dbTimer?.command === 'START' ? 'In Corso' : dbTimer?.command === 'PAUSE' ? 'In Pausa' : 'Inattivo'}
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
+          </div>
+
+          {/* SELETTORE COLORI E EFFETTI */}
+          <div className="flex flex-col items-center gap-4 w-full border-t border-white/5 pt-4">
+            {/* Color Swatch Selector */}
+            <div className="flex flex-col items-center gap-2 w-full">
+              <span className="text-[10px] text-white/40 font-bold uppercase tracking-wider">Colore LED</span>
+              <div className="flex flex-wrap justify-center gap-3">
+                {[
+                  { id: 'RED', label: 'Rosso', bgClass: 'bg-red-500 shadow-red-500/50' },
+                  { id: 'GREEN', label: 'Verde', bgClass: 'bg-emerald-500 shadow-emerald-500/50' },
+                  { id: 'BLUE', label: 'Blu', bgClass: 'bg-blue-500 shadow-blue-500/50' },
+                  { id: 'YELLOW', label: 'Giallo', bgClass: 'bg-amber-400 shadow-amber-400/50' },
+                  { id: 'CYAN', label: 'Ciano', bgClass: 'bg-cyan-400 shadow-cyan-400/50' },
+                  { id: 'MAGENTA', label: 'Magenta', bgClass: 'bg-fuchsia-500 shadow-fuchsia-500/50' },
+                  { id: 'WHITE', label: 'Bianco', bgClass: 'bg-slate-100 border border-white/20 shadow-slate-100/50' },
+                ].map((color) => {
+                  const isActive = selectedColor === color.id;
+                  return (
+                    <button
+                      key={color.id}
+                      type="button"
+                      onClick={() => handleUpdateColor(color.id)}
+                      disabled={timerLoading}
+                      title={color.label}
+                      className={`w-8 h-8 rounded-full ${color.bgClass} relative transition-all duration-200 cursor-pointer ${
+                        isActive 
+                          ? 'ring-2 ring-white scale-110 shadow-[0_0_12px_rgba(255,255,255,0.4)]' 
+                          : 'opacity-60 hover:opacity-100 hover:scale-105'
+                      }`}
+                    >
+                      {isActive && (
+                        <span className="absolute inset-0 flex items-center justify-center text-[10px] text-black font-black">
+                          ✓
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Special Effects Selector */}
+            <div className="flex flex-col items-center gap-2 w-full mt-1">
+              <span className="text-[10px] text-white/40 font-bold uppercase tracking-wider">Effetti Speciali</span>
+              <div className="flex flex-wrap justify-center gap-2">
+                {[
+                  { id: 'SOLID', label: '⏹️ Tinta Unita' },
+                  { id: 'RAINBOW', label: '🌈 Arcobaleno' },
+                  { id: 'BREATHE', label: '🌬️ Pulsante' },
+                  { id: 'RAINBOW_BREATHE', label: '🌠 Arcobaleno Puls.' },
+                ].map((eff) => {
+                  const isActive = selectedEffect === eff.id;
+                  return (
+                    <button
+                      key={eff.id}
+                      type="button"
+                      onClick={() => handleUpdateEffect(eff.id)}
+                      disabled={timerLoading}
+                      className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer border ${
+                        isActive
+                          ? 'bg-white text-black border-white shadow-[0_0_10px_rgba(255,255,255,0.2)]'
+                          : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'
+                      }`}
+                    >
+                      {eff.label}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>

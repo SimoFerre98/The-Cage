@@ -43,6 +43,8 @@ int timerDuration = 9;
 unsigned long timerStartMillis = 0;
 int timerLastVal = -1;
 unsigned long flashStartMillis = 0;
+String timerColorStr = "RED";
+String timerEffectStr = "SOLID";
 
 // --- WEBSOCKET & TIMING & MULTI-CORE ---
 WebSocketsClient webSocket;
@@ -96,9 +98,11 @@ void updateLEDs();
 void triggerGoalEffect(bool isHome);
 void triggerStartMatchEffect();
 void triggerEndMatchEffect();
-void setDigitSegment(int digitIndex, int segmentIndex, CRGB color);
-void setColon(CRGB color);
-void displayTime(int totalSeconds, CRGB color);
+CRGB getBaseColor(String colorStr);
+CRGB getLedColor(String colorStr, String effectStr, int ledIndex, unsigned long nowMillis);
+void setDigitSegment(int digitIndex, int segmentIndex, String colorStr, String effectStr, unsigned long nowMillis);
+void setColon(String colorStr, String effectStr, unsigned long nowMillis);
+void displayTime(int totalSeconds, String colorStr, String effectStr, unsigned long nowMillis);
 void pingTask(void * pvParameters);
 
 void setup() {
@@ -431,7 +435,16 @@ void handleWebSocketMessage(uint8_t * payload, size_t length) {
       String command = record["command"] | "STOP";
       int duration = record["duration"] | 9;
       
-      Serial.printf("[WebSocket] Timer comando: %s | Durata: %d secondi\n", command.c_str(), duration);
+      if (record.containsKey("color")) {
+        timerColorStr = record["color"] | "RED";
+      }
+      if (record.containsKey("effect")) {
+        timerEffectStr = record["effect"] | "SOLID";
+      }
+      
+      Serial.printf("[WebSocket] Timer comando: %s | Durata: %d | Colore: %s | Effetto: %s\n", 
+                    command.c_str(), duration, timerColorStr.c_str(), timerEffectStr.c_str());
+                    
       if (command == "START") {
         timerDuration = duration;
         timerStartMillis = millis();
@@ -470,8 +483,43 @@ void triggerEndMatchEffect() {
   stateStartTime = millis();
 }
 
+CRGB getBaseColor(String colorStr) {
+  if (colorStr == "GREEN")   return CRGB::Green;
+  if (colorStr == "BLUE")    return CRGB::Blue;
+  if (colorStr == "YELLOW")  return CRGB::Yellow;
+  if (colorStr == "CYAN")    return CRGB::Cyan;
+  if (colorStr == "MAGENTA") return CRGB::Magenta;
+  if (colorStr == "WHITE")   return CRGB::White;
+  if (colorStr == "BLACK")   return CRGB::Black;
+  return CRGB::Red; // Default to RED
+}
+
+CRGB getLedColor(String colorStr, String effectStr, int ledIndex, unsigned long nowMillis) {
+  if (colorStr == "BLACK") {
+    return CRGB::Black;
+  }
+  bool isRainbow = (effectStr == "RAINBOW" || effectStr == "RAINBOW_BREATHE");
+  bool isBreathe = (effectStr == "BREATHE" || effectStr == "RAINBOW_BREATHE");
+  
+  uint8_t brightness = 255;
+  if (isBreathe) {
+    brightness = beatsin8(15, 60, 255, 0, 0); 
+  }
+  
+  if (isRainbow) {
+    uint8_t hue = (ledIndex * 2) + (nowMillis / 15);
+    return CHSV(hue, 255, brightness);
+  } else {
+    CRGB baseColor = getBaseColor(colorStr);
+    if (brightness < 255) {
+      baseColor.nscale8_video(brightness);
+    }
+    return baseColor;
+  }
+}
+
 // Imposta un segmento a un colore per una determinata cifra
-void setDigitSegment(int digitIndex, int segmentIndex, CRGB color) {
+void setDigitSegment(int digitIndex, int segmentIndex, String colorStr, String effectStr, unsigned long nowMillis) {
   if (digitIndex < 0 || digitIndex >= 4) return;
   if (segmentIndex < 0 || segmentIndex >= 7) return;
   
@@ -493,20 +541,21 @@ void setDigitSegment(int digitIndex, int segmentIndex, CRGB color) {
   }
   
   for (int i = 0; i < ledsPerSeg; i++) {
-    leds[startLed + i] = color;
+    int ledIndex = startLed + i;
+    leds[ledIndex] = getLedColor(colorStr, effectStr, ledIndex, nowMillis);
   }
 }
 
 // Imposta i LED del colon centrale (separatore ':')
-void setColon(CRGB color) {
-  // Il colon inizia all'indice 56 e ha 4 LED in totale
+void setColon(String colorStr, String effectStr, unsigned long nowMillis) {
   for (int i = 0; i < 4; i++) {
-    leds[56 + i] = color;
+    int ledIndex = 56 + i;
+    leds[ledIndex] = getLedColor(colorStr, effectStr, ledIndex, nowMillis);
   }
 }
 
 // Suddivide e visualizza il tempo su tutti e 4 i display in formato MM:SS
-void displayTime(int totalSeconds, CRGB color) {
+void displayTime(int totalSeconds, String colorStr, String effectStr, unsigned long nowMillis) {
   int minutes = totalSeconds / 60;
   int seconds = totalSeconds % 60;
   
@@ -519,36 +568,36 @@ void displayTime(int totalSeconds, CRGB color) {
   bool showD0 = (minutes >= 10);
   for (int seg = 0; seg < 7; seg++) {
     if (showD0 && digitSegments[d0][seg]) {
-      setDigitSegment(0, seg, color);
+      setDigitSegment(0, seg, colorStr, effectStr, nowMillis);
     } else {
-      setDigitSegment(0, seg, CRGB::Black);
+      setDigitSegment(0, seg, "BLACK", "SOLID", nowMillis);
     }
   }
   
   // Digit 1 (Unità Minuti)
   for (int seg = 0; seg < 7; seg++) {
     if (digitSegments[d1][seg]) {
-      setDigitSegment(1, seg, color);
+      setDigitSegment(1, seg, colorStr, effectStr, nowMillis);
     } else {
-      setDigitSegment(1, seg, CRGB::Black);
+      setDigitSegment(1, seg, "BLACK", "SOLID", nowMillis);
     }
   }
   
   // Digit 2 (Decine Secondi)
   for (int seg = 0; seg < 7; seg++) {
     if (digitSegments[d2][seg]) {
-      setDigitSegment(2, seg, color);
+      setDigitSegment(2, seg, colorStr, effectStr, nowMillis);
     } else {
-      setDigitSegment(2, seg, CRGB::Black);
+      setDigitSegment(2, seg, "BLACK", "SOLID", nowMillis);
     }
   }
   
   // Digit 3 (Unità Secondi)
   for (int seg = 0; seg < 7; seg++) {
     if (digitSegments[d3][seg]) {
-      setDigitSegment(3, seg, color);
+      setDigitSegment(3, seg, colorStr, effectStr, nowMillis);
     } else {
-      setDigitSegment(3, seg, CRGB::Black);
+      setDigitSegment(3, seg, "BLACK", "SOLID", nowMillis);
     }
   }
 }
@@ -647,29 +696,33 @@ void updateLEDs() {
       }
       
       FastLED.clear();
-      // Disegna il tempo residuo MM:SS
-      displayTime(currentSec, CRGB::Red);
+      // Disegna il tempo residuo MM:SS con colore ed effetto dinamici
+      displayTime(currentSec, timerColorStr, timerEffectStr, now);
       
       // Il colon centralina lampeggia a frequenza di 1Hz
       bool colonOn = (now / 500) % 2 == 0;
-      setColon(colonOn ? CRGB::Red : CRGB::Black);
+      if (colonOn) {
+        setColon(timerColorStr, timerEffectStr, now);
+      } else {
+        setColon("BLACK", "SOLID", now);
+      }
       
-      boardLed[0] = CRGB::Red; // LED di bordo rosso coerente
+      boardLed[0] = getLedColor(timerColorStr, timerEffectStr, 0, now); // LED di bordo coordinato
       break;
     }
     
     // 7. STATO TIMER PAUSATO: Visualizza il tempo congelato con colon fisso acceso
     case STATE_TIMER_PAUSED: {
       FastLED.clear();
-      // Disegna il tempo di pausa
-      displayTime(timerDuration, CRGB::Red);
+      // Disegna il tempo di pausa con colore ed effetto dinamici
+      displayTime(timerDuration, timerColorStr, timerEffectStr, now);
       
-      // Il colon rimane fisso acceso in rosso
-      setColon(CRGB::Red);
+      // Il colon rimane fisso acceso
+      setColon(timerColorStr, timerEffectStr, now);
       
-      // LED di bordo lampeggia lentamente in rosso
+      // LED di bordo lampeggia lentamente coerente
       bool flashOn = (now / 1000) % 2 == 0;
-      boardLed[0] = flashOn ? CRGB::Red : CRGB::Black;
+      boardLed[0] = flashOn ? getLedColor(timerColorStr, timerEffectStr, 0, now) : CRGB::Black;
       break;
     }
   }
