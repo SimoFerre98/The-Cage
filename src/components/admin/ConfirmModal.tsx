@@ -22,6 +22,16 @@ export default function ConfirmModal({
   cancelLabel = 'Annulla',
   type = 'danger',
 }: ConfirmModalProps) {
+  // Lock body scroll when modal is open to prevent background scrolling
+  React.useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const isDanger = type === 'danger';

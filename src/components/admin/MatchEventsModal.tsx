@@ -33,6 +33,14 @@ export default function MatchEventsModal({
   const [events, setEvents] = useState<any[]>([]);
   const [loadingEvents, setLoadingEvents] = useState(false);
 
+  // Lock body scroll when modal is open to prevent background scrolling
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
+
   // Event form state
   const [eventTeamId, setEventTeamId] = useState(match.home_team_id);
   const [eventPlayerId, setEventPlayerId] = useState('');

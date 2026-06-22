@@ -107,6 +107,14 @@ export default function PlayerStatsModal({ playerId, onClose, themeColor = 'neut
   const [stats, setStats] = useState({ goals: 0, assists: 0, yellows: 0, reds: 0, powerCards: 0 });
   const [history, setHistory] = useState<any[]>([]);
 
+  // Lock body scroll when modal is open to prevent background scrolling
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
+
   useEffect(() => {
     let isMounted = true;
 
