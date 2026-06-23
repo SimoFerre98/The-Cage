@@ -351,69 +351,130 @@ export default function CalendarioIsland() {
           {filteredMatches.map((m, i) => {
             const homeName = m.home_team?.name ?? 'N/D';
             const awayName = m.away_team?.name ?? 'N/D';
-            const scoreStr = (m.home_score !== null && m.away_score !== null && m.status !== 'PROSSIMA') ? `${m.home_score} - ${m.away_score}` : null;
-            const formattedDate = new Date(m.match_date).toLocaleString('it-IT', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
             
-            const isLive = m.status === 'LIVE';
+            const matchDateObj = new Date(m.match_date);
+            const timeStr = matchDateObj.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+            const dateStr = matchDateObj.toLocaleDateString('it-IT', { weekday: 'short', day: 'numeric', month: 'short' });
 
-            // Contenuto della card (uguale per live e non-live)
+            const isLive = m.status === 'LIVE';
+            const isTerminata = m.status === 'TERMINATA';
+            const isProssima = m.status === 'PROSSIMA';
+
+            const homeWon = isTerminata && m.home_score !== null && m.away_score !== null && m.home_score > m.away_score;
+            const awayWon = isTerminata && m.home_score !== null && m.away_score !== null && m.away_score > m.home_score;
+            const isDraw = isTerminata && m.home_score !== null && m.away_score !== null && m.home_score === m.away_score;
+
+            const homeLogo = getTeamLogo(homeName);
+            const awayLogo = getTeamLogo(awayName);
+
+            // Contenuto della card
             const cardContent = (
-              <>
-                <div className="flex flex-col items-center gap-2 mb-7">
-                  <span className={`text-xs font-semibold tracking-wide ${isLive ? 'text-red-400 font-bold' : 'text-[var(--text-muted)]'}`}>
-                    {isLive ? '🔴 IN DIRETTA' : `📅 ${formattedDate}`}
-                  </span>
-                  <div className="flex gap-1.5 items-center justify-center">
-                    <span className="badge badge-round">{m.round}</span>
-                    <span className={`badge ${m.status === 'TERMINATA' ? 'badge-done' : isLive ? 'badge-live' : 'badge-next'}`}>
-                      {m.status === 'TERMINATA' ? '✓' : '⚡'} {m.status}
-                    </span>
+              <div className="flex flex-col w-full">
+                {/* Header della partita */}
+                <div className="flex justify-between items-center text-[0.7rem] uppercase tracking-wider font-extrabold text-white/40 mb-3.5 px-0.5">
+                  <div className="flex items-center gap-2">
+                    <span className="text-white/60">{m.round}</span>
+                    <span className="w-1 h-1 rounded-full bg-white/20"></span>
+                    <span className="text-blue-400/80">{dateStr}</span>
+                  </div>
+                  <div>
+                    {isLive ? (
+                      <span className="flex items-center gap-1 bg-red-500/10 text-red-400 px-2.5 py-0.5 rounded-full border border-red-500/20 animate-pulse text-[0.65rem]">
+                        <span className="h-1.5 w-1.5 rounded-full bg-red-500"></span>
+                        LIVE
+                      </span>
+                    ) : isTerminata ? (
+                      <span className="bg-white/5 text-white/50 px-2.5 py-0.5 rounded-full border border-white/10 text-[0.65rem]">
+                        Terminata
+                      </span>
+                    ) : (
+                      <span className="bg-blue-500/10 text-blue-400 px-2.5 py-0.5 rounded-full border border-blue-500/20 text-[0.65rem]">
+                        Prossima
+                      </span>
+                    )}
                   </div>
                 </div>
 
-                <div className="flex items-center justify-center gap-3">
-                  {/* Home */}
-                  <div className="flex items-center gap-2 flex-1 justify-end flex-row-reverse text-right">
-                    {(() => {
-                      const logo = getTeamLogo(homeName);
-                      return logo ? (
-                        <img src={logo} alt={homeName} className="team-avatar object-cover" style={{ width: 34, height: 34, borderRadius: 10 }} />
+                {/* Separatore interno sottile */}
+                <div className="h-[1px] bg-white/[0.04] w-full mb-3.5" />
+
+                {/* Corpo centrale della partita */}
+                <div className="flex items-center justify-between gap-2 mt-0.5">
+                  
+                  {/* Squadra di Casa */}
+                  <div className={`flex items-center gap-3 flex-1 justify-end text-right transition-all duration-300 ${
+                    isTerminata && !homeWon && !isDraw ? 'opacity-40' : 'opacity-100'
+                  }`}>
+                    <span className={`text-[0.875rem] md:text-[0.95rem] font-bold text-white leading-snug truncate max-w-[85px] sm:max-w-[140px] ${
+                      homeWon ? 'text-blue-400 font-black' : ''
+                    }`}>
+                      {homeName}
+                    </span>
+                    <div className="relative shrink-0">
+                      {homeLogo ? (
+                        <img 
+                          src={homeLogo} 
+                          alt={homeName} 
+                          className={`w-9 h-9 rounded-xl object-cover border border-white/10 shadow-md transition-all duration-300 ${
+                            homeWon ? 'border-blue-500/40 ring-2 ring-blue-500/15' : ''
+                          }`} 
+                        />
                       ) : (
-                        <div className={`team-avatar avatar-${TEAM_IDX[homeName] ?? 0}`} style={{ width: 34, height: 34, borderRadius: 10 }}>
+                        <div className={`w-9 h-9 rounded-xl flex items-center justify-center font-black text-xs text-white border border-white/10 shadow-md avatar-${TEAM_IDX[homeName] ?? 0}`}>
                           {AVATAR_INITIALS(homeName)}
                         </div>
-                      );
-                    })()}
-                    <span className="text-[0.875rem] font-bold text-[var(--text-primary)] leading-tight">{homeName}</span>
+                      )}
+                    </div>
                   </div>
 
-                  {/* Score / VS */}
-                  {scoreStr ? (
-                    <div className="bg-[rgba(255,255,255,0.05)] border border-[var(--glass-border)] rounded-[12px] py-1.5 px-3.5 text-lg font-black text-white tracking-widest min-w-[76px] text-center shadow-[var(--inner-glow)]">
-                      {scoreStr}
-                    </div>
-                  ) : (
-                    <div className="bg-[rgba(59,130,246,0.1)] border border-[rgba(59,130,246,0.3)] rounded-[12px] py-1.5 px-4 text-sm font-bold text-[var(--accent-primary)] tracking-widest min-w-[76px] text-center shadow-[var(--inner-glow)]">
-                      VS
-                    </div>
-                  )}
+                  {/* Risultato / Orario al centro */}
+                  <div className="flex flex-col items-center justify-center min-w-[76px] sm:min-w-[96px] shrink-0">
+                    {isTerminata && m.home_score !== null && m.away_score !== null ? (
+                      <div className="bg-white/[0.03] border border-white/10 hover:border-white/20 rounded-2xl py-1.5 px-3.5 text-base md:text-lg font-black text-white tracking-widest text-center shadow-[inset_0_1px_2px_rgba(255,255,255,0.05),0_4px_12px_rgba(0,0,0,0.25)]">
+                        {m.home_score} - {m.away_score}
+                      </div>
+                    ) : isLive && m.home_score !== null && m.away_score !== null ? (
+                      <div className="flex flex-col items-center">
+                        <div className="bg-red-500/10 border border-red-500/30 rounded-2xl py-1.5 px-3.5 text-base md:text-lg font-black text-red-400 tracking-widest text-center animate-pulse shadow-[0_0_15px_rgba(239,68,68,0.2)]">
+                          {m.home_score} - {m.away_score}
+                        </div>
+                      </div>
+                    ) : (
+                      // Prossima partita: mostra l'ora in risalto
+                      <div className="bg-blue-500/10 border border-blue-500/25 rounded-2xl py-1.5 px-3.5 text-xs md:text-sm font-black text-blue-400 tracking-wider text-center shadow-[0_2px_10px_rgba(59,130,246,0.08)]">
+                        {timeStr}
+                      </div>
+                    )}
+                  </div>
 
-                  {/* Away */}
-                  <div className="flex items-center gap-2 flex-1 text-left">
-                    {(() => {
-                      const logo = getTeamLogo(awayName);
-                      return logo ? (
-                        <img src={logo} alt={awayName} className="team-avatar object-cover" style={{ width: 34, height: 34, borderRadius: 10 }} />
+                  {/* Squadra Ospite */}
+                  <div className={`flex items-center gap-3 flex-1 justify-start text-left transition-all duration-300 ${
+                    isTerminata && !awayWon && !isDraw ? 'opacity-40' : 'opacity-100'
+                  }`}>
+                    <div className="relative shrink-0">
+                      {awayLogo ? (
+                        <img 
+                          src={awayLogo} 
+                          alt={awayName} 
+                          className={`w-9 h-9 rounded-xl object-cover border border-white/10 shadow-md transition-all duration-300 ${
+                            awayWon ? 'border-blue-500/40 ring-2 ring-blue-500/15' : ''
+                          }`} 
+                        />
                       ) : (
-                        <div className={`team-avatar avatar-${TEAM_IDX[awayName] ?? 1}`} style={{ width: 34, height: 34, borderRadius: 10 }}>
+                        <div className={`w-9 h-9 rounded-xl flex items-center justify-center font-black text-xs text-white border border-white/10 shadow-md avatar-${TEAM_IDX[awayName] ?? 1}`}>
                           {AVATAR_INITIALS(awayName)}
                         </div>
-                      );
-                    })()}
-                    <span className="text-[0.875rem] font-bold text-[var(--text-primary)] leading-tight">{awayName}</span>
+                      )}
+                    </div>
+                    <span className={`text-[0.875rem] md:text-[0.95rem] font-bold text-white leading-snug truncate max-w-[85px] sm:max-w-[140px] ${
+                      awayWon ? 'text-blue-400 font-black' : ''
+                    }`}>
+                      {awayName}
+                    </span>
                   </div>
+
                 </div>
-              </>
+              </div>
             );
 
             // Per le partite LIVE: glass-card con bordo rosso pulsante e senza backdrop-filter
@@ -432,7 +493,7 @@ export default function CalendarioIsland() {
                       textDecoration: 'none',
                       cursor: 'pointer',
                       padding: '1.2rem 1.25rem',
-                      border: '1px solid transparent', // Keep transparent border to prevent layout shifts
+                      border: '1px solid transparent',
                     }}
                   >
                     {/* Flowing red border layer */}
