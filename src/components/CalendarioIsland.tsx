@@ -528,12 +528,12 @@ export default function CalendarioIsland() {
       {tab === 'tabellone' && (
         <div className="bracket-scroll-wrapper">
           <div className="bracket-container animate-stagger" style={{ marginTop: '2rem' }}>
-            {/* Row 1: Quarti di Finale */}
+             {/* Row 1: Quarti di Finale */}
             <div className="bracket-row">
-              {renderBracketCard("Quarti 1", "1° Girone A", "4° Girone B", "28 mag, 20:00", "QF1")}
-              {renderBracketCard("Quarti 2", "2° Girone B", "3° Girone A", "28 mag, 20:30", "QF2")}
-              {renderBracketCard("Quarti 3", "1° Girone B", "4° Girone A", "28 mag, 21:00", "QF3")}
-              {renderBracketCard("Quarti 4", "2° Girone A", "3° Girone B", "28 mag, 21:30", "QF4")}
+              {renderBracketCard("Quarti 1", "1° Girone", "7°/8° Girone", "26 giu, 19:00", "QF1")}
+              {renderBracketCard("Quarti 2", "4° Girone", "5°/6° Girone", "26 giu, 20:10", "QF2")}
+              {renderBracketCard("Quarti 3", "3° Girone", "5°/6° Girone", "26 giu, 20:45", "QF3")}
+              {renderBracketCard("Quarti 4", "2° Girone", "7°/8° Girone", "26 giu, 19:35", "QF4")}
             </div>
 
             {/* SVG Connector Lines (Quarti -> Semifinali) */}
@@ -566,8 +566,8 @@ export default function CalendarioIsland() {
 
             {/* Row 2: Semifinali */}
             <div className="bracket-row">
-              {renderBracketCard("Semifinale 1", "Vincitore Quarti 1", "Vincitore Quarti 2", "30 mag, 21:00", "SF1")}
-              {renderBracketCard("Semifinale 2", "Vincitore Quarti 3", "Vincitore Quarti 4", "30 mag, 21:00", "SF2")}
+              {renderBracketCard("Semifinale 1", "Vincitore Quarti 1", "Vincitore Quarti 2", "26 giu, 21:20", "SF1")}
+              {renderBracketCard("Semifinale 2", "Vincitore Quarti 3", "Vincitore Quarti 4", "26 giu, 21:55", "SF2")}
             </div>
 
             {/* SVG Connector Lines (Semifinali -> Finale) */}
@@ -582,7 +582,7 @@ export default function CalendarioIsland() {
 
             {/* Row 3: Finale */}
             <div className="bracket-row-center">
-              {renderBracketCard("🏆 FINALE 🏆", "Vincitore SF1", "Vincitore SF2", "30 mag, 22:00", "Finale", true)}
+              {renderBracketCard("🏆 FINALE 🏆", "Vincitore SF1", "Vincitore SF2", "26 giu, 22:45", "Finale", true)}
             </div>
           </div>
         </div>
