@@ -103,6 +103,24 @@ const navItems = [
       </div>
     </div>
 
+    <!-- PWA Helper Guide (In-App Browsers) -->
+    <div id="pwa-inapp-banner" style="position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); width: calc(100% - 32px); max-width: 480px; z-index: 9999; display: none; flex-direction: column; gap: 8px; padding: 16px; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(16px) saturate(180%); -webkit-backdrop-filter: blur(16px) saturate(180%); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); color: white; transition: all 0.3s ease;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <img src="/Logo_Torneo.png" alt="Logo" style="width: 38px; height: 38px; border-radius: 8px; object-fit: cover;" />
+          <div>
+            <div style="font-size: 0.85rem; font-weight: 700; color: white;">Apri nel Browser</div>
+            <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.7);">Per installare questa applicazione:</div>
+          </div>
+        </div>
+        <button id="pwa-inapp-close-btn" style="background: transparent; color: rgba(255, 255, 255, 0.5); font-size: 1rem; border: none; padding: 4px 8px; cursor: pointer;">✕</button>
+      </div>
+      <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.9); line-height: 1.4; padding-left: 48px;">
+        Sei dentro una chat o un social (es. WhatsApp, Instagram, Facebook).<br/>
+        Tocca i tre puntini <span style="font-weight: bold;">...</span> (o l'icona di condivisione) e seleziona <strong>"Apri in Safari"</strong> o <strong>"Apri in Chrome"</strong> per poterla installare.
+      </div>
+    </div>
+
     <script>
       // Register Service Worker only in production to prevent local development caching
       if (import.meta.env.PROD && 'serviceWorker' in navigator) {
@@ -122,6 +140,8 @@ const navItems = [
         const closeBtn = document.getElementById('pwa-close-banner-btn');
         const iosBanner = document.getElementById('pwa-ios-banner');
         const iosCloseBtn = document.getElementById('pwa-ios-close-btn');
+        const inappBanner = document.getElementById('pwa-inapp-banner');
+        const inappCloseBtn = document.getElementById('pwa-inapp-close-btn');
 
         if (closeBtn && installBanner) {
           closeBtn.addEventListener('click', () => {
@@ -150,9 +170,31 @@ const navItems = [
           });
         }
 
+        if (inappCloseBtn && inappBanner) {
+          inappCloseBtn.addEventListener('click', () => {
+            inappBanner.style.display = 'none';
+            sessionStorage.setItem('pwa-dismissed', 'true');
+          });
+        }
+
         // Check if already dismissed in this session
         if (sessionStorage.getItem('pwa-dismissed') === 'true') {
           return;
+        }
+
+        // Rileva se siamo dentro un browser in-app (social webview)
+        const ua = navigator.userAgent || navigator.vendor || (window as any).opera;
+        const isInApp = /FBAN|FBAV|Instagram|Twitter|Threads|Snapchat|Pinterest|Line|Telegram/i.test(ua) || (ua.includes('WhatsApp') && !ua.includes('Macintosh'));
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone;
+
+        if (isInApp && !isStandalone && inappBanner) {
+          // Mostra il banner in-app dopo 3 secondi
+          setTimeout(() => {
+            if (sessionStorage.getItem('pwa-dismissed') !== 'true') {
+              inappBanner.style.display = 'flex';
+            }
+          }, 3000);
+          return; // Blocca gli altri banner perché l'utente è nella WebView e non può installare direttamente
         }
 
         // Show cached prompt if available
@@ -162,7 +204,6 @@ const navItems = [
 
         // Handle iOS specific helper
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
-        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone;
 
         if (isIOS && !isStandalone && iosBanner) {
           // Show iOS installation guide after 3 seconds
