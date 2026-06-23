@@ -170,11 +170,12 @@ export default function PlayerStatsModal({ playerId, onClose, themeColor = 'neut
           let powerCards = 0;
 
           const processedHistory = events.map(ev => {
-            if (ev.type === 'GOAL') goals++;
-            else if (ev.type === 'ASSIST') assists++;
-            else if (ev.type === 'YELLOW_CARD') yellows++;
-            else if (ev.type === 'RED_CARD') reds++;
-            else if (ev.type === 'POWER_CARD' || ev.type === 'CARTA') powerCards++;
+            const isGoal = ev.type === 'GOAL' || (ev.type === 'CARTA' && ev.detail && (ev.detail === 'starplayer' || ev.detail === 'goalx2' || ev.detail.endsWith('::success')));
+            if (isGoal) goals++;
+            if (ev.type === 'ASSIST') assists++;
+            if (ev.type === 'YELLOW_CARD') yellows++;
+            if (ev.type === 'RED_CARD') reds++;
+            if (ev.type === 'POWER_CARD' || ev.type === 'CARTA') powerCards++;
 
             // Determine opponent
             const matchData = ev.match as any;

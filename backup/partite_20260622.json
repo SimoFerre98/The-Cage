@@ -1,0 +1,750 @@
+{
+  "date": "2026-06-22",
+  "matches": [
+    {
+      "id": "a1be1a6d-7427-4360-b063-d9e173bcbe17",
+      "match_date": "2026-06-22T17:30:00+00:00",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 3,
+      "away_score": 2,
+      "home_team": {
+        "id": "6db87a59-8883-47a4-8a54-32be0931e306",
+        "name": "FC Pontos"
+      },
+      "away_team": {
+        "id": "086f9534-0dec-48ad-8129-c40228bb70ab",
+        "name": "Amatori Calcio Genova"
+      },
+      "events": [
+        {
+          "id": "de2c1e1f-4ce6-465c-a61b-7c442a6db054",
+          "match_id": "a1be1a6d-7427-4360-b063-d9e173bcbe17",
+          "minute": 5,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Pontos"
+          },
+          "player": {
+            "name": "Matteo Decorato"
+          }
+        },
+        {
+          "id": "af0d0a1d-bdf8-47e5-b2c3-9e61972a4b2c",
+          "match_id": "a1be1a6d-7427-4360-b063-d9e173bcbe17",
+          "minute": 11,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Amatori Calcio Genova"
+          },
+          "player": {
+            "name": "Giulio Torre"
+          }
+        },
+        {
+          "id": "532a1bd1-3aec-48e1-b3fd-942a5176e62c",
+          "match_id": "a1be1a6d-7427-4360-b063-d9e173bcbe17",
+          "minute": 25,
+          "type": "CARTA",
+          "detail": "penalty::success",
+          "team": {
+            "name": "Amatori Calcio Genova"
+          },
+          "player": {
+            "name": "Francesco Spataro"
+          }
+        },
+        {
+          "id": "47e75cf3-764b-4b53-bda7-4c2f3932d65c",
+          "match_id": "a1be1a6d-7427-4360-b063-d9e173bcbe17",
+          "minute": 25,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Pontos"
+          },
+          "player": {
+            "name": "Mattia Fazio"
+          }
+        },
+        {
+          "id": "840c10f1-41f9-4179-a71b-15a49c672b37",
+          "match_id": "a1be1a6d-7427-4360-b063-d9e173bcbe17",
+          "minute": 25,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Pontos"
+          },
+          "player": {
+            "name": "Mattia Fazio"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af",
+      "match_date": "2026-06-22T18:05:00+00:00",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 3,
+      "away_score": 3,
+      "home_team": {
+        "id": "f119e2ee-e6b2-4b75-881a-4c6a9bff586c",
+        "name": "Gli Umili"
+      },
+      "away_team": {
+        "id": "daa8c7d2-95f5-4a07-839d-fd74780e5ef7",
+        "name": "Sezione 164"
+      },
+      "events": [
+        {
+          "id": "8bf251d7-7ab0-4315-a083-509a5ada58be",
+          "match_id": "fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af",
+          "minute": 2,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Gabriele Robotti"
+          }
+        },
+        {
+          "id": "b1022f96-1ffb-43c3-8754-e5507faec861",
+          "match_id": "fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af",
+          "minute": 3,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gli Umili"
+          },
+          "player": {
+            "name": "Lorenzo Papiri"
+          }
+        },
+        {
+          "id": "4c9cdf12-7652-408a-84e3-2e5f52abac9f",
+          "match_id": "fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af",
+          "minute": 4,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gli Umili"
+          },
+          "player": {
+            "name": "Elio Casanova"
+          }
+        },
+        {
+          "id": "a8bab54a-c155-455e-ba79-a61f4f06f2c9",
+          "match_id": "fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af",
+          "minute": 19,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Gabriele Robotti"
+          }
+        },
+        {
+          "id": "13e519ec-6b2a-40be-8bf6-811fbfafe7e9",
+          "match_id": "fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af",
+          "minute": 20,
+          "type": "CARTA",
+          "detail": "penalty::success",
+          "team": {
+            "name": "Gli Umili"
+          },
+          "player": {
+            "name": "Tommaso Verardo"
+          }
+        },
+        {
+          "id": "fd6849c4-1e1b-4ee8-aac9-0e50831c2d40",
+          "match_id": "fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af",
+          "minute": 20,
+          "type": "CARTA",
+          "detail": "penalty::fail",
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Gabriele Robotti"
+          }
+        },
+        {
+          "id": "bef07926-798a-423b-b8bb-18fdb4df53fd",
+          "match_id": "fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af",
+          "minute": 20,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Gabriele Robotti"
+          }
+        }
+      ]
+    },
+    {
+      "id": "9b5b7cae-70b9-4be2-84df-1884fb0308f9",
+      "match_date": "2026-06-22T18:40:00+00:00",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 1,
+      "away_score": 2,
+      "home_team": {
+        "id": "13d5e6e7-bc36-465f-b344-d4f8d5671815",
+        "name": "FC Ceres"
+      },
+      "away_team": {
+        "id": "3b151da3-44fd-4162-b80f-7e9575a03960",
+        "name": "FC Murta"
+      },
+      "events": [
+        {
+          "id": "e8088978-aa27-4535-8420-2c7207a73619",
+          "match_id": "9b5b7cae-70b9-4be2-84df-1884fb0308f9",
+          "minute": 2,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Murta"
+          },
+          "player": {
+            "name": "Kevin Ventura"
+          }
+        },
+        {
+          "id": "a167ac73-5cdd-40cd-8a51-f5d570cb77a1",
+          "match_id": "9b5b7cae-70b9-4be2-84df-1884fb0308f9",
+          "minute": 19,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Ceres"
+          },
+          "player": {
+            "name": "Samuele Del Fiore"
+          }
+        },
+        {
+          "id": "2cda3ea5-1e18-450a-bef8-c98c529ca830",
+          "match_id": "9b5b7cae-70b9-4be2-84df-1884fb0308f9",
+          "minute": 24,
+          "type": "CARTA",
+          "detail": "shootout::success",
+          "team": {
+            "name": "FC Murta"
+          },
+          "player": {
+            "name": "Luca Dianti"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+      "match_date": "2026-06-22T19:15:00+00:00",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 10,
+      "away_score": 3,
+      "home_team": {
+        "id": "daa8c7d2-95f5-4a07-839d-fd74780e5ef7",
+        "name": "Sezione 164"
+      },
+      "away_team": {
+        "id": "086f9534-0dec-48ad-8129-c40228bb70ab",
+        "name": "Amatori Calcio Genova"
+      },
+      "events": [
+        {
+          "id": "c09f720e-899c-40fc-9e09-049fe111807a",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 3,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Riccardo Mazzolini"
+          }
+        },
+        {
+          "id": "858dad73-4c22-4a12-87a4-b6f3e176d7cf",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 8,
+          "type": "ASSIST",
+          "detail": null,
+          "team": {
+            "name": "Amatori Calcio Genova"
+          },
+          "player": {
+            "name": "Matteo Campi"
+          }
+        },
+        {
+          "id": "c2300e23-8db7-428e-87e2-7569823a92a3",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 8,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Amatori Calcio Genova"
+          },
+          "player": {
+            "name": "Fabio Calzia"
+          }
+        },
+        {
+          "id": "5144a35c-3e4d-4869-a3d3-e7819418048c",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 11,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Filippo Turrini"
+          }
+        },
+        {
+          "id": "3d7614cd-b8b1-4e57-9887-a12a376f7c6c",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 11,
+          "type": "ASSIST",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Riccardo Mazzolini"
+          }
+        },
+        {
+          "id": "9ea38bac-3f8a-4c6e-9fd4-885134d467da",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 12,
+          "type": "ASSIST",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Riccardo Mazzolini"
+          }
+        },
+        {
+          "id": "e1933f21-159b-4c30-a423-7cb5c60d6887",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 12,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Samuele Mangano"
+          }
+        },
+        {
+          "id": "6c35e107-1b00-42dc-8ecd-5392582a0d1b",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 14,
+          "type": "ASSIST",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Ivan Grispo"
+          }
+        },
+        {
+          "id": "1b6e705d-8f86-475b-9313-559dce0a8abb",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 14,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Gabriele Robotti"
+          }
+        },
+        {
+          "id": "2eded1ce-45e4-488c-ac24-c6dc59c60a52",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 17,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Samuele Mangano"
+          }
+        },
+        {
+          "id": "628a873a-2670-4f24-a57f-b2a50f28dbf5",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 17,
+          "type": "ASSIST",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Ivan Grispo"
+          }
+        },
+        {
+          "id": "ccb82bfb-524f-49e8-862d-c50651fd3125",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 21,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Ivan Grispo"
+          }
+        },
+        {
+          "id": "ea3c7fed-cf1b-4c9d-99c2-7ebdabd154ef",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 23,
+          "type": "CARTA",
+          "detail": "goalx2",
+          "team": {
+            "name": "Amatori Calcio Genova"
+          },
+          "player": {
+            "name": "Giulio Torre"
+          }
+        },
+        {
+          "id": "66f7f3f1-31b7-4697-8b1f-9dae6747a495",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 25,
+          "type": "CARTA",
+          "detail": "starplayer",
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Ivan Grispo"
+          }
+        },
+        {
+          "id": "484fe069-fe52-42b0-82da-51a0295933a4",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 28,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Gabriele Robotti"
+          }
+        },
+        {
+          "id": "d10a18be-4cad-4e7f-b19c-5ce046d0f585",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 28,
+          "type": "ASSIST",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Riccardo Mazzolini"
+          }
+        },
+        {
+          "id": "90477529-53f1-4dee-b38a-3ecd3ceada09",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 30,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Gabriele Robotti"
+          }
+        }
+      ]
+    },
+    {
+      "id": "993ec7b5-3f94-4df7-aa98-5ceaaa73d87f",
+      "match_date": "2026-06-22T19:50:00+00:00",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 0,
+      "away_score": 5,
+      "home_team": {
+        "id": "3b151da3-44fd-4162-b80f-7e9575a03960",
+        "name": "FC Murta"
+      },
+      "away_team": {
+        "id": "6db87a59-8883-47a4-8a54-32be0931e306",
+        "name": "FC Pontos"
+      },
+      "events": [
+        {
+          "id": "c5872fa1-a99a-423f-87f4-e41b81853eed",
+          "match_id": "993ec7b5-3f94-4df7-aa98-5ceaaa73d87f",
+          "minute": 3,
+          "type": "ASSIST",
+          "detail": null,
+          "team": {
+            "name": "FC Pontos"
+          },
+          "player": {
+            "name": "Mattia Fazio"
+          }
+        },
+        {
+          "id": "b2b0a89d-ae58-46b6-9282-21e8e3f64b36",
+          "match_id": "993ec7b5-3f94-4df7-aa98-5ceaaa73d87f",
+          "minute": 3,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Pontos"
+          },
+          "player": {
+            "name": "Martino Gonzalez"
+          }
+        },
+        {
+          "id": "c498c705-4608-4c8f-bfc0-395780051b12",
+          "match_id": "993ec7b5-3f94-4df7-aa98-5ceaaa73d87f",
+          "minute": 12,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Pontos"
+          },
+          "player": {
+            "name": "Matteo Decorato"
+          }
+        },
+        {
+          "id": "05f4d72b-c070-4bbe-ab06-cfe1b9ae7539",
+          "match_id": "993ec7b5-3f94-4df7-aa98-5ceaaa73d87f",
+          "minute": 20,
+          "type": "CARTA",
+          "detail": "shootout::success",
+          "team": {
+            "name": "FC Pontos"
+          },
+          "player": {
+            "name": "Matteo Decorato"
+          }
+        },
+        {
+          "id": "06afa8bd-489a-44a3-9d55-41046e345685",
+          "match_id": "993ec7b5-3f94-4df7-aa98-5ceaaa73d87f",
+          "minute": 21,
+          "type": "CARTA",
+          "detail": "shootout::fail",
+          "team": {
+            "name": "FC Murta"
+          },
+          "player": {
+            "name": "Luca Dianti"
+          }
+        },
+        {
+          "id": "c1de9848-a743-48c7-b3fc-bd3096d9f3c0",
+          "match_id": "993ec7b5-3f94-4df7-aa98-5ceaaa73d87f",
+          "minute": 27,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Pontos"
+          },
+          "player": {
+            "name": "Mattia Fazio"
+          }
+        },
+        {
+          "id": "093d8866-8abd-4725-b45b-949e7bd1ef94",
+          "match_id": "993ec7b5-3f94-4df7-aa98-5ceaaa73d87f",
+          "minute": 28,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Pontos"
+          },
+          "player": {
+            "name": "Matteo Decorato"
+          }
+        }
+      ]
+    },
+    {
+      "id": "63fae8d0-75b5-4633-a370-66ac31549f09",
+      "match_date": "2026-06-22T20:25:00+00:00",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 2,
+      "away_score": 7,
+      "home_team": {
+        "id": "13d5e6e7-bc36-465f-b344-d4f8d5671815",
+        "name": "FC Ceres"
+      },
+      "away_team": {
+        "id": "f119e2ee-e6b2-4b75-881a-4c6a9bff586c",
+        "name": "Gli Umili"
+      },
+      "events": [
+        {
+          "id": "6edd1576-6c3c-411d-8c76-f367a8626b17",
+          "match_id": "63fae8d0-75b5-4633-a370-66ac31549f09",
+          "minute": 1,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gli Umili"
+          },
+          "player": {
+            "name": "Lorenzo Papiri"
+          }
+        },
+        {
+          "id": "e0fad9f1-3fde-4ea0-b25f-0c04dc2b0f38",
+          "match_id": "63fae8d0-75b5-4633-a370-66ac31549f09",
+          "minute": 5,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gli Umili"
+          },
+          "player": {
+            "name": "Paolo Gaglianò"
+          }
+        },
+        {
+          "id": "4176a0b3-fbdc-4c17-8c4f-1f6e7e3acb4a",
+          "match_id": "63fae8d0-75b5-4633-a370-66ac31549f09",
+          "minute": 6,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gli Umili"
+          },
+          "player": {
+            "name": "Paolo Gaglianò"
+          }
+        },
+        {
+          "id": "fb83869a-239d-44ed-a33e-01e20820c611",
+          "match_id": "63fae8d0-75b5-4633-a370-66ac31549f09",
+          "minute": 12,
+          "type": "CARTA",
+          "detail": "shootout::fail",
+          "team": {
+            "name": "FC Ceres"
+          },
+          "player": {
+            "name": "Samuele Del Fiore"
+          }
+        },
+        {
+          "id": "91331536-8aac-4ca4-9998-af050925681f",
+          "match_id": "63fae8d0-75b5-4633-a370-66ac31549f09",
+          "minute": 17,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gli Umili"
+          },
+          "player": {
+            "name": "Paolo Gaglianò"
+          }
+        },
+        {
+          "id": "b57704cf-b1bf-4609-bb8a-41151aa8f981",
+          "match_id": "63fae8d0-75b5-4633-a370-66ac31549f09",
+          "minute": 19,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Ceres"
+          },
+          "player": {
+            "name": "Samuele Del Fiore"
+          }
+        },
+        {
+          "id": "f93687d3-192a-4acb-8db8-2347e4d87e71",
+          "match_id": "63fae8d0-75b5-4633-a370-66ac31549f09",
+          "minute": 24,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gli Umili"
+          },
+          "player": {
+            "name": "Elio Casanova"
+          }
+        },
+        {
+          "id": "91be10d1-1478-4823-bb85-dd600e2d5f2d",
+          "match_id": "63fae8d0-75b5-4633-a370-66ac31549f09",
+          "minute": 26,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gli Umili"
+          },
+          "player": {
+            "name": "Paolo Gaglianò"
+          }
+        },
+        {
+          "id": "34c7404a-39a0-41f0-8797-ff767132cca1",
+          "match_id": "63fae8d0-75b5-4633-a370-66ac31549f09",
+          "minute": 27,
+          "type": "CARTA",
+          "detail": "penalty::success",
+          "team": {
+            "name": "Gli Umili"
+          },
+          "player": {
+            "name": "Simone Valle"
+          }
+        },
+        {
+          "id": "c14c6308-32c6-4515-81ff-f0cb751ecbed",
+          "match_id": "63fae8d0-75b5-4633-a370-66ac31549f09",
+          "minute": 30,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Ceres"
+          },
+          "player": {
+            "name": "Marco Gagna"
+          }
+        }
+      ]
+    }
+  ]
+}

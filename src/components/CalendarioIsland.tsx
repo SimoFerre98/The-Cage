@@ -528,7 +528,9 @@ export default function CalendarioIsland() {
       {tab === 'tabellone' && (
         <div className="bracket-scroll-wrapper">
           <div className="bracket-container animate-stagger" style={{ marginTop: '2rem' }}>
-             {/* Row 1: Quarti di Finale */}
+            
+            {/* Sezione Quarti di Finale */}
+            <div className="bracket-section-header">Quarti di Finale</div>
             <div className="bracket-row">
               {renderBracketCard("Quarti 1", "1° Girone", "7°/8° Girone", "26 giu, 19:00", "QF1")}
               {renderBracketCard("Quarti 2", "4° Girone", "5°/6° Girone", "26 giu, 20:10", "QF2")}
@@ -564,7 +566,8 @@ export default function CalendarioIsland() {
               </svg>
             </div>
 
-            {/* Row 2: Semifinali */}
+            {/* Sezione Semifinali */}
+            <div className="bracket-section-header">Semifinali</div>
             <div className="bracket-row">
               {renderBracketCard("Semifinale 1", "Vincitore Quarti 1", "Vincitore Quarti 2", "26 giu, 21:20", "SF1")}
               {renderBracketCard("Semifinale 2", "Vincitore Quarti 3", "Vincitore Quarti 4", "26 giu, 21:55", "SF2")}
@@ -580,7 +583,8 @@ export default function CalendarioIsland() {
               </svg>
             </div>
 
-            {/* Row 3: Finale */}
+            {/* Sezione Finale */}
+            <div className="bracket-section-header">Finale</div>
             <div className="bracket-row-center">
               {renderBracketCard("🏆 FINALE 🏆", "Vincitore SF1", "Vincitore SF2", "26 giu, 22:45", "Finale", true)}
             </div>

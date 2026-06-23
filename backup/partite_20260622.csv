@@ -1,0 +1,61 @@
+﻿RISULTATI DELLE PARTITE DEL 2026-06-22;;;;;;;
+ID Partita;Data e Ora;Fase;Squadra Casa;Punteggio Casa;Punteggio Ospite;Squadra Ospite;Stato
+a1be1a6d-7427-4360-b063-d9e173bcbe17;22/06/2026, 19:30:00;Fase a Gironi;FC Pontos;3;2;Amatori Calcio Genova;TERMINATA
+fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af;22/06/2026, 20:05:00;Fase a Gironi;Gli Umili;3;3;Sezione 164;TERMINATA
+9b5b7cae-70b9-4be2-84df-1884fb0308f9;22/06/2026, 20:40:00;Fase a Gironi;FC Ceres;1;2;FC Murta;TERMINATA
+ab9aab97-0c76-46b7-b728-16e45dd82e63;22/06/2026, 21:15:00;Fase a Gironi;Sezione 164;10;3;Amatori Calcio Genova;TERMINATA
+993ec7b5-3f94-4df7-aa98-5ceaaa73d87f;22/06/2026, 21:50:00;Fase a Gironi;FC Murta;0;5;FC Pontos;TERMINATA
+63fae8d0-75b5-4633-a370-66ac31549f09;22/06/2026, 22:25:00;Fase a Gironi;FC Ceres;2;7;Gli Umili;TERMINATA
+
+
+DETTAGLIO EVENTI DELLA GIORNATA (GOAL, CARTELLINI, CARTE KINGS LEAGUE);;;;;;;
+ID Partita;Partita;Minuto;Tipo Evento;Squadra;Giocatore;Dettaglio
+63fae8d0-75b5-4633-a370-66ac31549f09;FC Ceres - Gli Umili;1';GOL;Gli Umili;Lorenzo Papiri;
+63fae8d0-75b5-4633-a370-66ac31549f09;FC Ceres - Gli Umili;5';GOL;Gli Umili;Paolo Gaglianò;
+63fae8d0-75b5-4633-a370-66ac31549f09;FC Ceres - Gli Umili;6';GOL;Gli Umili;Paolo Gaglianò;
+63fae8d0-75b5-4633-a370-66ac31549f09;FC Ceres - Gli Umili;12';CARTA;FC Ceres;Samuele Del Fiore;shootout::fail
+63fae8d0-75b5-4633-a370-66ac31549f09;FC Ceres - Gli Umili;17';GOL;Gli Umili;Paolo Gaglianò;
+63fae8d0-75b5-4633-a370-66ac31549f09;FC Ceres - Gli Umili;19';GOL;FC Ceres;Samuele Del Fiore;
+63fae8d0-75b5-4633-a370-66ac31549f09;FC Ceres - Gli Umili;24';GOL;Gli Umili;Elio Casanova;
+63fae8d0-75b5-4633-a370-66ac31549f09;FC Ceres - Gli Umili;26';GOL;Gli Umili;Paolo Gaglianò;
+63fae8d0-75b5-4633-a370-66ac31549f09;FC Ceres - Gli Umili;27';CARTA;Gli Umili;Simone Valle;penalty::success
+63fae8d0-75b5-4633-a370-66ac31549f09;FC Ceres - Gli Umili;30';GOL;FC Ceres;Marco Gagna;
+993ec7b5-3f94-4df7-aa98-5ceaaa73d87f;FC Murta - FC Pontos;3';ASSIST;FC Pontos;Mattia Fazio;
+993ec7b5-3f94-4df7-aa98-5ceaaa73d87f;FC Murta - FC Pontos;3';GOL;FC Pontos;Martino Gonzalez;
+993ec7b5-3f94-4df7-aa98-5ceaaa73d87f;FC Murta - FC Pontos;12';GOL;FC Pontos;Matteo Decorato;
+993ec7b5-3f94-4df7-aa98-5ceaaa73d87f;FC Murta - FC Pontos;20';CARTA;FC Pontos;Matteo Decorato;shootout::success
+993ec7b5-3f94-4df7-aa98-5ceaaa73d87f;FC Murta - FC Pontos;21';CARTA;FC Murta;Luca Dianti;shootout::fail
+993ec7b5-3f94-4df7-aa98-5ceaaa73d87f;FC Murta - FC Pontos;27';GOL;FC Pontos;Mattia Fazio;
+993ec7b5-3f94-4df7-aa98-5ceaaa73d87f;FC Murta - FC Pontos;28';GOL;FC Pontos;Matteo Decorato;
+9b5b7cae-70b9-4be2-84df-1884fb0308f9;FC Ceres - FC Murta;2';GOL;FC Murta;Kevin Ventura;
+9b5b7cae-70b9-4be2-84df-1884fb0308f9;FC Ceres - FC Murta;19';GOL;FC Ceres;Samuele Del Fiore;
+9b5b7cae-70b9-4be2-84df-1884fb0308f9;FC Ceres - FC Murta;24';CARTA;FC Murta;Luca Dianti;shootout::success
+a1be1a6d-7427-4360-b063-d9e173bcbe17;FC Pontos - Amatori Calcio Genova;5';GOL;FC Pontos;Matteo Decorato;
+a1be1a6d-7427-4360-b063-d9e173bcbe17;FC Pontos - Amatori Calcio Genova;11';GOL;Amatori Calcio Genova;Giulio Torre;
+a1be1a6d-7427-4360-b063-d9e173bcbe17;FC Pontos - Amatori Calcio Genova;25';CARTA;Amatori Calcio Genova;Francesco Spataro;penalty::success
+a1be1a6d-7427-4360-b063-d9e173bcbe17;FC Pontos - Amatori Calcio Genova;25';GOL;FC Pontos;Mattia Fazio;
+a1be1a6d-7427-4360-b063-d9e173bcbe17;FC Pontos - Amatori Calcio Genova;25';GOL;FC Pontos;Mattia Fazio;
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;3';GOL;Sezione 164;Riccardo Mazzolini;
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;8';ASSIST;Amatori Calcio Genova;Matteo Campi;
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;8';GOL;Amatori Calcio Genova;Fabio Calzia;
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;11';GOL;Sezione 164;Filippo Turrini;
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;11';ASSIST;Sezione 164;Riccardo Mazzolini;
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;12';ASSIST;Sezione 164;Riccardo Mazzolini;
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;12';GOL;Sezione 164;Samuele Mangano;
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;14';ASSIST;Sezione 164;Ivan Grispo;
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;14';GOL;Sezione 164;Gabriele Robotti;
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;17';GOL;Sezione 164;Samuele Mangano;
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;17';ASSIST;Sezione 164;Ivan Grispo;
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;21';GOL;Sezione 164;Ivan Grispo;
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;23';CARTA;Amatori Calcio Genova;Giulio Torre;goalx2
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;25';CARTA;Sezione 164;Ivan Grispo;starplayer
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;28';GOL;Sezione 164;Gabriele Robotti;
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;28';ASSIST;Sezione 164;Riccardo Mazzolini;
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;30';GOL;Sezione 164;Gabriele Robotti;
+fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af;Gli Umili - Sezione 164;2';GOL;Sezione 164;Gabriele Robotti;
+fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af;Gli Umili - Sezione 164;3';GOL;Gli Umili;Lorenzo Papiri;
+fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af;Gli Umili - Sezione 164;4';GOL;Gli Umili;Elio Casanova;
+fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af;Gli Umili - Sezione 164;19';GOL;Sezione 164;Gabriele Robotti;
+fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af;Gli Umili - Sezione 164;20';CARTA;Gli Umili;Tommaso Verardo;penalty::success
+fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af;Gli Umili - Sezione 164;20';CARTA;Sezione 164;Gabriele Robotti;penalty::fail
+fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af;Gli Umili - Sezione 164;20';GOL;Sezione 164;Gabriele Robotti;

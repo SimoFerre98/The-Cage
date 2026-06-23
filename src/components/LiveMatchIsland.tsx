@@ -250,7 +250,8 @@ export default function LiveMatchIsland() {
 
   events.forEach(ev => {
     if (ev.player_id) {
-      if (ev.type === 'GOAL' || ev.type === 'Goal' || ev.type === 'Goal (Penalty)' || ev.type === 'Goal (Stella)' || ev.type === 'Goal (Raddoppiato)') {
+      const isGoal = ev.type === 'GOAL' || ev.type === 'Goal' || ev.type === 'Goal (Penalty)' || ev.type === 'Goal (Stella)' || ev.type === 'Goal (Raddoppiato)' || (ev.type === 'CARTA' && ev.detail && (ev.detail === 'starplayer' || ev.detail === 'goalx2' || ev.detail.endsWith('::success')));
+      if (isGoal) {
         playerGoals[ev.player_id] = (playerGoals[ev.player_id] || 0) + 1;
       } else if (ev.type === 'AMMONIZIONE' || ev.type === 'Yellow Card') {
         playerYellows[ev.player_id] = true;
