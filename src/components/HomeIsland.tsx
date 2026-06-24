@@ -402,7 +402,7 @@ export default function HomeIsland() {
       {/* ── Page Header / Branding ── */}
       <div className="page-header animate-[slideUpFade_0.6s_var(--ease-apple)] flex flex-col items-center">
         <img 
-          src="/Logo_Torneo.png" 
+          src="/Logo_Torneo.webp" 
           alt="Logo Torneo" 
           className="w-24 h-24 mx-auto mb-4 object-contain" 
         />
