@@ -411,7 +411,7 @@ export default function HomeIsland() {
         <div className="accent-line mx-auto mt-3"></div>
 
         {/* Quick Info Chips */}
-        <div className="flex flex-wrap justify-center gap-3 mt-5 w-full max-w-[400px] px-4">
+        <div className="flex flex-wrap justify-center gap-3 mt-5 w-full max-w-[500px] px-4">
           <button
             onClick={() => setSelectedImage('/menudefinitivo.jpeg')}
             className="flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-black text-white/90 uppercase tracking-wider bg-white/5 hover:bg-white/10 hover:text-white border border-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur active:scale-95 cursor-pointer outline-none shadow-[0_2px_8px_rgba(255,255,255,0.03)]"
@@ -425,6 +425,13 @@ export default function HomeIsland() {
           >
             <span>🧠</span>
             <span>Il Quizzone</span>
+          </button>
+          <button
+            onClick={() => setSelectedImage('/mvp_20260623.png')}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-black text-white/90 uppercase tracking-wider bg-white/5 hover:bg-white/10 hover:text-white border border-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur active:scale-95 cursor-pointer outline-none shadow-[0_2px_8px_rgba(255,255,255,0.03)]"
+          >
+            <span>🏅</span>
+            <span>Vota MVP</span>
           </button>
         </div>
       </div>
@@ -703,14 +710,33 @@ export default function HomeIsland() {
         >
           {/* Controls Bar */}
           <div className="flex items-center justify-between w-full max-w-[90%] md:max-w-[600px] px-2" onClick={e => e.stopPropagation()}>
-            <a 
-              href={selectedImage} 
-              download={selectedImage.toLowerCase().includes('menu') ? 'Menu_Taverna_Memorial_Gerry.jpeg' : 'Quizzone_Memorial_Gerry.jpeg'}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-500 border border-blue-500/30 text-xs font-bold text-white transition-colors cursor-pointer outline-none shadow-[0_2px_8px_rgba(59,130,246,0.2)]"
-            >
-              <span>Scarica File</span>
-              <span>⬇️</span>
-            </a>
+            <div className="flex items-center gap-2">
+              <a 
+                href={selectedImage} 
+                download={
+                  selectedImage.toLowerCase().includes('menu') 
+                    ? 'Menu_Taverna_Memorial_Gerry.jpeg' 
+                    : selectedImage.toLowerCase().includes('mvp')
+                      ? 'MVP_Martedi_23_Gerry.png'
+                      : 'Quizzone_Memorial_Gerry.jpeg'
+                }
+                className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-500 border border-blue-500/30 text-xs font-bold text-white transition-colors cursor-pointer outline-none shadow-[0_2px_8px_rgba(59,130,246,0.2)]"
+              >
+                <span>Scarica File</span>
+                <span>⬇️</span>
+              </a>
+              {selectedImage.toLowerCase().includes('mvp') && (
+                <a 
+                  href="https://www.instagram.com/torneomemorialgerry"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-purple-600 via-pink-600 to-yellow-500 hover:opacity-90 border border-pink-500/30 text-xs font-black text-white transition-all cursor-pointer outline-none shadow-[0_2px_8px_rgba(236,72,153,0.3)] animate-pulse"
+                >
+                  <span>Vota su Instagram</span>
+                  <span>📸</span>
+                </a>
+              )}
+            </div>
             <button 
               onClick={() => setSelectedImage(null)}
               className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors border border-white/20 cursor-pointer text-sm font-bold outline-none"
