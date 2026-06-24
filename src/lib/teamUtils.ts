@@ -30,20 +30,20 @@ export function getTeamLogo(teamName: string): string | null {
   if (!teamName) return null;
   const name = teamName.toLowerCase().trim().replace(/\./g, '');
   
-  if (name.includes('amatori') || name.includes('genova')) return '/Logos/amatoricalcio.png';
-  if (name.includes('ucg') || name.includes('ugc')) return '/Logos/UCG.png';
-  if (name.includes('umili')) return '/Logos/umili.png';
-  if (name.includes('taverna')) return '/Logos/taverna.png';
-  if (name.includes('ceres')) return '/Logos/ceres.png';
-  if (name.includes('aston')) return '/Logos/aston birra.png';
-  if (name.includes('chainz')) return '/Logos/chainz.png';
-  if (name.includes('pontos')) return '/Logos/FcPontos.png';
-  if (name.includes('gilly')) return '/Logos/gilly.png';
-  if (name.includes('murta')) return '/Logos/murta.png';
-  if (name.includes('ketzmaja') || name.includes('teodoro')) return '/Logos/teodoro.png';
-  if (name.includes('sezione')) return '/Logos/sezione.png';
-  if (name.includes('dico')) return '/Logos/lodico.png';
-  if (name.includes('pontex') || name.includes('pirates')) return '/Logos/pirates.png';
+  if (name.includes('amatori') || name.includes('genova')) return '/Logos/amatoricalcio.webp';
+  if (name.includes('ucg') || name.includes('ugc')) return '/Logos/UCG.webp';
+  if (name.includes('umili')) return '/Logos/umili.webp';
+  if (name.includes('taverna')) return '/Logos/taverna.webp';
+  if (name.includes('ceres')) return '/Logos/ceres.webp';
+  if (name.includes('aston')) return '/Logos/aston birra.webp';
+  if (name.includes('chainz')) return '/Logos/chainz.webp';
+  if (name.includes('pontos')) return '/Logos/FcPontos.webp';
+  if (name.includes('gilly')) return '/Logos/gilly.webp';
+  if (name.includes('murta')) return '/Logos/murta.webp';
+  if (name.includes('ketzmaja') || name.includes('teodoro')) return '/Logos/teodoro.webp';
+  if (name.includes('sezione')) return '/Logos/sezione.webp';
+  if (name.includes('dico')) return '/Logos/lodico.webp';
+  if (name.includes('pontex') || name.includes('pirates')) return '/Logos/pirates.webp';
   
   return null;
 }
