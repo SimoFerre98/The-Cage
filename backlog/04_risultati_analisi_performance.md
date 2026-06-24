@@ -72,6 +72,6 @@ Il browser deve bloccare il rendering e scaricare, parsare ed eseguire l'intero 
 
 ## Prossimi Passi (Roadmap di Ottimizzazione)
 
-1. **Sprint 1 (Database)**: Creare e applicare la migrazione SQL per inserire gli indici delle chiavi esterne.
-2. **Sprint 2 (Asset)**: Modificare i riferimenti al logo del torneo in `.webp` e convertire i loghi delle squadre in WebP.
-3. **Sprint 3 (Hydration)**: Ottimizzare le direttive di caricamento in Astro (`client:visible` su HomeIsland).
+1. **Sprint 1 (Database)**: Creare e applicare la migrazione SQL per inserire gli indici delle chiavi esterne. **[COMPLETATO]** (Indici B-Tree applicati a tutte le FK pubbliche).
+2. **Sprint 2 (Asset)**: Modificare i riferimenti al logo del torneo in `.webp` e convertire i loghi delle squadre in WebP. **[COMPLETATO]** (Logo torneo modificato a WebP; loghi delle 14 squadre convertiti in WebP e ridimensionati a un max di 256px, riducendo lo spazio da 3.52 MB a 310 KB, con un risparmio del 91.1%).
+3. **Sprint 3 (Hydration)**: Ottimizzare le direttive di caricamento in Astro (`client:visible` su HomeIsland). **[COMPLETATO]** (Aggiornato in `index.astro`).
