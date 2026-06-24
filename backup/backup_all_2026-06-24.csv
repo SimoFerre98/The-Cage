@@ -1,0 +1,143 @@
+RISULTATI DELLE PARTITE DEL TUTTE;;;;;;;
+ID Partita;Data e Ora;Fase;Squadra Casa;Punteggio Casa;Punteggio Ospite;Squadra Ospite;Stato
+a1be1a6d-7427-4360-b063-d9e173bcbe17;22/06/2026, 19:30:00;Fase a Gironi;FC Pontos;3;2;Amatori Calcio Genova;TERMINATA
+fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af;22/06/2026, 20:05:00;Fase a Gironi;Gli Umili;3;3;Sezione 164;TERMINATA
+9b5b7cae-70b9-4be2-84df-1884fb0308f9;22/06/2026, 20:40:00;Fase a Gironi;FC Ceres;1;2;FC Murta;TERMINATA
+ab9aab97-0c76-46b7-b728-16e45dd82e63;22/06/2026, 21:15:00;Fase a Gironi;Sezione 164;10;3;Amatori Calcio Genova;TERMINATA
+993ec7b5-3f94-4df7-aa98-5ceaaa73d87f;22/06/2026, 21:50:00;Fase a Gironi;FC Murta;0;5;FC Pontos;TERMINATA
+63fae8d0-75b5-4633-a370-66ac31549f09;22/06/2026, 22:25:00;Fase a Gironi;FC Ceres;2;7;Gli Umili;TERMINATA
+ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf;23/06/2026, 18:55:00;Fase a Gironi;UCG;4;7;Gilly Boys;TERMINATA
+5c06696f-e7ae-4a8e-93d3-c594383c6508;23/06/2026, 19:30:00;Fase a Gironi;Taverna FC;4;6;Aston Birra;TERMINATA
+8be74c6f-ac94-41b9-a119-7bd7c7d84bda;23/06/2026, 20:05:00;Fase a Gironi;PonteX Pirates;1;1;Lo Dico FC;TERMINATA
+217cf064-587f-437a-8d62-a331316dd0a5;23/06/2026, 20:40:00;Fase a Gironi;Gilly Boys;8;3;San Teodoro Ketzmaja;TERMINATA
+60f68aca-acb0-4a36-b6f8-b360d032df8a;23/06/2026, 21:15:00;Fase a Gironi;Chainz;2;7;Taverna FC;TERMINATA
+f84c5496-eba0-4268-96f6-6d36184968f9;23/06/2026, 21:50:00;Fase a Gironi;Aston Birra;2;2;UCG;TERMINATA
+8cae47e7-c8cd-4b9c-8c72-e372c91c073c;23/06/2026, 22:25:00;Fase a Gironi;San Teodoro Ketzmaja;2;1;PonteX Pirates;TERMINATA
+649b006b-a92f-4736-8d85-c8f90540c9dd;23/06/2026, 23:00:00;Fase a Gironi;Lo Dico FC;3;3;Chainz;TERMINATA
+82cba383-0446-4817-8c63-422e96b8fc9e;24/06/2026, 18:55:00;Fase a Gironi;Gli Umili;0;0;Lo Dico FC;PROSSIMA
+076bb526-00e1-428a-9ccf-cd8c4a7e5e17;24/06/2026, 19:30:00;Fase a Gironi;FC Murta;0;0;Chainz;PROSSIMA
+ff7d2ffe-5765-408b-a135-7814615f2d36;24/06/2026, 20:05:00;Fase a Gironi;San Teodoro Ketzmaja;0;0;FC Ceres;PROSSIMA
+310a6c88-4769-4e00-a4b7-0e8030fbf3ea;24/06/2026, 20:40:00;Fase a Gironi;Aston Birra;0;0;Lo Dico FC;PROSSIMA
+73a10e0f-ef02-4c11-b211-2935b0358da4;24/06/2026, 21:15:00;Fase a Gironi;Gli Umili;0;0;UCG;PROSSIMA
+0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d;24/06/2026, 21:50:00;Fase a Gironi;San Teodoro Ketzmaja;0;0;Chainz;PROSSIMA
+e85cf57a-c11e-4ac2-9cc7-5e664d989500;24/06/2026, 22:25:00;Fase a Gironi;FC Murta;0;0;Aston Birra;PROSSIMA
+98404968-e922-4af1-834f-b1ac50931758;24/06/2026, 23:00:00;Fase a Gironi;FC Ceres;0;0;UCG;PROSSIMA
+b7b224b4-0ea7-4640-88d3-1b05a412e37a;25/06/2026, 19:30:00;Fase a Gironi;Sezione 164;0;0;Gilly Boys;PROSSIMA
+f39d223b-376e-4a41-8541-7ac274519fd4;25/06/2026, 20:05:00;Fase a Gironi;PonteX Pirates;0;0;Amatori Calcio Genova;PROSSIMA
+f78ea710-878f-4dc6-8d2c-15ddaacd1416;25/06/2026, 20:40:00;Fase a Gironi;FC Pontos;0;0;Taverna FC;PROSSIMA
+07aa493a-dcb2-49fc-a49c-fa1c0c41c605;25/06/2026, 21:15:00;Fase a Gironi;Sezione 164;0;0;PonteX Pirates;PROSSIMA
+01a59819-ded7-472b-8851-9d1a712d71f1;25/06/2026, 21:50:00;Fase a Gironi;FC Pontos;0;0;Gilly Boys;PROSSIMA
+fb446def-3816-4e32-b679-265dafc0fe74;25/06/2026, 22:25:00;Fase a Gironi;Amatori Calcio Genova;0;0;Taverna FC;PROSSIMA
+
+
+DETTAGLIO EVENTI DELLA GIORNATA (GOAL, CARTELLINI, CARTE KINGS LEAGUE);;;;;;;
+ID Partita;Partita;Minuto;Tipo Evento;Squadra;Giocatore;Dettaglio
+a1be1a6d-7427-4360-b063-d9e173bcbe17;FC Pontos - Amatori Calcio Genova;5';GOAL;FC Pontos;Matteo Decorato;
+a1be1a6d-7427-4360-b063-d9e173bcbe17;FC Pontos - Amatori Calcio Genova;11';GOAL;Amatori Calcio Genova;Giulio Torre;
+a1be1a6d-7427-4360-b063-d9e173bcbe17;FC Pontos - Amatori Calcio Genova;25';GOAL;FC Pontos;Mattia Fazio;
+a1be1a6d-7427-4360-b063-d9e173bcbe17;FC Pontos - Amatori Calcio Genova;25';CARTA;Amatori Calcio Genova;Francesco Spataro;penalty::success
+a1be1a6d-7427-4360-b063-d9e173bcbe17;FC Pontos - Amatori Calcio Genova;25';GOAL;FC Pontos;Mattia Fazio;
+fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af;Gli Umili - Sezione 164;2';GOAL;Sezione 164;Gabriele Robotti;
+fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af;Gli Umili - Sezione 164;3';GOAL;Gli Umili;Lorenzo Papiri;
+fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af;Gli Umili - Sezione 164;4';GOAL;Gli Umili;Elio Casanova;
+fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af;Gli Umili - Sezione 164;19';GOAL;Sezione 164;Gabriele Robotti;
+fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af;Gli Umili - Sezione 164;20';GOAL;Sezione 164;Gabriele Robotti;
+fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af;Gli Umili - Sezione 164;20';CARTA;Gli Umili;Tommaso Verardo;penalty::success
+fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af;Gli Umili - Sezione 164;20';CARTA;Sezione 164;Gabriele Robotti;penalty::fail
+9b5b7cae-70b9-4be2-84df-1884fb0308f9;FC Ceres - FC Murta;2';GOAL;FC Murta;Kevin Ventura;
+9b5b7cae-70b9-4be2-84df-1884fb0308f9;FC Ceres - FC Murta;19';GOAL;FC Ceres;Samuele Del Fiore;
+9b5b7cae-70b9-4be2-84df-1884fb0308f9;FC Ceres - FC Murta;24';CARTA;FC Murta;Luca Dianti;shootout::success
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;3';GOAL;Sezione 164;Riccardo Mazzolini;
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;8';GOAL;Amatori Calcio Genova;Fabio Calzia;
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;8';ASSIST;Amatori Calcio Genova;Matteo Campi;
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;11';GOAL;Sezione 164;Filippo Turrini;
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;11';ASSIST;Sezione 164;Riccardo Mazzolini;
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;12';GOAL;Sezione 164;Samuele Mangano;
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;12';ASSIST;Sezione 164;Riccardo Mazzolini;
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;14';GOAL;Sezione 164;Gabriele Robotti;
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;14';ASSIST;Sezione 164;Ivan Grispo;
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;17';GOAL;Sezione 164;Samuele Mangano;
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;17';ASSIST;Sezione 164;Ivan Grispo;
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;21';GOAL;Sezione 164;Ivan Grispo;
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;23';CARTA;Amatori Calcio Genova;Giulio Torre;goalx2
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;25';CARTA;Sezione 164;Ivan Grispo;starplayer
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;28';GOAL;Sezione 164;Gabriele Robotti;
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;28';ASSIST;Sezione 164;Riccardo Mazzolini;
+ab9aab97-0c76-46b7-b728-16e45dd82e63;Sezione 164 - Amatori Calcio Genova;30';GOAL;Sezione 164;Gabriele Robotti;
+993ec7b5-3f94-4df7-aa98-5ceaaa73d87f;FC Murta - FC Pontos;3';GOAL;FC Pontos;Martino Gonzalez;
+993ec7b5-3f94-4df7-aa98-5ceaaa73d87f;FC Murta - FC Pontos;3';ASSIST;FC Pontos;Mattia Fazio;
+993ec7b5-3f94-4df7-aa98-5ceaaa73d87f;FC Murta - FC Pontos;12';GOAL;FC Pontos;Matteo Decorato;
+993ec7b5-3f94-4df7-aa98-5ceaaa73d87f;FC Murta - FC Pontos;20';CARTA;FC Pontos;Matteo Decorato;shootout::success
+993ec7b5-3f94-4df7-aa98-5ceaaa73d87f;FC Murta - FC Pontos;21';CARTA;FC Murta;Luca Dianti;shootout::fail
+993ec7b5-3f94-4df7-aa98-5ceaaa73d87f;FC Murta - FC Pontos;27';GOAL;FC Pontos;Mattia Fazio;
+993ec7b5-3f94-4df7-aa98-5ceaaa73d87f;FC Murta - FC Pontos;28';GOAL;FC Pontos;Matteo Decorato;
+63fae8d0-75b5-4633-a370-66ac31549f09;FC Ceres - Gli Umili;1';GOAL;Gli Umili;Lorenzo Papiri;
+63fae8d0-75b5-4633-a370-66ac31549f09;FC Ceres - Gli Umili;5';GOAL;Gli Umili;Paolo Gaglianò;
+63fae8d0-75b5-4633-a370-66ac31549f09;FC Ceres - Gli Umili;6';GOAL;Gli Umili;Paolo Gaglianò;
+63fae8d0-75b5-4633-a370-66ac31549f09;FC Ceres - Gli Umili;12';CARTA;FC Ceres;Samuele Del Fiore;shootout::fail
+63fae8d0-75b5-4633-a370-66ac31549f09;FC Ceres - Gli Umili;17';GOAL;Gli Umili;Paolo Gaglianò;
+63fae8d0-75b5-4633-a370-66ac31549f09;FC Ceres - Gli Umili;19';GOAL;FC Ceres;Samuele Del Fiore;
+63fae8d0-75b5-4633-a370-66ac31549f09;FC Ceres - Gli Umili;24';GOAL;Gli Umili;Elio Casanova;
+63fae8d0-75b5-4633-a370-66ac31549f09;FC Ceres - Gli Umili;26';GOAL;Gli Umili;Paolo Gaglianò;
+63fae8d0-75b5-4633-a370-66ac31549f09;FC Ceres - Gli Umili;27';CARTA;Gli Umili;Simone Valle;penalty::success
+63fae8d0-75b5-4633-a370-66ac31549f09;FC Ceres - Gli Umili;30';GOAL;FC Ceres;Marco Gagna;
+ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf;UCG - Gilly Boys;6';GOAL;UCG;Andrea Ortisi;
+ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf;UCG - Gilly Boys;7';GOAL;UCG;Andrea Ortisi;
+ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf;UCG - Gilly Boys;7';GOAL;UCG;Reverberi Tommaso;
+ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf;UCG - Gilly Boys;9';GOAL;UCG;Bevegni Francesco;
+ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf;UCG - Gilly Boys;10';GOAL;Gilly Boys;Simone Cavicchioli;
+ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf;UCG - Gilly Boys;14';GOAL;Gilly Boys;Fabrizio Schiano;
+ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf;UCG - Gilly Boys;17';GOAL;Gilly Boys;Jacopo Vicini;
+ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf;UCG - Gilly Boys;19';GOAL;Gilly Boys;Edoardo Banchieri;
+ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf;UCG - Gilly Boys;26';GOAL;Gilly Boys;Dario Riva;
+ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf;UCG - Gilly Boys;29';GOAL;Gilly Boys;Simone Cavicchioli;
+ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf;UCG - Gilly Boys;30';GOAL;Gilly Boys;Dario Riva;
+5c06696f-e7ae-4a8e-93d3-c594383c6508;Taverna FC - Aston Birra;4';GOAL;Taverna FC;Davide Barabino;
+5c06696f-e7ae-4a8e-93d3-c594383c6508;Taverna FC - Aston Birra;8';GOAL;Aston Birra;Endi Pasho;
+5c06696f-e7ae-4a8e-93d3-c594383c6508;Taverna FC - Aston Birra;11';GOAL;Aston Birra;Diego Traverso;
+5c06696f-e7ae-4a8e-93d3-c594383c6508;Taverna FC - Aston Birra;14';GOAL;Aston Birra;Diego Traverso;
+5c06696f-e7ae-4a8e-93d3-c594383c6508;Taverna FC - Aston Birra;15';GOAL;Taverna FC;Alessandro Mosca;
+5c06696f-e7ae-4a8e-93d3-c594383c6508;Taverna FC - Aston Birra;20';CARTA;Taverna FC;Davide Pasti;starplayer
+5c06696f-e7ae-4a8e-93d3-c594383c6508;Taverna FC - Aston Birra;24';GOAL;Aston Birra;Ivan Moretti;
+5c06696f-e7ae-4a8e-93d3-c594383c6508;Taverna FC - Aston Birra;28';GOAL;Aston Birra;Giacomo Patrone;
+5c06696f-e7ae-4a8e-93d3-c594383c6508;Taverna FC - Aston Birra;30';GOAL;Aston Birra;Giacomo Patrone;
+8be74c6f-ac94-41b9-a119-7bd7c7d84bda;PonteX Pirates - Lo Dico FC;3';GOAL;Lo Dico FC;Christian Ravenna;
+8be74c6f-ac94-41b9-a119-7bd7c7d84bda;PonteX Pirates - Lo Dico FC;8';GOAL;PonteX Pirates;Lorenzo Frondana;
+8be74c6f-ac94-41b9-a119-7bd7c7d84bda;PonteX Pirates - Lo Dico FC;24';CARTA;PonteX Pirates;;goalx2
+8be74c6f-ac94-41b9-a119-7bd7c7d84bda;PonteX Pirates - Lo Dico FC;25';CARTA;Lo Dico FC;Alphonse Diaye;suspension
+217cf064-587f-437a-8d62-a331316dd0a5;Gilly Boys - San Teodoro Ketzmaja;1';GOAL;Gilly Boys;Simone Cavicchioli;
+217cf064-587f-437a-8d62-a331316dd0a5;Gilly Boys - San Teodoro Ketzmaja;3';GOAL;San Teodoro Ketzmaja;Andrea Balossino;
+217cf064-587f-437a-8d62-a331316dd0a5;Gilly Boys - San Teodoro Ketzmaja;3';GOAL;Gilly Boys;Edoardo Banchieri;
+217cf064-587f-437a-8d62-a331316dd0a5;Gilly Boys - San Teodoro Ketzmaja;4';GOAL;San Teodoro Ketzmaja;Davide Tamagnini;
+217cf064-587f-437a-8d62-a331316dd0a5;Gilly Boys - San Teodoro Ketzmaja;7';GOAL;Gilly Boys;Dario Riva;
+217cf064-587f-437a-8d62-a331316dd0a5;Gilly Boys - San Teodoro Ketzmaja;18';GOAL;Gilly Boys;Jacopo Vicini;
+217cf064-587f-437a-8d62-a331316dd0a5;Gilly Boys - San Teodoro Ketzmaja;19';GOAL;San Teodoro Ketzmaja;Andrea Balossino;
+217cf064-587f-437a-8d62-a331316dd0a5;Gilly Boys - San Teodoro Ketzmaja;26';GOAL;Gilly Boys;Dario Riva;
+217cf064-587f-437a-8d62-a331316dd0a5;Gilly Boys - San Teodoro Ketzmaja;30';CARTA;Gilly Boys;Jacopo Vicini;goalx2
+217cf064-587f-437a-8d62-a331316dd0a5;Gilly Boys - San Teodoro Ketzmaja;30';GOAL;Gilly Boys;;
+60f68aca-acb0-4a36-b6f8-b360d032df8a;Chainz - Taverna FC;5';GOAL;Taverna FC;Stefano Bottari;
+60f68aca-acb0-4a36-b6f8-b360d032df8a;Chainz - Taverna FC;11';GOAL;Taverna FC;Davide Barabino;
+60f68aca-acb0-4a36-b6f8-b360d032df8a;Chainz - Taverna FC;12';GOAL;Taverna FC;Davide Pasti;
+60f68aca-acb0-4a36-b6f8-b360d032df8a;Chainz - Taverna FC;13';GOAL;Chainz;Francesco Fossati;
+60f68aca-acb0-4a36-b6f8-b360d032df8a;Chainz - Taverna FC;18';GOAL;Taverna FC;Stefano Bottari;
+60f68aca-acb0-4a36-b6f8-b360d032df8a;Chainz - Taverna FC;21';GOAL;Taverna FC;Alessandro Mosca;
+60f68aca-acb0-4a36-b6f8-b360d032df8a;Chainz - Taverna FC;21';CARTA;Chainz;Francesco Tassone;shootout::success
+60f68aca-acb0-4a36-b6f8-b360d032df8a;Chainz - Taverna FC;22';GOAL;Taverna FC;Alessandro Mosca;
+60f68aca-acb0-4a36-b6f8-b360d032df8a;Chainz - Taverna FC;26';CARTA;Chainz;Louis Dolcini;suspension
+60f68aca-acb0-4a36-b6f8-b360d032df8a;Chainz - Taverna FC;29';GOAL;Taverna FC;Davide Pasti;
+f84c5496-eba0-4268-96f6-6d36184968f9;Aston Birra - UCG;8';GOAL;UCG;Andrea Ortisi;
+f84c5496-eba0-4268-96f6-6d36184968f9;Aston Birra - UCG;9';GOAL;Aston Birra;Endi Pasho;
+f84c5496-eba0-4268-96f6-6d36184968f9;Aston Birra - UCG;10';GOAL;Aston Birra;Giacomo Patrone;
+f84c5496-eba0-4268-96f6-6d36184968f9;Aston Birra - UCG;11';GOAL;UCG;Bevegni Francesco;
+8cae47e7-c8cd-4b9c-8c72-e372c91c073c;San Teodoro Ketzmaja - PonteX Pirates;15';GOAL;PonteX Pirates;Edoardo Demasi;
+8cae47e7-c8cd-4b9c-8c72-e372c91c073c;San Teodoro Ketzmaja - PonteX Pirates;23';GOAL;San Teodoro Ketzmaja;Davide Tamagnini;
+8cae47e7-c8cd-4b9c-8c72-e372c91c073c;San Teodoro Ketzmaja - PonteX Pirates;26';GOAL;San Teodoro Ketzmaja;Andrea Gobbi;
+649b006b-a92f-4736-8d85-c8f90540c9dd;Lo Dico FC - Chainz;7';GOAL;Chainz;Francesco Tassone;
+649b006b-a92f-4736-8d85-c8f90540c9dd;Lo Dico FC - Chainz;7';ASSIST;Chainz;Louis Dolcini;
+649b006b-a92f-4736-8d85-c8f90540c9dd;Lo Dico FC - Chainz;13';GOAL;Chainz;Louis Dolcini;
+649b006b-a92f-4736-8d85-c8f90540c9dd;Lo Dico FC - Chainz;22';GOAL;Lo Dico FC;Mattia Lamari;
+649b006b-a92f-4736-8d85-c8f90540c9dd;Lo Dico FC - Chainz;24';GOAL;Chainz;Alessio Carena;
+649b006b-a92f-4736-8d85-c8f90540c9dd;Lo Dico FC - Chainz;24';GOAL;Lo Dico FC;Christian Ravenna;
+649b006b-a92f-4736-8d85-c8f90540c9dd;Lo Dico FC - Chainz;25';CARTA;Lo Dico FC;Mohamed Niang;suspension
+649b006b-a92f-4736-8d85-c8f90540c9dd;Lo Dico FC - Chainz;25';CARTA;Chainz;Louis Dolcini;suspension
+649b006b-a92f-4736-8d85-c8f90540c9dd;Lo Dico FC - Chainz;26';GOAL;Lo Dico FC;Christian Ravenna;

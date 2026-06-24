@@ -298,19 +298,21 @@ export default function MatchEventsModal({
                     <div className="text-white/40 text-xs italic py-8 text-center">Caricamento eventi...</div>
                   ) : events.length > 0 ? (
                     events.map((ev) => {
-                      const emoji = ev.type === 'GOAL' ? '⚽' : ev.type === 'ASSIST' ? '🎯' : ev.type === 'YELLOW_CARD' || ev.type === 'AMMONIZIONE' ? '🟨' : ev.type === 'RED_CARD' || ev.type === 'ESPULSIONE' ? '🟥' : '🃏';
+                      const emoji = ev.type === 'GOAL' || ev.type === 'AUTOGOAL' ? '⚽' : ev.type === 'ASSIST' ? '🎯' : ev.type === 'YELLOW_CARD' || ev.type === 'AMMONIZIONE' ? '🟨' : ev.type === 'RED_CARD' || ev.type === 'ESPULSIONE' ? '🟥' : '🃏';
                       const [baseDetail, outcome] = (ev.detail || '').split('::');
                       const isPenaltyOrShootout = ev.type === 'CARTA' && (baseDetail === 'penalty' || baseDetail === 'shootout');
 
                       const desc = ev.type === 'GOAL'
                         ? 'Gol'
-                        : ev.type === 'ASSIST'
-                          ? 'Assist'
-                          : ev.type === 'YELLOW_CARD' || ev.type === 'AMMONIZIONE'
-                            ? 'Ammonizione'
-                            : ev.type === 'RED_CARD' || ev.type === 'ESPULSIONE'
-                              ? 'Espulsione'
-                              : `Carta (${baseDetail || 'Attivata'})${outcome === 'success' ? ' ✅ Gol' : outcome === 'fail' ? ' ❌ No Gol' : ''}`;
+                        : ev.type === 'AUTOGOAL'
+                          ? 'Autogol'
+                          : ev.type === 'ASSIST'
+                            ? 'Assist'
+                            : ev.type === 'YELLOW_CARD' || ev.type === 'AMMONIZIONE'
+                              ? 'Ammonizione'
+                              : ev.type === 'RED_CARD' || ev.type === 'ESPULSIONE'
+                                ? 'Espulsione'
+                                : `Carta (${baseDetail || 'Attivata'})${outcome === 'success' ? ' ✅ Gol' : outcome === 'fail' ? ' ❌ No Gol' : ''}`;
                       
                       const playerName = ev.player?.name || 'Giocatore Sconosciuto';
 
@@ -420,6 +422,7 @@ export default function MatchEventsModal({
                       required
                     >
                       <option value="GOAL">⚽ Goal</option>
+                      <option value="AUTOGOAL">⚽ Autogol</option>
                       <option value="ASSIST">🎯 Assist</option>
                       <option value="AMMONIZIONE">🟨 Ammonizione</option>
                       <option value="ESPULSIONE">🟥 Espulsione</option>

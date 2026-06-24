@@ -104,7 +104,7 @@ export default function PlayerStatsModal({ playerId, onClose, themeColor = 'neut
       : 'rgba(139, 92, 246, 0.03)';
   const [loading, setLoading] = useState(true);
   const [playerInfo, setPlayerInfo] = useState<{ name: string; teamName: string; role?: string | null } | null>(null);
-  const [stats, setStats] = useState({ goals: 0, assists: 0, yellows: 0, reds: 0, powerCards: 0 });
+  const [stats, setStats] = useState({ goals: 0, autogoals: 0, assists: 0, yellows: 0, reds: 0, powerCards: 0 });
   const [history, setHistory] = useState<any[]>([]);
 
   // Lock body scroll when modal is open to prevent background scrolling
@@ -164,6 +164,7 @@ export default function PlayerStatsModal({ playerId, onClose, themeColor = 'neut
         if (isMounted && events) {
           // Calculate aggregate stats
           let goals = 0;
+          let autogoals = 0;
           let assists = 0;
           let yellows = 0;
           let reds = 0;
@@ -172,6 +173,7 @@ export default function PlayerStatsModal({ playerId, onClose, themeColor = 'neut
           const processedHistory = events.map(ev => {
             const isGoal = ev.type === 'GOAL' || (ev.type === 'CARTA' && ev.detail && (ev.detail === 'starplayer' || ev.detail === 'goalx2' || ev.detail.endsWith('::success')));
             if (isGoal) goals++;
+            if (ev.type === 'AUTOGOAL' || ev.type === 'Autogoal') autogoals++;
             if (ev.type === 'ASSIST') assists++;
             if (ev.type === 'YELLOW_CARD') yellows++;
             if (ev.type === 'RED_CARD') reds++;
@@ -195,7 +197,7 @@ export default function PlayerStatsModal({ playerId, onClose, themeColor = 'neut
             };
           });
 
-          setStats({ goals, assists, yellows, reds, powerCards });
+          setStats({ goals, autogoals, assists, yellows, reds, powerCards });
           setHistory(processedHistory);
         }
       } catch (error) {
@@ -350,6 +352,13 @@ export default function PlayerStatsModal({ playerId, onClose, themeColor = 'neut
                     <span className="text-[0.65rem] font-bold text-white/40 uppercase tracking-wide">Espulsioni</span>
                     <span className="text-lg font-black text-red-500 mt-0.5">{stats.reds}</span>
                   </div>
+
+                  {/* Autogol */}
+                  <div className="col-span-2 flex flex-col items-center justify-center text-center bg-white/5 border border-white/[0.04] p-3 rounded-xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
+                    <span className="text-2xl mb-1">🛑</span>
+                    <span className="text-[0.65rem] font-bold text-white/40 uppercase tracking-wide">Autogol</span>
+                    <span className="text-lg font-black text-red-400 mt-0.5">{stats.autogoals}</span>
+                  </div>
                 </div>
 
                 {/* Match History / Timeline */}
@@ -363,16 +372,18 @@ export default function PlayerStatsModal({ playerId, onClose, themeColor = 'neut
                       history.map((h, i) => {
                         const dateStr = h.date ? h.date.toLocaleDateString('it-IT', { day: '2-digit', month: 'short' }) : '';
                         const [baseDetail, outcome] = (h.detail || '').split('::');
-                        const emoji = h.type === 'GOAL' ? '⚽' : h.type === 'ASSIST' ? '🎯' : h.type === 'YELLOW_CARD' ? '🟨' : h.type === 'RED_CARD' ? '🟥' : '🃏';
+                        const emoji = h.type === 'GOAL' || h.type === 'AUTOGOAL' ? '⚽' : h.type === 'ASSIST' ? '🎯' : h.type === 'YELLOW_CARD' ? '🟨' : h.type === 'RED_CARD' ? '🟥' : '🃏';
                         const desc = h.type === 'GOAL' 
                           ? 'Gol' 
-                          : h.type === 'ASSIST' 
-                            ? 'Assist'
-                            : h.type === 'YELLOW_CARD' 
-                              ? 'Ammonizione' 
-                              : h.type === 'RED_CARD' 
-                                ? 'Espulsione' 
-                                : `Power Card (${baseDetail || 'Attivata'})${outcome === 'success' ? ' ✅' : outcome === 'fail' ? ' ❌' : ''}`;
+                          : h.type === 'AUTOGOAL'
+                            ? 'Autogol'
+                            : h.type === 'ASSIST' 
+                              ? 'Assist'
+                              : h.type === 'YELLOW_CARD' 
+                                ? 'Ammonizione' 
+                                : h.type === 'RED_CARD' 
+                                  ? 'Espulsione' 
+                                  : `Power Card (${baseDetail || 'Attivata'})${outcome === 'success' ? ' ✅' : outcome === 'fail' ? ' ❌' : ''}`;
 
                         return (
                           <div key={i} className="flex items-center justify-between bg-black/15 border border-white/5 p-3 rounded-xl w-[80%] flex-shrink-0">

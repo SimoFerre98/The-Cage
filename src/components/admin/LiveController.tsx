@@ -950,6 +950,7 @@ export default function LiveController({
                 required
               >
                 <option value="GOAL">⚽ Goal (Normale)</option>
+                <option value="AUTOGOAL">⚽ Autogol</option>
                 <option value="ASSIST">🎯 Assist</option>
                 <option value="AMMONIZIONE">🟨 Cartellino Giallo</option>
                 <option value="ESPULSIONE">🟥 Cartellino Rosso</option>
@@ -987,19 +988,21 @@ export default function LiveController({
         <div className="flex flex-col gap-3 max-h-[300px] overflow-y-auto pr-1">
           {events.length > 0 ? (
             events.map((ev, i) => {
-              const emoji = ev.type === 'GOAL' ? '⚽' : ev.type === 'YELLOW_CARD' || ev.type === 'AMMONIZIONE' ? '🟨' : ev.type === 'RED_CARD' || ev.type === 'ESPULSIONE' ? '🟥' : '🃏';
+              const emoji = ev.type === 'GOAL' || ev.type === 'AUTOGOAL' ? '⚽' : ev.type === 'YELLOW_CARD' || ev.type === 'AMMONIZIONE' ? '🟨' : ev.type === 'RED_CARD' || ev.type === 'ESPULSIONE' ? '🟥' : '🃏';
               const [baseDetail, outcome] = (ev.detail || '').split('::');
               const isPenaltyOrShootout = ev.type === 'CARTA' && (baseDetail === 'penalty' || baseDetail === 'shootout');
               
               const desc = ev.type === 'GOAL' 
                 ? 'Gol' 
-                : ev.type === 'ASSIST' 
-                  ? 'Assist' 
-                  : ev.type === 'YELLOW_CARD' || ev.type === 'AMMONIZIONE' 
-                    ? 'Ammonizione' 
-                    : ev.type === 'RED_CARD' || ev.type === 'ESPULSIONE' 
-                      ? 'Espulsione' 
-                      : `Carta (${baseDetail || 'Attivata'})${outcome === 'success' ? ' ✅ Gol' : outcome === 'fail' ? ' ❌ No Gol' : ''}`;
+                : ev.type === 'AUTOGOAL'
+                  ? 'Autogol'
+                  : ev.type === 'ASSIST' 
+                    ? 'Assist' 
+                    : ev.type === 'YELLOW_CARD' || ev.type === 'AMMONIZIONE' 
+                      ? 'Ammonizione' 
+                      : ev.type === 'RED_CARD' || ev.type === 'ESPULSIONE' 
+                        ? 'Espulsione' 
+                        : `Carta (${baseDetail || 'Attivata'})${outcome === 'success' ? ' ✅ Gol' : outcome === 'fail' ? ' ❌ No Gol' : ''}`;
               const playerName = ev.player?.name || 'Giocatore Sconosciuto';
 
               return (
@@ -1078,7 +1081,7 @@ export default function LiveController({
               <div className="w-full bg-white/5 border border-white/[0.04] p-4 rounded-xl mb-4 text-left shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)] z-10 relative">
                 <div className="flex items-center gap-3">
                   <span className="text-2xl">
-                    {confirmDeleteEvent.type === 'GOAL' 
+                    {confirmDeleteEvent.type === 'GOAL' || confirmDeleteEvent.type === 'AUTOGOAL'
                       ? '⚽' 
                       : confirmDeleteEvent.type === 'ASSIST' 
                         ? '🎯' 
@@ -1094,13 +1097,15 @@ export default function LiveController({
                         const [baseDetail] = (confirmDeleteEvent.detail || '').split('::');
                         return confirmDeleteEvent.type === 'GOAL' 
                         ? 'Gol' 
-                        : confirmDeleteEvent.type === 'ASSIST' 
-                          ? 'Assist' 
-                          : confirmDeleteEvent.type === 'YELLOW_CARD' || confirmDeleteEvent.type === 'AMMONIZIONE' 
-                            ? 'Ammonizione' 
-                            : confirmDeleteEvent.type === 'RED_CARD' || confirmDeleteEvent.type === 'ESPULSIONE' 
-                              ? 'Espulsione' 
-                              : `Carta (${baseDetail || 'Attivata'})`;
+                        : confirmDeleteEvent.type === 'AUTOGOAL'
+                          ? 'Autogol'
+                          : confirmDeleteEvent.type === 'ASSIST' 
+                            ? 'Assist' 
+                            : confirmDeleteEvent.type === 'YELLOW_CARD' || confirmDeleteEvent.type === 'AMMONIZIONE' 
+                              ? 'Ammonizione' 
+                              : confirmDeleteEvent.type === 'RED_CARD' || confirmDeleteEvent.type === 'ESPULSIONE' 
+                                ? 'Espulsione' 
+                                : `Carta (${baseDetail || 'Attivata'})`;
                       })()}
                     </span>
                     <span className="text-xs text-white/50">
@@ -1112,9 +1117,9 @@ export default function LiveController({
 
               <p className="text-sm text-white/70 mb-6 px-1 z-10 relative leading-relaxed">
                 Sei sicuro di voler eliminare questo evento dalla timeline?
-                {confirmDeleteEvent.type === 'GOAL' && (
+                {(confirmDeleteEvent.type === 'GOAL' || confirmDeleteEvent.type === 'AUTOGOAL') && (
                   <span className="block mt-3 text-xs text-amber-300 font-bold bg-amber-500/10 border border-amber-500/20 p-2.5 rounded-lg leading-normal">
-                    ⚠️ Se elimini un gol, ricordati di aggiornare il punteggio del match manualmente.
+                    ⚠️ Se elimini un gol o un autogol, ricordati di aggiornare il punteggio del match manualmente.
                   </span>
                 )}
               </p>

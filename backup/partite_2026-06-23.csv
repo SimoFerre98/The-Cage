@@ -1,0 +1,74 @@
+RISULTATI DELLE PARTITE DEL 2026-06-23;;;;;;;
+ID Partita;Data e Ora;Fase;Squadra Casa;Punteggio Casa;Punteggio Ospite;Squadra Ospite;Stato
+ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf;23/06/2026, 18:55:00;Fase a Gironi;UCG;4;7;Gilly Boys;TERMINATA
+5c06696f-e7ae-4a8e-93d3-c594383c6508;23/06/2026, 19:30:00;Fase a Gironi;Taverna FC;4;6;Aston Birra;TERMINATA
+8be74c6f-ac94-41b9-a119-7bd7c7d84bda;23/06/2026, 20:05:00;Fase a Gironi;PonteX Pirates;1;1;Lo Dico FC;TERMINATA
+217cf064-587f-437a-8d62-a331316dd0a5;23/06/2026, 20:40:00;Fase a Gironi;Gilly Boys;8;3;San Teodoro Ketzmaja;TERMINATA
+60f68aca-acb0-4a36-b6f8-b360d032df8a;23/06/2026, 21:15:00;Fase a Gironi;Chainz;2;7;Taverna FC;TERMINATA
+f84c5496-eba0-4268-96f6-6d36184968f9;23/06/2026, 21:50:00;Fase a Gironi;Aston Birra;2;2;UCG;TERMINATA
+8cae47e7-c8cd-4b9c-8c72-e372c91c073c;23/06/2026, 22:25:00;Fase a Gironi;San Teodoro Ketzmaja;2;1;PonteX Pirates;TERMINATA
+649b006b-a92f-4736-8d85-c8f90540c9dd;23/06/2026, 23:00:00;Fase a Gironi;Lo Dico FC;3;3;Chainz;TERMINATA
+
+
+DETTAGLIO EVENTI DELLA GIORNATA (GOAL, CARTELLINI, CARTE KINGS LEAGUE);;;;;;;
+ID Partita;Partita;Minuto;Tipo Evento;Squadra;Giocatore;Dettaglio
+ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf;UCG - Gilly Boys;6';GOAL;UCG;Andrea Ortisi;
+ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf;UCG - Gilly Boys;7';GOAL;UCG;Andrea Ortisi;
+ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf;UCG - Gilly Boys;7';GOAL;UCG;Reverberi Tommaso;
+ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf;UCG - Gilly Boys;9';GOAL;UCG;Bevegni Francesco;
+ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf;UCG - Gilly Boys;10';GOAL;Gilly Boys;Simone Cavicchioli;
+ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf;UCG - Gilly Boys;14';GOAL;Gilly Boys;Fabrizio Schiano;
+ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf;UCG - Gilly Boys;17';GOAL;Gilly Boys;Jacopo Vicini;
+ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf;UCG - Gilly Boys;19';GOAL;Gilly Boys;Edoardo Banchieri;
+ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf;UCG - Gilly Boys;26';GOAL;Gilly Boys;Dario Riva;
+ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf;UCG - Gilly Boys;29';GOAL;Gilly Boys;Simone Cavicchioli;
+ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf;UCG - Gilly Boys;30';GOAL;Gilly Boys;Dario Riva;
+5c06696f-e7ae-4a8e-93d3-c594383c6508;Taverna FC - Aston Birra;4';GOAL;Taverna FC;Davide Barabino;
+5c06696f-e7ae-4a8e-93d3-c594383c6508;Taverna FC - Aston Birra;8';GOAL;Aston Birra;Endi Pasho;
+5c06696f-e7ae-4a8e-93d3-c594383c6508;Taverna FC - Aston Birra;11';GOAL;Aston Birra;Diego Traverso;
+5c06696f-e7ae-4a8e-93d3-c594383c6508;Taverna FC - Aston Birra;14';GOAL;Aston Birra;Diego Traverso;
+5c06696f-e7ae-4a8e-93d3-c594383c6508;Taverna FC - Aston Birra;15';GOAL;Taverna FC;Alessandro Mosca;
+5c06696f-e7ae-4a8e-93d3-c594383c6508;Taverna FC - Aston Birra;20';CARTA;Taverna FC;Davide Pasti;starplayer
+5c06696f-e7ae-4a8e-93d3-c594383c6508;Taverna FC - Aston Birra;24';GOAL;Aston Birra;Ivan Moretti;
+5c06696f-e7ae-4a8e-93d3-c594383c6508;Taverna FC - Aston Birra;28';GOAL;Aston Birra;Giacomo Patrone;
+5c06696f-e7ae-4a8e-93d3-c594383c6508;Taverna FC - Aston Birra;30';GOAL;Aston Birra;Giacomo Patrone;
+8be74c6f-ac94-41b9-a119-7bd7c7d84bda;PonteX Pirates - Lo Dico FC;3';GOAL;Lo Dico FC;Christian Ravenna;
+8be74c6f-ac94-41b9-a119-7bd7c7d84bda;PonteX Pirates - Lo Dico FC;8';GOAL;PonteX Pirates;Lorenzo Frondana;
+8be74c6f-ac94-41b9-a119-7bd7c7d84bda;PonteX Pirates - Lo Dico FC;24';CARTA;PonteX Pirates;;goalx2
+8be74c6f-ac94-41b9-a119-7bd7c7d84bda;PonteX Pirates - Lo Dico FC;25';CARTA;Lo Dico FC;Alphonse Diaye;suspension
+217cf064-587f-437a-8d62-a331316dd0a5;Gilly Boys - San Teodoro Ketzmaja;1';GOAL;Gilly Boys;Simone Cavicchioli;
+217cf064-587f-437a-8d62-a331316dd0a5;Gilly Boys - San Teodoro Ketzmaja;3';GOAL;San Teodoro Ketzmaja;Andrea Balossino;
+217cf064-587f-437a-8d62-a331316dd0a5;Gilly Boys - San Teodoro Ketzmaja;3';GOAL;Gilly Boys;Edoardo Banchieri;
+217cf064-587f-437a-8d62-a331316dd0a5;Gilly Boys - San Teodoro Ketzmaja;4';GOAL;San Teodoro Ketzmaja;Davide Tamagnini;
+217cf064-587f-437a-8d62-a331316dd0a5;Gilly Boys - San Teodoro Ketzmaja;7';GOAL;Gilly Boys;Dario Riva;
+217cf064-587f-437a-8d62-a331316dd0a5;Gilly Boys - San Teodoro Ketzmaja;18';GOAL;Gilly Boys;Jacopo Vicini;
+217cf064-587f-437a-8d62-a331316dd0a5;Gilly Boys - San Teodoro Ketzmaja;19';GOAL;San Teodoro Ketzmaja;Andrea Balossino;
+217cf064-587f-437a-8d62-a331316dd0a5;Gilly Boys - San Teodoro Ketzmaja;26';GOAL;Gilly Boys;Dario Riva;
+217cf064-587f-437a-8d62-a331316dd0a5;Gilly Boys - San Teodoro Ketzmaja;30';CARTA;Gilly Boys;Jacopo Vicini;goalx2
+217cf064-587f-437a-8d62-a331316dd0a5;Gilly Boys - San Teodoro Ketzmaja;30';GOAL;Gilly Boys;;
+60f68aca-acb0-4a36-b6f8-b360d032df8a;Chainz - Taverna FC;5';GOAL;Taverna FC;Stefano Bottari;
+60f68aca-acb0-4a36-b6f8-b360d032df8a;Chainz - Taverna FC;11';GOAL;Taverna FC;Davide Barabino;
+60f68aca-acb0-4a36-b6f8-b360d032df8a;Chainz - Taverna FC;12';GOAL;Taverna FC;Davide Pasti;
+60f68aca-acb0-4a36-b6f8-b360d032df8a;Chainz - Taverna FC;13';GOAL;Chainz;Francesco Fossati;
+60f68aca-acb0-4a36-b6f8-b360d032df8a;Chainz - Taverna FC;18';GOAL;Taverna FC;Stefano Bottari;
+60f68aca-acb0-4a36-b6f8-b360d032df8a;Chainz - Taverna FC;21';GOAL;Taverna FC;Alessandro Mosca;
+60f68aca-acb0-4a36-b6f8-b360d032df8a;Chainz - Taverna FC;21';CARTA;Chainz;Francesco Tassone;shootout::success
+60f68aca-acb0-4a36-b6f8-b360d032df8a;Chainz - Taverna FC;22';GOAL;Taverna FC;Alessandro Mosca;
+60f68aca-acb0-4a36-b6f8-b360d032df8a;Chainz - Taverna FC;26';CARTA;Chainz;Louis Dolcini;suspension
+60f68aca-acb0-4a36-b6f8-b360d032df8a;Chainz - Taverna FC;29';GOAL;Taverna FC;Davide Pasti;
+f84c5496-eba0-4268-96f6-6d36184968f9;Aston Birra - UCG;8';GOAL;UCG;Andrea Ortisi;
+f84c5496-eba0-4268-96f6-6d36184968f9;Aston Birra - UCG;9';GOAL;Aston Birra;Endi Pasho;
+f84c5496-eba0-4268-96f6-6d36184968f9;Aston Birra - UCG;10';GOAL;Aston Birra;Giacomo Patrone;
+f84c5496-eba0-4268-96f6-6d36184968f9;Aston Birra - UCG;11';GOAL;UCG;Bevegni Francesco;
+8cae47e7-c8cd-4b9c-8c72-e372c91c073c;San Teodoro Ketzmaja - PonteX Pirates;15';GOAL;PonteX Pirates;Edoardo Demasi;
+8cae47e7-c8cd-4b9c-8c72-e372c91c073c;San Teodoro Ketzmaja - PonteX Pirates;23';GOAL;San Teodoro Ketzmaja;Davide Tamagnini;
+8cae47e7-c8cd-4b9c-8c72-e372c91c073c;San Teodoro Ketzmaja - PonteX Pirates;26';GOAL;San Teodoro Ketzmaja;Andrea Gobbi;
+649b006b-a92f-4736-8d85-c8f90540c9dd;Lo Dico FC - Chainz;7';GOAL;Chainz;Francesco Tassone;
+649b006b-a92f-4736-8d85-c8f90540c9dd;Lo Dico FC - Chainz;7';ASSIST;Chainz;Louis Dolcini;
+649b006b-a92f-4736-8d85-c8f90540c9dd;Lo Dico FC - Chainz;13';GOAL;Chainz;Louis Dolcini;
+649b006b-a92f-4736-8d85-c8f90540c9dd;Lo Dico FC - Chainz;22';GOAL;Lo Dico FC;Mattia Lamari;
+649b006b-a92f-4736-8d85-c8f90540c9dd;Lo Dico FC - Chainz;24';GOAL;Chainz;Alessio Carena;
+649b006b-a92f-4736-8d85-c8f90540c9dd;Lo Dico FC - Chainz;24';GOAL;Lo Dico FC;Christian Ravenna;
+649b006b-a92f-4736-8d85-c8f90540c9dd;Lo Dico FC - Chainz;25';CARTA;Lo Dico FC;Mohamed Niang;suspension
+649b006b-a92f-4736-8d85-c8f90540c9dd;Lo Dico FC - Chainz;25';CARTA;Chainz;Louis Dolcini;suspension
+649b006b-a92f-4736-8d85-c8f90540c9dd;Lo Dico FC - Chainz;26';GOAL;Lo Dico FC;Christian Ravenna;

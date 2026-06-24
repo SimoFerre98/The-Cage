@@ -245,6 +245,7 @@ export default function LiveMatchIsland() {
 
   // Elaborazione statistiche in base agli eventi
   const playerGoals: Record<string, number> = {};
+  const playerAutogoals: Record<string, number> = {};
   const playerYellows: Record<string, boolean> = {};
   const playerReds: Record<string, boolean> = {};
 
@@ -253,6 +254,8 @@ export default function LiveMatchIsland() {
       const isGoal = ev.type === 'GOAL' || ev.type === 'Goal' || ev.type === 'Goal (Penalty)' || ev.type === 'Goal (Stella)' || ev.type === 'Goal (Raddoppiato)' || (ev.type === 'CARTA' && ev.detail && (ev.detail === 'starplayer' || ev.detail === 'goalx2' || ev.detail.endsWith('::success')));
       if (isGoal) {
         playerGoals[ev.player_id] = (playerGoals[ev.player_id] || 0) + 1;
+      } else if (ev.type === 'AUTOGOAL' || ev.type === 'Autogoal') {
+        playerAutogoals[ev.player_id] = (playerAutogoals[ev.player_id] || 0) + 1;
       } else if (ev.type === 'AMMONIZIONE' || ev.type === 'Yellow Card') {
         playerYellows[ev.player_id] = true;
       } else if (ev.type === 'ESPULSIONE' || ev.type === 'Red Card') {
@@ -490,6 +493,17 @@ export default function LiveMatchIsland() {
                   const isHome = ev.team_id === liveMatch.home_team_id;
                   const playerName = ev.player?.name || 'Sconosciuto';
                   const detailType = ev.detail;
+                  const eventLabel = ev.type === 'GOAL' 
+                    ? 'Gol' 
+                    : ev.type === 'AUTOGOAL' 
+                      ? 'Autogol' 
+                      : ev.type === 'AMMONIZIONE' 
+                        ? 'Ammonizione' 
+                        : ev.type === 'ESPULSIONE' 
+                          ? 'Espulsione' 
+                          : ev.type === 'ASSIST' 
+                            ? 'Assist' 
+                            : ev.type;
 
                   return (
                     <div key={i} className="flex items-center w-full min-w-0">
@@ -511,7 +525,7 @@ export default function LiveMatchIsland() {
                                  <span onClick={() => ev.player_id && setSelectedPlayerId(ev.player_id)} className={`font-extrabold text-[0.8rem] md:text-[0.9rem] tracking-wide text-white drop-shadow-md uppercase leading-tight truncate ${ev.player_id ? 'cursor-pointer hover:text-blue-400 transition-colors' : ''}`}>
                                    {playerName}
                                  </span>
-                                 <span className="text-[0.65rem] text-white/60 font-semibold mt-0.5 truncate">{ev.type}</span>
+                                 <span className="text-[0.65rem] text-white/60 font-semibold mt-0.5 truncate">{eventLabel}</span>
                                </div>
                             </div>
                           )
@@ -546,7 +560,7 @@ export default function LiveMatchIsland() {
                                  <span onClick={() => ev.player_id && setSelectedPlayerId(ev.player_id)} className={`font-extrabold text-[0.8rem] md:text-[0.9rem] tracking-wide text-white drop-shadow-md uppercase leading-tight truncate ${ev.player_id ? 'cursor-pointer hover:text-blue-400 transition-colors' : ''}`}>
                                    {playerName}
                                  </span>
-                                 <span className="text-[0.65rem] text-white/60 font-semibold mt-0.5 truncate">{ev.type}</span>
+                                 <span className="text-[0.65rem] text-white/60 font-semibold mt-0.5 truncate">{eventLabel}</span>
                                </div>
                             </div>
                           )
@@ -614,6 +628,7 @@ export default function LiveMatchIsland() {
                               </div>
                               <div className="flex-1 flex justify-end items-center gap-2 flex-shrink-0">
                                 {playerGoals[p.id] && <span className="text-[10px] bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-full font-black text-red-400">⚽ {playerGoals[p.id]}</span>}
+                                {playerAutogoals[p.id] && <span className="text-[10px] bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-full font-black text-red-400" title="Autogol">⚽ (AG) {playerAutogoals[p.id]}</span>}
                                 {playerYellows[p.id] && <div className="w-2.5 h-3.5 rounded-[2px] bg-yellow-400 shadow-[0_0_6px_rgba(250,204,21,0.5)] rotate-12" />}
                                 {playerReds[p.id] && <div className="w-2.5 h-3.5 rounded-[2px] bg-red-600 shadow-[0_0_6px_rgba(220,38,38,0.5)] rotate-12" />}
                               </div>
@@ -677,6 +692,7 @@ export default function LiveMatchIsland() {
                               </div>
                               <div className="flex-1 flex justify-end items-center gap-2 flex-shrink-0">
                                 {playerGoals[p.id] && <span className="text-[10px] bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded-full font-black text-blue-400">⚽ {playerGoals[p.id]}</span>}
+                                {playerAutogoals[p.id] && <span className="text-[10px] bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-full font-black text-red-400" title="Autogol">⚽ (AG) {playerAutogoals[p.id]}</span>}
                                 {playerYellows[p.id] && <div className="w-2.5 h-3.5 rounded-[2px] bg-yellow-400 shadow-[0_0_6px_rgba(250,204,21,0.5)] rotate-12" />}
                                 {playerReds[p.id] && <div className="w-2.5 h-3.5 rounded-[2px] bg-red-600 shadow-[0_0_6px_rgba(220,38,38,0.5)] rotate-12" />}
                               </div>
@@ -817,6 +833,13 @@ function renderEventMedia(ev: any) {
     case 'Goal':
       return (
         <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white/5 border border-[var(--glass-border)] shadow-[0_0_8px_rgba(255,255,255,0.05)]">
+          <span className="text-sm">⚽</span>
+        </div>
+      );
+    case 'AUTOGOAL':
+    case 'Autogoal':
+      return (
+        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-red-500/10 border border-red-500/20 shadow-[0_0_8px_rgba(239,68,68,0.15)]">
           <span className="text-sm">⚽</span>
         </div>
       );
