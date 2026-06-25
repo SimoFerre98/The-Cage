@@ -30,6 +30,7 @@ enum LedState {
 };
 
 LedState currentState = STATE_IDLE;
+LedState preEffectState = STATE_IDLE;
 unsigned long stateStartTime = 0;
 unsigned long lastAnimationUpdate = 0;
 
@@ -451,11 +452,14 @@ void handleWebSocketMessage(uint8_t * payload, size_t length) {
         timerStartMillis = millis();
         timerLastVal = -1; // Forza il flash di transizione iniziale
         currentState = STATE_TIMER;
+        preEffectState = STATE_TIMER;
       } else if (command == "PAUSE") {
         timerDuration = duration;
         currentState = STATE_TIMER_PAUSED;
+        preEffectState = STATE_TIMER_PAUSED;
       } else if (command == "STOP") {
         currentState = STATE_IDLE;
+        preEffectState = STATE_IDLE;
       }
     }
   } 
@@ -470,16 +474,28 @@ void handleWebSocketMessage(uint8_t * payload, size_t length) {
 
 // --- GESTIONE DEI TRIGGER EFFETTI LED ---
 void triggerGoalEffect(bool isHome) {
+  if (currentState != STATE_GOAL_HOME && currentState != STATE_GOAL_AWAY &&
+      currentState != STATE_START_MATCH && currentState != STATE_END_MATCH) {
+    preEffectState = currentState;
+  }
   currentState = isHome ? STATE_GOAL_HOME : STATE_GOAL_AWAY;
   stateStartTime = millis();
 }
 
 void triggerStartMatchEffect() {
+  if (currentState != STATE_GOAL_HOME && currentState != STATE_GOAL_AWAY &&
+      currentState != STATE_START_MATCH && currentState != STATE_END_MATCH) {
+    preEffectState = currentState;
+  }
   currentState = STATE_START_MATCH;
   stateStartTime = millis();
 }
 
 void triggerEndMatchEffect() {
+  if (currentState != STATE_GOAL_HOME && currentState != STATE_GOAL_AWAY &&
+      currentState != STATE_START_MATCH && currentState != STATE_END_MATCH) {
+    preEffectState = currentState;
+  }
   currentState = STATE_END_MATCH;
   stateStartTime = millis();
 }
@@ -627,7 +643,7 @@ void updateLEDs() {
     // 2. STATO GOL CASA: Stroboscopico Rosso (3 secondi)
     case STATE_GOAL_HOME: {
       if (elapsed > 3000) {
-        currentState = STATE_IDLE;
+        currentState = preEffectState;
         break;
       }
       bool on = (elapsed / 80) % 2 == 0;
@@ -641,7 +657,7 @@ void updateLEDs() {
     // 3. STATO GOL TRASFERTA: Stroboscopico Blu (3 secondi)
     case STATE_GOAL_AWAY: {
       if (elapsed > 3000) {
-        currentState = STATE_IDLE;
+        currentState = preEffectState;
         break;
       }
       bool on = (elapsed / 80) % 2 == 0;
@@ -655,7 +671,7 @@ void updateLEDs() {
     // 4. INIZIO PARTITA: Onda Verde (2 secondi)
     case STATE_START_MATCH: {
       if (elapsed > 2000) {
-        currentState = STATE_IDLE;
+        currentState = preEffectState;
         break;
       }
       int numGreen = map(elapsed, 0, 2000, 0, NUM_LEDS);
@@ -668,7 +684,7 @@ void updateLEDs() {
     // 5. FINE PARTITA: Sirena Rosso Stroboscopica Rapida (5 secondi)
     case STATE_END_MATCH: {
       if (elapsed > 5000) {
-        currentState = STATE_IDLE;
+        currentState = preEffectState;
         break;
       }
       bool on = (elapsed / 50) % 2 == 0;
