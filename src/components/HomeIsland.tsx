@@ -323,13 +323,15 @@ export default function HomeIsland() {
                         <div className="flex-1 flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <span className="font-bold text-white/95 hover:text-blue-400 transition-colors truncate">{displayName}</span>
-                            {getRoleBadge(player.role)}
                           </div>
-                          {isExtra && (
-                            <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/20 uppercase tracking-wider">
-                              Slot Extra
-                            </span>
-                          )}
+                          <div className="flex items-center gap-2 pr-12">
+                            {getRoleBadge(player.role)}
+                            {isExtra && (
+                              <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/20 uppercase tracking-wider">
+                                Slot Extra
+                              </span>
+                            )}
+                          </div>
                         </div>
                       </div>
                     );
@@ -368,11 +370,16 @@ export default function HomeIsland() {
                       </div>
                     );
                   })()}
-                  <div style={{ flex: 1 }}>
-                    <div className="flex items-center gap-2">
-                      <span style={{ fontSize: '0.98rem', fontWeight: 800, color: 'white' }} className="hover:text-blue-400 transition-colors">
-                        {displayName}
-                      </span>
+                  <div style={{ flex: 1 }} className="flex items-center justify-between">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span style={{ fontSize: '0.98rem', fontWeight: 800, color: 'white' }} className="hover:text-blue-400 transition-colors">
+                          {displayName}
+                        </span>
+                      </div>
+                      <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }} className="uppercase font-semibold tracking-wider mt-0.5">{p.team}</div>
+                    </div>
+                    <div className="flex items-center gap-2 pr-12">
                       {getRoleBadge(p.role)}
                       {isExtra && (
                         <span className="px-1.5 py-0.5 rounded-full text-[8px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/20 uppercase tracking-wider">
@@ -380,7 +387,6 @@ export default function HomeIsland() {
                         </span>
                       )}
                     </div>
-                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }} className="uppercase font-semibold tracking-wider mt-0.5">{p.team}</div>
                   </div>
                 </div>
               );
