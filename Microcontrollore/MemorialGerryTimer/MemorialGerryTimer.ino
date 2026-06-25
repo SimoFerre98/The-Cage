@@ -646,11 +646,28 @@ void updateLEDs() {
         currentState = preEffectState;
         break;
       }
-      bool on = (elapsed / 80) % 2 == 0;
-      CRGB color = on ? CRGB::Red : CRGB::Black;
       
-      fill_solid(leds, NUM_LEDS, color);
-      boardLed[0] = color;
+      bool flashOn = (elapsed / 150) % 2 == 0;
+      FastLED.clear();
+      
+      if (preEffectState == STATE_TIMER || preEffectState == STATE_TIMER_PAUSED) {
+        unsigned long timerElapsed = now - timerStartMillis;
+        int currentSec = (preEffectState == STATE_TIMER) ? (timerDuration - (timerElapsed / 1000)) : timerDuration;
+        if (currentSec < 0) currentSec = 0;
+        
+        if (flashOn) {
+          displayTime(currentSec, "RED", "SOLID", now);
+          bool colonOn = (now / 500) % 2 == 0;
+          if (preEffectState == STATE_TIMER_PAUSED || colonOn) {
+            setColon("RED", "SOLID", now);
+          }
+        }
+        boardLed[0] = flashOn ? CRGB::Red : CRGB::Black;
+      } else {
+        CRGB color = flashOn ? CRGB::Red : CRGB::Black;
+        fill_solid(leds, NUM_LEDS, color);
+        boardLed[0] = color;
+      }
       break;
     }
     
@@ -660,11 +677,28 @@ void updateLEDs() {
         currentState = preEffectState;
         break;
       }
-      bool on = (elapsed / 80) % 2 == 0;
-      CRGB color = on ? CRGB::Blue : CRGB::Black;
       
-      fill_solid(leds, NUM_LEDS, color);
-      boardLed[0] = color;
+      bool flashOn = (elapsed / 150) % 2 == 0;
+      FastLED.clear();
+      
+      if (preEffectState == STATE_TIMER || preEffectState == STATE_TIMER_PAUSED) {
+        unsigned long timerElapsed = now - timerStartMillis;
+        int currentSec = (preEffectState == STATE_TIMER) ? (timerDuration - (timerElapsed / 1000)) : timerDuration;
+        if (currentSec < 0) currentSec = 0;
+        
+        if (flashOn) {
+          displayTime(currentSec, "BLUE", "SOLID", now);
+          bool colonOn = (now / 500) % 2 == 0;
+          if (preEffectState == STATE_TIMER_PAUSED || colonOn) {
+            setColon("BLUE", "SOLID", now);
+          }
+        }
+        boardLed[0] = flashOn ? CRGB::Blue : CRGB::Black;
+      } else {
+        CRGB color = flashOn ? CRGB::Blue : CRGB::Black;
+        fill_solid(leds, NUM_LEDS, color);
+        boardLed[0] = color;
+      }
       break;
     }
     
