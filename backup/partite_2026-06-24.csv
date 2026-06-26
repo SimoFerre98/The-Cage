@@ -1,0 +1,86 @@
+RISULTATI DELLE PARTITE DEL 2026-06-24;;;;;;;
+ID Partita;Data e Ora;Fase;Squadra Casa;Punteggio Casa;Punteggio Ospite;Squadra Ospite;Stato
+82cba383-0446-4817-8c63-422e96b8fc9e;24/06/2026, 18:55:00;Fase a Gironi;Gli Umili;4;1;Lo Dico FC;TERMINATA
+076bb526-00e1-428a-9ccf-cd8c4a7e5e17;24/06/2026, 19:30:00;Fase a Gironi;FC Murta;2;3;Chainz;TERMINATA
+ff7d2ffe-5765-408b-a135-7814615f2d36;24/06/2026, 20:05:00;Fase a Gironi;San Teodoro Ketzmaja;3;2;FC Ceres;TERMINATA
+310a6c88-4769-4e00-a4b7-0e8030fbf3ea;24/06/2026, 20:40:00;Fase a Gironi;Aston Birra;2;5;Lo Dico FC;TERMINATA
+73a10e0f-ef02-4c11-b211-2935b0358da4;24/06/2026, 21:15:00;Fase a Gironi;Gli Umili;3;5;UCG;TERMINATA
+0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d;24/06/2026, 21:50:00;Fase a Gironi;San Teodoro Ketzmaja;6;8;Chainz;TERMINATA
+e85cf57a-c11e-4ac2-9cc7-5e664d989500;24/06/2026, 22:25:00;Fase a Gironi;FC Murta;1;1;Aston Birra;TERMINATA
+98404968-e922-4af1-834f-b1ac50931758;24/06/2026, 23:00:00;Fase a Gironi;FC Ceres;2;9;UCG;TERMINATA
+
+
+DETTAGLIO EVENTI DELLA GIORNATA (GOAL, CARTELLINI, CARTE KINGS LEAGUE);;;;;;;
+ID Partita;Partita;Minuto;Tipo Evento;Squadra;Giocatore;Dettaglio
+82cba383-0446-4817-8c63-422e96b8fc9e;Gli Umili - Lo Dico FC;4';GOAL;Lo Dico FC;Christian Ravenna;
+82cba383-0446-4817-8c63-422e96b8fc9e;Gli Umili - Lo Dico FC;9';GOAL;Gli Umili;Simone Valle;
+82cba383-0446-4817-8c63-422e96b8fc9e;Gli Umili - Lo Dico FC;11';GOAL;Gli Umili;Tommaso Verardo;
+82cba383-0446-4817-8c63-422e96b8fc9e;Gli Umili - Lo Dico FC;22';CARTA;Gli Umili;Lorenzo Papiri;suspension
+82cba383-0446-4817-8c63-422e96b8fc9e;Gli Umili - Lo Dico FC;29';CARTA;Gli Umili;Tommaso Verardo;penalty::success
+82cba383-0446-4817-8c63-422e96b8fc9e;Gli Umili - Lo Dico FC;30';GOAL;Gli Umili;Lorenzo Papiri;
+076bb526-00e1-428a-9ccf-cd8c4a7e5e17;FC Murta - Chainz;6';CARTA;FC Murta;Matteo Gallo;starplayer
+076bb526-00e1-428a-9ccf-cd8c4a7e5e17;FC Murta - Chainz;8';GOAL;Chainz;Louis Dolcini;
+076bb526-00e1-428a-9ccf-cd8c4a7e5e17;FC Murta - Chainz;12';GOAL;Chainz;Louis Dolcini;
+076bb526-00e1-428a-9ccf-cd8c4a7e5e17;FC Murta - Chainz;19';GOAL;FC Murta;Matteo Gallo;
+076bb526-00e1-428a-9ccf-cd8c4a7e5e17;FC Murta - Chainz;22';CARTA;FC Murta;Matteo Gallo;suspension
+076bb526-00e1-428a-9ccf-cd8c4a7e5e17;FC Murta - Chainz;23';GOAL;Chainz;Francesco Tassone;
+076bb526-00e1-428a-9ccf-cd8c4a7e5e17;FC Murta - Chainz;29';AMMONIZIONE;Chainz;Roberto Bobbio;
+076bb526-00e1-428a-9ccf-cd8c4a7e5e17;FC Murta - Chainz;30';AMMONIZIONE;Chainz;Andrea Robbiano;
+ff7d2ffe-5765-408b-a135-7814615f2d36;San Teodoro Ketzmaja - FC Ceres;1';CARTA;San Teodoro Ketzmaja;Davide Rossi;starplayer
+ff7d2ffe-5765-408b-a135-7814615f2d36;San Teodoro Ketzmaja - FC Ceres;2';GOAL;San Teodoro Ketzmaja;Davide Rossi;
+ff7d2ffe-5765-408b-a135-7814615f2d36;San Teodoro Ketzmaja - FC Ceres;3';GOAL;FC Ceres;Samuele Del Fiore;
+ff7d2ffe-5765-408b-a135-7814615f2d36;San Teodoro Ketzmaja - FC Ceres;10';GOAL;FC Ceres;Stefano Dellepiane;
+ff7d2ffe-5765-408b-a135-7814615f2d36;San Teodoro Ketzmaja - FC Ceres;18';AMMONIZIONE;San Teodoro Ketzmaja;Ibrahim Lagrari;
+ff7d2ffe-5765-408b-a135-7814615f2d36;San Teodoro Ketzmaja - FC Ceres;19';GOAL;San Teodoro Ketzmaja;Andrea Balossino;
+ff7d2ffe-5765-408b-a135-7814615f2d36;San Teodoro Ketzmaja - FC Ceres;20';GOAL;San Teodoro Ketzmaja;;
+310a6c88-4769-4e00-a4b7-0e8030fbf3ea;Aston Birra - Lo Dico FC;1';GOAL;Lo Dico FC;Christian Ravenna;
+310a6c88-4769-4e00-a4b7-0e8030fbf3ea;Aston Birra - Lo Dico FC;1';ASSIST;Lo Dico FC;Mohamed Niang;
+310a6c88-4769-4e00-a4b7-0e8030fbf3ea;Aston Birra - Lo Dico FC;16';GOAL;Lo Dico FC;Christian Ravenna;
+310a6c88-4769-4e00-a4b7-0e8030fbf3ea;Aston Birra - Lo Dico FC;18';GOAL;Aston Birra;Giacomo Patrone;
+310a6c88-4769-4e00-a4b7-0e8030fbf3ea;Aston Birra - Lo Dico FC;18';ASSIST;Aston Birra;Mirko Pili;
+310a6c88-4769-4e00-a4b7-0e8030fbf3ea;Aston Birra - Lo Dico FC;20';ASSIST;Aston Birra;Giacomo Patrone;
+310a6c88-4769-4e00-a4b7-0e8030fbf3ea;Aston Birra - Lo Dico FC;20';GOAL;Aston Birra;Mirko Pili;
+310a6c88-4769-4e00-a4b7-0e8030fbf3ea;Aston Birra - Lo Dico FC;23';GOAL;Lo Dico FC;Christian Ravenna;
+310a6c88-4769-4e00-a4b7-0e8030fbf3ea;Aston Birra - Lo Dico FC;29';CARTA;Aston Birra;Diego Traverso;penalty::fail
+310a6c88-4769-4e00-a4b7-0e8030fbf3ea;Aston Birra - Lo Dico FC;30';GOAL;Lo Dico FC;Mohamed Niang;
+310a6c88-4769-4e00-a4b7-0e8030fbf3ea;Aston Birra - Lo Dico FC;30';GOAL;Lo Dico FC;Christian Ravenna;
+73a10e0f-ef02-4c11-b211-2935b0358da4;Gli Umili - UCG;1';GOAL;UCG;Lorenzo Ceresoli;
+73a10e0f-ef02-4c11-b211-2935b0358da4;Gli Umili - UCG;12';GOAL;Gli Umili;Lorenzo Papiri;
+73a10e0f-ef02-4c11-b211-2935b0358da4;Gli Umili - UCG;12';ASSIST;Gli Umili;Elio Casanova;
+73a10e0f-ef02-4c11-b211-2935b0358da4;Gli Umili - UCG;14';GOAL;UCG;Reverberi Tommaso;
+73a10e0f-ef02-4c11-b211-2935b0358da4;Gli Umili - UCG;20';GOAL;Gli Umili;Paolo Gaglianò;
+73a10e0f-ef02-4c11-b211-2935b0358da4;Gli Umili - UCG;26';GOAL;UCG;Lorenzo Ceresoli;
+73a10e0f-ef02-4c11-b211-2935b0358da4;Gli Umili - UCG;26';CARTA;Gli Umili;Tommaso Verardo;penalty::success
+73a10e0f-ef02-4c11-b211-2935b0358da4;Gli Umili - UCG;29';GOAL;UCG;Reverberi Tommaso;
+73a10e0f-ef02-4c11-b211-2935b0358da4;Gli Umili - UCG;29';CARTA;UCG;Mattia Ninivaggi;penalty::success
+0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d;San Teodoro Ketzmaja - Chainz;2';GOAL;Chainz;Louis Dolcini;
+0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d;San Teodoro Ketzmaja - Chainz;3';GOAL;San Teodoro Ketzmaja;Davide Rossi;
+0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d;San Teodoro Ketzmaja - Chainz;3';GOAL;Chainz;Louis Dolcini;
+0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d;San Teodoro Ketzmaja - Chainz;5';GOAL;San Teodoro Ketzmaja;Matteo Fascetti;
+0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d;San Teodoro Ketzmaja - Chainz;7';GOAL;Chainz;Francesco Tassone;
+0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d;San Teodoro Ketzmaja - Chainz;11';GOAL;San Teodoro Ketzmaja;Davide Rossi;
+0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d;San Teodoro Ketzmaja - Chainz;15';GOAL;San Teodoro Ketzmaja;Andrea Gobbi;
+0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d;San Teodoro Ketzmaja - Chainz;21';CARTA;San Teodoro Ketzmaja;;goalx2
+0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d;San Teodoro Ketzmaja - Chainz;23';GOAL;Chainz;Louis Dolcini;
+0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d;San Teodoro Ketzmaja - Chainz;24';GOAL;San Teodoro Ketzmaja;Davide Rossi;
+0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d;San Teodoro Ketzmaja - Chainz;25';GOAL;San Teodoro Ketzmaja;Davide Rossi;
+0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d;San Teodoro Ketzmaja - Chainz;26';GOAL;Chainz;Roberto Bobbio;
+0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d;San Teodoro Ketzmaja - Chainz;28';GOAL;Chainz;Roberto Bobbio;
+0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d;San Teodoro Ketzmaja - Chainz;30';GOAL;Chainz;Roberto Bobbio;
+e85cf57a-c11e-4ac2-9cc7-5e664d989500;FC Murta - Aston Birra;9';GOAL;FC Murta;Matteo Mazza;
+e85cf57a-c11e-4ac2-9cc7-5e664d989500;FC Murta - Aston Birra;10';AMMONIZIONE;FC Murta;Danilo Lubello;
+e85cf57a-c11e-4ac2-9cc7-5e664d989500;FC Murta - Aston Birra;14';AMMONIZIONE;FC Murta;Matteo Mazza;
+e85cf57a-c11e-4ac2-9cc7-5e664d989500;FC Murta - Aston Birra;21';CARTA;Aston Birra;;suspension
+e85cf57a-c11e-4ac2-9cc7-5e664d989500;FC Murta - Aston Birra;21';CARTA;FC Murta;;goalx2
+e85cf57a-c11e-4ac2-9cc7-5e664d989500;FC Murta - Aston Birra;24';GOAL;Aston Birra;Giacomo Patrone;
+98404968-e922-4af1-834f-b1ac50931758;FC Ceres - UCG;2';GOAL;UCG;Reverberi Tommaso;
+98404968-e922-4af1-834f-b1ac50931758;FC Ceres - UCG;6';GOAL;UCG;Lorenzo Ceresoli;
+98404968-e922-4af1-834f-b1ac50931758;FC Ceres - UCG;7';GOAL;UCG;Lorenzo Ceresoli;
+98404968-e922-4af1-834f-b1ac50931758;FC Ceres - UCG;9';GOAL;FC Ceres;Samuele Del Fiore;
+98404968-e922-4af1-834f-b1ac50931758;FC Ceres - UCG;11';GOAL;FC Ceres;Stefano Dellepiane;
+98404968-e922-4af1-834f-b1ac50931758;FC Ceres - UCG;11';GOAL;UCG;Reverberi Tommaso;
+98404968-e922-4af1-834f-b1ac50931758;FC Ceres - UCG;23';GOAL;UCG;Mattia Ninivaggi;
+98404968-e922-4af1-834f-b1ac50931758;FC Ceres - UCG;24';CARTA;UCG;;goalx2
+98404968-e922-4af1-834f-b1ac50931758;FC Ceres - UCG;24';GOAL;UCG;Reverberi Tommaso;
+98404968-e922-4af1-834f-b1ac50931758;FC Ceres - UCG;30';GOAL;UCG;Reverberi Tommaso;
+98404968-e922-4af1-834f-b1ac50931758;FC Ceres - UCG;30';GOAL;UCG;Mattia Ninivaggi;

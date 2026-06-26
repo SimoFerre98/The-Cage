@@ -1,0 +1,3373 @@
+{
+  "date": "all",
+  "matches": [
+    {
+      "id": "a1be1a6d-7427-4360-b063-d9e173bcbe17",
+      "match_date": "2026-06-22T17:30:00.000Z",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 3,
+      "away_score": 2,
+      "home_team": {
+        "id": "6db87a59-8883-47a4-8a54-32be0931e306",
+        "name": "FC Pontos"
+      },
+      "away_team": {
+        "id": "086f9534-0dec-48ad-8129-c40228bb70ab",
+        "name": "Amatori Calcio Genova"
+      },
+      "events": [
+        {
+          "id": "de2c1e1f-4ce6-465c-a61b-7c442a6db054",
+          "match_id": "a1be1a6d-7427-4360-b063-d9e173bcbe17",
+          "minute": 5,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Pontos"
+          },
+          "player": {
+            "name": "Matteo Decorato"
+          }
+        },
+        {
+          "id": "af0d0a1d-bdf8-47e5-b2c3-9e61972a4b2c",
+          "match_id": "a1be1a6d-7427-4360-b063-d9e173bcbe17",
+          "minute": 11,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Amatori Calcio Genova"
+          },
+          "player": {
+            "name": "Giulio Torre"
+          }
+        },
+        {
+          "id": "47e75cf3-764b-4b53-bda7-4c2f3932d65c",
+          "match_id": "a1be1a6d-7427-4360-b063-d9e173bcbe17",
+          "minute": 25,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Pontos"
+          },
+          "player": {
+            "name": "Mattia Fazio"
+          }
+        },
+        {
+          "id": "532a1bd1-3aec-48e1-b3fd-942a5176e62c",
+          "match_id": "a1be1a6d-7427-4360-b063-d9e173bcbe17",
+          "minute": 25,
+          "type": "CARTA",
+          "detail": "penalty::success",
+          "team": {
+            "name": "Amatori Calcio Genova"
+          },
+          "player": {
+            "name": "Francesco Spataro"
+          }
+        },
+        {
+          "id": "840c10f1-41f9-4179-a71b-15a49c672b37",
+          "match_id": "a1be1a6d-7427-4360-b063-d9e173bcbe17",
+          "minute": 25,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Pontos"
+          },
+          "player": {
+            "name": "Mattia Fazio"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af",
+      "match_date": "2026-06-22T18:05:00.000Z",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 3,
+      "away_score": 3,
+      "home_team": {
+        "id": "f119e2ee-e6b2-4b75-881a-4c6a9bff586c",
+        "name": "Gli Umili"
+      },
+      "away_team": {
+        "id": "daa8c7d2-95f5-4a07-839d-fd74780e5ef7",
+        "name": "Sezione 164"
+      },
+      "events": [
+        {
+          "id": "8bf251d7-7ab0-4315-a083-509a5ada58be",
+          "match_id": "fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af",
+          "minute": 2,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Gabriele Robotti"
+          }
+        },
+        {
+          "id": "b1022f96-1ffb-43c3-8754-e5507faec861",
+          "match_id": "fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af",
+          "minute": 3,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gli Umili"
+          },
+          "player": {
+            "name": "Lorenzo Papiri"
+          }
+        },
+        {
+          "id": "4c9cdf12-7652-408a-84e3-2e5f52abac9f",
+          "match_id": "fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af",
+          "minute": 4,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gli Umili"
+          },
+          "player": {
+            "name": "Elio Casanova"
+          }
+        },
+        {
+          "id": "a8bab54a-c155-455e-ba79-a61f4f06f2c9",
+          "match_id": "fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af",
+          "minute": 19,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Gabriele Robotti"
+          }
+        },
+        {
+          "id": "bef07926-798a-423b-b8bb-18fdb4df53fd",
+          "match_id": "fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af",
+          "minute": 20,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Gabriele Robotti"
+          }
+        },
+        {
+          "id": "13e519ec-6b2a-40be-8bf6-811fbfafe7e9",
+          "match_id": "fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af",
+          "minute": 20,
+          "type": "CARTA",
+          "detail": "penalty::success",
+          "team": {
+            "name": "Gli Umili"
+          },
+          "player": {
+            "name": "Tommaso Verardo"
+          }
+        },
+        {
+          "id": "fd6849c4-1e1b-4ee8-aac9-0e50831c2d40",
+          "match_id": "fba22a1c-cdf8-45bc-b6a8-db8d10c7a8af",
+          "minute": 20,
+          "type": "CARTA",
+          "detail": "penalty::fail",
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Gabriele Robotti"
+          }
+        }
+      ]
+    },
+    {
+      "id": "9b5b7cae-70b9-4be2-84df-1884fb0308f9",
+      "match_date": "2026-06-22T18:40:00.000Z",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 1,
+      "away_score": 2,
+      "home_team": {
+        "id": "13d5e6e7-bc36-465f-b344-d4f8d5671815",
+        "name": "FC Ceres"
+      },
+      "away_team": {
+        "id": "3b151da3-44fd-4162-b80f-7e9575a03960",
+        "name": "FC Murta"
+      },
+      "events": [
+        {
+          "id": "e8088978-aa27-4535-8420-2c7207a73619",
+          "match_id": "9b5b7cae-70b9-4be2-84df-1884fb0308f9",
+          "minute": 2,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Murta"
+          },
+          "player": {
+            "name": "Kevin Ventura"
+          }
+        },
+        {
+          "id": "a167ac73-5cdd-40cd-8a51-f5d570cb77a1",
+          "match_id": "9b5b7cae-70b9-4be2-84df-1884fb0308f9",
+          "minute": 19,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Ceres"
+          },
+          "player": {
+            "name": "Samuele Del Fiore"
+          }
+        },
+        {
+          "id": "2cda3ea5-1e18-450a-bef8-c98c529ca830",
+          "match_id": "9b5b7cae-70b9-4be2-84df-1884fb0308f9",
+          "minute": 24,
+          "type": "CARTA",
+          "detail": "shootout::success",
+          "team": {
+            "name": "FC Murta"
+          },
+          "player": {
+            "name": "Luca Dianti"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+      "match_date": "2026-06-22T19:15:00.000Z",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 10,
+      "away_score": 3,
+      "home_team": {
+        "id": "daa8c7d2-95f5-4a07-839d-fd74780e5ef7",
+        "name": "Sezione 164"
+      },
+      "away_team": {
+        "id": "086f9534-0dec-48ad-8129-c40228bb70ab",
+        "name": "Amatori Calcio Genova"
+      },
+      "events": [
+        {
+          "id": "c09f720e-899c-40fc-9e09-049fe111807a",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 3,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Riccardo Mazzolini"
+          }
+        },
+        {
+          "id": "c2300e23-8db7-428e-87e2-7569823a92a3",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 8,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Amatori Calcio Genova"
+          },
+          "player": {
+            "name": "Fabio Calzia"
+          }
+        },
+        {
+          "id": "858dad73-4c22-4a12-87a4-b6f3e176d7cf",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 8,
+          "type": "ASSIST",
+          "detail": null,
+          "team": {
+            "name": "Amatori Calcio Genova"
+          },
+          "player": {
+            "name": "Matteo Campi"
+          }
+        },
+        {
+          "id": "5144a35c-3e4d-4869-a3d3-e7819418048c",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 11,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Filippo Turrini"
+          }
+        },
+        {
+          "id": "3d7614cd-b8b1-4e57-9887-a12a376f7c6c",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 11,
+          "type": "ASSIST",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Riccardo Mazzolini"
+          }
+        },
+        {
+          "id": "e1933f21-159b-4c30-a423-7cb5c60d6887",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 12,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Samuele Mangano"
+          }
+        },
+        {
+          "id": "9ea38bac-3f8a-4c6e-9fd4-885134d467da",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 12,
+          "type": "ASSIST",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Riccardo Mazzolini"
+          }
+        },
+        {
+          "id": "1b6e705d-8f86-475b-9313-559dce0a8abb",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 14,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Gabriele Robotti"
+          }
+        },
+        {
+          "id": "6c35e107-1b00-42dc-8ecd-5392582a0d1b",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 14,
+          "type": "ASSIST",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Ivan Grispo"
+          }
+        },
+        {
+          "id": "2eded1ce-45e4-488c-ac24-c6dc59c60a52",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 17,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Samuele Mangano"
+          }
+        },
+        {
+          "id": "628a873a-2670-4f24-a57f-b2a50f28dbf5",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 17,
+          "type": "ASSIST",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Ivan Grispo"
+          }
+        },
+        {
+          "id": "ccb82bfb-524f-49e8-862d-c50651fd3125",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 21,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Ivan Grispo"
+          }
+        },
+        {
+          "id": "ea3c7fed-cf1b-4c9d-99c2-7ebdabd154ef",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 23,
+          "type": "CARTA",
+          "detail": "goalx2",
+          "team": {
+            "name": "Amatori Calcio Genova"
+          },
+          "player": {
+            "name": "Giulio Torre"
+          }
+        },
+        {
+          "id": "66f7f3f1-31b7-4697-8b1f-9dae6747a495",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 25,
+          "type": "CARTA",
+          "detail": "starplayer",
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Ivan Grispo"
+          }
+        },
+        {
+          "id": "484fe069-fe52-42b0-82da-51a0295933a4",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 28,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Gabriele Robotti"
+          }
+        },
+        {
+          "id": "d10a18be-4cad-4e7f-b19c-5ce046d0f585",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 28,
+          "type": "ASSIST",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Riccardo Mazzolini"
+          }
+        },
+        {
+          "id": "90477529-53f1-4dee-b38a-3ecd3ceada09",
+          "match_id": "ab9aab97-0c76-46b7-b728-16e45dd82e63",
+          "minute": 30,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Gabriele Robotti"
+          }
+        }
+      ]
+    },
+    {
+      "id": "993ec7b5-3f94-4df7-aa98-5ceaaa73d87f",
+      "match_date": "2026-06-22T19:50:00.000Z",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 0,
+      "away_score": 5,
+      "home_team": {
+        "id": "3b151da3-44fd-4162-b80f-7e9575a03960",
+        "name": "FC Murta"
+      },
+      "away_team": {
+        "id": "6db87a59-8883-47a4-8a54-32be0931e306",
+        "name": "FC Pontos"
+      },
+      "events": [
+        {
+          "id": "b2b0a89d-ae58-46b6-9282-21e8e3f64b36",
+          "match_id": "993ec7b5-3f94-4df7-aa98-5ceaaa73d87f",
+          "minute": 3,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Pontos"
+          },
+          "player": {
+            "name": "Martino Gonzalez"
+          }
+        },
+        {
+          "id": "c5872fa1-a99a-423f-87f4-e41b81853eed",
+          "match_id": "993ec7b5-3f94-4df7-aa98-5ceaaa73d87f",
+          "minute": 3,
+          "type": "ASSIST",
+          "detail": null,
+          "team": {
+            "name": "FC Pontos"
+          },
+          "player": {
+            "name": "Mattia Fazio"
+          }
+        },
+        {
+          "id": "c498c705-4608-4c8f-bfc0-395780051b12",
+          "match_id": "993ec7b5-3f94-4df7-aa98-5ceaaa73d87f",
+          "minute": 12,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Pontos"
+          },
+          "player": {
+            "name": "Matteo Decorato"
+          }
+        },
+        {
+          "id": "05f4d72b-c070-4bbe-ab06-cfe1b9ae7539",
+          "match_id": "993ec7b5-3f94-4df7-aa98-5ceaaa73d87f",
+          "minute": 20,
+          "type": "CARTA",
+          "detail": "shootout::success",
+          "team": {
+            "name": "FC Pontos"
+          },
+          "player": {
+            "name": "Matteo Decorato"
+          }
+        },
+        {
+          "id": "06afa8bd-489a-44a3-9d55-41046e345685",
+          "match_id": "993ec7b5-3f94-4df7-aa98-5ceaaa73d87f",
+          "minute": 21,
+          "type": "CARTA",
+          "detail": "shootout::fail",
+          "team": {
+            "name": "FC Murta"
+          },
+          "player": {
+            "name": "Luca Dianti"
+          }
+        },
+        {
+          "id": "c1de9848-a743-48c7-b3fc-bd3096d9f3c0",
+          "match_id": "993ec7b5-3f94-4df7-aa98-5ceaaa73d87f",
+          "minute": 27,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Pontos"
+          },
+          "player": {
+            "name": "Mattia Fazio"
+          }
+        },
+        {
+          "id": "093d8866-8abd-4725-b45b-949e7bd1ef94",
+          "match_id": "993ec7b5-3f94-4df7-aa98-5ceaaa73d87f",
+          "minute": 28,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Pontos"
+          },
+          "player": {
+            "name": "Matteo Decorato"
+          }
+        }
+      ]
+    },
+    {
+      "id": "63fae8d0-75b5-4633-a370-66ac31549f09",
+      "match_date": "2026-06-22T20:25:00.000Z",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 2,
+      "away_score": 7,
+      "home_team": {
+        "id": "13d5e6e7-bc36-465f-b344-d4f8d5671815",
+        "name": "FC Ceres"
+      },
+      "away_team": {
+        "id": "f119e2ee-e6b2-4b75-881a-4c6a9bff586c",
+        "name": "Gli Umili"
+      },
+      "events": [
+        {
+          "id": "6edd1576-6c3c-411d-8c76-f367a8626b17",
+          "match_id": "63fae8d0-75b5-4633-a370-66ac31549f09",
+          "minute": 1,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gli Umili"
+          },
+          "player": {
+            "name": "Lorenzo Papiri"
+          }
+        },
+        {
+          "id": "e0fad9f1-3fde-4ea0-b25f-0c04dc2b0f38",
+          "match_id": "63fae8d0-75b5-4633-a370-66ac31549f09",
+          "minute": 5,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gli Umili"
+          },
+          "player": {
+            "name": "Paolo Gaglianò"
+          }
+        },
+        {
+          "id": "4176a0b3-fbdc-4c17-8c4f-1f6e7e3acb4a",
+          "match_id": "63fae8d0-75b5-4633-a370-66ac31549f09",
+          "minute": 6,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gli Umili"
+          },
+          "player": {
+            "name": "Paolo Gaglianò"
+          }
+        },
+        {
+          "id": "fb83869a-239d-44ed-a33e-01e20820c611",
+          "match_id": "63fae8d0-75b5-4633-a370-66ac31549f09",
+          "minute": 12,
+          "type": "CARTA",
+          "detail": "shootout::fail",
+          "team": {
+            "name": "FC Ceres"
+          },
+          "player": {
+            "name": "Samuele Del Fiore"
+          }
+        },
+        {
+          "id": "91331536-8aac-4ca4-9998-af050925681f",
+          "match_id": "63fae8d0-75b5-4633-a370-66ac31549f09",
+          "minute": 17,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gli Umili"
+          },
+          "player": {
+            "name": "Paolo Gaglianò"
+          }
+        },
+        {
+          "id": "b57704cf-b1bf-4609-bb8a-41151aa8f981",
+          "match_id": "63fae8d0-75b5-4633-a370-66ac31549f09",
+          "minute": 19,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Ceres"
+          },
+          "player": {
+            "name": "Samuele Del Fiore"
+          }
+        },
+        {
+          "id": "f93687d3-192a-4acb-8db8-2347e4d87e71",
+          "match_id": "63fae8d0-75b5-4633-a370-66ac31549f09",
+          "minute": 24,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gli Umili"
+          },
+          "player": {
+            "name": "Elio Casanova"
+          }
+        },
+        {
+          "id": "91be10d1-1478-4823-bb85-dd600e2d5f2d",
+          "match_id": "63fae8d0-75b5-4633-a370-66ac31549f09",
+          "minute": 26,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gli Umili"
+          },
+          "player": {
+            "name": "Paolo Gaglianò"
+          }
+        },
+        {
+          "id": "34c7404a-39a0-41f0-8797-ff767132cca1",
+          "match_id": "63fae8d0-75b5-4633-a370-66ac31549f09",
+          "minute": 27,
+          "type": "CARTA",
+          "detail": "penalty::success",
+          "team": {
+            "name": "Gli Umili"
+          },
+          "player": {
+            "name": "Simone Valle"
+          }
+        },
+        {
+          "id": "c14c6308-32c6-4515-81ff-f0cb751ecbed",
+          "match_id": "63fae8d0-75b5-4633-a370-66ac31549f09",
+          "minute": 30,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Ceres"
+          },
+          "player": {
+            "name": "Marco Gagna"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf",
+      "match_date": "2026-06-23T16:55:00.000Z",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 4,
+      "away_score": 7,
+      "home_team": {
+        "id": "67218d78-44dd-414c-a964-9ed5c307d7c0",
+        "name": "UCG"
+      },
+      "away_team": {
+        "id": "685956d2-d75f-4eec-b0b3-179ec71993e1",
+        "name": "Gilly Boys"
+      },
+      "events": [
+        {
+          "id": "981b48b5-4542-41fe-8e95-2699a44c9534",
+          "match_id": "ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf",
+          "minute": 6,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "UCG"
+          },
+          "player": {
+            "name": "Andrea Ortisi"
+          }
+        },
+        {
+          "id": "b825f915-9da2-4d61-8c60-1c7ea2dc7d48",
+          "match_id": "ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf",
+          "minute": 7,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "UCG"
+          },
+          "player": {
+            "name": "Andrea Ortisi"
+          }
+        },
+        {
+          "id": "85a7797b-6b27-4abf-908f-d4507c8f7ef4",
+          "match_id": "ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf",
+          "minute": 7,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "UCG"
+          },
+          "player": {
+            "name": "Reverberi Tommaso"
+          }
+        },
+        {
+          "id": "8b6d7587-6999-4d96-a017-1dfeb23067dd",
+          "match_id": "ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf",
+          "minute": 9,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "UCG"
+          },
+          "player": {
+            "name": "Bevegni Francesco"
+          }
+        },
+        {
+          "id": "1cf4e84f-9ac4-4cd4-9ae5-0780af4a82bc",
+          "match_id": "ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf",
+          "minute": 10,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gilly Boys"
+          },
+          "player": {
+            "name": "Simone Cavicchioli"
+          }
+        },
+        {
+          "id": "ab1a5255-eca6-47f0-9c49-b0cb1cc82582",
+          "match_id": "ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf",
+          "minute": 14,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gilly Boys"
+          },
+          "player": {
+            "name": "Fabrizio Schiano"
+          }
+        },
+        {
+          "id": "06031f3a-59e6-4485-9d00-f660ebf40e22",
+          "match_id": "ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf",
+          "minute": 17,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gilly Boys"
+          },
+          "player": {
+            "name": "Jacopo Vicini"
+          }
+        },
+        {
+          "id": "d41c7a5f-96f0-4660-889b-bb70635702fd",
+          "match_id": "ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf",
+          "minute": 19,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gilly Boys"
+          },
+          "player": {
+            "name": "Edoardo Banchieri"
+          }
+        },
+        {
+          "id": "2192ee9b-7dbc-4f7b-b106-ce96718adf59",
+          "match_id": "ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf",
+          "minute": 26,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gilly Boys"
+          },
+          "player": {
+            "name": "Dario Riva"
+          }
+        },
+        {
+          "id": "e6eb427c-c73a-45dc-8a62-cab3914238be",
+          "match_id": "ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf",
+          "minute": 29,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gilly Boys"
+          },
+          "player": {
+            "name": "Simone Cavicchioli"
+          }
+        },
+        {
+          "id": "7ba22cbd-2972-4be1-a438-2e6dc22d485a",
+          "match_id": "ac94bfc1-76a1-41fc-ae98-6fd83c54d7cf",
+          "minute": 30,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gilly Boys"
+          },
+          "player": {
+            "name": "Dario Riva"
+          }
+        }
+      ]
+    },
+    {
+      "id": "5c06696f-e7ae-4a8e-93d3-c594383c6508",
+      "match_date": "2026-06-23T17:30:00.000Z",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 4,
+      "away_score": 6,
+      "home_team": {
+        "id": "add7df32-debf-4d2b-86cf-ef4aaae51008",
+        "name": "Taverna FC"
+      },
+      "away_team": {
+        "id": "ec7649c8-b329-4736-b234-6398be1091f2",
+        "name": "Aston Birra"
+      },
+      "events": [
+        {
+          "id": "ff61cca9-49da-4e65-8cb3-68ffb72920dc",
+          "match_id": "5c06696f-e7ae-4a8e-93d3-c594383c6508",
+          "minute": 4,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Taverna FC"
+          },
+          "player": {
+            "name": "Davide Barabino"
+          }
+        },
+        {
+          "id": "7fc66df1-accb-45d2-922e-efebfbcceece",
+          "match_id": "5c06696f-e7ae-4a8e-93d3-c594383c6508",
+          "minute": 8,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Aston Birra"
+          },
+          "player": {
+            "name": "Endi Pasho"
+          }
+        },
+        {
+          "id": "8e1593ed-dce0-4613-8c7e-5cf77865a4c0",
+          "match_id": "5c06696f-e7ae-4a8e-93d3-c594383c6508",
+          "minute": 11,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Aston Birra"
+          },
+          "player": {
+            "name": "Diego Traverso"
+          }
+        },
+        {
+          "id": "5c0182ff-7a3c-4fcf-95b6-29bb61c789ad",
+          "match_id": "5c06696f-e7ae-4a8e-93d3-c594383c6508",
+          "minute": 14,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Aston Birra"
+          },
+          "player": {
+            "name": "Diego Traverso"
+          }
+        },
+        {
+          "id": "9e316bd8-e893-4386-98c4-7325bfa87251",
+          "match_id": "5c06696f-e7ae-4a8e-93d3-c594383c6508",
+          "minute": 15,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Taverna FC"
+          },
+          "player": {
+            "name": "Alessandro Mosca"
+          }
+        },
+        {
+          "id": "f98eb053-2506-4814-abe8-ebb531ae55d1",
+          "match_id": "5c06696f-e7ae-4a8e-93d3-c594383c6508",
+          "minute": 20,
+          "type": "CARTA",
+          "detail": "starplayer",
+          "team": {
+            "name": "Taverna FC"
+          },
+          "player": {
+            "name": "Davide Pasti"
+          }
+        },
+        {
+          "id": "e3b408ed-6fcf-4480-bcd0-2d6594e33574",
+          "match_id": "5c06696f-e7ae-4a8e-93d3-c594383c6508",
+          "minute": 24,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Aston Birra"
+          },
+          "player": {
+            "name": "Ivan Moretti"
+          }
+        },
+        {
+          "id": "057989a2-ac52-4fe4-820f-a93711aee3cd",
+          "match_id": "5c06696f-e7ae-4a8e-93d3-c594383c6508",
+          "minute": 28,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Aston Birra"
+          },
+          "player": {
+            "name": "Giacomo Patrone"
+          }
+        },
+        {
+          "id": "c8908c6d-23be-4735-ae7b-99e937ed63b7",
+          "match_id": "5c06696f-e7ae-4a8e-93d3-c594383c6508",
+          "minute": 30,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Aston Birra"
+          },
+          "player": {
+            "name": "Giacomo Patrone"
+          }
+        }
+      ]
+    },
+    {
+      "id": "8be74c6f-ac94-41b9-a119-7bd7c7d84bda",
+      "match_date": "2026-06-23T18:05:00.000Z",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 1,
+      "away_score": 1,
+      "home_team": {
+        "id": "4dabc944-cd92-4d7f-8bda-7b85bacf5a55",
+        "name": "PonteX Pirates"
+      },
+      "away_team": {
+        "id": "75c4d928-b99d-492e-85e5-6d32d9fb4013",
+        "name": "Lo Dico FC"
+      },
+      "events": [
+        {
+          "id": "f9618170-1b17-4b2d-97d8-e73f64ff46a0",
+          "match_id": "8be74c6f-ac94-41b9-a119-7bd7c7d84bda",
+          "minute": 3,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Lo Dico FC"
+          },
+          "player": {
+            "name": "Christian Ravenna"
+          }
+        },
+        {
+          "id": "a67f525b-3067-4a13-8771-ce9cb05c1982",
+          "match_id": "8be74c6f-ac94-41b9-a119-7bd7c7d84bda",
+          "minute": 8,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "PonteX Pirates"
+          },
+          "player": {
+            "name": "Lorenzo Frondana"
+          }
+        },
+        {
+          "id": "32f6beac-7f23-4bcf-a89b-c3941b15c06b",
+          "match_id": "8be74c6f-ac94-41b9-a119-7bd7c7d84bda",
+          "minute": 24,
+          "type": "CARTA",
+          "detail": "goalx2",
+          "team": {
+            "name": "PonteX Pirates"
+          },
+          "player": null
+        },
+        {
+          "id": "72e02d3c-d43b-4037-9187-482254ec64e0",
+          "match_id": "8be74c6f-ac94-41b9-a119-7bd7c7d84bda",
+          "minute": 25,
+          "type": "CARTA",
+          "detail": "suspension",
+          "team": {
+            "name": "Lo Dico FC"
+          },
+          "player": {
+            "name": "Alphonse Diaye"
+          }
+        }
+      ]
+    },
+    {
+      "id": "217cf064-587f-437a-8d62-a331316dd0a5",
+      "match_date": "2026-06-23T18:40:00.000Z",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 8,
+      "away_score": 3,
+      "home_team": {
+        "id": "685956d2-d75f-4eec-b0b3-179ec71993e1",
+        "name": "Gilly Boys"
+      },
+      "away_team": {
+        "id": "e669b061-fc7f-4abb-a05e-45a047a63d02",
+        "name": "San Teodoro Ketzmaja"
+      },
+      "events": [
+        {
+          "id": "e63ffd45-7099-4d76-baaf-ef1dd6c44708",
+          "match_id": "217cf064-587f-437a-8d62-a331316dd0a5",
+          "minute": 1,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gilly Boys"
+          },
+          "player": {
+            "name": "Simone Cavicchioli"
+          }
+        },
+        {
+          "id": "974f2fbb-c9e2-4805-afa3-82e650338071",
+          "match_id": "217cf064-587f-437a-8d62-a331316dd0a5",
+          "minute": 3,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "San Teodoro Ketzmaja"
+          },
+          "player": {
+            "name": "Andrea Balossino"
+          }
+        },
+        {
+          "id": "e3abbe07-5cf8-4d2c-b941-0127228c50dd",
+          "match_id": "217cf064-587f-437a-8d62-a331316dd0a5",
+          "minute": 3,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gilly Boys"
+          },
+          "player": {
+            "name": "Edoardo Banchieri"
+          }
+        },
+        {
+          "id": "b2e0d4af-310e-470c-9211-c114f49bc0b2",
+          "match_id": "217cf064-587f-437a-8d62-a331316dd0a5",
+          "minute": 4,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "San Teodoro Ketzmaja"
+          },
+          "player": {
+            "name": "Davide Tamagnini"
+          }
+        },
+        {
+          "id": "25041e0d-4cd9-49c3-90f9-e830da451060",
+          "match_id": "217cf064-587f-437a-8d62-a331316dd0a5",
+          "minute": 7,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gilly Boys"
+          },
+          "player": {
+            "name": "Dario Riva"
+          }
+        },
+        {
+          "id": "a386b30c-66c6-4a26-b6a2-b1bd016c6ec3",
+          "match_id": "217cf064-587f-437a-8d62-a331316dd0a5",
+          "minute": 18,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gilly Boys"
+          },
+          "player": {
+            "name": "Jacopo Vicini"
+          }
+        },
+        {
+          "id": "5eb2cd77-3009-48b1-899b-052127b48e1d",
+          "match_id": "217cf064-587f-437a-8d62-a331316dd0a5",
+          "minute": 19,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "San Teodoro Ketzmaja"
+          },
+          "player": {
+            "name": "Andrea Balossino"
+          }
+        },
+        {
+          "id": "eb1321e3-b261-4f00-9ea2-3e67b0158183",
+          "match_id": "217cf064-587f-437a-8d62-a331316dd0a5",
+          "minute": 26,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gilly Boys"
+          },
+          "player": {
+            "name": "Dario Riva"
+          }
+        },
+        {
+          "id": "6bb6e05a-af7f-49ce-8ff8-ac590ae9930d",
+          "match_id": "217cf064-587f-437a-8d62-a331316dd0a5",
+          "minute": 30,
+          "type": "CARTA",
+          "detail": "goalx2",
+          "team": {
+            "name": "Gilly Boys"
+          },
+          "player": {
+            "name": "Jacopo Vicini"
+          }
+        },
+        {
+          "id": "1d3388d5-4fa3-4c11-90da-f3158cc281ab",
+          "match_id": "217cf064-587f-437a-8d62-a331316dd0a5",
+          "minute": 30,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gilly Boys"
+          },
+          "player": {
+            "name": "Dario Riva"
+          }
+        }
+      ]
+    },
+    {
+      "id": "60f68aca-acb0-4a36-b6f8-b360d032df8a",
+      "match_date": "2026-06-23T19:15:00.000Z",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 2,
+      "away_score": 7,
+      "home_team": {
+        "id": "3efa2896-b07a-4f65-a1d6-347990d9ab1d",
+        "name": "Chainz"
+      },
+      "away_team": {
+        "id": "add7df32-debf-4d2b-86cf-ef4aaae51008",
+        "name": "Taverna FC"
+      },
+      "events": [
+        {
+          "id": "77d96916-a4c7-4f26-9188-413af7817668",
+          "match_id": "60f68aca-acb0-4a36-b6f8-b360d032df8a",
+          "minute": 5,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Taverna FC"
+          },
+          "player": {
+            "name": "Stefano Bottari"
+          }
+        },
+        {
+          "id": "d4a193c9-9f3f-4357-abf0-56fc42b77f69",
+          "match_id": "60f68aca-acb0-4a36-b6f8-b360d032df8a",
+          "minute": 11,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Taverna FC"
+          },
+          "player": {
+            "name": "Davide Barabino"
+          }
+        },
+        {
+          "id": "7791f2e2-bfb5-41d8-8bed-a9097a8081ab",
+          "match_id": "60f68aca-acb0-4a36-b6f8-b360d032df8a",
+          "minute": 12,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Taverna FC"
+          },
+          "player": {
+            "name": "Davide Pasti"
+          }
+        },
+        {
+          "id": "9ffedc4e-749d-4e56-99a2-046bc1391cd0",
+          "match_id": "60f68aca-acb0-4a36-b6f8-b360d032df8a",
+          "minute": 13,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Chainz"
+          },
+          "player": {
+            "name": "Francesco Fossati"
+          }
+        },
+        {
+          "id": "233c60b3-c846-4a24-8c8c-9605eb1d5f0b",
+          "match_id": "60f68aca-acb0-4a36-b6f8-b360d032df8a",
+          "minute": 18,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Taverna FC"
+          },
+          "player": {
+            "name": "Stefano Bottari"
+          }
+        },
+        {
+          "id": "5c1e96ac-dce0-46fd-a650-ef75538d35fc",
+          "match_id": "60f68aca-acb0-4a36-b6f8-b360d032df8a",
+          "minute": 21,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Taverna FC"
+          },
+          "player": {
+            "name": "Alessandro Mosca"
+          }
+        },
+        {
+          "id": "773a01f9-50a2-4376-a6fe-725fdb76c882",
+          "match_id": "60f68aca-acb0-4a36-b6f8-b360d032df8a",
+          "minute": 21,
+          "type": "CARTA",
+          "detail": "shootout::success",
+          "team": {
+            "name": "Chainz"
+          },
+          "player": {
+            "name": "Francesco Tassone"
+          }
+        },
+        {
+          "id": "7652e3f9-1329-4c6c-9f2e-5fcf4cf19501",
+          "match_id": "60f68aca-acb0-4a36-b6f8-b360d032df8a",
+          "minute": 22,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Taverna FC"
+          },
+          "player": {
+            "name": "Alessandro Mosca"
+          }
+        },
+        {
+          "id": "7568e1a1-0d7c-4eff-a017-36e7a58d054a",
+          "match_id": "60f68aca-acb0-4a36-b6f8-b360d032df8a",
+          "minute": 26,
+          "type": "CARTA",
+          "detail": "suspension",
+          "team": {
+            "name": "Chainz"
+          },
+          "player": {
+            "name": "Louis Dolcini"
+          }
+        },
+        {
+          "id": "e502460e-8933-4102-9ae6-664927a80271",
+          "match_id": "60f68aca-acb0-4a36-b6f8-b360d032df8a",
+          "minute": 29,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Taverna FC"
+          },
+          "player": {
+            "name": "Davide Pasti"
+          }
+        }
+      ]
+    },
+    {
+      "id": "f84c5496-eba0-4268-96f6-6d36184968f9",
+      "match_date": "2026-06-23T19:50:00.000Z",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 2,
+      "away_score": 2,
+      "home_team": {
+        "id": "ec7649c8-b329-4736-b234-6398be1091f2",
+        "name": "Aston Birra"
+      },
+      "away_team": {
+        "id": "67218d78-44dd-414c-a964-9ed5c307d7c0",
+        "name": "UCG"
+      },
+      "events": [
+        {
+          "id": "0cf15e06-d990-4817-9052-7d09290a8172",
+          "match_id": "f84c5496-eba0-4268-96f6-6d36184968f9",
+          "minute": 8,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "UCG"
+          },
+          "player": {
+            "name": "Andrea Ortisi"
+          }
+        },
+        {
+          "id": "028525d8-5cc4-4ea5-914f-0d2387b4db5e",
+          "match_id": "f84c5496-eba0-4268-96f6-6d36184968f9",
+          "minute": 9,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Aston Birra"
+          },
+          "player": {
+            "name": "Endi Pasho"
+          }
+        },
+        {
+          "id": "de8b67c3-19f3-4c4e-b95f-7f397f89fc6e",
+          "match_id": "f84c5496-eba0-4268-96f6-6d36184968f9",
+          "minute": 10,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Aston Birra"
+          },
+          "player": {
+            "name": "Giacomo Patrone"
+          }
+        },
+        {
+          "id": "f70d1c65-9de5-40c0-95b7-9ed4578a8b2b",
+          "match_id": "f84c5496-eba0-4268-96f6-6d36184968f9",
+          "minute": 11,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "UCG"
+          },
+          "player": {
+            "name": "Bevegni Francesco"
+          }
+        }
+      ]
+    },
+    {
+      "id": "8cae47e7-c8cd-4b9c-8c72-e372c91c073c",
+      "match_date": "2026-06-23T20:25:00.000Z",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 2,
+      "away_score": 1,
+      "home_team": {
+        "id": "e669b061-fc7f-4abb-a05e-45a047a63d02",
+        "name": "San Teodoro Ketzmaja"
+      },
+      "away_team": {
+        "id": "4dabc944-cd92-4d7f-8bda-7b85bacf5a55",
+        "name": "PonteX Pirates"
+      },
+      "events": [
+        {
+          "id": "79e14074-2c49-4c5d-9c06-16625608cd47",
+          "match_id": "8cae47e7-c8cd-4b9c-8c72-e372c91c073c",
+          "minute": 15,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "PonteX Pirates"
+          },
+          "player": {
+            "name": "Edoardo Demasi"
+          }
+        },
+        {
+          "id": "8bea8b24-5e40-40b5-aaf3-1d08070c6648",
+          "match_id": "8cae47e7-c8cd-4b9c-8c72-e372c91c073c",
+          "minute": 23,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "San Teodoro Ketzmaja"
+          },
+          "player": {
+            "name": "Davide Tamagnini"
+          }
+        },
+        {
+          "id": "d0841cc9-8172-4007-84f3-4711b25edf09",
+          "match_id": "8cae47e7-c8cd-4b9c-8c72-e372c91c073c",
+          "minute": 26,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "San Teodoro Ketzmaja"
+          },
+          "player": {
+            "name": "Andrea Gobbi"
+          }
+        }
+      ]
+    },
+    {
+      "id": "649b006b-a92f-4736-8d85-c8f90540c9dd",
+      "match_date": "2026-06-23T21:00:00.000Z",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 3,
+      "away_score": 3,
+      "home_team": {
+        "id": "75c4d928-b99d-492e-85e5-6d32d9fb4013",
+        "name": "Lo Dico FC"
+      },
+      "away_team": {
+        "id": "3efa2896-b07a-4f65-a1d6-347990d9ab1d",
+        "name": "Chainz"
+      },
+      "events": [
+        {
+          "id": "62890abc-f23d-45a0-a1ef-c42efe06dbd7",
+          "match_id": "649b006b-a92f-4736-8d85-c8f90540c9dd",
+          "minute": 7,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Chainz"
+          },
+          "player": {
+            "name": "Francesco Tassone"
+          }
+        },
+        {
+          "id": "c73ee6c8-249e-42a2-8c66-884f1074552f",
+          "match_id": "649b006b-a92f-4736-8d85-c8f90540c9dd",
+          "minute": 7,
+          "type": "ASSIST",
+          "detail": null,
+          "team": {
+            "name": "Chainz"
+          },
+          "player": {
+            "name": "Louis Dolcini"
+          }
+        },
+        {
+          "id": "98ff81ed-b47c-4234-832c-e9fe2d1c4c33",
+          "match_id": "649b006b-a92f-4736-8d85-c8f90540c9dd",
+          "minute": 13,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Chainz"
+          },
+          "player": {
+            "name": "Louis Dolcini"
+          }
+        },
+        {
+          "id": "94ba86ff-7fbf-463e-b701-139c1cfe6c1e",
+          "match_id": "649b006b-a92f-4736-8d85-c8f90540c9dd",
+          "minute": 22,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Lo Dico FC"
+          },
+          "player": {
+            "name": "Mattia Lamari"
+          }
+        },
+        {
+          "id": "954d5096-7448-4939-aa21-50d5a60d5c07",
+          "match_id": "649b006b-a92f-4736-8d85-c8f90540c9dd",
+          "minute": 24,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Chainz"
+          },
+          "player": {
+            "name": "Alessio Carena"
+          }
+        },
+        {
+          "id": "34bd75d0-8780-43a4-ad5b-10f57415ccbf",
+          "match_id": "649b006b-a92f-4736-8d85-c8f90540c9dd",
+          "minute": 24,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Lo Dico FC"
+          },
+          "player": {
+            "name": "Christian Ravenna"
+          }
+        },
+        {
+          "id": "e57e0f75-bcca-4564-8688-ddb2eb5e3e28",
+          "match_id": "649b006b-a92f-4736-8d85-c8f90540c9dd",
+          "minute": 25,
+          "type": "CARTA",
+          "detail": "suspension",
+          "team": {
+            "name": "Lo Dico FC"
+          },
+          "player": {
+            "name": "Mohamed Niang"
+          }
+        },
+        {
+          "id": "5da6219e-2ff5-40f5-8545-ead46078d03c",
+          "match_id": "649b006b-a92f-4736-8d85-c8f90540c9dd",
+          "minute": 25,
+          "type": "CARTA",
+          "detail": "suspension",
+          "team": {
+            "name": "Chainz"
+          },
+          "player": {
+            "name": "Louis Dolcini"
+          }
+        },
+        {
+          "id": "32f7b592-3b20-493f-aadd-a051e29675db",
+          "match_id": "649b006b-a92f-4736-8d85-c8f90540c9dd",
+          "minute": 26,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Lo Dico FC"
+          },
+          "player": {
+            "name": "Christian Ravenna"
+          }
+        }
+      ]
+    },
+    {
+      "id": "82cba383-0446-4817-8c63-422e96b8fc9e",
+      "match_date": "2026-06-24T16:55:00.000Z",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 4,
+      "away_score": 1,
+      "home_team": {
+        "id": "f119e2ee-e6b2-4b75-881a-4c6a9bff586c",
+        "name": "Gli Umili"
+      },
+      "away_team": {
+        "id": "75c4d928-b99d-492e-85e5-6d32d9fb4013",
+        "name": "Lo Dico FC"
+      },
+      "events": [
+        {
+          "id": "01b2fa9c-d0f5-4c94-bc11-4f38e0e2b209",
+          "match_id": "82cba383-0446-4817-8c63-422e96b8fc9e",
+          "minute": 4,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Lo Dico FC"
+          },
+          "player": {
+            "name": "Christian Ravenna"
+          }
+        },
+        {
+          "id": "532a7f8e-4a32-4275-9df0-ac6706d6f3aa",
+          "match_id": "82cba383-0446-4817-8c63-422e96b8fc9e",
+          "minute": 9,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gli Umili"
+          },
+          "player": {
+            "name": "Simone Valle"
+          }
+        },
+        {
+          "id": "792c84b5-7a2b-40cb-bb1d-5943cb3e932c",
+          "match_id": "82cba383-0446-4817-8c63-422e96b8fc9e",
+          "minute": 11,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gli Umili"
+          },
+          "player": {
+            "name": "Tommaso Verardo"
+          }
+        },
+        {
+          "id": "6979645b-9aed-4569-a071-ecbe0215201a",
+          "match_id": "82cba383-0446-4817-8c63-422e96b8fc9e",
+          "minute": 22,
+          "type": "CARTA",
+          "detail": "suspension",
+          "team": {
+            "name": "Gli Umili"
+          },
+          "player": {
+            "name": "Lorenzo Papiri"
+          }
+        },
+        {
+          "id": "5cc63e6f-eac2-4e41-b332-6f0171ad8b16",
+          "match_id": "82cba383-0446-4817-8c63-422e96b8fc9e",
+          "minute": 29,
+          "type": "CARTA",
+          "detail": "penalty::success",
+          "team": {
+            "name": "Gli Umili"
+          },
+          "player": {
+            "name": "Tommaso Verardo"
+          }
+        },
+        {
+          "id": "6c05db41-dd71-458a-9af0-22a6e49cc1a2",
+          "match_id": "82cba383-0446-4817-8c63-422e96b8fc9e",
+          "minute": 30,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gli Umili"
+          },
+          "player": {
+            "name": "Lorenzo Papiri"
+          }
+        }
+      ]
+    },
+    {
+      "id": "076bb526-00e1-428a-9ccf-cd8c4a7e5e17",
+      "match_date": "2026-06-24T17:30:00.000Z",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 2,
+      "away_score": 3,
+      "home_team": {
+        "id": "3b151da3-44fd-4162-b80f-7e9575a03960",
+        "name": "FC Murta"
+      },
+      "away_team": {
+        "id": "3efa2896-b07a-4f65-a1d6-347990d9ab1d",
+        "name": "Chainz"
+      },
+      "events": [
+        {
+          "id": "d074c0c6-1e83-43f1-aad0-3699edb5d212",
+          "match_id": "076bb526-00e1-428a-9ccf-cd8c4a7e5e17",
+          "minute": 6,
+          "type": "CARTA",
+          "detail": "starplayer",
+          "team": {
+            "name": "FC Murta"
+          },
+          "player": {
+            "name": "Matteo Gallo"
+          }
+        },
+        {
+          "id": "ce1fc8ff-21c7-4253-8d1a-4122634379ce",
+          "match_id": "076bb526-00e1-428a-9ccf-cd8c4a7e5e17",
+          "minute": 8,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Chainz"
+          },
+          "player": {
+            "name": "Louis Dolcini"
+          }
+        },
+        {
+          "id": "b51f7f2d-ddc3-4716-ac33-ab6584d6766d",
+          "match_id": "076bb526-00e1-428a-9ccf-cd8c4a7e5e17",
+          "minute": 12,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Chainz"
+          },
+          "player": {
+            "name": "Louis Dolcini"
+          }
+        },
+        {
+          "id": "2bf2ccb3-b665-44fb-a72d-6660bd125468",
+          "match_id": "076bb526-00e1-428a-9ccf-cd8c4a7e5e17",
+          "minute": 19,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Murta"
+          },
+          "player": {
+            "name": "Matteo Gallo"
+          }
+        },
+        {
+          "id": "335639d3-379f-4fcd-aab4-2861e86b790b",
+          "match_id": "076bb526-00e1-428a-9ccf-cd8c4a7e5e17",
+          "minute": 22,
+          "type": "CARTA",
+          "detail": "suspension",
+          "team": {
+            "name": "FC Murta"
+          },
+          "player": {
+            "name": "Matteo Gallo"
+          }
+        },
+        {
+          "id": "d17f5c1b-31dd-44c8-8546-b451e98384b9",
+          "match_id": "076bb526-00e1-428a-9ccf-cd8c4a7e5e17",
+          "minute": 23,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Chainz"
+          },
+          "player": {
+            "name": "Francesco Tassone"
+          }
+        },
+        {
+          "id": "536d5b6b-9ec0-491e-8045-c45273fcfcc8",
+          "match_id": "076bb526-00e1-428a-9ccf-cd8c4a7e5e17",
+          "minute": 29,
+          "type": "AMMONIZIONE",
+          "detail": null,
+          "team": {
+            "name": "Chainz"
+          },
+          "player": {
+            "name": "Roberto Bobbio"
+          }
+        },
+        {
+          "id": "926e584b-cca3-46ba-bb2a-cf3b8b5d7f55",
+          "match_id": "076bb526-00e1-428a-9ccf-cd8c4a7e5e17",
+          "minute": 30,
+          "type": "AMMONIZIONE",
+          "detail": null,
+          "team": {
+            "name": "Chainz"
+          },
+          "player": {
+            "name": "Andrea Robbiano"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ff7d2ffe-5765-408b-a135-7814615f2d36",
+      "match_date": "2026-06-24T18:05:00.000Z",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 3,
+      "away_score": 2,
+      "home_team": {
+        "id": "e669b061-fc7f-4abb-a05e-45a047a63d02",
+        "name": "San Teodoro Ketzmaja"
+      },
+      "away_team": {
+        "id": "13d5e6e7-bc36-465f-b344-d4f8d5671815",
+        "name": "FC Ceres"
+      },
+      "events": [
+        {
+          "id": "5a9c3afd-034c-45c5-a961-742b68236e38",
+          "match_id": "ff7d2ffe-5765-408b-a135-7814615f2d36",
+          "minute": 1,
+          "type": "CARTA",
+          "detail": "starplayer",
+          "team": {
+            "name": "San Teodoro Ketzmaja"
+          },
+          "player": {
+            "name": "Davide Rossi"
+          }
+        },
+        {
+          "id": "cc783c89-fdc9-46e3-ac36-6066181e4adb",
+          "match_id": "ff7d2ffe-5765-408b-a135-7814615f2d36",
+          "minute": 2,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "San Teodoro Ketzmaja"
+          },
+          "player": {
+            "name": "Davide Rossi"
+          }
+        },
+        {
+          "id": "eb821546-1fac-4585-be3d-fc9aa3f99500",
+          "match_id": "ff7d2ffe-5765-408b-a135-7814615f2d36",
+          "minute": 3,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Ceres"
+          },
+          "player": {
+            "name": "Samuele Del Fiore"
+          }
+        },
+        {
+          "id": "1d074c2d-ea5b-4b9d-9499-c6d425a25460",
+          "match_id": "ff7d2ffe-5765-408b-a135-7814615f2d36",
+          "minute": 10,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Ceres"
+          },
+          "player": {
+            "name": "Stefano Dellepiane"
+          }
+        },
+        {
+          "id": "d4ab672c-a267-4879-9a69-3190029ac6db",
+          "match_id": "ff7d2ffe-5765-408b-a135-7814615f2d36",
+          "minute": 18,
+          "type": "AMMONIZIONE",
+          "detail": null,
+          "team": {
+            "name": "San Teodoro Ketzmaja"
+          },
+          "player": {
+            "name": "Ibrahim Lagrari"
+          }
+        },
+        {
+          "id": "7cc479db-4444-4112-bff1-227e0d9ab30f",
+          "match_id": "ff7d2ffe-5765-408b-a135-7814615f2d36",
+          "minute": 19,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "San Teodoro Ketzmaja"
+          },
+          "player": {
+            "name": "Andrea Balossino"
+          }
+        },
+        {
+          "id": "a1bd65cf-b273-4f26-a773-9f32fff95ad6",
+          "match_id": "ff7d2ffe-5765-408b-a135-7814615f2d36",
+          "minute": 20,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "San Teodoro Ketzmaja"
+          },
+          "player": null
+        }
+      ]
+    },
+    {
+      "id": "310a6c88-4769-4e00-a4b7-0e8030fbf3ea",
+      "match_date": "2026-06-24T18:40:00.000Z",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 2,
+      "away_score": 5,
+      "home_team": {
+        "id": "ec7649c8-b329-4736-b234-6398be1091f2",
+        "name": "Aston Birra"
+      },
+      "away_team": {
+        "id": "75c4d928-b99d-492e-85e5-6d32d9fb4013",
+        "name": "Lo Dico FC"
+      },
+      "events": [
+        {
+          "id": "a8d1facf-551b-44ec-9c3a-ac5468e1b5b4",
+          "match_id": "310a6c88-4769-4e00-a4b7-0e8030fbf3ea",
+          "minute": 1,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Lo Dico FC"
+          },
+          "player": {
+            "name": "Christian Ravenna"
+          }
+        },
+        {
+          "id": "2b8836b4-3ee3-4d30-8e51-af2b031b2a14",
+          "match_id": "310a6c88-4769-4e00-a4b7-0e8030fbf3ea",
+          "minute": 1,
+          "type": "ASSIST",
+          "detail": null,
+          "team": {
+            "name": "Lo Dico FC"
+          },
+          "player": {
+            "name": "Mohamed Niang"
+          }
+        },
+        {
+          "id": "8967d930-a3f6-4ec7-98c3-6ba0a0ab3482",
+          "match_id": "310a6c88-4769-4e00-a4b7-0e8030fbf3ea",
+          "minute": 16,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Lo Dico FC"
+          },
+          "player": {
+            "name": "Christian Ravenna"
+          }
+        },
+        {
+          "id": "e3f45270-ec69-4fec-9655-45290870f783",
+          "match_id": "310a6c88-4769-4e00-a4b7-0e8030fbf3ea",
+          "minute": 18,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Aston Birra"
+          },
+          "player": {
+            "name": "Giacomo Patrone"
+          }
+        },
+        {
+          "id": "82ba51ed-505b-4904-bf94-a06b7f9608e4",
+          "match_id": "310a6c88-4769-4e00-a4b7-0e8030fbf3ea",
+          "minute": 18,
+          "type": "ASSIST",
+          "detail": null,
+          "team": {
+            "name": "Aston Birra"
+          },
+          "player": {
+            "name": "Mirko Pili"
+          }
+        },
+        {
+          "id": "dde4122b-f43e-4141-a3cb-ae311edfda13",
+          "match_id": "310a6c88-4769-4e00-a4b7-0e8030fbf3ea",
+          "minute": 20,
+          "type": "ASSIST",
+          "detail": null,
+          "team": {
+            "name": "Aston Birra"
+          },
+          "player": {
+            "name": "Giacomo Patrone"
+          }
+        },
+        {
+          "id": "572d8b5d-f357-487c-bc27-33f2ec3f3e67",
+          "match_id": "310a6c88-4769-4e00-a4b7-0e8030fbf3ea",
+          "minute": 20,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Aston Birra"
+          },
+          "player": {
+            "name": "Mirko Pili"
+          }
+        },
+        {
+          "id": "c5c73d45-bb44-4044-ade3-6fdfc54b7c75",
+          "match_id": "310a6c88-4769-4e00-a4b7-0e8030fbf3ea",
+          "minute": 23,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Lo Dico FC"
+          },
+          "player": {
+            "name": "Christian Ravenna"
+          }
+        },
+        {
+          "id": "fb8784ff-6a34-4030-906f-3d70626afd2e",
+          "match_id": "310a6c88-4769-4e00-a4b7-0e8030fbf3ea",
+          "minute": 29,
+          "type": "CARTA",
+          "detail": "penalty::fail",
+          "team": {
+            "name": "Aston Birra"
+          },
+          "player": {
+            "name": "Diego Traverso"
+          }
+        },
+        {
+          "id": "c12dcff5-f207-4a3b-8282-71afd7da5533",
+          "match_id": "310a6c88-4769-4e00-a4b7-0e8030fbf3ea",
+          "minute": 30,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Lo Dico FC"
+          },
+          "player": {
+            "name": "Mohamed Niang"
+          }
+        },
+        {
+          "id": "a68e799a-4a37-430f-8d4f-04fd95de4939",
+          "match_id": "310a6c88-4769-4e00-a4b7-0e8030fbf3ea",
+          "minute": 30,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Lo Dico FC"
+          },
+          "player": {
+            "name": "Christian Ravenna"
+          }
+        }
+      ]
+    },
+    {
+      "id": "73a10e0f-ef02-4c11-b211-2935b0358da4",
+      "match_date": "2026-06-24T19:15:00.000Z",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 3,
+      "away_score": 5,
+      "home_team": {
+        "id": "f119e2ee-e6b2-4b75-881a-4c6a9bff586c",
+        "name": "Gli Umili"
+      },
+      "away_team": {
+        "id": "67218d78-44dd-414c-a964-9ed5c307d7c0",
+        "name": "UCG"
+      },
+      "events": [
+        {
+          "id": "e618f453-6340-45d3-b2ad-e553e532acce",
+          "match_id": "73a10e0f-ef02-4c11-b211-2935b0358da4",
+          "minute": 1,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "UCG"
+          },
+          "player": {
+            "name": "Lorenzo Ceresoli"
+          }
+        },
+        {
+          "id": "0628c0b6-2987-4ddc-907f-e23e5dbddf7a",
+          "match_id": "73a10e0f-ef02-4c11-b211-2935b0358da4",
+          "minute": 12,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gli Umili"
+          },
+          "player": {
+            "name": "Lorenzo Papiri"
+          }
+        },
+        {
+          "id": "19943901-5ae1-4a6a-8761-3bbb632fcd08",
+          "match_id": "73a10e0f-ef02-4c11-b211-2935b0358da4",
+          "minute": 12,
+          "type": "ASSIST",
+          "detail": null,
+          "team": {
+            "name": "Gli Umili"
+          },
+          "player": {
+            "name": "Elio Casanova"
+          }
+        },
+        {
+          "id": "dd970879-67d6-496b-a27a-17ceb85ee159",
+          "match_id": "73a10e0f-ef02-4c11-b211-2935b0358da4",
+          "minute": 14,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "UCG"
+          },
+          "player": {
+            "name": "Reverberi Tommaso"
+          }
+        },
+        {
+          "id": "82c5c22d-9023-427e-8949-f58220b4388a",
+          "match_id": "73a10e0f-ef02-4c11-b211-2935b0358da4",
+          "minute": 20,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gli Umili"
+          },
+          "player": {
+            "name": "Paolo Gaglianò"
+          }
+        },
+        {
+          "id": "bc67af49-1ebb-41fd-8d2d-81f704ef0f9a",
+          "match_id": "73a10e0f-ef02-4c11-b211-2935b0358da4",
+          "minute": 26,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "UCG"
+          },
+          "player": {
+            "name": "Lorenzo Ceresoli"
+          }
+        },
+        {
+          "id": "8797a6c2-5101-49a4-b2e4-a023d9fe448b",
+          "match_id": "73a10e0f-ef02-4c11-b211-2935b0358da4",
+          "minute": 26,
+          "type": "CARTA",
+          "detail": "penalty::success",
+          "team": {
+            "name": "Gli Umili"
+          },
+          "player": {
+            "name": "Tommaso Verardo"
+          }
+        },
+        {
+          "id": "b047f830-7c74-4841-b545-9c9069519011",
+          "match_id": "73a10e0f-ef02-4c11-b211-2935b0358da4",
+          "minute": 29,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "UCG"
+          },
+          "player": {
+            "name": "Reverberi Tommaso"
+          }
+        },
+        {
+          "id": "57cd6278-5de6-44db-a05a-11ae16f9fca1",
+          "match_id": "73a10e0f-ef02-4c11-b211-2935b0358da4",
+          "minute": 29,
+          "type": "CARTA",
+          "detail": "penalty::success",
+          "team": {
+            "name": "UCG"
+          },
+          "player": {
+            "name": "Mattia Ninivaggi"
+          }
+        }
+      ]
+    },
+    {
+      "id": "0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d",
+      "match_date": "2026-06-24T19:50:00.000Z",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 6,
+      "away_score": 8,
+      "home_team": {
+        "id": "e669b061-fc7f-4abb-a05e-45a047a63d02",
+        "name": "San Teodoro Ketzmaja"
+      },
+      "away_team": {
+        "id": "3efa2896-b07a-4f65-a1d6-347990d9ab1d",
+        "name": "Chainz"
+      },
+      "events": [
+        {
+          "id": "5a39a602-cead-47e1-9a09-001744e07de6",
+          "match_id": "0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d",
+          "minute": 2,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Chainz"
+          },
+          "player": {
+            "name": "Louis Dolcini"
+          }
+        },
+        {
+          "id": "bca331a2-95a9-41be-8b64-eaec0f5e19da",
+          "match_id": "0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d",
+          "minute": 3,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "San Teodoro Ketzmaja"
+          },
+          "player": {
+            "name": "Davide Rossi"
+          }
+        },
+        {
+          "id": "bf67d2e3-f78d-4d41-b4ef-22a8f7ce29be",
+          "match_id": "0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d",
+          "minute": 3,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Chainz"
+          },
+          "player": {
+            "name": "Louis Dolcini"
+          }
+        },
+        {
+          "id": "d40609f1-fe0d-4029-b744-03dd4dabd8cc",
+          "match_id": "0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d",
+          "minute": 5,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "San Teodoro Ketzmaja"
+          },
+          "player": {
+            "name": "Matteo Fascetti"
+          }
+        },
+        {
+          "id": "c9f38b54-e9c0-4775-9516-9f2390d33aef",
+          "match_id": "0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d",
+          "minute": 7,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Chainz"
+          },
+          "player": {
+            "name": "Francesco Tassone"
+          }
+        },
+        {
+          "id": "9fb06c9f-d86a-47b3-b7ee-3ebc6e258528",
+          "match_id": "0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d",
+          "minute": 11,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "San Teodoro Ketzmaja"
+          },
+          "player": {
+            "name": "Davide Rossi"
+          }
+        },
+        {
+          "id": "90b39d65-eb17-488d-a727-51cebdcde0d5",
+          "match_id": "0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d",
+          "minute": 15,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "San Teodoro Ketzmaja"
+          },
+          "player": {
+            "name": "Andrea Gobbi"
+          }
+        },
+        {
+          "id": "1dc86ff4-fa90-4a6a-aeac-bdb060123489",
+          "match_id": "0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d",
+          "minute": 21,
+          "type": "CARTA",
+          "detail": "goalx2",
+          "team": {
+            "name": "San Teodoro Ketzmaja"
+          },
+          "player": null
+        },
+        {
+          "id": "166264fb-8506-490a-982f-269449cd70c7",
+          "match_id": "0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d",
+          "minute": 23,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Chainz"
+          },
+          "player": {
+            "name": "Louis Dolcini"
+          }
+        },
+        {
+          "id": "e7769531-8764-4501-994f-41210f73af33",
+          "match_id": "0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d",
+          "minute": 24,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "San Teodoro Ketzmaja"
+          },
+          "player": {
+            "name": "Davide Rossi"
+          }
+        },
+        {
+          "id": "3328c2bf-812d-4ecf-b254-dfb8d3d3816a",
+          "match_id": "0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d",
+          "minute": 25,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "San Teodoro Ketzmaja"
+          },
+          "player": {
+            "name": "Davide Rossi"
+          }
+        },
+        {
+          "id": "a6d09598-1ad2-44e3-b2bb-29cc24a6b70c",
+          "match_id": "0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d",
+          "minute": 26,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Chainz"
+          },
+          "player": {
+            "name": "Roberto Bobbio"
+          }
+        },
+        {
+          "id": "aabecd04-213c-495d-9be5-aba268ed30ec",
+          "match_id": "0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d",
+          "minute": 28,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Chainz"
+          },
+          "player": {
+            "name": "Roberto Bobbio"
+          }
+        },
+        {
+          "id": "69e7af5f-a18d-4d15-8198-823ffeaa36b9",
+          "match_id": "0cf09161-ecb4-41fc-ba83-99a0eb6f5e7d",
+          "minute": 30,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Chainz"
+          },
+          "player": {
+            "name": "Roberto Bobbio"
+          }
+        }
+      ]
+    },
+    {
+      "id": "e85cf57a-c11e-4ac2-9cc7-5e664d989500",
+      "match_date": "2026-06-24T20:25:00.000Z",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 1,
+      "away_score": 1,
+      "home_team": {
+        "id": "3b151da3-44fd-4162-b80f-7e9575a03960",
+        "name": "FC Murta"
+      },
+      "away_team": {
+        "id": "ec7649c8-b329-4736-b234-6398be1091f2",
+        "name": "Aston Birra"
+      },
+      "events": [
+        {
+          "id": "a69de02e-5443-4fe2-a73b-391c5e5dd039",
+          "match_id": "e85cf57a-c11e-4ac2-9cc7-5e664d989500",
+          "minute": 9,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Murta"
+          },
+          "player": {
+            "name": "Matteo Mazza"
+          }
+        },
+        {
+          "id": "d3684200-5421-4cf0-b758-b46f03a1d884",
+          "match_id": "e85cf57a-c11e-4ac2-9cc7-5e664d989500",
+          "minute": 10,
+          "type": "AMMONIZIONE",
+          "detail": null,
+          "team": {
+            "name": "FC Murta"
+          },
+          "player": {
+            "name": "Danilo Lubello"
+          }
+        },
+        {
+          "id": "3f9541b7-0cda-4b9d-bcb6-b8a794b6bf76",
+          "match_id": "e85cf57a-c11e-4ac2-9cc7-5e664d989500",
+          "minute": 14,
+          "type": "AMMONIZIONE",
+          "detail": null,
+          "team": {
+            "name": "FC Murta"
+          },
+          "player": {
+            "name": "Matteo Mazza"
+          }
+        },
+        {
+          "id": "21745f3b-8634-4748-b058-48585eed82f2",
+          "match_id": "e85cf57a-c11e-4ac2-9cc7-5e664d989500",
+          "minute": 21,
+          "type": "CARTA",
+          "detail": "suspension",
+          "team": {
+            "name": "Aston Birra"
+          },
+          "player": null
+        },
+        {
+          "id": "b2bccf27-b706-4097-8e89-d295b9c09939",
+          "match_id": "e85cf57a-c11e-4ac2-9cc7-5e664d989500",
+          "minute": 21,
+          "type": "CARTA",
+          "detail": "goalx2",
+          "team": {
+            "name": "FC Murta"
+          },
+          "player": null
+        },
+        {
+          "id": "702fbf27-7878-4556-9b72-a3f34b8d463a",
+          "match_id": "e85cf57a-c11e-4ac2-9cc7-5e664d989500",
+          "minute": 24,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Aston Birra"
+          },
+          "player": {
+            "name": "Giacomo Patrone"
+          }
+        }
+      ]
+    },
+    {
+      "id": "98404968-e922-4af1-834f-b1ac50931758",
+      "match_date": "2026-06-24T21:00:00.000Z",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 2,
+      "away_score": 9,
+      "home_team": {
+        "id": "13d5e6e7-bc36-465f-b344-d4f8d5671815",
+        "name": "FC Ceres"
+      },
+      "away_team": {
+        "id": "67218d78-44dd-414c-a964-9ed5c307d7c0",
+        "name": "UCG"
+      },
+      "events": [
+        {
+          "id": "c6a2e3ac-92e9-41db-88ea-f64bd898a7b1",
+          "match_id": "98404968-e922-4af1-834f-b1ac50931758",
+          "minute": 2,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "UCG"
+          },
+          "player": {
+            "name": "Reverberi Tommaso"
+          }
+        },
+        {
+          "id": "6e8bd105-bc86-42ef-8bbb-e2b94fdb66f5",
+          "match_id": "98404968-e922-4af1-834f-b1ac50931758",
+          "minute": 6,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "UCG"
+          },
+          "player": {
+            "name": "Lorenzo Ceresoli"
+          }
+        },
+        {
+          "id": "07bad8d2-e899-49d1-ab71-0c66e9fa58b8",
+          "match_id": "98404968-e922-4af1-834f-b1ac50931758",
+          "minute": 7,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "UCG"
+          },
+          "player": {
+            "name": "Lorenzo Ceresoli"
+          }
+        },
+        {
+          "id": "4a188839-94d5-4b66-a88d-522a5069242d",
+          "match_id": "98404968-e922-4af1-834f-b1ac50931758",
+          "minute": 9,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Ceres"
+          },
+          "player": {
+            "name": "Samuele Del Fiore"
+          }
+        },
+        {
+          "id": "b7e0f71e-e624-45d3-9d4f-7044070b513c",
+          "match_id": "98404968-e922-4af1-834f-b1ac50931758",
+          "minute": 11,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Ceres"
+          },
+          "player": {
+            "name": "Stefano Dellepiane"
+          }
+        },
+        {
+          "id": "cfdcb9bd-c499-4051-95e2-6cc1c9aeb23c",
+          "match_id": "98404968-e922-4af1-834f-b1ac50931758",
+          "minute": 11,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "UCG"
+          },
+          "player": {
+            "name": "Reverberi Tommaso"
+          }
+        },
+        {
+          "id": "f88c792d-62e5-4576-a7b6-97a85b5edbc1",
+          "match_id": "98404968-e922-4af1-834f-b1ac50931758",
+          "minute": 23,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "UCG"
+          },
+          "player": {
+            "name": "Mattia Ninivaggi"
+          }
+        },
+        {
+          "id": "38e4dab8-6ce3-43e9-a992-43f2269fea67",
+          "match_id": "98404968-e922-4af1-834f-b1ac50931758",
+          "minute": 24,
+          "type": "CARTA",
+          "detail": "goalx2",
+          "team": {
+            "name": "UCG"
+          },
+          "player": null
+        },
+        {
+          "id": "3cc92946-edce-4958-942d-2990f3aa7c2f",
+          "match_id": "98404968-e922-4af1-834f-b1ac50931758",
+          "minute": 24,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "UCG"
+          },
+          "player": {
+            "name": "Reverberi Tommaso"
+          }
+        },
+        {
+          "id": "31e95487-bd0a-4e6d-ac20-492908dc890b",
+          "match_id": "98404968-e922-4af1-834f-b1ac50931758",
+          "minute": 30,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "UCG"
+          },
+          "player": {
+            "name": "Reverberi Tommaso"
+          }
+        },
+        {
+          "id": "b60c578b-654b-4518-bc88-00f3a249e573",
+          "match_id": "98404968-e922-4af1-834f-b1ac50931758",
+          "minute": 30,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "UCG"
+          },
+          "player": {
+            "name": "Mattia Ninivaggi"
+          }
+        }
+      ]
+    },
+    {
+      "id": "b7b224b4-0ea7-4640-88d3-1b05a412e37a",
+      "match_date": "2026-06-25T17:30:00.000Z",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 4,
+      "away_score": 1,
+      "home_team": {
+        "id": "daa8c7d2-95f5-4a07-839d-fd74780e5ef7",
+        "name": "Sezione 164"
+      },
+      "away_team": {
+        "id": "685956d2-d75f-4eec-b0b3-179ec71993e1",
+        "name": "Gilly Boys"
+      },
+      "events": [
+        {
+          "id": "ab030f2b-75df-4e7a-a45d-6d686774d8ff",
+          "match_id": "b7b224b4-0ea7-4640-88d3-1b05a412e37a",
+          "minute": 23,
+          "type": "CARTA",
+          "detail": "shootout::success",
+          "team": {
+            "name": "Gilly Boys"
+          },
+          "player": {
+            "name": "Jacopo Vicini"
+          }
+        },
+        {
+          "id": "d4ebba64-07f8-48a1-938a-a90717e66328",
+          "match_id": "b7b224b4-0ea7-4640-88d3-1b05a412e37a",
+          "minute": 24,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Filippo Turrini"
+          }
+        },
+        {
+          "id": "14861230-8c08-4d9f-814a-70cac7b73e0d",
+          "match_id": "b7b224b4-0ea7-4640-88d3-1b05a412e37a",
+          "minute": 26,
+          "type": "CARTA",
+          "detail": "suspension",
+          "team": {
+            "name": "Gilly Boys"
+          },
+          "player": {
+            "name": "Edoardo Banchieri"
+          }
+        },
+        {
+          "id": "5166be0e-2e98-4aed-89e7-b2cd67d3830f",
+          "match_id": "b7b224b4-0ea7-4640-88d3-1b05a412e37a",
+          "minute": 27,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Filippo Turrini"
+          }
+        },
+        {
+          "id": "bcb21f0c-dea4-4c31-be66-01110cb008ec",
+          "match_id": "b7b224b4-0ea7-4640-88d3-1b05a412e37a",
+          "minute": 28,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Ivan Grispo"
+          }
+        },
+        {
+          "id": "063a92e0-93cc-4aa8-a855-e799ea08b639",
+          "match_id": "b7b224b4-0ea7-4640-88d3-1b05a412e37a",
+          "minute": 29,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Ivan Grispo"
+          }
+        }
+      ]
+    },
+    {
+      "id": "f39d223b-376e-4a41-8541-7ac274519fd4",
+      "match_date": "2026-06-25T18:05:00.000Z",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 3,
+      "away_score": 1,
+      "home_team": {
+        "id": "4dabc944-cd92-4d7f-8bda-7b85bacf5a55",
+        "name": "PonteX Pirates"
+      },
+      "away_team": {
+        "id": "086f9534-0dec-48ad-8129-c40228bb70ab",
+        "name": "Amatori Calcio Genova"
+      },
+      "events": [
+        {
+          "id": "a5835c8d-13d8-4f6a-a279-9cd40c7adba4",
+          "match_id": "f39d223b-376e-4a41-8541-7ac274519fd4",
+          "minute": 5,
+          "type": "CARTA",
+          "detail": "starplayer",
+          "team": {
+            "name": "PonteX Pirates"
+          },
+          "player": {
+            "name": "Edoardo Demasi"
+          }
+        },
+        {
+          "id": "288b0e19-9418-445e-97e7-bc0cc63237b7",
+          "match_id": "f39d223b-376e-4a41-8541-7ac274519fd4",
+          "minute": 11,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "PonteX Pirates"
+          },
+          "player": {
+            "name": "Federico Mancini"
+          }
+        },
+        {
+          "id": "85c8af81-5d38-4f64-b297-e1eb47aeb74a",
+          "match_id": "f39d223b-376e-4a41-8541-7ac274519fd4",
+          "minute": 20,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Amatori Calcio Genova"
+          },
+          "player": {
+            "name": "Matteo Campi"
+          }
+        },
+        {
+          "id": "d032b44f-dda0-4950-9ce8-77d6ffb1d961",
+          "match_id": "f39d223b-376e-4a41-8541-7ac274519fd4",
+          "minute": 27,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "PonteX Pirates"
+          },
+          "player": {
+            "name": "Edoardo Demasi"
+          }
+        }
+      ]
+    },
+    {
+      "id": "f78ea710-878f-4dc6-8d2c-15ddaacd1416",
+      "match_date": "2026-06-25T18:40:00.000Z",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 1,
+      "away_score": 5,
+      "home_team": {
+        "id": "6db87a59-8883-47a4-8a54-32be0931e306",
+        "name": "FC Pontos"
+      },
+      "away_team": {
+        "id": "add7df32-debf-4d2b-86cf-ef4aaae51008",
+        "name": "Taverna FC"
+      },
+      "events": [
+        {
+          "id": "e49430d8-b9c3-4dae-8329-1805349f652d",
+          "match_id": "f78ea710-878f-4dc6-8d2c-15ddaacd1416",
+          "minute": 3,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Taverna FC"
+          },
+          "player": {
+            "name": "Alessandro Mosca"
+          }
+        },
+        {
+          "id": "cd81739a-9c76-43c6-88e3-d54204811730",
+          "match_id": "f78ea710-878f-4dc6-8d2c-15ddaacd1416",
+          "minute": 9,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Taverna FC"
+          },
+          "player": {
+            "name": "Davide Pasti"
+          }
+        },
+        {
+          "id": "64e1a0de-971f-4ead-a7b6-1323879a1b44",
+          "match_id": "f78ea710-878f-4dc6-8d2c-15ddaacd1416",
+          "minute": 15,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Pontos"
+          },
+          "player": {
+            "name": "Mattia Fazio"
+          }
+        },
+        {
+          "id": "42f8bcc8-befe-41de-9854-b726914882f5",
+          "match_id": "f78ea710-878f-4dc6-8d2c-15ddaacd1416",
+          "minute": 16,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Taverna FC"
+          },
+          "player": {
+            "name": "Davide Barabino"
+          }
+        },
+        {
+          "id": "d81d8e85-c9f2-4b5c-84cf-fd67c40a27e1",
+          "match_id": "f78ea710-878f-4dc6-8d2c-15ddaacd1416",
+          "minute": 25,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Taverna FC"
+          },
+          "player": {
+            "name": "Alessandro Mosca"
+          }
+        },
+        {
+          "id": "b85a1671-57d9-4ceb-95ab-592b89795d5e",
+          "match_id": "f78ea710-878f-4dc6-8d2c-15ddaacd1416",
+          "minute": 25,
+          "type": "ESPULSIONE",
+          "detail": null,
+          "team": {
+            "name": "FC Pontos"
+          },
+          "player": {
+            "name": "Morgan Tommaso"
+          }
+        },
+        {
+          "id": "6f6f77de-3474-4b8f-86cc-74004eeccfc6",
+          "match_id": "f78ea710-878f-4dc6-8d2c-15ddaacd1416",
+          "minute": 28,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Taverna FC"
+          },
+          "player": {
+            "name": "Davide Barabino"
+          }
+        }
+      ]
+    },
+    {
+      "id": "07aa493a-dcb2-49fc-a49c-fa1c0c41c605",
+      "match_date": "2026-06-25T19:15:00.000Z",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 3,
+      "away_score": 1,
+      "home_team": {
+        "id": "daa8c7d2-95f5-4a07-839d-fd74780e5ef7",
+        "name": "Sezione 164"
+      },
+      "away_team": {
+        "id": "4dabc944-cd92-4d7f-8bda-7b85bacf5a55",
+        "name": "PonteX Pirates"
+      },
+      "events": [
+        {
+          "id": "5bcf67e6-11f4-4d22-b8c3-c639666c0c19",
+          "match_id": "07aa493a-dcb2-49fc-a49c-fa1c0c41c605",
+          "minute": 1,
+          "type": "AUTOGOAL",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Filippo Turrini"
+          }
+        },
+        {
+          "id": "ba25ca98-24cb-47a5-8aec-c14ca4ee5089",
+          "match_id": "07aa493a-dcb2-49fc-a49c-fa1c0c41c605",
+          "minute": 15,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Gabriele Robotti"
+          }
+        },
+        {
+          "id": "d6019261-9725-4d9e-8606-5413782a7c87",
+          "match_id": "07aa493a-dcb2-49fc-a49c-fa1c0c41c605",
+          "minute": 25,
+          "type": "CARTA",
+          "detail": "penalty::success",
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Ivan Grispo"
+          }
+        },
+        {
+          "id": "1ebe14bb-ef06-40a9-957d-9d8b2b910ef3",
+          "match_id": "07aa493a-dcb2-49fc-a49c-fa1c0c41c605",
+          "minute": 28,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Sezione 164"
+          },
+          "player": {
+            "name": "Ivan Grispo"
+          }
+        }
+      ]
+    },
+    {
+      "id": "01a59819-ded7-472b-8851-9d1a712d71f1",
+      "match_date": "2026-06-25T19:50:00.000Z",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 2,
+      "away_score": 5,
+      "home_team": {
+        "id": "6db87a59-8883-47a4-8a54-32be0931e306",
+        "name": "FC Pontos"
+      },
+      "away_team": {
+        "id": "685956d2-d75f-4eec-b0b3-179ec71993e1",
+        "name": "Gilly Boys"
+      },
+      "events": [
+        {
+          "id": "2c5eb0d7-ed72-4dbc-96f2-71f8374b9e16",
+          "match_id": "01a59819-ded7-472b-8851-9d1a712d71f1",
+          "minute": 3,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Pontos"
+          },
+          "player": {
+            "name": "Mattia Fazio"
+          }
+        },
+        {
+          "id": "0a0d20f4-e698-4fa3-b6da-1d4b13cf8547",
+          "match_id": "01a59819-ded7-472b-8851-9d1a712d71f1",
+          "minute": 8,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gilly Boys"
+          },
+          "player": {
+            "name": "Edoardo Banchieri"
+          }
+        },
+        {
+          "id": "d9698388-51ae-417e-bfc9-9659af10105e",
+          "match_id": "01a59819-ded7-472b-8851-9d1a712d71f1",
+          "minute": 9,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "FC Pontos"
+          },
+          "player": {
+            "name": "Mattia Fazio"
+          }
+        },
+        {
+          "id": "1d486c07-aeee-433f-9e1e-73fc9daf1915",
+          "match_id": "01a59819-ded7-472b-8851-9d1a712d71f1",
+          "minute": 9,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gilly Boys"
+          },
+          "player": {
+            "name": "Dario Riva"
+          }
+        },
+        {
+          "id": "a96af818-ac51-4fe9-81a7-7c6acd5a3afd",
+          "match_id": "01a59819-ded7-472b-8851-9d1a712d71f1",
+          "minute": 11,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gilly Boys"
+          },
+          "player": {
+            "name": "Fabrizio Schiano"
+          }
+        },
+        {
+          "id": "40d109dc-7319-4683-a293-215f9db292d5",
+          "match_id": "01a59819-ded7-472b-8851-9d1a712d71f1",
+          "minute": 28,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gilly Boys"
+          },
+          "player": {
+            "name": "Jacopo Vicini"
+          }
+        },
+        {
+          "id": "6a4f4ead-422e-40cc-8659-9a27c7b52538",
+          "match_id": "01a59819-ded7-472b-8851-9d1a712d71f1",
+          "minute": 29,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Gilly Boys"
+          },
+          "player": {
+            "name": "Fabrizio Schiano"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fb446def-3816-4e32-b679-265dafc0fe74",
+      "match_date": "2026-06-25T20:25:00.000Z",
+      "round": "Fase a Gironi",
+      "status": "TERMINATA",
+      "home_score": 2,
+      "away_score": 5,
+      "home_team": {
+        "id": "086f9534-0dec-48ad-8129-c40228bb70ab",
+        "name": "Amatori Calcio Genova"
+      },
+      "away_team": {
+        "id": "add7df32-debf-4d2b-86cf-ef4aaae51008",
+        "name": "Taverna FC"
+      },
+      "events": [
+        {
+          "id": "77fd3daf-3ce2-415e-81cd-0282fc18c7b0",
+          "match_id": "fb446def-3816-4e32-b679-265dafc0fe74",
+          "minute": 2,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Amatori Calcio Genova"
+          },
+          "player": {
+            "name": "Matteo Campi"
+          }
+        },
+        {
+          "id": "7d60a207-97dd-49df-adc8-6209d74683c3",
+          "match_id": "fb446def-3816-4e32-b679-265dafc0fe74",
+          "minute": 7,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Taverna FC"
+          },
+          "player": {
+            "name": "Alessandro Mosca"
+          }
+        },
+        {
+          "id": "903eadaa-975e-4f3f-87e1-a9a33b688a00",
+          "match_id": "fb446def-3816-4e32-b679-265dafc0fe74",
+          "minute": 8,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Amatori Calcio Genova"
+          },
+          "player": {
+            "name": "Matteo Campi"
+          }
+        },
+        {
+          "id": "0a6a00ec-3eaa-461e-8c23-eb8c8c2db78f",
+          "match_id": "fb446def-3816-4e32-b679-265dafc0fe74",
+          "minute": 11,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Taverna FC"
+          },
+          "player": {
+            "name": "Davide Pasti"
+          }
+        },
+        {
+          "id": "a15241d2-b0b6-49c1-828e-fc2b9ca1caf5",
+          "match_id": "fb446def-3816-4e32-b679-265dafc0fe74",
+          "minute": 18,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Taverna FC"
+          },
+          "player": {
+            "name": "Davide Pasti"
+          }
+        },
+        {
+          "id": "3893ea60-5979-4767-aafa-877c0693f0b3",
+          "match_id": "fb446def-3816-4e32-b679-265dafc0fe74",
+          "minute": 23,
+          "type": "CARTA",
+          "detail": "penalty::success",
+          "team": {
+            "name": "Taverna FC"
+          },
+          "player": {
+            "name": "Davide Pasti"
+          }
+        },
+        {
+          "id": "98cde62f-30c6-4d1f-a7d2-f338792077db",
+          "match_id": "fb446def-3816-4e32-b679-265dafc0fe74",
+          "minute": 29,
+          "type": "GOAL",
+          "detail": null,
+          "team": {
+            "name": "Taverna FC"
+          },
+          "player": {
+            "name": "Davide Pasti"
+          }
+        }
+      ]
+    },
+    {
+      "id": "7ee4d4fe-4e3c-4a7a-b8f1-1fa4d8039d6d",
+      "match_date": "2026-06-26T17:30:00.000Z",
+      "round": "Quarti 1",
+      "status": "PROSSIMA",
+      "home_score": 0,
+      "away_score": 0,
+      "home_team": {
+        "id": "daa8c7d2-95f5-4a07-839d-fd74780e5ef7",
+        "name": "Sezione 164"
+      },
+      "away_team": {
+        "id": "e669b061-fc7f-4abb-a05e-45a047a63d02",
+        "name": "San Teodoro Ketzmaja"
+      },
+      "events": []
+    },
+    {
+      "id": "5a0dae12-77a7-4ae6-b996-aa2253faf93d",
+      "match_date": "2026-06-26T18:00:00.000Z",
+      "round": "Quarti 2",
+      "status": "PROSSIMA",
+      "home_score": 0,
+      "away_score": 0,
+      "home_team": {
+        "id": "add7df32-debf-4d2b-86cf-ef4aaae51008",
+        "name": "Taverna FC"
+      },
+      "away_team": {
+        "id": "6db87a59-8883-47a4-8a54-32be0931e306",
+        "name": "FC Pontos"
+      },
+      "events": []
+    },
+    {
+      "id": "ef756090-2cac-4893-b001-3446679453b2",
+      "match_date": "2026-06-26T18:30:00.000Z",
+      "round": "Quarti 3",
+      "status": "PROSSIMA",
+      "home_score": 0,
+      "away_score": 0,
+      "home_team": {
+        "id": "67218d78-44dd-414c-a964-9ed5c307d7c0",
+        "name": "UCG"
+      },
+      "away_team": {
+        "id": "f119e2ee-e6b2-4b75-881a-4c6a9bff586c",
+        "name": "Gli Umili"
+      },
+      "events": []
+    },
+    {
+      "id": "d8749615-de1a-48bf-b1f3-3577ff86e42b",
+      "match_date": "2026-06-26T19:00:00.000Z",
+      "round": "Quarti 4",
+      "status": "PROSSIMA",
+      "home_score": 0,
+      "away_score": 0,
+      "home_team": {
+        "id": "685956d2-d75f-4eec-b0b3-179ec71993e1",
+        "name": "Gilly Boys"
+      },
+      "away_team": {
+        "id": "3efa2896-b07a-4f65-a1d6-347990d9ab1d",
+        "name": "Chainz"
+      },
+      "events": []
+    }
+  ]
+}
