@@ -133,8 +133,11 @@ DECLARE
   v_winner_id UUID;
   v_round TEXT;
 BEGIN
-  -- Esegui solo se lo stato cambia in 'TERMINATA'
-  IF NEW.status = 'TERMINATA' AND (OLD.status IS NULL OR OLD.status != 'TERMINATA') THEN
+  -- Esegui se lo stato è 'TERMINATA' e lo stato è cambiato, oppure se cambiano punteggi/squadre da terminata
+  IF NEW.status = 'TERMINATA' AND (
+    (OLD.status IS NULL OR OLD.status != 'TERMINATA') OR
+    (NEW.home_score != OLD.home_score OR NEW.away_score != OLD.away_score OR NEW.home_team_id IS DISTINCT FROM OLD.home_team_id OR NEW.away_team_id IS DISTINCT FROM OLD.away_team_id)
+  ) THEN
     -- Calcola il vincitore (nei knockout non sono possibili pareggi terminati)
     IF NEW.home_score > NEW.away_score THEN
       v_winner_id := NEW.home_team_id;
