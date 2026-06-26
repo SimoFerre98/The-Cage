@@ -533,8 +533,8 @@ export default function CalendarioIsland() {
             <div className="bracket-section-header">Quarti di Finale</div>
             <div className="bracket-row">
               {renderBracketCard("Quarti 1", "Sezione 164", "San Teodoro Ketzmaja", "26 giu, 19:30", "QF1")}
-              {renderBracketCard("Quarti 2", "Taverna FC", "FC Pontos", "26 giu, 20:00", "QF2")}
               {renderBracketCard("Quarti 3", "UCG", "Gli Umili", "26 giu, 20:30", "QF3")}
+              {renderBracketCard("Quarti 2", "Taverna FC", "FC Pontos", "26 giu, 20:00", "QF2")}
               {renderBracketCard("Quarti 4", "Gilly Boys", "Chainz", "26 giu, 21:00", "QF4")}
             </div>
 
@@ -543,14 +543,14 @@ export default function CalendarioIsland() {
               <svg className="bracket-svg" viewBox="0 0 100 50" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
                 {/* Paths */}
                 <path d="M 12.5 0 V 25 H 25 V 50" stroke="rgba(255,255,255,0.12)" strokeWidth="2" strokeLinecap="round" />
-                <path d="M 62.5 0 V 25 H 25 V 50" stroke="rgba(255,255,255,0.12)" strokeWidth="2" strokeLinecap="round" />
-                <path d="M 37.5 0 V 25 H 75 V 50" stroke="rgba(255,255,255,0.12)" strokeWidth="2" strokeLinecap="round" />
+                <path d="M 37.5 0 V 25 H 25 V 50" stroke="rgba(255,255,255,0.12)" strokeWidth="2" strokeLinecap="round" />
+                <path d="M 62.5 0 V 25 H 75 V 50" stroke="rgba(255,255,255,0.12)" strokeWidth="2" strokeLinecap="round" />
                 <path d="M 87.5 0 V 25 H 75 V 50" stroke="rgba(255,255,255,0.12)" strokeWidth="2" strokeLinecap="round" />
                 
                 {/* Active Glows */}
                 <path d="M 12.5 0 V 25 H 25 V 50" stroke="url(#active-glow-left)" strokeWidth="2.5" strokeLinecap="round" opacity="0.8" />
-                <path d="M 62.5 0 V 25 H 25 V 50" stroke="url(#active-glow-left)" strokeWidth="2.5" strokeLinecap="round" opacity="0.8" />
-                <path d="M 37.5 0 V 25 H 75 V 50" stroke="url(#active-glow-right)" strokeWidth="2.5" strokeLinecap="round" opacity="0.8" />
+                <path d="M 37.5 0 V 25 H 25 V 50" stroke="url(#active-glow-left)" strokeWidth="2.5" strokeLinecap="round" opacity="0.8" />
+                <path d="M 62.5 0 V 25 H 75 V 50" stroke="url(#active-glow-right)" strokeWidth="2.5" strokeLinecap="round" opacity="0.8" />
                 <path d="M 87.5 0 V 25 H 75 V 50" stroke="url(#active-glow-right)" strokeWidth="2.5" strokeLinecap="round" opacity="0.8" />
                 
                 <defs>
