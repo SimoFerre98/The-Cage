@@ -86,6 +86,9 @@ Questo file rappresenta il **Punto di Tracciamento Centralizzato** di tutto il p
 - [x] **Sprint 25: Integrazione Quarti di Finale nel Tabellone**
   - **File di backlog**: [sprint-25-bracket-quarterfinals.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/10-bracket-quarterfinals/sprint-25-bracket-quarterfinals.md)
   - **Branch**: `sprint-25-bracket-quarterfinals`
+- [x] **Sprint 26: Fase Finale Autogestita**
+  - **File di backlog**: [sprint-26-fase-finale.md](file:///c:/Users/s.ferrero/Code/The%20Cage/.agents/backlog/11-fase-finale/sprint-26-fase-finale.md)
+  - **Branch**: `sprint-26-fase-finale`
 
 ---
 

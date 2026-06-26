@@ -532,10 +532,10 @@ export default function CalendarioIsland() {
             {/* Sezione Quarti di Finale */}
             <div className="bracket-section-header">Quarti di Finale</div>
             <div className="bracket-row">
-              {renderBracketCard("Quarti 1", "1° Girone", "7°/8° Girone", "26 giu, 19:00", "QF1")}
-              {renderBracketCard("Quarti 2", "4° Girone", "5°/6° Girone", "26 giu, 20:10", "QF2")}
-              {renderBracketCard("Quarti 3", "3° Girone", "5°/6° Girone", "26 giu, 20:45", "QF3")}
-              {renderBracketCard("Quarti 4", "2° Girone", "7°/8° Girone", "26 giu, 19:35", "QF4")}
+              {renderBracketCard("Quarti 1", "Sezione 164", "San Teodoro Ketzmaja", "26 giu, 19:30", "QF1")}
+              {renderBracketCard("Quarti 2", "Taverna FC", "FC Pontos", "26 giu, 20:00", "QF2")}
+              {renderBracketCard("Quarti 3", "UCG", "Gli Umili", "26 giu, 20:30", "QF3")}
+              {renderBracketCard("Quarti 4", "Gilly Boys", "Chainz", "26 giu, 21:00", "QF4")}
             </div>
 
             {/* SVG Connector Lines (Quarti -> Semifinali) */}
@@ -543,14 +543,14 @@ export default function CalendarioIsland() {
               <svg className="bracket-svg" viewBox="0 0 100 50" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
                 {/* Paths */}
                 <path d="M 12.5 0 V 25 H 25 V 50" stroke="rgba(255,255,255,0.12)" strokeWidth="2" strokeLinecap="round" />
-                <path d="M 37.5 0 V 25 H 25 V 50" stroke="rgba(255,255,255,0.12)" strokeWidth="2" strokeLinecap="round" />
-                <path d="M 62.5 0 V 25 H 75 V 50" stroke="rgba(255,255,255,0.12)" strokeWidth="2" strokeLinecap="round" />
+                <path d="M 62.5 0 V 25 H 25 V 50" stroke="rgba(255,255,255,0.12)" strokeWidth="2" strokeLinecap="round" />
+                <path d="M 37.5 0 V 25 H 75 V 50" stroke="rgba(255,255,255,0.12)" strokeWidth="2" strokeLinecap="round" />
                 <path d="M 87.5 0 V 25 H 75 V 50" stroke="rgba(255,255,255,0.12)" strokeWidth="2" strokeLinecap="round" />
                 
                 {/* Active Glows */}
                 <path d="M 12.5 0 V 25 H 25 V 50" stroke="url(#active-glow-left)" strokeWidth="2.5" strokeLinecap="round" opacity="0.8" />
-                <path d="M 37.5 0 V 25 H 25 V 50" stroke="url(#active-glow-left)" strokeWidth="2.5" strokeLinecap="round" opacity="0.8" />
-                <path d="M 62.5 0 V 25 H 75 V 50" stroke="url(#active-glow-right)" strokeWidth="2.5" strokeLinecap="round" opacity="0.8" />
+                <path d="M 62.5 0 V 25 H 25 V 50" stroke="url(#active-glow-left)" strokeWidth="2.5" strokeLinecap="round" opacity="0.8" />
+                <path d="M 37.5 0 V 25 H 75 V 50" stroke="url(#active-glow-right)" strokeWidth="2.5" strokeLinecap="round" opacity="0.8" />
                 <path d="M 87.5 0 V 25 H 75 V 50" stroke="url(#active-glow-right)" strokeWidth="2.5" strokeLinecap="round" opacity="0.8" />
                 
                 <defs>
@@ -569,8 +569,8 @@ export default function CalendarioIsland() {
             {/* Sezione Semifinali */}
             <div className="bracket-section-header">Semifinali</div>
             <div className="bracket-row">
-              {renderBracketCard("Semifinale 1", "Vincitore Quarti 1", "Vincitore Quarti 2", "26 giu, 21:20", "SF1")}
-              {renderBracketCard("Semifinale 2", "Vincitore Quarti 3", "Vincitore Quarti 4", "26 giu, 21:55", "SF2")}
+              {renderBracketCard("Semifinale 1", "Vincitrice Partita 1", "Vincitrice Partita 3", "26 giu, 21:45", "SF1")}
+              {renderBracketCard("Semifinale 2", "Vincitrice Partita 2", "Vincitrice Partita 4", "26 giu, 22:15", "SF2")}
             </div>
 
             {/* SVG Connector Lines (Semifinali -> Finale) */}
@@ -586,7 +586,7 @@ export default function CalendarioIsland() {
             {/* Sezione Finale */}
             <div className="bracket-section-header">Finale</div>
             <div className="bracket-row-center">
-              {renderBracketCard("🏆 FINALE 🏆", "Vincitore SF1", "Vincitore SF2", "26 giu, 22:45", "Finale", true)}
+              {renderBracketCard("🏆 FINALE 🏆", "Vincitrice Semifinale 1", "Vincitrice Semifinale 2", "26 giu, 23:00", "Finale", true)}
             </div>
           </div>
         </div>

@@ -1078,43 +1078,8 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover {
 
 @media (max-width: 768px) {
   .bracket-scroll-wrapper {
-    overflow-x: hidden;
+    overflow-x: auto;
     padding: 0.5rem 0;
-  }
-
-  .bracket-container {
-    min-width: 100% !important;
-    width: 100% !important;
-    gap: 1.5rem;
-  }
-
-  .bracket-row {
-    flex-direction: column;
-    align-items: center;
-    gap: 1.2rem;
-  }
-
-  .bracket-connector-container {
-    display: none !important;
-  }
-
-  .bracket-card-wrapper {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .bracket-row-center {
-    width: 100%;
-  }
-
-  .final-wrapper {
-    max-width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .bracket-row {
-    gap: 1rem;
   }
 }
 
