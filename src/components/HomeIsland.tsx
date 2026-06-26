@@ -439,6 +439,15 @@ export default function HomeIsland() {
             <span>🏅</span>
             <span>Vota MVP</span>
           </button>
+          <a
+            href="/Regolamento.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-black text-white/90 uppercase tracking-wider bg-white/5 hover:bg-white/10 hover:text-white border border-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur active:scale-95 cursor-pointer outline-none shadow-[0_2px_8px_rgba(255,255,255,0.03)]"
+          >
+            <span>📋</span>
+            <span>Regolamento</span>
+          </a>
         </div>
       </div>
 
