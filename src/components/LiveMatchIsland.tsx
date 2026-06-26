@@ -451,7 +451,7 @@ export default function LiveMatchIsland() {
         </div>
       </div>
 
-      <div className="flex justify-center w-full px-4 mt-6 z-10">
+      <div className="flex justify-center w-full px-4 mt-8 mb-6 z-10">
         <div className="flex justify-center gap-4 w-[90%] max-w-[320px]">
           {(['timeline', 'lineups'] as const).map((t) => {
             const label = t === 'timeline' ? 'Eventi' : 'Formazioni';
