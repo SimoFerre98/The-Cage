@@ -451,9 +451,8 @@ export default function LiveMatchIsland() {
         </div>
       </div>
 
-      {/* Tab Navigation Chips */}
       <div className="flex justify-center w-full px-4 mt-6 z-10">
-        <div className="flex justify-center gap-3 w-full max-w-[450px]">
+        <div className="flex justify-center gap-4 w-[90%] max-w-[320px]">
           {(['timeline', 'lineups'] as const).map((t) => {
             const label = t === 'timeline' ? 'Eventi' : 'Formazioni';
             const isActive = tab === t;
@@ -476,7 +475,7 @@ export default function LiveMatchIsland() {
 
       {/* Centering Wrapper for Tab Contents */}
       <div className="w-full flex justify-center px-4">
-        <div className="w-full max-w-[500px]">
+        <div className="w-[90%] md:w-full max-w-[500px]">
           {tab === 'timeline' && (
             <div className="relative flex-1 w-full pt-8 pb-56 animate-[slideUpFade_0.4s_var(--ease-apple)]">
               <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-20 pointer-events-none"></div>
