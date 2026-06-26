@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import GlassEffect from './GlassEffect';
 import { supabase } from '../lib/supabase';
 import { getTeamLogo } from '../lib/teamUtils';
+import Confetti from './Confetti';
 
 
 const AVATAR_INITIALS = (name: string) => {
@@ -36,8 +37,6 @@ const sortMatches = (list: any[]) => list.slice().sort((a, b) => {
   return new Date(a.match_date).getTime() - new Date(b.match_date).getTime();
 });
 
-import { useMemo } from 'react';
-
 export default function CalendarioIsland() {
   const [tab, setTab] = useState<'calendario' | 'tabellone'>('calendario');
   const [matches, setMatches] = useState<any[]>([]);
@@ -69,6 +68,41 @@ export default function CalendarioIsland() {
     }
     return null;
   }, [matches]);
+
+  const [championPlayers, setChampionPlayers] = useState<any[]>([]);
+  const [confettiBurstCount, setConfettiBurstCount] = useState<number>(0);
+
+  useEffect(() => {
+    let isMounted = true;
+    if (campione) {
+      async function loadRoster() {
+        try {
+          const { data } = await supabase
+            .from('teams')
+            .select('name, players(name, role)')
+            .eq('name', campione)
+            .single();
+          if (data && data.players && isMounted) {
+            const roleOrder: Record<string, number> = { 'POR': 1, 'DIF': 2, 'CEN': 3, 'ATT': 4 };
+            const sorted = [...data.players].sort((a: any, b: any) => {
+              const oA = roleOrder[a.role?.toUpperCase()] || 99;
+              const oB = roleOrder[b.role?.toUpperCase()] || 99;
+              return oA - oB;
+            });
+            setChampionPlayers(sorted);
+          }
+        } catch (e) {
+          console.error('Errore nel recupero della rosa dei campioni:', e);
+        }
+      }
+      loadRoster();
+    } else {
+      setChampionPlayers([]);
+    }
+    return () => {
+      isMounted = false;
+    };
+  }, [campione]);
 
   const findMatchByRound = (roundKey: string) => {
     return matches.find(m => {
@@ -547,10 +581,41 @@ export default function CalendarioIsland() {
       {tab === 'tabellone' && (
         <div className="bracket-scroll-wrapper flex flex-col items-center">
           {campione && (
-            <div className="champion-banner glass-card mt-6 mb-2">
-              <div className="champion-badge">🏆 CAMPIONE THE CAGE 2026 🏆</div>
-              <div className="champion-team-name">{campione}</div>
-            </div>
+            <>
+              <Confetti mode="continuous" burstTrigger={confettiBurstCount} />
+              <div className="gold-gradient-border mt-6 mb-4 w-full max-w-[450px] flex flex-col items-center text-center animate-[slideUpFade_0.6s_var(--ease-apple)]">
+                <div className="text-4xl mb-3 trophy-animation">🏆</div>
+                <div className="text-[0.65rem] font-black uppercase tracking-[0.3em] text-[#fbbf24] text-shadow-[0_0_12px_rgba(245,158,11,0.4)]">
+                  Campione The Cage 2026
+                </div>
+                <div className="text-2xl font-black text-white mt-1 uppercase tracking-wider drop-shadow-md">
+                  {campione}
+                </div>
+                
+                {championPlayers.length > 0 && (
+                  <div className="mt-5 w-full">
+                    <div className="text-[0.6rem] font-bold text-white/50 uppercase tracking-widest mb-2.5">
+                      La Rosa dei Campioni 🌟
+                    </div>
+                    <div className="flex flex-wrap justify-center gap-1.5 max-h-[140px] overflow-y-auto px-1 py-1">
+                      {championPlayers.map((p, idx) => (
+                        <span key={idx} className="champion-player-badge">
+                          <span>⭐️</span>
+                          <span>{p.name}</span>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                <button
+                  onClick={() => setConfettiBurstCount(prev => prev + 1)}
+                  className="mt-6 flex items-center gap-1.5 px-5 py-2 rounded-full bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 hover:to-amber-500 text-xs font-black text-white uppercase tracking-wider transition-all duration-300 active:scale-95 shadow-[0_4px_15px_rgba(245,158,11,0.3)] cursor-pointer border-none outline-none"
+                >
+                  <span>Spara Confetti 🎉</span>
+                </button>
+              </div>
+            </>
           )}
           <div className="bracket-container animate-stagger" style={{ marginTop: campione ? '1.5rem' : '2rem' }}>
             

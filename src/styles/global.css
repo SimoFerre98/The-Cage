@@ -1647,3 +1647,90 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover {
     box-shadow: 0 10px 45px rgba(245, 158, 11, 0.35);
   }
 }
+
+/* Premium Rotating Gold Border Card */
+.gold-gradient-border {
+  position: relative;
+  border-radius: 24px;
+  background: rgba(20, 25, 40, 0.7);
+  padding: 1.75rem;
+  z-index: 1;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(245, 158, 11, 0.15);
+  border: none !important;
+}
+
+.gold-gradient-border::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 20%,
+    #fbbf24 45%,
+    #f59e0b 50%,
+    #fbbf24 55%,
+    transparent 80%
+  );
+  animation: rotate-gold 8s linear infinite;
+  z-index: -2;
+}
+
+.gold-gradient-border::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: linear-gradient(135deg, rgba(15, 18, 30, 0.95) 0%, rgba(35, 25, 10, 0.95) 100%);
+  border-radius: 22px;
+  z-index: -1;
+}
+
+@keyframes rotate-gold {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Floating Trophy Animation */
+.trophy-animation {
+  animation: float-trophy 3s ease-in-out infinite;
+  display: inline-block;
+}
+
+@keyframes float-trophy {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.5));
+  }
+  50% {
+    transform: translateY(-8px) scale(1.08);
+    filter: drop-shadow(0 0 25px rgba(245, 158, 11, 0.8));
+  }
+}
+
+/* Champion Player Badge */
+.champion-player-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 12px;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.champion-player-badge:hover {
+  background: rgba(245, 158, 11, 0.2);
+  border-color: rgba(245, 158, 11, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(245, 158, 11, 0.2);
+}

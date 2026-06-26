@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import GlassEffect from './GlassEffect';
 import { supabase } from '../lib/supabase';
 import { fetchWithCache } from '../lib/cache';
 import PlayerStatsModal from './PlayerStatsModal';
 import { getTeamLogo, parsePlayerName } from '../lib/teamUtils';
+import Confetti from './Confetti';
 
 const ROLE_ORDER: Record<string, number> = {
   'portiere': 1,
@@ -102,6 +103,14 @@ export default function HomeIsland() {
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
+  // New celebration & stats states
+  const [matches, setMatches] = useState<any[]>([]);
+  const [fullStandings, setFullStandings] = useState<any[]>([]);
+  const [campione, setCampione] = useState<string | null>(null);
+  const [championPlayers, setChampionPlayers] = useState<any[]>([]);
+  const [confettiBurstCount, setConfettiBurstCount] = useState<number>(0);
+  const [timeLeft, setTimeLeft] = useState<string>('');
+
   useEffect(() => {
     let isMounted = true;
 
@@ -133,7 +142,10 @@ export default function HomeIsland() {
           return data || [];
         },
         (newData) => {
-          if (isMounted) setStandings(newData.slice(0, 3));
+          if (isMounted) {
+            setFullStandings(newData);
+            setStandings(newData.slice(0, 3));
+          }
         }
       );
 
@@ -152,18 +164,42 @@ export default function HomeIsland() {
           return data || [];
         },
         (newData) => {
-          if (isMounted) setFeaturedMatch(processMatches(newData));
+          if (isMounted) {
+            setMatches(newData);
+            setFeaturedMatch(processMatches(newData));
+          }
         }
       );
 
       const [cachedStandings, cachedMatches] = await Promise.all([standingsPromise, matchesPromise]);
       if (isMounted) {
-        if (cachedStandings) setStandings(cachedStandings.slice(0, 3));
-        if (cachedMatches) setFeaturedMatch(processMatches(cachedMatches));
+        if (cachedStandings) {
+          setFullStandings(cachedStandings);
+          setStandings(cachedStandings.slice(0, 3));
+        }
+        if (cachedMatches) {
+          setMatches(cachedMatches);
+          setFeaturedMatch(processMatches(cachedMatches));
+        }
       }
     }
 
     const processMatches = (list: any[]) => {
+      // Find final match and set champion
+      const finaleMatch = list.find(m => {
+        const r = m.round ? m.round.toLowerCase() : '';
+        return r === 'finale' && !r.includes('semi') && !r.includes('quarti');
+      });
+      const finaleTerminata = finaleMatch?.status === 'TERMINATA';
+      const homeScore = finaleMatch?.home_score;
+      const awayScore = finaleMatch?.away_score;
+      if (finaleTerminata && homeScore !== null && awayScore !== null) {
+        const winner = homeScore > awayScore ? finaleMatch.home_team?.name : finaleMatch.away_team?.name;
+        if (winner) setCampione(winner);
+      } else {
+        setCampione(null);
+      }
+
       const live = list.find(m => m.status === 'LIVE');
       if (live) return { type: 'LIVE', match: live };
 
@@ -177,6 +213,7 @@ export default function HomeIsland() {
 
       return null;
     };
+
 
     const updateTeamsUI = (tData: any[] | null) => {
       if (!tData || tData.length === 0) return;
@@ -252,6 +289,79 @@ export default function HomeIsland() {
       supabase.removeChannel(standingsChannel);
     };
   }, []);
+
+  // Effect to set champion players when champion is determined
+  useEffect(() => {
+    if (campione && teams.length > 0) {
+      const champTeam = teams.find(t => t.name === campione);
+      if (champTeam && champTeam.players) {
+        const roleOrder: Record<string, number> = { 'POR': 1, 'DIF': 2, 'CEN': 3, 'ATT': 4 };
+        const sorted = [...champTeam.players].sort((a: any, b: any) => {
+          const oA = roleOrder[a.role?.toUpperCase()] || 99;
+          const oB = roleOrder[b.role?.toUpperCase()] || 99;
+          return oA - oB;
+        });
+        setChampionPlayers(sorted);
+      }
+    } else {
+      setChampionPlayers([]);
+    }
+  }, [campione, teams]);
+
+  // Live countdown timer effect
+  useEffect(() => {
+    if (featuredMatch?.type !== 'UPCOMING') {
+      setTimeLeft('');
+      return;
+    }
+    
+    const targetDate = new Date(featuredMatch.match.match_date).getTime();
+    
+    const updateTimer = () => {
+      const now = Date.now();
+      const diff = targetDate - now;
+      if (diff <= 0) {
+        setTimeLeft('Iniziata!');
+        return;
+      }
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+      
+      let timeString = '';
+      if (hours > 0) timeString += `${hours}h `;
+      timeString += `${minutes}m ${seconds}s`;
+      setTimeLeft(timeString);
+    };
+    
+    updateTimer();
+    const interval = setInterval(updateTimer, 1000);
+    return () => clearInterval(interval);
+  }, [featuredMatch]);
+
+  // Calculate global stats
+  const stats = useMemo(() => {
+    const terminati = matches.filter(m => m.status === 'TERMINATA');
+    const totalGoals = terminati.reduce((sum, m) => sum + (m.home_score || 0) + (m.away_score || 0), 0);
+    const matchesPlayed = terminati.length;
+    const avgGoals = matchesPlayed > 0 ? (totalGoals / matchesPlayed).toFixed(1) : '0';
+    
+    let bestAttackTeam = '-';
+    let bestAttackGoals = 0;
+    if (fullStandings && fullStandings.length > 0) {
+      const sortedByGoals = [...fullStandings].sort((a, b) => (b.gf || 0) - (a.gf || 0));
+      bestAttackTeam = sortedByGoals[0]?.team_name || '-';
+      bestAttackGoals = sortedByGoals[0]?.gf || 0;
+    }
+    
+    return {
+      totalGoals,
+      matchesPlayed,
+      avgGoals,
+      bestAttackTeam,
+      bestAttackGoals
+    };
+  }, [matches, fullStandings]);
 
   const toggle = (i: number) => setExpanded(expanded === i ? null : i);
 
@@ -451,8 +561,48 @@ export default function HomeIsland() {
         </div>
       </div>
 
+      {campione && (
+        <>
+          <Confetti mode="continuous" burstTrigger={confettiBurstCount} />
+          <div className="w-full flex justify-center animate-[slideUpFade_0.6s_var(--ease-apple)] px-4">
+            <div className="gold-gradient-border w-full max-w-[500px] flex flex-col items-center text-center">
+              <div className="text-5xl mb-3 trophy-animation">🏆</div>
+              <div className="text-[0.7rem] font-black uppercase tracking-[0.3em] text-[#fbbf24] text-shadow-[0_0_12px_rgba(245,158,11,0.4)]">
+                Campione Memorial Gerry 2026
+              </div>
+              <div className="text-3xl font-black text-white mt-1.5 uppercase tracking-wider drop-shadow-md">
+                {campione}
+              </div>
+              
+              {championPlayers.length > 0 && (
+                <div className="mt-6 w-full">
+                  <div className="text-[0.65rem] font-bold text-white/50 uppercase tracking-widest mb-3">
+                    La Rosa dei Campioni 🌟
+                  </div>
+                  <div className="flex flex-wrap justify-center gap-1.5 max-h-[140px] overflow-y-auto px-1 py-1">
+                    {championPlayers.map((p, idx) => (
+                      <span key={idx} className="champion-player-badge">
+                        <span>⭐️</span>
+                        <span>{p.name}</span>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              <button
+                onClick={() => setConfettiBurstCount(prev => prev + 1)}
+                className="mt-6 flex items-center gap-1.5 px-6 py-2.5 rounded-full bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 hover:to-amber-500 text-xs font-black text-white uppercase tracking-wider transition-all duration-300 active:scale-95 shadow-[0_4px_15px_rgba(245,158,11,0.3)] cursor-pointer border-none outline-none"
+              >
+                <span>Spara Confetti 🎉</span>
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+
       {/* ── Dashboard: Grid di Widget ── */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full animate-[slideUpFade_0.6s_var(--ease-apple)] delay-75">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full animate-[slideUpFade_0.6s_var(--ease-apple)] delay-75">
         
         {/* Widget 1: Partita in Evidenza */}
         <div className="flex flex-col h-full">
@@ -539,10 +689,17 @@ export default function HomeIsland() {
 
               {/* Info orario / Pulsante live Centrati */}
               <div className="flex flex-col items-center gap-3 w-full pt-4 border-t border-[var(--glass-border)] mt-4">
-                <span className="text-[0.75rem] font-semibold text-white/55 text-center">
-                  {featuredMatch.type === 'UPCOMING' 
-                    ? new Date(featuredMatch.match.match_date).toLocaleString('it-IT', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })
-                    : new Date(featuredMatch.match.match_date).toLocaleString('it-IT', { day: '2-digit', month: 'short' })}
+                <span className="text-[0.75rem] font-semibold text-white/55 text-center flex flex-col items-center gap-1.5">
+                  <span>
+                    {featuredMatch.type === 'UPCOMING' 
+                      ? new Date(featuredMatch.match.match_date).toLocaleString('it-IT', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })
+                      : new Date(featuredMatch.match.match_date).toLocaleString('it-IT', { day: '2-digit', month: 'short' })}
+                  </span>
+                  {featuredMatch.type === 'UPCOMING' && timeLeft && (
+                    <span className="text-[0.7rem] font-mono font-black text-yellow-400 bg-yellow-500/10 px-3 py-1 rounded-full border border-yellow-500/20 animate-pulse mt-1">
+                      ⏳ Inizia in: {timeLeft}
+                    </span>
+                  )}
                 </span>
                 {featuredMatch.type === 'LIVE' ? (
                   <a 
@@ -644,6 +801,61 @@ export default function HomeIsland() {
           </GlassEffect>
         </div>
 
+        {/* Widget 3: Statistiche Torneo */}
+        <div className="flex flex-col h-full">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-white/50 mb-3 text-center w-full">Statistiche</h2>
+          <GlassEffect 
+            className="rounded-[24px] flex flex-col h-full min-h-[240px]"
+            contentClassName="p-5 pb-5 flex flex-col justify-between flex-1 w-full"
+          >
+            <div className="w-full grid grid-cols-2 gap-3 flex-1">
+              {/* Card 1: Gol Segnati */}
+              <div className="bg-white/5 border border-white/10 hover:border-white/20 rounded-2xl p-3.5 flex flex-col items-center justify-center transition-all duration-300 shadow-md">
+                <span className="text-lg">⚽</span>
+                <span className="text-lg font-black text-white mt-1.5 tabular-nums leading-none tracking-tight">
+                  {stats.totalGoals}
+                </span>
+                <span className="text-[0.55rem] font-bold text-white/40 uppercase tracking-widest mt-2 leading-none text-center">
+                  Gol Segnati
+                </span>
+              </div>
+
+              {/* Card 2: Partite Giocate */}
+              <div className="bg-white/5 border border-white/10 hover:border-white/20 rounded-2xl p-3.5 flex flex-col items-center justify-center transition-all duration-300 shadow-md">
+                <span className="text-lg">🏟️</span>
+                <span className="text-lg font-black text-white mt-1.5 tabular-nums leading-none tracking-tight">
+                  {stats.matchesPlayed}
+                </span>
+                <span className="text-[0.55rem] font-bold text-white/40 uppercase tracking-widest mt-2 leading-none text-center">
+                  Partite
+                </span>
+              </div>
+
+              {/* Card 3: Media Gol / Gara */}
+              <div className="bg-white/5 border border-white/10 hover:border-white/20 rounded-2xl p-3.5 flex flex-col items-center justify-center transition-all duration-300 shadow-md">
+                <span className="text-lg">🥅</span>
+                <span className="text-lg font-black text-yellow-400 mt-1.5 tabular-nums leading-none tracking-tight">
+                  {stats.avgGoals}
+                </span>
+                <span className="text-[0.55rem] font-bold text-white/40 uppercase tracking-widest mt-2 leading-none text-center">
+                  Media Gol / Gara
+                </span>
+              </div>
+
+              {/* Card 4: Miglior Attacco */}
+              <div className="bg-white/5 border border-white/10 hover:border-white/20 rounded-2xl p-3 flex flex-col items-center justify-center transition-all duration-300 shadow-md min-w-0">
+                <span className="text-lg">🔥</span>
+                <span className="text-[0.75rem] font-black text-blue-400 mt-1.5 leading-tight truncate w-full text-center uppercase tracking-wide px-1">
+                  {stats.bestAttackTeam}
+                </span>
+                <span className="text-[0.55rem] font-bold text-white/40 uppercase tracking-widest mt-1 text-center leading-none">
+                  Miglior Attacco ({stats.bestAttackGoals} Gol)
+                </span>
+              </div>
+            </div>
+          </GlassEffect>
+        </div>
+ 
       </div>
 
       {/* ── Sezione Inferiore: Rose e Giocatori ── */}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import GlassEffect from './GlassEffect';
 import { supabase } from '../lib/supabase';
 import { getTeamLogo, parsePlayerName } from '../lib/teamUtils';
+import Confetti from './Confetti';
 
 import PlayerStatsModal from './PlayerStatsModal';
 
@@ -55,6 +56,22 @@ export default function LiveMatchIsland() {
 
   const [matchId, setMatchId] = useState<string | null>(null);
   const [tab, setTab] = useState<'timeline' | 'lineups'>('timeline');
+
+  // Confetti states
+  const [confettiBurstCount, setConfettiBurstCount] = useState<number>(0);
+
+  // Trigger confetti burst when match changes to TERMINATA on page load
+  useEffect(() => {
+    if (liveMatch?.status === 'TERMINATA') {
+      setConfettiBurstCount(1);
+      const t1 = setTimeout(() => setConfettiBurstCount(prev => prev + 1), 350);
+      const t2 = setTimeout(() => setConfettiBurstCount(prev => prev + 1), 700);
+      return () => {
+        clearTimeout(t1);
+        clearTimeout(t2);
+      };
+    }
+  }, [liveMatch?.id, liveMatch?.status]);
   const [homePlayers, setHomePlayers] = useState<any[]>([]);
   const [awayPlayers, setAwayPlayers] = useState<any[]>([]);
 
@@ -450,6 +467,36 @@ export default function LiveMatchIsland() {
           </div>
         </div>
       </div>
+
+      {/* Celebration & Confetti Emitter for finished matches */}
+      {liveMatch?.status === 'TERMINATA' && (
+        <>
+          <Confetti mode="burst" burstTrigger={confettiBurstCount} />
+          <div className="flex justify-center w-full px-4 mb-4 z-10 animate-[slideUpFade_0.5s_var(--ease-apple)]">
+            <div 
+              className="w-[90%] max-w-[500px] glass-card p-5 text-center flex flex-col items-center gap-3 border-[rgba(245,158,11,0.45)]!"
+              style={{
+                boxShadow: '0 8px 32px rgba(245, 158, 11, 0.15), inset 0 1px 2px rgba(255, 255, 255, 0.15)',
+                background: 'linear-gradient(135deg, rgba(20, 25, 40, 0.75) 0%, rgba(45, 35, 10, 0.65) 100%)'
+              }}
+            >
+              <div className="text-3xl trophy-animation">🏆</div>
+              <div className="flex flex-col gap-1">
+                <span className="text-[0.6rem] font-black uppercase text-[#fbbf24] tracking-[0.25em]">Vincitore del Match</span>
+                <span className="text-lg font-black text-white uppercase tracking-wide">
+                  {homeScore > awayScore ? homeName : awayScore > homeScore ? awayName : 'Pareggio'}
+                </span>
+              </div>
+              <button
+                onClick={() => setConfettiBurstCount(prev => prev + 1)}
+                className="mt-1 flex items-center gap-1.5 px-4.5 py-1.5 rounded-full bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 hover:to-amber-500 text-[0.65rem] font-black text-white uppercase tracking-wider transition-all duration-300 active:scale-95 shadow-[0_3px_10px_rgba(245,158,11,0.25)] cursor-pointer border-none outline-none"
+              >
+                <span>Festeggia 🎉</span>
+              </button>
+            </div>
+          </div>
+        </>
+      )}
 
       <div className="flex justify-center w-full px-4 mt-8 mb-6 z-10">
         <div className="flex justify-center gap-4 w-[90%] max-w-[320px]">
