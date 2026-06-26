@@ -67,6 +67,13 @@ export default function MatchesManager({ teams, players, matches, onRefreshMatch
     onRefreshMatches();
   };
 
+  const handleUpdateMatchScore = async (id: string, newHome: number, newAway: number) => {
+    const home = Math.max(0, newHome);
+    const away = Math.max(0, newAway);
+    await supabase.from('matches').update({ home_score: home, away_score: away }).eq('id', id);
+    onRefreshMatches();
+  };
+
   const requestDeleteMatch = (id: string) => {
     setMatchToDelete(id);
     setDeleteConfirmOpen(true);
@@ -169,9 +176,47 @@ export default function MatchesManager({ teams, players, matches, onRefreshMatch
                 </div>
                 <div className="flex items-center justify-center gap-4 flex-wrap">
                   <span className="font-bold text-white text-lg md:text-xl">{match.home_team?.name}</span>
-                  <span className="px-3 py-1.5 rounded-xl bg-black/40 text-white/95 font-mono text-sm md:text-base border border-white/5 font-bold">
-                    {match.home_score} - {match.away_score}
-                  </span>
+                  
+                  <div className="flex items-center gap-2 bg-black/20 border border-white/5 rounded-2xl p-1.5 shadow-[inset_0_1px_2px_rgba(255,255,255,0.05)]">
+                    <button 
+                      type="button"
+                      onClick={() => handleUpdateMatchScore(match.id, match.home_score - 1, match.away_score)}
+                      className="w-7 h-7 rounded-lg bg-white/5 border border-white/10 text-white flex items-center justify-center font-bold hover:bg-white/10 active:scale-95 cursor-pointer text-xs transition-all outline-none"
+                    >
+                      -
+                    </button>
+                    <span className="px-2 py-1 text-white/90 font-mono text-sm md:text-base font-black min-w-[20px] text-center select-none">
+                      {match.home_score}
+                    </span>
+                    <button 
+                      type="button"
+                      onClick={() => handleUpdateMatchScore(match.id, match.home_score + 1, match.away_score)}
+                      className="w-7 h-7 rounded-lg bg-white/5 border border-white/10 text-white flex items-center justify-center font-bold hover:bg-white/10 active:scale-95 cursor-pointer text-xs transition-all outline-none"
+                    >
+                      +
+                    </button>
+                    
+                    <span className="text-white/35 font-bold px-1 select-none">:</span>
+                    
+                    <button 
+                      type="button"
+                      onClick={() => handleUpdateMatchScore(match.id, match.home_score, match.away_score - 1)}
+                      className="w-7 h-7 rounded-lg bg-white/5 border border-white/10 text-white flex items-center justify-center font-bold hover:bg-white/10 active:scale-95 cursor-pointer text-xs transition-all outline-none"
+                    >
+                      -
+                    </button>
+                    <span className="px-2 py-1 text-white/90 font-mono text-sm md:text-base font-black min-w-[20px] text-center select-none">
+                      {match.away_score}
+                    </span>
+                    <button 
+                      type="button"
+                      onClick={() => handleUpdateMatchScore(match.id, match.home_score, match.away_score + 1)}
+                      className="w-7 h-7 rounded-lg bg-white/5 border border-white/10 text-white flex items-center justify-center font-bold hover:bg-white/10 active:scale-95 cursor-pointer text-xs transition-all outline-none"
+                    >
+                      +
+                    </button>
+                  </div>
+
                   <span className="font-bold text-white text-lg md:text-xl">{match.away_team?.name}</span>
                 </div>
               </div>
