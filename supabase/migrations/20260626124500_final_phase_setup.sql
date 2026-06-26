@@ -133,7 +133,7 @@ DECLARE
   v_winner_id UUID;
   v_round TEXT;
 BEGIN
-  -- Esegui se lo stato è 'TERMINATA' e lo stato è cambiato, oppure se cambiano punteggi/squadre da terminata
+  -- CASO 1: Il match passa a 'TERMINATA' oppure viene aggiornato il punteggio/squadra di un match già 'TERMINATA'
   IF NEW.status = 'TERMINATA' AND (
     (OLD.status IS NULL OR OLD.status != 'TERMINATA') OR
     (NEW.home_score != OLD.home_score OR NEW.away_score != OLD.away_score OR NEW.home_team_id IS DISTINCT FROM OLD.home_team_id OR NEW.away_team_id IS DISTINCT FROM OLD.away_team_id)
@@ -184,6 +184,37 @@ BEGIN
     ELSIF v_round = 'semifinale 2' THEN
       UPDATE public.matches
       SET away_team_id = v_winner_id
+      WHERE LOWER(round) = 'finale' AND match_date >= '2026-06-26 00:00:00+02'::timestamptz;
+    END IF;
+  
+  -- CASO 2: Il match era 'TERMINATA' ma viene riaperto (riportato a 'PROSSIMA' o 'LIVE')
+  ELSIF NEW.status != 'TERMINATA' AND OLD.status = 'TERMINATA' THEN
+    v_round := LOWER(NEW.round);
+    
+    -- Rimuovi il team dal turno successivo impostando a NULL
+    IF v_round = 'quarti 1' THEN
+      UPDATE public.matches
+      SET home_team_id = NULL
+      WHERE LOWER(round) = 'semifinale 1' AND match_date >= '2026-06-26 00:00:00+02'::timestamptz;
+    ELSIF v_round = 'quarti 3' THEN
+      UPDATE public.matches
+      SET away_team_id = NULL
+      WHERE LOWER(round) = 'semifinale 1' AND match_date >= '2026-06-26 00:00:00+02'::timestamptz;
+    ELSIF v_round = 'quarti 2' THEN
+      UPDATE public.matches
+      SET home_team_id = NULL
+      WHERE LOWER(round) = 'semifinale 2' AND match_date >= '2026-06-26 00:00:00+02'::timestamptz;
+    ELSIF v_round = 'quarti 4' THEN
+      UPDATE public.matches
+      SET away_team_id = NULL
+      WHERE LOWER(round) = 'semifinale 2' AND match_date >= '2026-06-26 00:00:00+02'::timestamptz;
+    ELSIF v_round = 'semifinale 1' THEN
+      UPDATE public.matches
+      SET home_team_id = NULL
+      WHERE LOWER(round) = 'finale' AND match_date >= '2026-06-26 00:00:00+02'::timestamptz;
+    ELSIF v_round = 'semifinale 2' THEN
+      UPDATE public.matches
+      SET away_team_id = NULL
       WHERE LOWER(round) = 'finale' AND match_date >= '2026-06-26 00:00:00+02'::timestamptz;
     END IF;
   END IF;
