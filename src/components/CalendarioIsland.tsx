@@ -56,6 +56,20 @@ export default function CalendarioIsland() {
     });
   }, [matches, selectedDay]);
 
+  const campione = useMemo(() => {
+    const finaleMatch = matches.find(m => {
+      const r = m.round ? m.round.toLowerCase() : '';
+      return r === 'finale' && !r.includes('semi') && !r.includes('quarti');
+    });
+    const finaleTerminata = finaleMatch?.status === 'TERMINATA';
+    const homeScore = finaleMatch?.home_score;
+    const awayScore = finaleMatch?.away_score;
+    if (finaleTerminata && homeScore !== null && awayScore !== null) {
+      return homeScore > awayScore ? finaleMatch.home_team?.name : finaleMatch.away_team?.name;
+    }
+    return null;
+  }, [matches]);
+
   const findMatchByRound = (roundKey: string) => {
     return matches.find(m => {
       const r = m.round ? m.round.toLowerCase() : '';
@@ -110,8 +124,8 @@ export default function CalendarioIsland() {
               </div>
             );
           })()}
-          <span className={`bracket-team-name ${isGold ? 'font-black' : ''}`}>
-            {t1Name}
+          <span className={`bracket-team-name ${isGold ? 'font-black' : ''} flex items-center gap-1.5`}>
+            {t1Name} {homeWon && <span className="text-[0.75rem] select-none animate-bounce" style={{ display: 'inline-block' }}>🏆</span>}
           </span>
           {isTerminata && homeScore !== null && (
             <span className="bracket-team-score ml-auto font-bold">{homeScore}</span>
@@ -132,8 +146,8 @@ export default function CalendarioIsland() {
               </div>
             );
           })()}
-          <span className={`bracket-team-name ${isGold ? 'font-black' : ''}`}>
-            {t2Name}
+          <span className={`bracket-team-name ${isGold ? 'font-black' : ''} flex items-center gap-1.5`}>
+            {t2Name} {awayWon && <span className="text-[0.75rem] select-none animate-bounce" style={{ display: 'inline-block' }}>🏆</span>}
           </span>
           {isTerminata && awayScore !== null && (
             <span className="bracket-team-score ml-auto font-bold">{awayScore}</span>
@@ -377,12 +391,17 @@ export default function CalendarioIsland() {
                     <span className="w-1 h-1 rounded-full bg-white/20"></span>
                     <span className="text-blue-400/80">{dateStr}</span>
                   </div>
-                  <div>
+                  <div className="flex items-center gap-2">
                     {isLive ? (
-                      <span className="flex items-center gap-1 bg-red-500/10 text-red-400 px-2.5 py-0.5 rounded-full border border-red-500/20 animate-pulse text-[0.65rem]">
-                        <span className="h-1.5 w-1.5 rounded-full bg-red-500"></span>
-                        LIVE
-                      </span>
+                      <>
+                        <span className="flex items-center gap-1 bg-amber-500/15 text-amber-400 px-2 py-0.5 rounded-full border border-amber-500/30 text-[0.6rem] font-black shadow-[0_0_8px_rgba(245,158,11,0.15)] animate-pulse select-none">
+                          🏅 VOTA MVP
+                        </span>
+                        <span className="flex items-center gap-1 bg-red-500/10 text-red-400 px-2.5 py-0.5 rounded-full border border-red-500/20 animate-pulse text-[0.65rem]">
+                          <span className="h-1.5 w-1.5 rounded-full bg-red-500"></span>
+                          LIVE
+                        </span>
+                      </>
                     ) : isTerminata ? (
                       <span className="bg-white/5 text-white/50 px-2.5 py-0.5 rounded-full border border-white/10 text-[0.65rem]">
                         Terminata
@@ -526,8 +545,14 @@ export default function CalendarioIsland() {
 
       {/* Knockout Bracket View */}
       {tab === 'tabellone' && (
-        <div className="bracket-scroll-wrapper">
-          <div className="bracket-container animate-stagger" style={{ marginTop: '2rem' }}>
+        <div className="bracket-scroll-wrapper flex flex-col items-center">
+          {campione && (
+            <div className="champion-banner glass-card mt-6 mb-2">
+              <div className="champion-badge">🏆 CAMPIONE THE CAGE 2026 🏆</div>
+              <div className="champion-team-name">{campione}</div>
+            </div>
+          )}
+          <div className="bracket-container animate-stagger" style={{ marginTop: campione ? '1.5rem' : '2rem' }}>
             
             {/* Sezione Quarti di Finale */}
             <div className="bracket-section-header">Quarti di Finale</div>

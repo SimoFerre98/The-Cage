@@ -1599,3 +1599,51 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover {
       0 0 20px rgba(245, 158, 11, 0.05) !important;
   }
 }
+
+/* Champion Celebration Banner */
+.champion-banner {
+  border: 2px solid rgba(245, 158, 11, 0.4) !important;
+  box-shadow: 
+    0 10px 30px rgba(245, 158, 11, 0.2),
+    inset 0 1px 2px rgba(255, 255, 255, 0.15) !important;
+  background: linear-gradient(135deg, rgba(20, 25, 40, 0.6) 0%, rgba(45, 35, 10, 0.7) 100%) !important;
+  padding: 1.25rem 2.5rem;
+  border-radius: 24px;
+  text-align: center;
+  width: 90%;
+  max-width: 420px;
+  animation: pulse-gold 3s infinite alternate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.champion-badge {
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: #fbbf24;
+  text-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+}
+
+.champion-team-name {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5), 0 0 12px rgba(245, 158, 11, 0.3);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+@keyframes pulse-gold {
+  0% {
+    border-color: rgba(245, 158, 11, 0.35);
+    box-shadow: 0 10px 30px rgba(245, 158, 11, 0.15);
+  }
+  100% {
+    border-color: rgba(245, 158, 11, 0.65);
+    box-shadow: 0 10px 45px rgba(245, 158, 11, 0.35);
+  }
+}
